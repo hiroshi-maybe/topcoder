@@ -1,0 +1,125 @@
+<html>
+<head>
+    <title>CorruptedMessage</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16416&amp;pm=13748">CorruptedMessage</a></h1>
+
+<p><em>Single Round Match 656 Round 1 - Division II, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>Your friend just sent you a message.
+The message consisted of one or more copies of the same lowercase letter.
+For example, "aaaaa" and "xxxxxxxxx" are valid messages.
+Unfortunately, on its way to you the message became corrupted: exactly <em>k</em> letters of the original message were changed to some other letters.
+The message you received is <em>s</em>.</p>
+
+<p>Given the String <em>s</em> and the int <em>k</em>, reconstruct the original message.
+More precisely, return a String that could have been the original message.
+It is guaranteed that at least one such String will always exist.
+If there are multiple possible answers, you may return any of them.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>CorruptedMessage</code></li>
+<li><em>Method</em>: <code>reconstructMessage</code></li>
+<li><em>Parameters</em>: <code>String, int</code></li>
+<li><em>Returns</em>: <code>String</code></li>
+<li><em>Method signature</em>: <code>String reconstructMessage(String s, int k)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li>The number of characters in <em>s</em> will be between 1 and 50, inclusive.</li>
+<li>Each character in <em>s</em> will be a lowercase letter ('a'-'z').</li>
+<li><em>k</em> will be between 0 and the length of <em>s</em>, inclusive.</li>
+<li>At least one possible original message will be consistent with <em>s</em> and <em>k</em>.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>"hello",<br />3</c></p>
+
+<h4>Output</h4>
+
+<p><c>"lllll"</c></p>
+
+<h4>Reason</h4>
+
+<p>The three corrupted characters have 0-based indices 0, 1, and 4.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>"abc",<br />3</c></p>
+
+<h4>Output</h4>
+
+<p><c>"ddd"</c></p>
+
+<h4>Reason</h4>
+
+<p>The original message can't be "aaa", "bbb", or "ccc", since we need to change exactly 3 characters.</p>
+
+<p>Some other possible answers include "qqq", "xxx", or "ppp".</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>"wwwwwwwwwwwwwwwwww",<br />0</c></p>
+
+<h4>Output</h4>
+
+<p><c>"wwwwwwwwwwwwwwwwww"</c></p>
+
+<h4>Reason</h4>
+
+<p>No characters were corrupted.</p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>"ababba",<br />3</c></p>
+
+<h4>Output</h4>
+
+<p><c>"aaaaaa"</c></p>
+
+<h4>Reason</h4>
+
+<p>"bbbbbb" will also be accepted.</p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>"zoztxtoxytyt",<br />10</c></p>
+
+<h4>Output</h4>
+
+<p><c>"oooooooooooo"</c></p>
+
+<h3>Example 6</h3>
+
+<h4>Input</h4>
+
+<p><c>"jlmnmiunaxzywed",<br />13</c></p>
+
+<h4>Output</h4>
+
+<p><c>"mmmmmmmmmmmmmmm"</c></p>
+
+</body>
+</html>
