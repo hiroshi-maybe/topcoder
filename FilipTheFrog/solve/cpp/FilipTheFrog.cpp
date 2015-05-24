@@ -1,18 +1,17 @@
-#include <iostream>
-#include <algorithm>
 #include <vector>
 #include <string>
+#include <iostream>
+#include <algorithm>
 using namespace std;
 
-//#define SORT(c) sort((c).begin(),(c).end())
-//bool compare(int i,int j){return (i>j);}
+#define SORT(c) sort((c).begin(),(c).end())
 
 class FilipTheFrog {
 public:
-    int countReachableIslands(vector<int> const &positions,
+    int countReachableIslands(vector<int> &positions,
                               int L) {
       int start = positions[0];
-      sort(positions.rbegin(), positions.rend());
+      SORT(positions);
 
       int res = 1;
       
@@ -28,7 +27,7 @@ public:
 
       // backward
       current = start;
-      for (int i=positions.size()-1; i>0; --i) {
+      for (int i=positions.size()-1; i>=0; --i) {
 	int p = positions[i];
 	if (p >= start) continue;
 	int dif = current - p;
