@@ -1,0 +1,103 @@
+<html>
+<head>
+    <title>TaroFillingAStringDiv1</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16314&amp;pm=13669">TaroFillingAStringDiv1</a></h1>
+
+<p><em>Single Round Match 650 Round 1 - Division I, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>Cat Taro likes strings.
+He is currently constructing a string S of length <em>N</em>.
+Each character of S will be either 'A' or 'B'.
+Taro has already chosen some of the characters.
+You are given these choices as a int[] <em>position</em> and a String <em>value</em>.
+For each valid i, the character at the 1-based index <em>position</em>[i] in S is the character <em>value</em>[i].</p>
+
+<p>To Taro, the ugliness of a string is the number of pairs of equal consecutive characters.
+For example, the ugliness of "ABABAABBB" is 3: there is one pair "AA" and two (overlapping) pairs "BB".</p>
+
+<p>Taro now wants to finish S by filling in the remaining characters.
+His goal is to create a string with the smallest possible ugliness.
+Let X be the number of possible strings Taro may produce.
+Return the value (X modulo 1,000,000,007).</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>TaroFillingAStringDiv1</code></li>
+<li><em>Method</em>: <code>getNumber</code></li>
+<li><em>Parameters</em>: <code>int, int[], String</code></li>
+<li><em>Returns</em>: <code>int</code></li>
+<li><em>Method signature</em>: <code>int getNumber(int N, int[] position, String value)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>N</em> will be between 1 and 1,000,000,000, inclusive.</li>
+<li><em>position</em> will contian between 1 and 50 elements, inclusive.</li>
+<li><em>value</em> and <em>position</em> will contain the same number of elements.</li>
+<li>Each element of <em>position</em> will be between 1 and <em>N</em>, inclusive.</li>
+<li>All elements of <em>position</em> will be distinct.</li>
+<li><em>value</em> will consist only of characters 'A' and 'B'.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>3,<br />[1, 3],<br />"AB"</c></p>
+
+<h4>Output</h4>
+
+<p><c>2</c></p>
+
+<h4>Reason</h4>
+
+<p>Currently, Taro's string looks as follows: A_B.
+He can either produce the string AAB or the string ABB.
+Both have the same ugliness.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>4,<br />[2, 1, 3, 4],<br />"ABBA"</c></p>
+
+<h4>Output</h4>
+
+<p><c>1</c></p>
+
+<h4>Reason</h4>
+
+<p>All characters of S have already been chosen.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>25,<br />[23, 4, 8, 1, 24, 9, 16, 17, 6, 2, 25, 15, 14, 7, 13],<br />"ABBBBABABBAAABA"</c></p>
+
+<h4>Output</h4>
+
+<p><c>1</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>305,<br />[183, 115, 250, 1, 188, 193, 163, 221, 144, 191, 92, 192, 58, 215, 157, 187, 227, 177, 206, 15, 272, 232, 49, 11, 178, 59, 189, 246],<br />"ABAABBABBAABABBBBAAAABBABBBA"</c></p>
+
+<h4>Output</h4>
+
+<p><c>43068480</c></p>
+
+</body>
+</html>
