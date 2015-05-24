@@ -1,0 +1,118 @@
+<html>
+<head>
+    <title>InfiniteString</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16461&amp;pm=13783">InfiniteString</a></h1>
+
+<p><em>Single Round Match 658 Round 1 - Division II, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>Given a string s, let f(s) denote the infinite string obtained by concatenating infinitely many copies of s.
+For example, if s = "abc" then f(s) = "abcabcabcabc...".</p>
+
+<p>Note that the string f(s) still has a beginning.
+Hence, f("abc") and f("bca") are two different infinite strings: the first one starts with an 'a' while the other starts with a 'b'.</p>
+
+<p>Sometimes, two different finite strings can produce the same infinite string.
+For example, f("abc") is the same as f("abcabc").</p>
+
+<p>You are given Strings <em>s</em> and <em>t</em>.
+Check whether f(<em>s</em>) equals f(<em>t</em>).
+If the two infinite strings are equal, return "Equal".
+Otherwise, return "Not equal".</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>InfiniteString</code></li>
+<li><em>Method</em>: <code>equal</code></li>
+<li><em>Parameters</em>: <code>String, String</code></li>
+<li><em>Returns</em>: <code>String</code></li>
+<li><em>Method signature</em>: <code>String equal(String s, String t)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>s</em> will contain between 1 and 50 elements, inclusive.</li>
+<li><em>t</em> will contain between 1 and 50 elements, inclusive.</li>
+<li>Each character in <em>s</em> will be a lowercase English letter ('a'-'z').</li>
+<li>Each character in <em>t</em> will be a lowercase English letter ('a'-'z').</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>"ab",<br />"abab"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Equal"</c></p>
+
+<h4>Reason</h4>
+
+<p>Both string will generate "ababababab...".</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>"abc",<br />"bca"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Not equal"</c></p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>"abab",<br />"aba"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Not equal"</c></p>
+
+<h4>Reason</h4>
+
+<p>The first one will generate "abababab...", but the second one will generate "abaaba...".</p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>"aaaaa",<br />"aaaaaa"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Equal"</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>"ababab",<br />"abab"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Equal"</c></p>
+
+<h3>Example 6</h3>
+
+<h4>Input</h4>
+
+<p><c>"a",<br />"z"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Not equal"</c></p>
+
+</body>
+</html>
