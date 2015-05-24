@@ -1,0 +1,2 @@
+def isCorrect(board):
+    return "$"

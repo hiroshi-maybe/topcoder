@@ -1,0 +1,101 @@
+<html>
+<head>
+    <title>EightRooks</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16417&amp;pm=13773">EightRooks</a></h1>
+
+<p><em>Single Round Match 657 Round 1 - Division II, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>Cat Snuke is playing a puzzle called Eight Rooks Puzzle.</p>
+
+<p>In this puzzle, he must put exactly eight rooks onto an 8x8 chessboard. No two rooks must be in the same row, and no two rooks must be in the same column.</p>
+
+<p>You are given a String[] <em>board</em>. The j-th character of the i-th element of <em>board</em> is either 'R' or '.'. If this is 'R', the cell in row i, column j contains a rook. Otherwise the cell doesn't contain a rook.</p>
+
+<p>Determine whether Snuke solved the puzzle correctly. If he solved the puzzle correctly, return "Correct". Otherwise return "Incorrect".</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>EightRooks</code></li>
+<li><em>Method</em>: <code>isCorrect</code></li>
+<li><em>Parameters</em>: <code>String[]</code></li>
+<li><em>Returns</em>: <code>String</code></li>
+<li><em>Method signature</em>: <code>String isCorrect(String[] board)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>board</em> will contain exactly 8 elements.</li>
+<li>Each element of <em>board</em> will contain exactly 8 characters.</li>
+<li>Each character in <em>board</em> will be either 'R' or '.'.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>["R.......",<br /> ".R......",<br /> "..R.....",<br /> "...R....",<br /> "....R...",<br /> ".....R..",<br /> "......R.",<br /> ".......R"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Correct"</c></p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>["........",<br /> "....R...",<br /> "........",<br /> ".R......",<br /> "........",<br /> "........",<br /> "..R.....",<br /> "........"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Incorrect"</c></p>
+
+<h4>Reason</h4>
+
+<p>The number of rooks is not eight.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>["......R.",<br /> "....R...",<br /> "...R....",<br /> ".R......",<br /> "R.......",<br /> ".....R..",<br /> "..R.....",<br /> ".......R"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Correct"</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>["......R.",<br /> "....R...",<br /> "...R....",<br /> ".R......",<br /> "R.......",<br /> ".......R",<br /> "..R.....",<br /> ".......R"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Incorrect"</c></p>
+
+<h4>Reason</h4>
+
+<p>The rightmost column contains two rooks.</p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>["........",<br /> "........",<br /> "........",<br /> "........",<br /> "........",<br /> "........",<br /> "........",<br /> "........"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Incorrect"</c></p>
+
+</body>
+</html>
