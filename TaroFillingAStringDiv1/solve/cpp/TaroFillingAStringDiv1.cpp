@@ -12,6 +12,10 @@
 //------------------------------------------
 typedef long long LL;
 
+//debug
+#define dump(x)  cerr << #x << " = " << (x) << endl;
+#define debug(x) cerr << #x << " = " << (x) << " (L" << __LINE__ << ")" << " " << __FILE__ << endl;
+
 using namespace std;
 
 class TaroFillingAStringDiv1 {
