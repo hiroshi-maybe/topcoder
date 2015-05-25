@@ -1,0 +1,104 @@
+<html>
+<head>
+    <title>ProblemSetsEasy</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16417&amp;pm=13772">ProblemSetsEasy</a></h1>
+
+<p><em>Single Round Match 657 Round 1 - Division II, Level Two</em></p>
+
+<h2>Statement</h2>
+
+<p>Cat Snuke came up with some problems. He wants to construct as many problem sets as possible using those problems.</p>
+
+<p>Each problem set must contain exactly three problems: one for the Easy slot, one for the Medium slot, and one for the Hard slot. Each problem can only be assigned to a single slot in a single problem set. He came up with <em>E</em> + <em>EM</em> + <em>M</em> + <em>MH</em> + <em>H</em> problems in total. The distribution of the problems is as follows:</p>
+
+<p><em>E</em> problems can only be used in the Easy slot.
+<em>EM</em> problems can be used either in the Easy slot or the Medium slot.
+<em>M</em> problems can only be used in the Medium slot.
+<em>MH</em> problems can be used either in the Medium slot or the Hard slot.
+<em>H</em> problems can only be used in the Hard slot.</p>
+
+<p>Return the maximal number of problem sets he can construct.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>ProblemSetsEasy</code></li>
+<li><em>Method</em>: <code>maxSets</code></li>
+<li><em>Parameters</em>: <code>int, int, int, int, int</code></li>
+<li><em>Returns</em>: <code>int</code></li>
+<li><em>Method signature</em>: <code>int maxSets(int E, int EM, int M, int MH, int H)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li>E, EM, M, MH, H must be between 0 and 100000, inclusive.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>2,<br />2,<br />1,<br />2,<br />2</c></p>
+
+<h4>Output</h4>
+
+<p><c>3</c></p>
+
+<h4>Reason</h4>
+
+<p>One of <em>EM</em> problems should be used for the Easy slot, and the other should be used for the Medium slot.
+One of <em>MH</em> problems should be used for the Medium slot, and the other should be used for the Hard slot.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>100,<br />100,<br />100,<br />0,<br />0</c></p>
+
+<h4>Output</h4>
+
+<p><c>0</c></p>
+
+<h4>Reason</h4>
+
+<p>Unfortunately, no problem can be used for the Hard slot.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>657,<br />657,<br />657,<br />657,<br />657</c></p>
+
+<h4>Output</h4>
+
+<p><c>1095</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>1,<br />2,<br />3,<br />4,<br />5</c></p>
+
+<h4>Output</h4>
+
+<p><c>3</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>100000,<br />100000,<br />100000,<br />100000,<br />100000</c></p>
+
+<h4>Output</h4>
+
+<p><c>166666</c></p>
+
+</body>
+</html>
