@@ -1,0 +1,86 @@
+<html>
+<head>
+    <title>PublicTransit</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16462&amp;pm=13793">PublicTransit</a></h1>
+
+<p><em>Single Round Match 659 Round 1 - Division II, Level Two</em></p>
+
+<h2>Statement</h2>
+
+<p>Note that this problem has a time limit of 5 seconds.</p>
+
+<p>The city of Gridlock is a grid of cells with <em>R</em> rows and <em>C</em> columns. Each cell has up to four neighbours: the cells directly above, below, to the left, and to the right. A citizen of Gridlock can travel from a cell to any of its neighbours in one minute.</p>
+
+<p>The citizens of Gridlock are upset that it takes too long to get around, so they have decided to build a teleporter. The teleporter will consist of two identical booths, each located in some cell. If a citizen enters either booth, he or she may choose to teleport to the other booth instantly. It is allowed to build both booths in the same cell.</p>
+
+<p>We define the distance between two cells as the minimum number of minutes needed to get from one cell to another. Let D be the maximum distance between any two cells. Place the teleporter in such a way that D is minimized, and return this minimum value.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>PublicTransit</code></li>
+<li><em>Method</em>: <code>minimumLongestDistance</code></li>
+<li><em>Parameters</em>: <code>int, int</code></li>
+<li><em>Returns</em>: <code>int</code></li>
+<li><em>Method signature</em>: <code>int minimumLongestDistance(int R, int C)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>R</em> is between 1 and 10, inclusive.</li>
+<li><em>C</em> is between 1 and 10, inclusive.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>4,<br />1</c></p>
+
+<h4>Output</h4>
+
+<p><c>1</c></p>
+
+<h4>Reason</h4>
+
+<p>The optimal solution is to connect cell (1, 1) to cell (4, 1). (All cell coordinates are 1-based.)</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>2,<br />2</c></p>
+
+<h4>Output</h4>
+
+<p><c>1</c></p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>5,<br />3</c></p>
+
+<h4>Output</h4>
+
+<p><c>4</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>8,<br />2</c></p>
+
+<h4>Output</h4>
+
+<p><c>4</c></p>
+
+</body>
+</html>
