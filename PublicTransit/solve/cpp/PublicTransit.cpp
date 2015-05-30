@@ -21,6 +21,13 @@ public:
       int t2[2] = {C/2, R-1};
 
       int s[2] = {0, 0};
+      /* 
+	first answer was below:
+	int e1[2] = {C-1, (R+1)/2};
+	int e2[2] = {C-1, (R+1)/2-1};
+	did not pass problem R=1, C=1.
+	should have checked corner case!!
+      */
       int e1[2] = {C-1, max(min((R+1)/2, R-1), 0)};
       int e2[2] = {C-1, max(min((R+1)/2-1, R-1), 0)};
 
