@@ -1,0 +1,2 @@
+def ableToDraw(board):
+    return "$"

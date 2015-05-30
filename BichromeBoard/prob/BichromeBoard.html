@@ -1,0 +1,129 @@
+<html>
+<head>
+    <title>BichromeBoard</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16415&amp;pm=13719">BichromeBoard</a></h1>
+
+<p><em>Single Round Match 655 Round 1 - Division II, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>We have a rectangular board divided into a grid of unit squares.
+We are going to color each square either white or black.</p>
+
+<p>You are given the String[] <em>board</em>.
+Each character in <em>board</em> represents one unit square.
+If <em>board</em>[i][j] is 'B', the corresponding square must be black.
+If <em>board</em>[i][j] is 'W', the corresponding square must be white.
+Finally, if <em>board</em>[i][j] is '?', you get to choose the color for this square: either white or black.</p>
+
+<p>Two squares are adjacent if they share a common side.
+We want to color the board in such a way that no two adjacent squares share the same color.
+Return "Possible" (quotes for clarity) if it can be done, or "Impossible" otherwise.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>BichromeBoard</code></li>
+<li><em>Method</em>: <code>ableToDraw</code></li>
+<li><em>Parameters</em>: <code>String[]</code></li>
+<li><em>Returns</em>: <code>String</code></li>
+<li><em>Method signature</em>: <code>String ableToDraw(String[] board)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>board</em> will contain between 1 and 50 elements, inclusive.</li>
+<li>Each element in <em>board</em> will contain between 1 and 50 characters, inclusive.</li>
+<li>Each element in <em>board</em> will contain the same number of characters.</li>
+<li>Each character in <em>board</em> will be one of 'W', 'B', '?'.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>["W?W",<br /> "??B",<br /> "???"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Possible"</c></p>
+
+<h4>Reason</h4>
+
+<p>The solution is:
+WBW
+BWB
+WBW</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>["W??W"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Impossible"</c></p>
+
+<h4>Reason</h4>
+
+<p>The four possible colorings of this board are WWWW, WWBW, WBWW, and WBBW.</p>
+
+<p>In each of them there is at least one pair of adjacent squares that share the same color.</p>
+
+<p>Thus, there is no way to get a pattern with the desired property.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>["??"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Possible"</c></p>
+
+<h4>Reason</h4>
+
+<p>There are 2 ways:
+WB and BW</p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>["W???",<br /> "??B?",<br /> "W???",<br /> "???W"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Possible"</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>["W???",<br /> "??B?",<br /> "W???",<br /> "?B?W"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Impossible"</c></p>
+
+<h3>Example 6</h3>
+
+<h4>Input</h4>
+
+<p><c>["B"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Possible"</c></p>
+
+</body>
+</html>
