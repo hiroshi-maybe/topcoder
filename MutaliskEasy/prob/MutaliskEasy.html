@@ -1,0 +1,122 @@
+<html>
+<head>
+    <title>MutaliskEasy</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16461&amp;pm=13782">MutaliskEasy</a></h1>
+
+<p><em>Single Round Match 658 Round 1 - Division II, Level Two</em></p>
+
+<h2>Statement</h2>
+
+<p>Fox Ciel is writing an AI for the game Starcraft and she needs your help.</p>
+
+<p>In Starcraft, one of the available units is a mutalisk.
+Mutalisks are very useful for harassing Terran bases.
+Fox Ciel has one mutalisk.
+The enemy base contains one or more Space Construction Vehicles (SCVs).
+Each SCV has some amount of hit points.</p>
+
+<p>When the mutalisk attacks, it can target up to three different SCVs.
+The first targeted SCV will lose 9 hit points.
+The second targeted SCV (if any) will lose 3 hit points.
+The third targeted SCV (if any) will lose 1 hit point.
+If the hit points of a SCV drop to 0 or lower, the SCV is destroyed.
+Note that you may not target the same SCV twice in the same attack.</p>
+
+<p>You are given a int[] <em>HP</em> containing the current hit points of your enemy's SCVs.
+Return the smallest number of attacks in which you can destroy all these SCVs.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>MutaliskEasy</code></li>
+<li><em>Method</em>: <code>minimalAttacks</code></li>
+<li><em>Parameters</em>: <code>int[]</code></li>
+<li><em>Returns</em>: <code>int</code></li>
+<li><em>Method signature</em>: <code>int minimalAttacks(int[] x)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>x</em> will contain between 1 and 3 elements, inclusive.</li>
+<li>Each element in <em>x</em> will be between 1 and 60, inclusive.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>[12,10,4]</c></p>
+
+<h4>Output</h4>
+
+<p><c>2</c></p>
+
+<h4>Reason</h4>
+
+<p>You can destroy all SCVs in two attacks as follows:
+Target the SCVs in the order 0, 2, 1. Their hit points after the attack will be {12-9, 10-1, 4-3} = {3, 9, 1}.
+Target the SCVs in the order 1, 0, 2. Their hit points will drop exactly to {0, 0, 0}.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>[54,18,6]</c></p>
+
+<h4>Output</h4>
+
+<p><c>6</c></p>
+
+<h4>Reason</h4>
+
+<p>You should attack 6 times, always in the order 0, 1, 2.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>[55,60,53]</c></p>
+
+<h4>Output</h4>
+
+<p><c>13</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>[1,1,1]</c></p>
+
+<h4>Output</h4>
+
+<p><c>1</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>[60, 40]</c></p>
+
+<h4>Output</h4>
+
+<p><c>9</c></p>
+
+<h3>Example 6</h3>
+
+<h4>Input</h4>
+
+<p><c>[60]</c></p>
+
+<h4>Output</h4>
+
+<p><c>7</c></p>
+
+</body>
+</html>
