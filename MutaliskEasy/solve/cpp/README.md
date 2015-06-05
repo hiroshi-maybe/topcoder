@@ -1,8 +1,15 @@
+## Solutions
 
-# Solutions
-- memoized recursion (sort): MutaliskEasy.cpp
+Loop count or count of recursive call for demo case 2
 
-Time
+Memoized recursion (sort) | Memoized recursion | Brute force
+--------------------------|--------------------|----------------
+19503 (36 ms)             | 41847 (53 ms)      | 1048576 (429 ms)
+
+## Memoized recursion (sort)
+
+MutaliskEasy.cpp
+
 ```bash
 $ make sys 
 88 cases checked, 0 failures, 0 errors
@@ -28,9 +35,7 @@ Case 5 ... lc = 763
 7ms Passed
 ```	    
 
-19503 recursion for case 2 in demo
-
-# Memoized recursion
+## Memoized recursion
 
 MutaliskEasy-nosort.cpp
 
@@ -59,9 +64,7 @@ Case 5 ... lc = 307
 7ms Passed
 ```
 
-19503 recursion for case 2 in demo
-
-# Brute force
+## Brute force
 
 MutaliskEasy-bruteforce.cpp
 
