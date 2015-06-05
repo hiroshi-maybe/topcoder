@@ -1,10 +1,10 @@
 ## Solutions
 
-Loop count or count of recursive call for demo case 2
+Complexity (Loop count or count of recursive calls) for demo case 2
 
-Memoized recursion (sort) | Memoized recursion | Brute force
---------------------------|--------------------|----------------
-19503 (36 ms)             | 41847 (53 ms)      | 1048576 (429 ms)
+Memoized recursion (sort) | Memoized recursion | Brute force      | Recursion (no memoization)
+--------------------------|--------------------|------------------|---------------------
+19503 (36 ms)             | 41847 (53 ms)      | 1048576 (429 ms) | More than 10^8 (N/A)
 
 ## Memoized recursion (sort)
 
