@@ -5,7 +5,7 @@ using namespace std;
 
 #define FOR(i,a,b) for(int i=(a);i<(b);++i)
 #define REP(i,n)  FOR(i,0,n)
-#define SORT(a) a.sort(a.begin(), a.end());
+#define SORT(a) sort((a).begin(), (a).end());
 
 bool defeated(vector<int> const &x) {
   REP(i, x.size()) {
@@ -28,7 +28,7 @@ vector<int> attack(vector<int> &current, vector<int> const &atk) {
 int min_dp(vector<int> const &_current, vector<vector<int>> const &pat) {
   int res = 60;
   vector<int> current = _current;
-  sort(current.begin(), current.end());
+  SORT(current);
   int dp_v = dp[current[0]][current[1]][current[2]];
   if (dp_v != 60) return dp_v;
 
