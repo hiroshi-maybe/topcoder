@@ -1,0 +1,99 @@
+<html>
+<head>
+    <title>BridgeBuildingDiv2</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16464&amp;pm=13546">BridgeBuildingDiv2</a></h1>
+
+<p><em>Single Round Match 661 Round 1 - Division II, Level Two</em></p>
+
+<h2>Statement</h2>
+
+<p>You have two rows of nodes.
+Each row contains N nodes, numbered 0 through N-1 from the left to the right.</p>
+
+<p>Within each row, adjacent nodes are already connected by edges.
+You are given the lengths of these edges as int[]s <em>a</em> and <em>b</em>, each containing N-1 elements.
+For each valid i, <em>a</em>[i] is the length of the edge between nodes i and (i+1) in the top row, and <em>b</em>[i] is the length of the edge between nodes i and (i+1) in the bottom row.</p>
+
+<p>You want to add exactly <em>K</em> new edges to this graph.
+Each of the new edges must be vertical -- i.e., it must connect some vertex i in the top row to the vertex i in the bottom row.
+All new edges will have length 0.</p>
+
+<p>By adding the <em>K</em> new edges we will produce a connected graph.
+The diameter of this graph is the maximum of all shortest distances among pairs of its nodes.
+In other words, the diameter is the smallest number D such that it is possible to travel from any node to any other node using a path of length D or less.</p>
+
+<p>Given <em>a</em>, <em>b</em>, and the int <em>K</em>, compute and return the smallest possible diameter of the resulting graph.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>BridgeBuildingDiv2</code></li>
+<li><em>Method</em>: <code>minDiameter</code></li>
+<li><em>Parameters</em>: <code>int[], int[], int</code></li>
+<li><em>Returns</em>: <code>int</code></li>
+<li><em>Method signature</em>: <code>int minDiameter(int[] a, int[] b, int K)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li>N will be between 2 and 11, inclusive.</li>
+<li>a,b will contain exactly N-1 elements each.</li>
+<li><em>K</em> will be between 1 and N, inclusive.</li>
+<li>Each element of a,b will be between 1 and 50, inclusive.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>[2,1,1,1,2],<br />[1,9,1,9,1],<br />4</c></p>
+
+<h4>Output</h4>
+
+<p><c>6</c></p>
+
+<h4>Reason</h4>
+
+<p>One example of an optimal solution is to draw the bridges as follows:</p>
+
+<p><img src="images/Pic.png" alt="image" /></p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>[1,50,1,50,1,50,1,50],<br />[50,1,50,1,50,1,50,1],<br />9</c></p>
+
+<h4>Output</h4>
+
+<p><c>8</c></p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>[50,10,15,31,20,23,7,48,5,50],<br />[2,5,1,8,3,2,16,11,9,1],<br />3</c></p>
+
+<h4>Output</h4>
+
+<p><c>124</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>[2,4,10,2,2,22,30,7,28],<br />[5,26,1,2,6,2,16,3,15],<br />5</c></p>
+
+<h4>Output</h4>
+
+<p><c>54</c></p>
+
+</body>
+</html>
