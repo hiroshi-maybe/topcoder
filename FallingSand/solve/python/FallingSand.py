@@ -1,0 +1,2 @@
+def simulate(board):
+    return []
