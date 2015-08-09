@@ -1,0 +1,129 @@
+<html>
+<head>
+    <title>RandomPancakeStackDiv2</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16416&amp;pm=13749">RandomPancakeStackDiv2</a></h1>
+
+<p><em>Single Round Match 656 Round 1 - Division II, Level Two</em></p>
+
+<h2>Statement</h2>
+
+<p>Charlie has N pancakes.
+He wants to serve some of them for breakfast.
+We will number the pancakes 0 through N-1.
+For each i, pancake i has width i+1 and deliciousness <em>d</em>[i].</p>
+
+<p>Charlie chooses the pancakes he is going to serve using the following randomized process:
+He starts by choosing the first pancake uniformly at random from all the pancakes he has.
+He places the chosen pancake onto a plate.
+This pancake now forms the bottom of a future stack of pancakes.
+Then, Charlie repeats the following procedure:</p>
+
+<p>If there are no more pancakes remaining, terminate.
+Choose a pancake uniformly at random from the pancakes that have not been chosen yet.
+If the width of this pancake is greater than the width of the pancake on top of the stack, terminate without taking it.
+Place the chosen pancake on top of the stack and go back to step 1.</p>
+
+<p>You are given the int[] <em>d</em> with N elements.
+The total deliciousness of a serving of pancakes is the sum of the deliciousness of all pancakes used in the serving.
+Compute and return the expected value of the total deliciousness of the pancakes chosen by Charlie.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>RandomPancakeStackDiv2</code></li>
+<li><em>Method</em>: <code>expectedDeliciousness</code></li>
+<li><em>Parameters</em>: <code>int[]</code></li>
+<li><em>Returns</em>: <code>double</code></li>
+<li><em>Method signature</em>: <code>double expectedDeliciousness(int[] d)</code></li>
+</ul>
+
+
+<h2>Notes</h2>
+
+<ul>
+<li>Your return value must have an absolute or relative error smaller than or equal to 1e-6</li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li>The number of elements in <em>d</em> will be between 1 and 10, inclusive.</li>
+<li>Each element of <em>d</em> will be between 1 and 100, inclusive.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>[1,1,1]</c></p>
+
+<h4>Output</h4>
+
+<p><c>1.6666666666666667</c></p>
+
+<h4>Reason</h4>
+
+<p>The following scenarios may occur:
+With probability 1/3, Charlie chooses pancake 0 first. In this case he won't be able to add any more pancakes and the total deliciousness of his serving of pancakes will be 1.
+With probability 1/3, Charlie chooses pancake 1 first. What happens in the second round? With probability 1/2 he will choose pancake 0 and with probability 1/2 it will be pancake 2. In the first case the total deliciousness of Charlie's pancakes will be 2, in the second case it will be 1.
+With probability 1/3, Charlie chooses pancake 2 first. If he chooses pancake 0 next, the total deliciousness of his pancakes will be 2. If he happens to choose pancake 1 next (followed by pancake 0 in the third round), the total deliciousness will be 3.
+Summing this up, we get the expected deliciousness to be 1/3 * (1) + 1/3 * (1/2 * 1 + 1/2 * 2) + 1/3 * (1/2 * 2 + 1/2 * 3) = 5/3 = 1.666...</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>[10,20]</c></p>
+
+<h4>Output</h4>
+
+<p><c>20.0</c></p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>[3,6,10,9,2]</c></p>
+
+<h4>Output</h4>
+
+<p><c>9.891666666666667</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>[10,9,8,7,6,5,4,3,2,1]</c></p>
+
+<h4>Output</h4>
+
+<p><c>10.999999724426809</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>[1,2,3,4,5,6,7,8,9,10]</c></p>
+
+<h4>Output</h4>
+
+<p><c>7.901100088183421</c></p>
+
+<h3>Example 6</h3>
+
+<h4>Input</h4>
+
+<p><c>[1,1,1,1,1,1,1,1,1,1]</c></p>
+
+<h4>Output</h4>
+
+<p><c>1.7182818011463845</c></p>
+
+</body>
+</html>
