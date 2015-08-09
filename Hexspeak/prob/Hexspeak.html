@@ -1,0 +1,129 @@
+<html>
+<head>
+    <title>Hexspeak</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16511&amp;pm=13880">Hexspeak</a></h1>
+
+<p><em>Single Round Match 662 Round 1 - Division II, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>If you compile a Java program and open the .class file in a text editor, you will find that the first four bytes spell "CAFEBABE" in hexadecimal.
+Using hexadecimal numbers to spell words is called Hexspeak.</p>
+
+<p>Hexadecimal numbers are integers written in base 16.
+The letters 'A' through 'F' represent the digits with values 10 through 15.
+For example, the integer 202 written in hexadecimal is "CA".
+This is because 202 = 12*16 + 10, and the digits 12 and 10 are written as 'C' and 'A', respectively.</p>
+
+<p>In this problem we will use eight different letters: in addition to the letters 'A' through 'F' we will also interpret the digit 0 as the letter 'O' and the digit 1 as the letter 'I'.
+Hence, any word that only consists of the letters ABCDEFIO can be interpreted as a hexadecimal number.
+Such words are called valid hexspeak words.</p>
+
+<p>Fox Ciel has a long <em>ciphertext</em> containing a positive integer.
+Convert this number to hexadecimal.
+If you get the representation of a valid hexspeak word, return that word.
+Otherwise, return the string "Error!" (quotes for clarity).
+In other words, you should return "Error!" if the hexadecimal representation of <em>ciphertext</em> contains some occurrence of a digit between 2 and 9, inclusive.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>Hexspeak</code></li>
+<li><em>Method</em>: <code>decode</code></li>
+<li><em>Parameters</em>: <code>long</code></li>
+<li><em>Returns</em>: <code>String</code></li>
+<li><em>Method signature</em>: <code>String decode(long ciphertext)</code></li>
+</ul>
+
+
+<h2>Notes</h2>
+
+<ul>
+<li>The correct hexadecimal representation of <em>ciphertext</em> does not contain any leading zeros.</li>
+<li>The return value is case-sensitive.</li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>ciphertext</em> will be between 1 and 1,000,000,000,000,000,000, inclusive.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>257</c></p>
+
+<h4>Output</h4>
+
+<p><c>"IOI"</c></p>
+
+<h4>Reason</h4>
+
+<p>The number 257 in decimal is written as 101 in hexadecimal.
+The digits 1 and 0 represent the characters 'I' and 'O', thus we should return "IOI".</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>258</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Error!"</c></p>
+
+<h4>Reason</h4>
+
+<p>The number 258 in decimal is written as 102 in hexadecimal.
+The digit 2 does not represent a letter, so we return "Error!".</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>3405691582</c></p>
+
+<h4>Output</h4>
+
+<p><c>"CAFEBABE"</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>2882400001</c></p>
+
+<h4>Output</h4>
+
+<p><c>"ABCDEFOI"</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>999994830345994239</c></p>
+
+<h4>Output</h4>
+
+<p><c>"DEOBIFFFFFFFFFF"</c></p>
+
+<h3>Example 6</h3>
+
+<h4>Input</h4>
+
+<p><c>1000000000000000000</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Error!"</c></p>
+
+</body>
+</html>
