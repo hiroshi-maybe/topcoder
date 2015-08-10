@@ -1,0 +1,113 @@
+<html>
+<head>
+    <title>ABBA</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16512&amp;pm=13918">ABBA</a></h1>
+
+<p><em>Single Round Match 663 Round 1 - Division II, Level Two</em></p>
+
+<h2>Statement</h2>
+
+<p>One day, Jamie noticed that many English words only use the letters A and B.
+Examples of such words include "AB" (short for abdominal), "BAA" (the noise a sheep makes), "AA" (a type of lava), and "ABBA" (a Swedish pop sensation).</p>
+
+<p>Inspired by this observation, Jamie created a simple game.
+You are given two Strings: <em>initial</em> and <em>target</em>.
+The goal of the game is to find a sequence of valid moves that will change <em>initial</em> into <em>target</em>.
+There are two types of valid moves:</p>
+
+<p>Add the letter A to the end of the string.
+Reverse the string and then add the letter B to the end of the string.</p>
+
+<p>Return "Possible" (quotes for clarity) if there is a sequence of valid moves that will change <em>initial</em> into <em>target</em>.
+Otherwise, return "Impossible".</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>ABBA</code></li>
+<li><em>Method</em>: <code>canObtain</code></li>
+<li><em>Parameters</em>: <code>String, String</code></li>
+<li><em>Returns</em>: <code>String</code></li>
+<li><em>Method signature</em>: <code>String canObtain(String initial, String target)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li>The length of <em>initial</em> will be between 1 and 999, inclusive.</li>
+<li>The length of <em>target</em> will be between 2 and 1000, inclusive.</li>
+<li><em>target</em> will be longer than <em>initial</em>.</li>
+<li>Each character in <em>initial</em> and each character in <em>target</em> will be either 'A' or 'B'.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>"B",<br />"ABBA"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Possible"</c></p>
+
+<h4>Reason</h4>
+
+<p>Jamie can perform the following moves:
+Initially, the string is "B".
+Jamie adds an 'A' to the end of the string. Now the string is "BA".
+Jamie reverses the string and then adds a 'B' to the end of the string. Now the string is "ABB".
+Jamie adds an 'A' to the end of the string. Now the string is "ABBA".
+Since there is a sequence of moves which starts with "B" and creates the string "ABBA", the answer is "Possible".</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>"AB",<br />"ABB"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Impossible"</c></p>
+
+<h4>Reason</h4>
+
+<p>The only strings of length 3 Jamie can create are "ABA" and "BAB".</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>"BBAB",<br />"ABABABABB"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Impossible"</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>"BBBBABABBBBBBA",<br />"BBBBABABBABBBBBBABABBBBBBBBABAABBBAA"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Possible"</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>"A",<br />"BB"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Impossible"</c></p>
+
+</body>
+</html>
