@@ -1,0 +1,135 @@
+<html>
+<head>
+    <title>ChessFloor</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16512&amp;pm=13917">ChessFloor</a></h1>
+
+<p><em>Single Round Match 663 Round 1 - Division II, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>Samantha is renovating a square room.
+The floor of the room is an N times N grid of unit square tiles.
+Each tile has some color.
+You are given the current colors of all tiles in a String[] <em>floor</em> with N elements, each containing N characters.
+Each character represents one tile.
+Identical characters represent tiles of the same color.</p>
+
+<p>Samantha wants to be able to play chess or checkers on the floor.
+Hence, she wants to change the entire floor into a checkerboard pattern.
+A checkerboard pattern has two properties:</p>
+
+<p>there are exactly two distinct colors of tiles
+no two tiles of the same color share a common side</p>
+
+<p>For example, this is a checkerboard pattern:</p>
+
+<p>afa
+faf
+afa</p>
+
+<p>This is not a checkerboard pattern because there are more than two distinct colors:</p>
+
+<p>aba
+bcb
+aba</p>
+
+<p>This is not a checkerboard pattern because there are two tiles that share a side and have the same color:</p>
+
+<p>aaa
+bab
+aba</p>
+
+<p>Samantha wants to change her floor into a checkerboard pattern by changing the colors of as few tiles as possible.
+Compute and return the number of tiles she needs to change.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>ChessFloor</code></li>
+<li><em>Method</em>: <code>minimumChanges</code></li>
+<li><em>Parameters</em>: <code>String[]</code></li>
+<li><em>Returns</em>: <code>int</code></li>
+<li><em>Method signature</em>: <code>int minimumChanges(String[] floor)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li>N will be between 2 and 20, inclusive.</li>
+<li><em>floor</em> will contain exactly N elements.</li>
+<li>Each element of <em>floor</em> will consist of exactly N characters.</li>
+<li>Each character in <em>floor</em> will be a lowercase English letter ('a'-'z').</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>["aba",<br /> "bbb",<br /> "aba"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>1</c></p>
+
+<h4>Reason</h4>
+
+<p>This is not a checkerboard pattern, but Samantha can change it into a checkerboard pattern easily.
+All she needs to do is to change the color of the middle tile from 'b' to 'a'.
+The smallest possible number of changes is therefore 1.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>["wbwbwbwb",<br /> "bwbwbwbw",<br /> "wbwbwbwb",<br /> "bwbwbwbw",<br /> "wbwbwbwb",<br /> "bwbwbwbw",<br /> "wbwbwbwb",<br /> "bwbwbwbw"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>0</c></p>
+
+<h4>Reason</h4>
+
+<p>This floor already has a checkerboard pattern, so no changes are necessary.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>["zz",<br /> "zz"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>2</c></p>
+
+<h4>Reason</h4>
+
+<p>A checkerboard pattern must contain tiles of two distinct colors.</p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>["helloand",<br /> "welcomet",<br /> "osingler",<br /> "oundmatc",<br /> "hsixhund",<br /> "redandsi",<br /> "xtythree",<br /> "goodluck"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>56</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>["jecjxsengslsmeijrmcx",<br /> "tcfyhumjcvgkafhhffed",<br /> "icmgxrlalmhnwwdhqerc",<br /> "xzrhzbgjgabanfxgabed",<br /> "fpcooilmwqixfagfojjq",<br /> "xzrzztidmchxrvrsszii",<br /> "swnwnrchxujxsknuqdkg",<br /> "rnvzvcxrukeidojlakcy",<br /> "kbagitjdrxawtnykrivw",<br /> "towgkjctgelhpomvywyb",<br /> "ucgqrhqntqvncargnhhv",<br /> "mhvwsgvfqgfxktzobetn",<br /> "fabxcmzbbyblxxmjcaib",<br /> "wpiwnrdqdixharhjeqwt",<br /> "xfgulejzvfgvkkuyngdn",<br /> "kedsalkounuaudmyqggb",<br /> "gvleogefcsxfkyiraabn",<br /> "tssjsmhzozbcsqqbebqw",<br /> "ksbfjoirwlmnoyyqpbvm",<br /> "phzsdodppzfjjmzocnge"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>376</c></p>
+
+</body>
+</html>
