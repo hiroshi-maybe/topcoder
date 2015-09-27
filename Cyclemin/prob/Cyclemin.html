@@ -1,0 +1,122 @@
+<html>
+<head>
+    <title>Cyclemin</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16463&amp;pm=13814">Cyclemin</a></h1>
+
+<p><em>Single Round Match 660 Round 1 - Division II, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>A rotation of a string S is the operation of moving its first character to the end.
+For example, if we rotate the string "abcde" we get the string "bcdea".</p>
+
+<p>A cyclic shift of a string S is any string that can be obtained from S by a sequence of zero or more rotations.
+For example, the strings "abcde", "cdeab", and "eabcd" are some of the cyclic shifts of the string "abcde".</p>
+
+<p>Given two equally long strings, the smaller one is the one with a smaller character at the first index where they differ.
+For example, "cable" &lt; "cards" because 'b' &lt; 'r'.</p>
+
+<p>You are given a String <em>s</em> of lowercase letters and an int <em>k</em>.
+You are allowed to change at most <em>k</em> letters of <em>s</em> into some other lowercase letters.</p>
+
+<p>Your goal is to create a string that will have the smallest possible cyclic shift.
+Compute and return that cyclic shift.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>Cyclemin</code></li>
+<li><em>Method</em>: <code>bestmod</code></li>
+<li><em>Parameters</em>: <code>String, int</code></li>
+<li><em>Returns</em>: <code>String</code></li>
+<li><em>Method signature</em>: <code>String bestmod(String s, int k)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>s</em> will contain between 1 and 50 characters, inclusive.</li>
+<li>Each character in <em>s</em> will be between 'a' and 'z', inclusive.</li>
+<li><em>k</em> will be between 0 and the length of <em>s</em>, inclusive.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>"aba",<br />1</c></p>
+
+<h4>Output</h4>
+
+<p><c>"aaa"</c></p>
+
+<h4>Reason</h4>
+
+<p>We are allowed to change at most 1 character. Clearly, the optimal change is to change the 'b' into an 'a'.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>"aba",<br />0</c></p>
+
+<h4>Output</h4>
+
+<p><c>"aab"</c></p>
+
+<h4>Reason</h4>
+
+<p>We are not allowed to change anything. In this case, the answer is the smallest cyclic shift of the given string <em>s</em>.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>"bbb",<br />2</c></p>
+
+<h4>Output</h4>
+
+<p><c>"aab"</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>"sgsgaw",<br />1</c></p>
+
+<h4>Output</h4>
+
+<p><c>"aasgsg"</c></p>
+
+<h4>Reason</h4>
+
+<p>The optimal solution is to change the 'w' into an 'a', and then to take the cyclic shift that starts with the last two letters of <em>s</em>.</p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>"abacaba",<br />1</c></p>
+
+<h4>Output</h4>
+
+<p><c>"aaaabac"</c></p>
+
+<h3>Example 6</h3>
+
+<h4>Input</h4>
+
+<p><c>"isgbiao",<br />2</c></p>
+
+<h4>Output</h4>
+
+<p><c>"aaaisgb"</c></p>
+
+</body>
+</html>
