@@ -1,0 +1,115 @@
+<html>
+<head>
+    <title>BearPaints</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16551&amp;pm=13488">BearPaints</a></h1>
+
+<p><em>Single Round Match 671 Round 1 - Division II, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>Limak is a little polar bear.
+Today he found two things in the snow: a bucket of blue paint and a white rectangular grid with <em>W</em> times <em>H</em> square cells.</p>
+
+<p>Limak is going to paint some (possibly even all) cells blue.
+He wants to do it in such a way that the blue cells will form a completely filled blue rectangle.
+He has enough paint for <em>M</em> cells.
+What is the largest possible area of a blue rectangle he can paint?</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>BearPaints</code></li>
+<li><em>Method</em>: <code>maxArea</code></li>
+<li><em>Parameters</em>: <code>int, int, long</code></li>
+<li><em>Returns</em>: <code>long</code></li>
+<li><em>Method signature</em>: <code>long maxArea(int W, int H, long M)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>W</em> and <em>H</em> will be between 1 and 10<sup>6</sup>, inclusive.</li>
+<li><em>M</em> will be between 1 and 10<sup>12</sup>, inclusive.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>3,<br />5,<br />14</c></p>
+
+<h4>Output</h4>
+
+<p><c>12</c></p>
+
+<h4>Reason</h4>
+
+<p>Limak has a grid that is <em>W</em> = 3 cells wide and <em>H</em> = 5 cells tall.
+He doesn't have enough paint to color all 15 cells.
+He also cannot color just 14 or 13 cells in a way that would produce a blue rectangle.
+The best he can do is to color four consecutive rows blue.
+This will produce a blue rectangle.
+Its area is 12 squares.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>4,<br />4,<br />10</c></p>
+
+<h4>Output</h4>
+
+<p><c>9</c></p>
+
+<h4>Reason</h4>
+
+<p>Here the best solution is to paint a rectangle of size 3 times 3 blue.
+(A square is a valid rectangle.)</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>1000000,<br />12345,<br />1000000000000</c></p>
+
+<h4>Output</h4>
+
+<p><c>12345000000</c></p>
+
+<h4>Reason</h4>
+
+<p>Limak has more than enough paint to make whole grid blue.</p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>1000000,<br />1000000,<br />720000000007</c></p>
+
+<h4>Output</h4>
+
+<p><c>720000000000</c></p>
+
+<h4>Reason</h4>
+
+<p>Limak's grid is a square with side 10<sup>6</sup>.
+Limak can paint a rectangle of size 800,000 times 900,000.</p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>1000000,<br />1000000,<br />999999999999</c></p>
+
+<h4>Output</h4>
+
+<p><c>999999000000</c></p>
+
+</body>
+</html>
