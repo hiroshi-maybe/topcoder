@@ -1,0 +1,134 @@
+<html>
+<head>
+    <title>Cdgame</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16550&amp;pm=14062">Cdgame</a></h1>
+
+<p><em>Single Round Match 670 Round 1 - Division II, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>Two players are playing a cooperative game.</p>
+
+<p>At the beginning of the game each player has some cards.
+There is a positive integer written on each card.</p>
+
+<p>The game is played as follows:</p>
+
+<p>Each player chooses one of their cards.
+At the same time, each player gives the chosen card to the other player.
+Each player computes the sum of the numbers on the cards they now have.
+The final outcome of the game is the product of the two sums the players computed in the previous step.</p>
+
+<p>You are given the int[]s <em>a</em> and <em>b</em>.
+The elements of <em>a</em> are the numbers on the first player's cards at the beginning of the game.
+The elements of <em>b</em> are the numbers on the second player's cards.</p>
+
+<p>Compute and return the number of different outcomes the game may have.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>Cdgame</code></li>
+<li><em>Method</em>: <code>rescount</code></li>
+<li><em>Parameters</em>: <code>int[], int[]</code></li>
+<li><em>Returns</em>: <code>int</code></li>
+<li><em>Method signature</em>: <code>int rescount(int[] a, int[] b)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>A</em> and <em>B</em> will contain between 1 and 50 elements, inclusive.</li>
+<li><em>A</em> and <em>B</em> will contain the same number of elements.</li>
+<li>Each element in <em>A</em> and <em>B</em> will be between 1 and 100, inclusive.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>[1,2],<br />[3,4]</c></p>
+
+<h4>Output</h4>
+
+<p><c>2</c></p>
+
+<h4>Reason</h4>
+
+<p>This game can be played in four possible ways.
+One of them looks as follows:
+The first player chooses the card with the number 1. At the same time, the second player chooses the card with the number 3.
+Each player gives the chosen card to the other player. After the exchange the first player has the cards with numbers 2 and 3, and the second player has the cards with numbers 1 and 4.
+The first player computes that his sum is 2+3 = 5. The second player computes that her sum is 1+4 = 5.
+The final outcome is the value 5<em>5 = 25.
+The other three ways correspond to the following outcomes: (2+4)</em>(1+3) = 6<em>4 = 24, (1+3)</em>(2+4) = 4<em>6 = 24, and (1+4)</em>(2+3) = 5*5 = 25.
+Hence, only two different outcomes are possible: 24 and 25.
+Thus, the correct return value is 2.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>[1,2,4],<br />[8,16,32]</c></p>
+
+<h4>Output</h4>
+
+<p><c>9</c></p>
+
+<h4>Reason</h4>
+
+<p>With three cards in each player's hand there are 9 ways to play the game.
+In this case each of those ways leads to a different outcome.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>[1,1,1],<br />[1,1,1]</c></p>
+
+<h4>Output</h4>
+
+<p><c>1</c></p>
+
+<h4>Reason</h4>
+
+<p>Again, there are 9 ways to play the game, but obviously in this case the outcome will always be the same.</p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>[1,2,3],<br />[5,5,5]</c></p>
+
+<h4>Output</h4>
+
+<p><c>3</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>[3,3,4,1],<br />[2,2,2,100]</c></p>
+
+<h4>Output</h4>
+
+<p><c>4</c></p>
+
+<h3>Example 6</h3>
+
+<h4>Input</h4>
+
+<p><c>[31,34,55,56,57],<br />[1,2,3,4,5]</c></p>
+
+<h4>Output</h4>
+
+<p><c>15</c></p>
+
+</body>
+</html>
