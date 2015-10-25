@@ -1,0 +1,107 @@
+<html>
+<head>
+    <title>SetPartialOrder</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16552&amp;pm=14075">SetPartialOrder</a></h1>
+
+<p><em>Single Round Match 672 Round 1 - Division II, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>In math, we sometimes define a partial order on some objects.
+In this problem we will take a look at one possible way how to define a partial order on sets of integers.</p>
+
+<p>Consider two sets of integers: X and Y.
+These two sets can be related to each other in four possible ways:</p>
+
+<p>X is equal to Y if each element of X is also an element of Y and vice versa.
+X is less than Y if X is not equal to Y (see previous item) and each element of X is also an element of Y.
+X is greater than Y if Y is less than X.
+In all other cases X and Y are incomparable.</p>
+
+<p>In other words:
+X is less than Y if and only if X is a proper subset of Y.
+Two sets are incomparable if neither is a subset of the other.</p>
+
+<p>You are given two int[]s <em>a</em> and <em>b</em>.
+The elements of <em>a</em> form the set X.
+The elements of <em>b</em> form the set Y.
+Compare X to Y and return the correct one of the following four strings: "EQUAL", "LESS", "GREATER", or "INCOMPARABLE".</p>
+
+<p>(The string "LESS" means that X is less than Y, the string "GREATER" means that X is greater than Y.
+Quotes are for clarity only.
+Note that the return value is case-sensitive.)</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>SetPartialOrder</code></li>
+<li><em>Method</em>: <code>compareSets</code></li>
+<li><em>Parameters</em>: <code>int[], int[]</code></li>
+<li><em>Returns</em>: <code>String</code></li>
+<li><em>Method signature</em>: <code>String compareSets(int[] a, int[] b)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li>Each of arrays <em>a</em> and <em>b</em> will have length between 1 and 50, inclusive.</li>
+<li>Each element of arrays <em>a</em> and <em>b</em> will be between 1 and 100, inclusive.</li>
+<li>In each of arrays <em>a</em> and <em>b</em> all elements are distinct.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>[1, 2, 3, 5, 8],<br />[8, 5, 1, 3, 2]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"EQUAL"</c></p>
+
+<h4>Reason</h4>
+
+<p>The order of elements in <em>a</em> and <em>b</em> does not matter. The two sets X and Y are equal.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>[2, 3, 5, 7],<br />[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"LESS"</c></p>
+
+<h4>Reason</h4>
+
+<p>Each number that occurs in <em>a</em> does also occur in <em>b</em>.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>[2, 4, 6, 8, 10, 12, 14, 16],<br />[2, 4, 8, 16]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"GREATER"</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>[42, 23, 17],<br />[15, 23, 31]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"INCOMPARABLE"</c></p>
+
+</body>
+</html>
