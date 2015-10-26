@@ -15,6 +15,8 @@ typedef unsigned long ul;
 #define SZ(a) int((a).size())
 #define EXIST(s,e) ((s).find(e)!=(s).end())
 #define SORT(c) sort((c).begin(),(c).end())
+#define DEFAULT(s,e,x) if (!EXIST(s, e)) { s[e]=x; }
+#define ITER(i,s) for(auto i=s.begin(); i!=s.end(); i++)
 
 // binary search
 #define LB(a,n,k) lower_bound(a,a+(n),(k))
