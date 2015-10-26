@@ -1,0 +1,128 @@
+<html>
+<head>
+    <title>LiveConcert</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16549&amp;pm=13948">LiveConcert</a></h1>
+
+<p><em>Single Round Match 669 Round 1 - Division II, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>Today, a large live concert is going to take place.
+Some interprets (called "idols") are going to perform at the concert.
+Different idols have different names.</p>
+
+<p>There are M distinct songs that can be included in the concert.
+The songs are numbered 0 through M-1.
+Song i can only be performed by the idol <em>s</em>[i].
+Including this song in the concert will increase the happiness of the audience by <em>h</em>[i].</p>
+
+<p>We have to choose the set list for this concert.
+Our goal is to make the audience as happy as possible.
+However, the concert time is limited and therefore each idol can only perform at most one song.</p>
+
+<p>You are given the int[] <em>h</em> and the String[] <em>s</em> with M elements each.
+Find the set of songs that should be played at the concert.
+The set of songs must have the following properties:</p>
+
+<p>Each idol will perform at most one song.
+After hearing the songs, the happiness of the audience will increase by the largest amount possible.
+Return the largest possible amount of happiness the audience can gain.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>LiveConcert</code></li>
+<li><em>Method</em>: <code>maxHappiness</code></li>
+<li><em>Parameters</em>: <code>int[], String[]</code></li>
+<li><em>Returns</em>: <code>int</code></li>
+<li><em>Method signature</em>: <code>int maxHappiness(int[] h, String[] s)</code></li>
+</ul>
+
+
+<h2>Notes</h2>
+
+<ul>
+<li>The value M is not given explicitly. You can determine M as the length of <em>h</em>.</li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li>M will be between 1 and 100, inclusive.</li>
+<li><em>h</em> and <em>s</em> will contain exactly M elements each.</li>
+<li>All numbers in <em>h</em> will be between 1 and 100, inclusive.</li>
+<li>All strings in <em>s</em> will have between 1 and 10 characters, inclusive.</li>
+<li>For each valid i, each character in <em>s</em>[i] will be a lowercase letter ('a'-'z').</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>[10,5,6,7,1,2],<br />["ciel","bessie","john","bessie","bessie","john"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>23</c></p>
+
+<h4>Reason</h4>
+
+<p>The optimal concert will contain three songs:
+"ciel" will sing the song number 0, which will give the audience 10 happiness
+"bessie" will sing the song number 3, which will give the audience 7 happiness
+"john" will sing the song number 2, which will give the audience 6 happiness
+The total amount of happiness will be 10+7+6 = 23.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>[3,3,4,3,3],<br />["a","a","a","a","a"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>4</c></p>
+
+<h4>Reason</h4>
+
+<p>There is a single idol, thus the concert will consist of a single song.
+The optimal choice is the song that gives 4 happiness.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>[1,2,3,4,5,6,7,8,9,10,100],<br />["a","b","c","d","e","e","d","c","b","a","abcde"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>140</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>[100],<br />["oyusop"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>100</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>[100,100,100,100,100,100,100,100,100,100,100,100,100],<br />["haruka","chihaya","yayoi","iori","yukiho","makoto","ami","mami","azusa","miki","hibiki","takane","ritsuko"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>1300</c></p>
+
+</body>
+</html>
