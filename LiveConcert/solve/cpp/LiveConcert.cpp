@@ -7,6 +7,8 @@ using namespace std;
 #define REP(i,n)  FOR(i,0,n)
 
 #define EXIST(s,e) ((s).find(e)!=(s).end())
+#define DEFAULT(s,e,x) if (!EXIST(s, e)) { s[e]=x; }
+#define ITER(i,s) for(auto i=s.begin(); i!=s.end(); i++)
 
 class LiveConcert {
 public:
@@ -16,17 +18,14 @@ public:
       
       REP(i, h.size()) {
 	auto name = s[i];
-	if (!EXIST(hap, name)) {
-	  hap[name] = 0;
-	}
+	DEFAULT(hap, name, 0);
 	hap[name] = max(hap[name], h[i]);
       }
 
       int res = 0;
-      for (auto i = hap.begin() ; i != hap.end() ; i++ ) {
-	 res += i->second;
+      ITER(i, hap) {
+	res += i->second;
       }
-
       return res;
     }
 };
