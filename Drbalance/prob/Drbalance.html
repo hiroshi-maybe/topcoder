@@ -1,0 +1,115 @@
+<html>
+<head>
+    <title>Drbalance</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16550&amp;pm=14060">Drbalance</a></h1>
+
+<p><em>Single Round Match 670 Round 1 - Division II, Level Two</em></p>
+
+<h2>Statement</h2>
+
+<p>A plus/minus string is a string in which each character is either a '+' or a '-'.</p>
+
+<p>The balance of a plus/minus string is computed as the number of '+' characters minus the number of '-' characters.</p>
+
+<p>For example, the balance of the string "++-+" is 3-1 = 2, and the balance of the string "---" is 0-3 = -3.</p>
+
+<p>The prefix of a string S is any string that can be obtained by removing some (possibly none, possibly all) characters from the end of S.
+For example, the prefixes of the string "++-+" are the strings "++-+", "++-", "++", "+", and "".</p>
+
+<p>Given a plus/minus string, its negativity is the number of its prefixes that have a negative balance.
+For example, the negativity of the string "++-+" is 0, as none of its prefixes have a negative balance.
+The negativity of the string "---" is 3.
+Its three prefixes with a negative balance are "-", "--", and "---".</p>
+
+<p>You are given a String <em>s</em> that is a plus/minus string.
+You are also given an int <em>k</em>.
+Your goal is to change <em>s</em> into a string with negativity at most <em>k</em>.
+In other words, you want to change <em>s</em> into a string that has at most <em>k</em> prefixes that have a negative balance.</p>
+
+<p>In order to change <em>s</em> you are going to perform a sequence of zero or more steps.
+In each step you can change a single '-' character in <em>s</em> into a '+' or vice versa.
+Compute and return the smallest number of steps needed.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>Drbalance</code></li>
+<li><em>Method</em>: <code>lesscng</code></li>
+<li><em>Parameters</em>: <code>String, int</code></li>
+<li><em>Returns</em>: <code>int</code></li>
+<li><em>Method signature</em>: <code>int lesscng(String s, int k)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>s</em> will contain between 1 and 50 characters, inclusive.</li>
+<li><em>k</em> will be between 0 and the length of <em>s</em>, inclusive.</li>
+<li>Each character in <em>s</em> will be either '+' or '-'.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>"---",<br />1</c></p>
+
+<h4>Output</h4>
+
+<p><c>1</c></p>
+
+<h4>Reason</h4>
+
+<p>One step is sufficient.
+If we change character 0 of <em>s</em> into a '+', we will obtain the string "+--".
+This string has only one prefix with a negative balance - namely, the entire string "+--".
+As <em>k</em>=1, we have reached our goal.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>"+-+-",<br />0</c></p>
+
+<h4>Output</h4>
+
+<p><c>0</c></p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>"-+-+---",<br />2</c></p>
+
+<h4>Output</h4>
+
+<p><c>1</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>"-------++",<br />3</c></p>
+
+<h4>Output</h4>
+
+<p><c>3</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>"-+--+--+--++++----+",<br />3</c></p>
+
+<h4>Output</h4>
+
+<p><c>2</c></p>
+
+</body>
+</html>
