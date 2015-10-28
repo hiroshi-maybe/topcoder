@@ -1,0 +1,111 @@
+<html>
+<head>
+    <title>IsItASquare</title>
+</head>
+<body>
+<h1><a href="http://community.topcoder.com/tc?module=ProblemDetail&amp;rd=16548&amp;pm=14004">IsItASquare</a></h1>
+
+<p><em>Single Round Match 668 Round 1 - Division II, Level Two</em></p>
+
+<h2>Statement</h2>
+
+<p>It's a bird! It's a plane! No, it's a square in a plane! Wait, is it really a square?</p>
+
+<p>There are four distinct points in the plane.
+You are given their coordinates in the int[]s <em>x</em> and <em>y</em>:
+for each i between 0 and 3, inclusive, there is a point at (<em>x</em>[i], <em>y</em>[i]).</p>
+
+<p>Return "It's a square" (quotes for clarity) if the four points are the vertices of a square.
+Otherwise, return "Not a square".</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>IsItASquare</code></li>
+<li><em>Method</em>: <code>isSquare</code></li>
+<li><em>Parameters</em>: <code>int[], int[]</code></li>
+<li><em>Returns</em>: <code>String</code></li>
+<li><em>Method signature</em>: <code>String isSquare(int[] x, int[] y)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>x</em> will contain 4 elements.</li>
+<li><em>y</em> will contain 4 elements.</li>
+<li>Each element of <em>x</em> will be between 0 and 10,000, inclusive.</li>
+<li>Each element of <em>y</em> will be between 0 and 10,000, inclusive.</li>
+<li>The four points described by <em>x</em> and <em>y</em> will be distinct.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>[0, 0, 2, 2],<br />[0, 2, 0, 2]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"It's a square"</c></p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>[0, 1, 5, 6],<br />[1, 6, 0, 5]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"It's a square"</c></p>
+
+<h4>Reason</h4>
+
+<p>Note that the sides of the square do not have to be parallel to the coordinate axes.
+Also note that the order in which the points are given does not have to be the same as the order in which you would encounter them when following the boundary of the square.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>[0, 0, 7, 7],<br />[0, 3, 0, 3]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Not a square"</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>[0, 5000, 5000, 10000],<br />[5000, 0, 10000, 5000]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"It's a square"</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>[1, 2, 3, 4],<br />[4, 3, 2, 1]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Not a square"</c></p>
+
+<h3>Example 6</h3>
+
+<h4>Input</h4>
+
+<p><c>[0, 5, 3, 8],<br />[0, 0, 4, 4]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Not a square"</c></p>
+
+</body>
+</html>
