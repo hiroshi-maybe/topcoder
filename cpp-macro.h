@@ -1,5 +1,5 @@
 #include <iostream>
-#include <algorithm>
+#include <algorithm> // max,min
 #include <vector>
 #include <string>
 using namespace std;
@@ -25,3 +25,7 @@ typedef unsigned long ul;
 // debug
 #define dump(x)  cerr << #x << " = " << (x) << endl;
 #define dumpAR(ar,n) REP(i,(n)) { cerr << ar[i] << ','; } cerr << endl;
+
+// memset
+#define ZERO(dp) (dp, 0, sizeof(dp))
+#define MINUS(dp) (dp, -1, sizeof(dp))
