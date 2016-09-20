@@ -1,0 +1,102 @@
+<html>
+<head>
+    <title>RepeatStringEasy</title>
+</head>
+<body>
+<h1><a href="/tc?module=ProblemDetail&amp;rd=16802&amp;pm=14390">RepeatStringEasy</a></h1>
+
+<p><em>Single Round Match 698 Sponsored by Google Round 1 - Division II, Level Two</em></p>
+
+<h2>Statement</h2>
+
+<p>A string S is called a square if there is some string T such that S = T + T.
+For example, the strings "", aabaab" and "xxxx" are squares, but "a", "aabb" and "aabbaa" are not.</p>
+
+<p>You are given a String <em>s</em>.
+Find the longest square string that can be obtained from <em>s</em> by erasing some (possibly none, possibly all) of its characters.
+In other words, we are looking for the longest square that occurs in <em>s</em> as a subsequence.
+Return the length of that square.</p>
+
+<p>Note that the answer is well-defined, as the square "" (the empty string) will always occur in <em>s</em> as a subsequence.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>RepeatStringEasy</code></li>
+<li><em>Method</em>: <code>maximalLength</code></li>
+<li><em>Parameters</em>: <code>String</code></li>
+<li><em>Returns</em>: <code>int</code></li>
+<li><em>Method signature</em>: <code>int maximalLength(String s)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>s</em> will contain between 1 and 50 characters, inclusive.</li>
+<li>Each character in <em>s</em> will be a lowercase English letter ('a'-'z').</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>"frankfurt"</c></p>
+
+<h4>Output</h4>
+
+<p><c>4</c></p>
+
+<h4>Reason</h4>
+
+<p>The longest square that occurs in "frankfurt" is "frfr". Its length is 4.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>"single"</c></p>
+
+<h4>Output</h4>
+
+<p><c>0</c></p>
+
+<h4>Reason</h4>
+
+<p>The letters in the string "single" are all distinct. Hence, the only square that occurs in this string is "". The length of this square is zero.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>"singing"</c></p>
+
+<h4>Output</h4>
+
+<p><c>6</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>"aababbababbabbbbabbabb"</c></p>
+
+<h4>Output</h4>
+
+<p><c>18</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>"x"</c></p>
+
+<h4>Output</h4>
+
+<p><c>0</c></p>
+
+</body>
+</html>
