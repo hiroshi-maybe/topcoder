@@ -1,0 +1,105 @@
+<html>
+<head>
+    <title>Initials</title>
+</head>
+<body>
+<h1><a href="/tc?module=ProblemDetail&amp;rd=16802&amp;pm=14389">Initials</a></h1>
+
+<p><em>Single Round Match 698 Sponsored by Google Round 1 - Division II, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>When dealing with long names and phrases, we sometimes use the initial letters of words to form its acronym.
+For example, we use "JFK" instead of "John Fitzgerald Kennedy", "lgtm" instead of "looks good to me", and so on.</p>
+
+<p>You are given a String <em>name</em>.
+This String contains a phrase: one or more words separated by single spaces.
+Please compute and return the acronym of this phrase.
+(As above, the acronym should consist of the first letter of each word, in order.)</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>Initials</code></li>
+<li><em>Method</em>: <code>getInitials</code></li>
+<li><em>Parameters</em>: <code>String</code></li>
+<li><em>Returns</em>: <code>String</code></li>
+<li><em>Method signature</em>: <code>String getInitials(String name)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>name</em> will contain between 1 and 50 characters, inclusive.</li>
+<li>Each character in <em>s</em> will be a space or a lowercase English letter ('a' - 'z').</li>
+<li>The first and last character in <em>s</em> will not be a space.</li>
+<li>No two continuous spaces can appear in <em>s</em>.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>"john fitzgerald kennedy"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"jfk"</c></p>
+
+<h4>Reason</h4>
+
+<p>There are three words: "john", "fitzgerald" and "kennedy".
+Their first letters are 'j', 'f' and 'k'.
+The correct return value is their concatenation: the string "jfk".
+Note that all letters in our problem are in lowercase.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>"single"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"s"</c></p>
+
+<h4>Reason</h4>
+
+<p>There is only one word: "single". Its acronym has a single letter.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>"looks good to me"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"lgtm"</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>"single round match"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"srm"</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>"a aa aaa aa a bbb bb b bb bbb"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"aaaaabbbbb"</c></p>
+
+</body>
+</html>

@@ -1,0 +1,2 @@
+def getInitials(name):
+    return "$"
