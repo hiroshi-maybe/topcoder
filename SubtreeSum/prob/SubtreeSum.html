@@ -1,0 +1,112 @@
+<html>
+<head>
+    <title>SubtreeSum</title>
+</head>
+<body>
+<h1><a href="/tc?module=ProblemDetail&amp;rd=16802&amp;pm=14392">SubtreeSum</a></h1>
+
+<p><em>Single Round Match 698 Sponsored by Google Round 1 - Division II, Level Three</em></p>
+
+<h2>Statement</h2>
+
+<p>You are given an undirected tree.
+The tree has n vertices, numbered 0 through n-1.
+For each valid i, there is an edge between the vertices <em>p</em>[i] and (i+1).
+Each vertex i has a nonnegative integer weight <em>x</em>[i].</p>
+
+<p>All nonempty connected subgraphs of our tree are called its subtrees.
+The value of a subtree is the bitwise OR of the weights of its vertices.
+For example, a subtree that contains vertices with weights 1, 4, and 6 has the value (1 OR 4 OR 6) = 7.</p>
+
+<p>You are given the description of the tree: the int[]s <em>p</em> and <em>x</em>.
+Compute and return the sum of values of all subtrees, modulo 10<sup>9</sup> + 7.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>SubtreeSum</code></li>
+<li><em>Method</em>: <code>getSum</code></li>
+<li><em>Parameters</em>: <code>int[], int[]</code></li>
+<li><em>Returns</em>: <code>int</code></li>
+<li><em>Method signature</em>: <code>int getSum(int[] p, int[] x)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li>n will be between 2 and 50, inclusive.</li>
+<li><em>p</em> will contain exactly n-1 elements.</li>
+<li>For each i, 0 &lt;= <em>p</em>[i] &lt;= i.</li>
+<li><em>x</em> will contain exactly n elements.</li>
+<li>Each element in <em>x</em> will be between 0 and 1,000,000,000, inclusive.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>[0],<br />[1,2]</c></p>
+
+<h4>Output</h4>
+
+<p><c>6</c></p>
+
+<h4>Reason</h4>
+
+<p>This is a tree with two vertices and a single edge 0-1.
+This tree has three subtrees:
+A subtree that only contains the vertex 0.
+A subtree that only contains the vertex 1.
+A subtree that contains both vertices.
+The values of these three subtrees are 1, 2, and 3.
+Hence, the correct return value is 1+2+3 = 6.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>[0,1],<br />[1,2,4]</c></p>
+
+<h4>Output</h4>
+
+<p><c>23</c></p>
+
+<h4>Reason</h4>
+
+<p>This tree has six subtrees.
+Their values are 1, 2, 4, 3, 6, and 7, respectively.
+The sum of these values is 23.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>[0,0,0,0,0,0,0,0,0,0],<br />[1000000,1000000,1000000,1000000,1000000,1000000,1000000,1000000,1000000,1000000,1000000]</c></p>
+
+<h4>Output</h4>
+
+<p><c>33999993</c></p>
+
+<h4>Reason</h4>
+
+<p>This tree has 1034 subtrees.
+Each of those subtrees has value 1,000,000.
+Hence, the sum of values of all subtrees is 1,034,000,000.
+We should return 1,034,000,000 modulo (10<sup>9</sup> + 7) = 33,999,993.</p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>[0,0,1,0,2,2,3,0,0,2,1],<br />[4,5,6,7,0,8,9,5,1,2,3,6]</c></p>
+
+<h4>Output</h4>
+
+<p><c>6378</c></p>
+
+</body>
+</html>
