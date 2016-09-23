@@ -1,0 +1,2 @@
+def isPossible(b):
+    return "$"
