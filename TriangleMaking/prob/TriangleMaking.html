@@ -1,0 +1,101 @@
+<html>
+<head>
+    <title>TriangleMaking</title>
+</head>
+<body>
+<h1><a href="/tc?module=ProblemDetail&amp;rd=16776&amp;pm=14371">TriangleMaking</a></h1>
+
+<p><em>Single Round Match 697 Round 1 - Division II, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>You have three sticks.
+Their current lengths are <em>a</em>, <em>b</em>, and <em>c</em>.
+You can shorten each of those sticks arbitrarily.
+Your goal is to produce three sticks with the following properties:
+The length of each stick is a positive integer.
+The three sticks can be used to build a triangle. The triangle must be non-degenerate. (I.e., it must have a positive area.)
+The perimeter of the triangle must be as large as possible.</p>
+
+<p>You are given the ints <em>a</em>, <em>b</em>, and <em>c</em>.
+Compute and return the largest possible perimeter of the triangle constructed from your three sticks.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>TriangleMaking</code></li>
+<li><em>Method</em>: <code>maxPerimeter</code></li>
+<li><em>Parameters</em>: <code>int, int, int</code></li>
+<li><em>Returns</em>: <code>int</code></li>
+<li><em>Method signature</em>: <code>int maxPerimeter(int a, int b, int c)</code></li>
+</ul>
+
+
+<h2>Notes</h2>
+
+<ul>
+<li>The return value is always defined. In other words, for any <em>a</em>, <em>b</em>, and <em>c</em> there is at least one way to build a valid triangle.</li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>a</em> will be between 1 and 100, inclusive.</li>
+<li><em>b</em> will be between 1 and 100, inclusive.</li>
+<li><em>c</em> will be between 1 and 100, inclusive.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>1,<br />2,<br />3</c></p>
+
+<h4>Output</h4>
+
+<p><c>5</c></p>
+
+<h4>Reason</h4>
+
+<p>Shorten the last stick from 3 to 2. There is a triangle with sides (1,2,2). The perimeter of this triangle is 1+2+2 = 5.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>2,<br />2,<br />2</c></p>
+
+<h4>Output</h4>
+
+<p><c>6</c></p>
+
+<h4>Reason</h4>
+
+<p>Here the optimal solution is to use the three sticks you have without shortening any of them.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>1,<br />100,<br />1</c></p>
+
+<h4>Output</h4>
+
+<p><c>3</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>41,<br />64,<br />16</c></p>
+
+<h4>Output</h4>
+
+<p><c>113</c></p>
+
+</body>
+</html>
