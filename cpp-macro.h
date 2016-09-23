@@ -2,6 +2,18 @@
 #include <algorithm> // max,min
 #include <vector>
 #include <string>
+#include <sstream>
+#include <map>
+#include <iostream>
+#include <utility>
+#include <set>
+#include <cctype>
+#include <queue>
+#include <stack>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
+
 using namespace std;
 
 // type alias
@@ -10,6 +22,7 @@ typedef unsigned long ul;
 // repetition
 #define FOR(i,a,b) for(int i=(a);i<(b);++i)
 #define REP(i,n)  FOR(i,0,n)
+#define FORR(x,arr) for(auto& x:arr)
 
 // container util
 #define SZ(a) int((a).size())
@@ -27,5 +40,5 @@ typedef unsigned long ul;
 #define dumpAR(ar,n) REP(i,(n)) { cerr << ar[i] << ','; } cerr << endl;
 
 // memset
-#define ZERO(dp) (dp, 0, sizeof(dp))
-#define MINUS(dp) (dp, -1, sizeof(dp))
+#define MINUS(dp) memset(dp, -1, sizeof(dp))
+#define ZERO(dp) memset(dp, 0, sizeof(dp))
