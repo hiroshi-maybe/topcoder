@@ -1,0 +1,120 @@
+<html>
+<head>
+    <title>LastDigit</title>
+</head>
+<body>
+<h1><a href="/tc?module=ProblemDetail&amp;rd=16803&amp;pm=14397">LastDigit</a></h1>
+
+<p><em>Single Round Match 699 Sponsored by Cisco Round 1 - Division II, Level Two</em></p>
+
+<h2>Statement</h2>
+
+<p>Limak chose a positive integer X and wrote it on a blackboard.
+After that, every day he erased the last digit of the current number.
+He stopped when he erased all digits.</p>
+
+<p>After the process was over, Limak computed the sum of all numbers that appeared on the blackboard, including the original number X.</p>
+
+<p>For example, if the original number was 509, the numbers that appeared on the blackboard were the numbers 509, 50, and 5.
+Their sum is 564.</p>
+
+<p>You are given a long <em>S</em>.
+Limak wants you to find a number X such that the above process produces the sum <em>S</em>.
+It can be shown that for any positive <em>S</em> there is at most one valid X.
+If there is a valid X, find and return it.
+Otherwise, return -1.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>LastDigit</code></li>
+<li><em>Method</em>: <code>findX</code></li>
+<li><em>Parameters</em>: <code>long</code></li>
+<li><em>Returns</em>: <code>long</code></li>
+<li><em>Method signature</em>: <code>long findX(long S)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>S</em> will be between 1 and 10<sup>18</sup>, inclusive.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>564</c></p>
+
+<h4>Output</h4>
+
+<p><c>509</c></p>
+
+<h4>Reason</h4>
+
+<p>This is the example from the problem statement. The value X = 509 produces the sum 564, as shown above.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>565</c></p>
+
+<h4>Output</h4>
+
+<p><c>-1</c></p>
+
+<h4>Reason</h4>
+
+<p>There is no X for which the sum would be 565.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>3000</c></p>
+
+<h4>Output</h4>
+
+<p><c>2701</c></p>
+
+<h4>Reason</h4>
+
+<p>You can check that 2701 + 270 + 27 + 2 = 3000.</p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>137174210616796</c></p>
+
+<h4>Output</h4>
+
+<p><c>123456789555123</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>837592744927492746</c></p>
+
+<h4>Output</h4>
+
+<p><c>-1</c></p>
+
+<h3>Example 6</h3>
+
+<h4>Input</h4>
+
+<p><c>999999999999999999</c></p>
+
+<h4>Output</h4>
+
+<p><c>900000000000000000</c></p>
+
+</body>
+</html>
