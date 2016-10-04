@@ -1,0 +1,119 @@
+<html>
+<head>
+    <title>UpDownHiking</title>
+</head>
+<body>
+<h1><a href="/tc?module=ProblemDetail&amp;rd=16803&amp;pm=14398">UpDownHiking</a></h1>
+
+<p><em>Single Round Match 699 Sponsored by Cisco Round 1 - Division II, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>Limak is going to spend <em>N</em> days in the mountains.
+The days will be numbered 1 through <em>N</em>.
+In the morning of day 1 Limak starts his hike in the base camp at altitude 0.
+In the evening of day <em>N</em> Limak must return back to altitude 0.
+Limak carries a tent and a sleeping bag, so during the hike he can sleep at any altitude.</p>
+
+<p>During each day of his hike, Limak either ascends or descends.
+(Each day he has to choose one or the other, he cannot both ascend and descend on the same day.)
+Additionally, there are two constraints:
+He cannot ascend too quickly, to make acclimatization to higher altitudes easier. More precisely, each day spent ascending can increase his altitude by at most <em>A</em>.
+He cannot descend too quickly, otherwise his knees hurt. More precisely, each day spent descending can decrease his altitude by at most <em>B</em>.</p>
+
+<p>For example, suppose that Limak's altitude in the morning is 470, and suppose that <em>A</em>=100 and <em>B</em>=200. In the evening of the same day Limak can be anywhere between the altitudes 270 and 570, inclusive.</p>
+
+<p>You are given the ints <em>N</em>, <em>A</em>, and <em>B</em>.
+Return the largest altitude Limak can reach.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>UpDownHiking</code></li>
+<li><em>Method</em>: <code>maxHeight</code></li>
+<li><em>Parameters</em>: <code>int, int, int</code></li>
+<li><em>Returns</em>: <code>int</code></li>
+<li><em>Method signature</em>: <code>int maxHeight(int N, int A, int B)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>N</em> will be between 2 and 50, inclusive.</li>
+<li><em>A</em> and <em>B</em> will be between 1 and 50, inclusive.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>3,<br />7,<br />10</c></p>
+
+<h4>Output</h4>
+
+<p><c>10</c></p>
+
+<h4>Reason</h4>
+
+<p>The highest altitude Limak can reach is 10.
+Here is one way to do so:
+On day 1, Limak will start at altitude 0 and he will ascend to altitude 7.
+On day 2, Limak will start at altitude 7 and he will ascend to altitude 10.
+On day 3, Limak will start at altitude 10 and he will descend back to altitude 0.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>5,<br />40,<br />30</c></p>
+
+<h4>Output</h4>
+
+<p><c>80</c></p>
+
+<h4>Reason</h4>
+
+<p>In the five days of this hike Limak can change his altitude by +40, +40, -27, -27, and -26.
+The highest altitude reached is 80.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>2,<br />50,<br />1</c></p>
+
+<h4>Output</h4>
+
+<p><c>1</c></p>
+
+<h4>Reason</h4>
+
+<p>Even though Limak can climb quickly, moving up even by 50 in one day, he can move down by at most 1 in the second day.
+So, in the first day he should climb by 1 only.</p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>3,<br />42,<br />42</c></p>
+
+<h4>Output</h4>
+
+<p><c>42</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>20,<br />7,<br />9</c></p>
+
+<h4>Output</h4>
+
+<p><c>77</c></p>
+
+</body>
+</html>
