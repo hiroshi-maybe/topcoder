@@ -1,0 +1,105 @@
+<html>
+<head>
+    <title>Ropestring</title>
+</head>
+<body>
+<h1><a href="/tc?module=ProblemDetail&amp;rd=16775&amp;pm=14373">Ropestring</a></h1>
+
+<p><em>Single Round Match 696 Round 1 - Division II, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>Hero has a collection of ropes.
+You are given the String <em>s</em> that contains an ASCII art depicting this collection of ropes.
+Each character of <em>s</em> is either '-' (dash, ASCII 45) or '.' (period, ASCII 46).
+Each dash is a rope segment, each period is an empty space.
+Each contiguous segment of dashes represents one rope; the number of dashes is the length of the rope.
+For example, <em>s</em> = "..-..----." means that Hero has two ropes: one of length 1 and one of length 4.</p>
+
+<p>Hero has decided to rearrange his collection of ropes, using the following rules:
+Each rope that has an even length must be placed to the left of all ropes that have odd lengths.
+There must be at least one empty space between any two ropes.
+If there are multiple arrangements that satisfy the previous two rules, Hero will choose the one that corresponds to the lexicographically smallest string. (This is explained below.)</p>
+
+<p>Once Hero rearranges his ropes, we can encode their new placement into a new string that looks similar to <em>s</em>.
+(The string will have the same length as <em>s</em> and it will contain the same collection of ropes, but possibly in different places.)</p>
+
+<p>Given two strings of the same length, the lexicographically smaller one is the one that has a character with a smaller ASCII value on the first position on which they differ.
+For example, the string X = "---.-" is lexicographically smaller than the string Y = "-.---" because X[0] = Y[0] and X[1] &amp;lt Y[1].
+(Note that a dash has a smaller ASCII value than a period.)</p>
+
+<p>Construct the arrangement of ropes chosen by Hero and return the String that encodes it.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>Ropestring</code></li>
+<li><em>Method</em>: <code>makerope</code></li>
+<li><em>Parameters</em>: <code>String</code></li>
+<li><em>Returns</em>: <code>String</code></li>
+<li><em>Method signature</em>: <code>String makerope(String s)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>s</em> will contain between 1 and 50 characters, inclusive.</li>
+<li>Each character in <em>s</em> will be either '-' or '.'.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>"..-..-"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"-.-..."</c></p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>"-.-"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"-.-"</c></p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>"--..-.---..--"</c></p>
+
+<h4>Output</h4>
+
+<p><c>"--.--.---.-.."</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>"--..-.---..--..-----.--."</c></p>
+
+<h4>Output</h4>
+
+<p><c>"--.--.--.-----.---.-...."</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>"..."</c></p>
+
+<h4>Output</h4>
+
+<p><c>"..."</c></p>
+
+</body>
+</html>
