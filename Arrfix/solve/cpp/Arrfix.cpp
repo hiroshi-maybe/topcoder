@@ -12,6 +12,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
+#include <unordered_map>
 
 using namespace std;
 
@@ -31,13 +32,10 @@ public:
   int mindiff(vector<int> &A,
               vector<int> const &B,
               vector<int> const &F) {
+    
     map<int,int> f;
     FORR(n,F) {
-      if (EXIST(f, n)) {
-	f[n] += 1;
-      } else {
-	f[n] = 1;
-      }
+      f[n]++;
     }
 
     int dif = 0;
@@ -52,7 +50,7 @@ public:
       int b = B[i];
 
       if (a==b) { continue; }
-      if (EXIST(f, b) && f[b]>0) {
+      if (f[b]) {
 	f[b]-=1;
 	remainF-=1;
 	A[i] = b;
@@ -66,7 +64,7 @@ public:
       int a = A[i];
       int b = B[i];
 
-      if (!reps[i] && a==b && EXIST(f, b) && f[b]>0) {
+      if (!reps[i] && a==b && f[b]) {
 	f[b]-=1;
 	remainF-=1;
 	reps[i] = true;
