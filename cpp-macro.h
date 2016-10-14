@@ -18,6 +18,7 @@ using namespace std;
 
 // type alias
 typedef unsigned long ul;
+typedef long long ll;
 
 const int INF = 1e9;
 
@@ -28,8 +29,11 @@ const int INF = 1e9;
 
 // container util
 #define SZ(a) int((a).size())
+#define PUSH(s, e) (s).push_back(e)
+#define REVERSE(c) reverse((c).begin(),(c).end())
 #define EXIST(s,e) ((s).find(e)!=(s).end())
 #define SORT(c) sort((c).begin(),(c).end())
+#define PUSH(s, e) sort((c).begin(),(c).end())
 #define DEFAULT(s,e,x) if (!EXIST(s, e)) { s[e]=x; }
 #define ITER(i,s) for(auto i=s.begin(); i!=s.end(); i++)
 
@@ -41,6 +45,7 @@ const int INF = 1e9;
 #define dump(x)  cerr << #x << " = " << (x) << endl;
 #define dumpAR(ar,n) REP(i,(n)) { cerr << ar[i] << ','; } cerr << endl;
 
-// memset
+// dp
+#define DP(dp,i,j) int dp[i][j]
 #define MINUS(dp) memset(dp, -1, sizeof(dp))
 #define ZERO(dp) memset(dp, 0, sizeof(dp))
