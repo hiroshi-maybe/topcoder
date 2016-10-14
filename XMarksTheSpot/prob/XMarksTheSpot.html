@@ -1,0 +1,128 @@
+<html>
+<head>
+    <title>XMarksTheSpot</title>
+</head>
+<body>
+<h1><a href="/tc?module=ProblemDetail&amp;rd=16821&amp;pm=14416">XMarksTheSpot</a></h1>
+
+<p><em>Single Round Match 700 Sponsored by Booz Allen Ham Round 1 - Division II, Level Two</em></p>
+
+<h2>Statement</h2>
+
+<p>You are playing a treasure hunt game.
+The game is played on a rectangular board that is divided into a grid of unit squares.
+You are given the layout of the board in the String[] <em>board</em>.
+Each character in <em>board</em> represents one square of the board.
+The meanings of the characters in <em>board</em>:</p>
+
+<p>'O' (capital oh): This square contains a landmark.
+'.': This square is empty.
+'?': You do not know the contents of this square. It may contain a landmark and it may be empty.</p>
+
+<p>A treasure is buried under one of the squares.
+You know something about its location:</p>
+
+<p>The row in which the treasure is buried is between T and B, inclusive, where T is the topmost row that contains a landmark and B is the bottommost row that contains a landmark.
+The column in which the treasure is buried is between L and R, inclusive, where L is the leftmost column that contains a landmark and R is the rightmost column that contains a landmark.</p>
+
+<p>Thus, you can narrow your search space to a sub-rectangle of the original grid.</p>
+
+<p>Suppose k is the number of grid squares which are unknown to you.
+In other words, let k be the number of '?' characters in <em>board</em>.
+There are 2<sup>k</sup> different boards that correspond to the information you have.
+For each of those boards, compute the number of squares that may contain the treasure.
+Find and return the sum of those 2<sup>k</sup> numbers.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>XMarksTheSpot</code></li>
+<li><em>Method</em>: <code>countArea</code></li>
+<li><em>Parameters</em>: <code>String[]</code></li>
+<li><em>Returns</em>: <code>int</code></li>
+<li><em>Method signature</em>: <code>int countArea(String[] board)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>board</em> will have between 1 and 50 elements, inclusive.</li>
+<li>Each element of <em>board</em> will be the same length.</li>
+<li>Each element of <em>board</em> will have between 1 and 50 characters, inclusive.</li>
+<li>Each character of each element of <em>board</em> will be "O", ".", or "?".</li>
+<li>The number of "?" characters among all elements of <em>board</em> is at most 19.</li>
+<li>There will be at least one "O" character among all elements of <em>board</em>.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>[<br />"?.",<br />".O"<br />]</c></p>
+
+<h4>Output</h4>
+
+<p><c>5</c></p>
+
+<h4>Reason</h4>
+
+<p>If the top left corner is empty, we only have 1 possible location of the treasure: the bottom right corner.
+If the top left corner is a landmark, the treasure can be anywhere in the grid: 4 possible locations.
+The return value is therefore 1 + 4 = 5.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>[<br />"???",<br />"?O?",<br />"???"<br />]</c></p>
+
+<h4>Output</h4>
+
+<p><c>1952</c></p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>[<br />"...?.",<br />"?....",<br />".O...",<br />"..?..",<br />"....?"<br />]</c></p>
+
+<h4>Output</h4>
+
+<p><c>221</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>["OOOOOOOOOOOOOOOOOOOOO"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>21</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>["?????????OO??????????"]</c></p>
+
+<h4>Output</h4>
+
+<p><c>9963008</c></p>
+
+<h3>Example 6</h3>
+
+<h4>Input</h4>
+
+<p><c>[<br />"OOO",<br />"O?O",<br />"OOO",<br />"..."<br />]</c></p>
+
+<h4>Output</h4>
+
+<p><c>18</c></p>
+
+</body>
+</html>
