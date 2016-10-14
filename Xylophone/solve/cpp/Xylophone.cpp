@@ -13,6 +13,9 @@
 #include <cstdlib>
 #include <cmath>
 
+// 10/12/2016 SRM 700 00:00-00:07 accepted
+// improved by https://arena.topcoder.com/#/u/viewCode/16821/53652/2/329343/hydra.icpc4/details
+
 using namespace std;
 
 typedef unsigned long long ull;
