@@ -48,10 +48,14 @@ const int INF = 1e9;
 #define LB(a,n,k) lower_bound(a,a+(n),(k))
 #define UB(a,n,k) upper_bound(a,a+(n),(k))
 
-// debug
+// debug 1
 #define dump(x)  cerr << #x << " = " << (x) << endl;
 #define dump(x,y)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
 #define dumpAR(ar,n) REP(i,(n)) { cerr << ar[i] << ','; } cerr << endl;
+// debug 2
+#define dump(x)  cout << #x << " = " << (x) << endl;
+#define dump(x,y)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
+#define dumpAR(ar,n) REP(i,(n)) { cout << ar[i] << ','; } cout << endl;
 
 // dp
 #define DP(dp,i,j) int dp[i][j]
