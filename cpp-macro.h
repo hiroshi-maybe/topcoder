@@ -19,14 +19,12 @@ using namespace std;
 // type alias
 typedef unsigned long ul;
 typedef long long ll;
-typedef pair< int , int > PII;
 typedef vector< int > VI;
-typedef vector<pii> VPII;
 const int INF = 1e9;
 
 // repetition
 #define FOR(i,a,b) for(int i=(a);i<(b);++i)
-#define REP(i,n)  fori(i,0,n)
+#define REP(i,n)  FOR(i,0,n)
 #define FORR(x,arr) for(auto& x:arr)
 
 // container util
@@ -39,6 +37,8 @@ const int INF = 1e9;
 #define ITER(i,s) for(auto i=s.begin(); i!=s.end(); i++)
 
 // pair
+typedef pair< int , int > PII;
+typedef vector<PII> VPII;
 #define MP make_pair
 #define FI first 
 #define SE second
@@ -47,13 +47,13 @@ const int INF = 1e9;
 #define LB(a,n,k) lower_bound(a,a+(n),(k))
 #define UB(a,n,k) upper_bound(a,a+(n),(k))
 
-// debug 1
+// debug cerr
 #define dump(x)  cerr << #x << " = " << (x) << endl;
 #define dump(x,y)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
 #define dumpAR(ar,n) REP(i,(n)) { cerr << ar[i] << ','; } cerr << endl;
-// debug 2
+// debug cout
 #define dump(x)  cout << #x << " = " << (x) << endl;
-#define dump(x,y)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
+#define dump2(x,y)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
 #define dumpAR(ar,n) REP(i,(n)) { cout << ar[i] << ','; } cout << endl;
 
 // dp
