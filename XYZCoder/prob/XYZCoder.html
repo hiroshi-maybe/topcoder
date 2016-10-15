@@ -1,0 +1,123 @@
+<html>
+<head>
+    <title>XYZCoder</title>
+</head>
+<body>
+<h1><a href="/tc?module=ProblemDetail&amp;rd=16821&amp;pm=14401">XYZCoder</a></h1>
+
+<p><em>Single Round Match 700 Sponsored by Booz Allen Ham Round 1 - Division II, Level Three</em></p>
+
+<h2>Statement</h2>
+
+<p>You are going to take part in a popular online programming contest.
+During the contest the contestants will be split across <em>room</em> rooms, with exactly <em>size</em> contestants in each room.
+(Hence, there will be exactly <em>room</em><em><em>size</em> contestants.)
+The rooms will be numbered from 1 to </em>room*.</p>
+
+<p>The contest is such that there will be no ties.
+After the contest, each contestant will have a distinct rank between 1 and <em>room</em><em>*size</em>, inclusive.
+(The contestant with rank 1 is the winner.)</p>
+
+<p>A room winner is the contestant with the best (i.e., smallest) rank in their room.</p>
+
+<p>You are interested in the ranks of all room winners.
+Once the contest finishes, you will write down a sequence of <em>room</em> positive integers.
+For each i, the i-th element of this sequence will be the rank of the winner of room i.</p>
+
+<p>You are given the ints <em>room</em> and <em>size</em>.
+Let L be the number of different sequences you can possibly obtain.
+Compute and return the value (L modulo 1,000,000,007).</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>XYZCoder</code></li>
+<li><em>Method</em>: <code>countWays</code></li>
+<li><em>Parameters</em>: <code>int, int</code></li>
+<li><em>Returns</em>: <code>int</code></li>
+<li><em>Method signature</em>: <code>int countWays(int room, int size)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>room</em> will be between 1 and 100, inclusive.</li>
+<li><em>size</em> will be between 1 and 100, inclusive.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>2,<br />1</c></p>
+
+<h4>Output</h4>
+
+<p><c>2</c></p>
+
+<h4>Reason</h4>
+
+<p>There are 2 rooms, each with 1 contestant.
+If contestant in room 1 wins the contest, you will write down the list {1,2}.
+Otherwise, you will write down the list {2,1}.
+Note that these are considered to be two distinct sequences.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>1,<br />2</c></p>
+
+<h4>Output</h4>
+
+<p><c>1</c></p>
+
+<h4>Reason</h4>
+
+<p>There is 1 room with 2 contestants.
+Regardless of which of them wins, the winner of the only room will have rank 1, so you will write down the list {1}.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>2,<br />2</c></p>
+
+<h4>Output</h4>
+
+<p><c>4</c></p>
+
+<h4>Reason</h4>
+
+<p>Now we have 2 rooms, each with 2 contestants.
+In this case you will write down one of the following four lists: {1,2}, {2,1}, {1,3}, or {3,1}.
+Note the following:
+You will never write down the list {2,3}, because the winner of the entire contest (rank 1) has to be the winner of one of the rooms.
+You will never write down the list {1,4}, because the contestant with rank 4 cannot be a room winner in this setting.</p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>4,<br />5</c></p>
+
+<h4>Output</h4>
+
+<p><c>6840</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>100,<br />100</c></p>
+
+<h4>Output</h4>
+
+<p><c>718243627</c></p>
+
+</body>
+</html>
