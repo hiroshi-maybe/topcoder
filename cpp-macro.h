@@ -19,23 +19,22 @@ using namespace std;
 // type alias
 typedef unsigned long ul;
 typedef long long ll;
-typedef pair< int , int > pii;
-typedef vector< int > vi;
-typedef vector<pii> vpii;
+typedef pair< int , int > PII;
+typedef vector< int > VI;
+typedef vector<pii> VPII;
 const int INF = 1e9;
 
 // repetition
 #define FOR(i,a,b) for(int i=(a);i<(b);++i)
-#define REP(i,n)  FOR(i,0,n)
+#define REP(i,n)  fori(i,0,n)
 #define FORR(x,arr) for(auto& x:arr)
 
 // container util
 #define SZ(a) int((a).size())
 #define PUSH(s, e) (s).push_back(e)
 #define REVERSE(c) reverse((c).begin(),(c).end())
-#define EXIST(s,e) ((s).find(e)!=(s).end())
 #define SORT(c) sort((c).begin(),(c).end())
-#define PB(s, e) sort((c).begin(),(c).end())
+#define EXIST(s,e) ((s).find(e)!=(s).end())
 #define DEFAULT(s,e,x) if (!EXIST(s, e)) { s[e]=x; }
 #define ITER(i,s) for(auto i=s.begin(); i!=s.end(); i++)
 
