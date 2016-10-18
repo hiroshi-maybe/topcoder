@@ -35,6 +35,7 @@ const int INF = 1e9;
 #define REVERSE(c) reverse((c).begin(),(c).end())
 #define SORT(c) sort((c).begin(),(c).end())
 #define CONCAT(a,b) (a).insert((a).begin(), (b).begin(),(b).end())
+#define ERASE(arr,i) (arr).erase((arr).begin()+i)
 
 #define EXIST(s,e) ((s).find(e)!=(s).end())
 #define DEFAULT(s,e,x) if (!EXIST(s, e)) { s[e]=x; }
