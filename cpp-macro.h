@@ -20,6 +20,7 @@ using namespace std;
 typedef unsigned long UL;
 typedef long long LL;
 typedef vector< int > VI;
+typedef vector < VI > VVI;
 const int INF = 1e9;
 
 // repetition
