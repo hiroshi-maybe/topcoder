@@ -19,12 +19,13 @@ using namespace std;
 // type alias
 typedef unsigned long UL;
 typedef long long LL;
-typedef vector< int > VI;
-typedef vector < VI > VVI;
+typedef vector < int > VI;
+typedef vector < vector < int > > VVI;
 const int INF = 1e9;
 
 // repetition
 #define FOR(i,a,b) for(int i=(a);i<(b);++i)
+#define ROF(i,a,b) for(int i=(a);i>=(b);--i)
 #define REP(i,n)  for(int i=0;i<(n);++i)
 #define FORR(x,arr) for(auto& x:arr)
 #define SZ(a) int((a).size())
