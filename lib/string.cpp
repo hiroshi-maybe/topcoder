@@ -1,13 +1,14 @@
 string join(const vector<string> &strs, string delimitor) {
-  if (strs.size()==0) { return delimitor; }
+  int L = strs.size();
+  if (L==0) { return delimitor; }
 
-  string res = "";
-  FORR(s,strs) {
-    res += "/"+s;
+  string res = strs[0];
+  FOR(i,1,L) {
+    res += delimitor+strs[i];
   }
 
   return res;
-}
+};
 
 vector<string> split(const string &str, char ch) {
   vector<string> ar;
