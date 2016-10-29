@@ -17,11 +17,12 @@
 using namespace std;
 
 // type alias
+const int INF = 1e9;
 typedef unsigned long UL;
 typedef long long LL;
 typedef vector < int > VI;
 typedef vector < vector < int > > VVI;
-const int INF = 1e9;
+typedef unordered_map < int, int > MAPII;
 
 // repetition
 #define FOR(i,a,b) for(int i=(a);i<(b);++i)
