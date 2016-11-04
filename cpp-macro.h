@@ -13,6 +13,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
+#include <unordered_set>
+#include <unordered_map>
 
 using namespace std;
 
@@ -50,6 +52,9 @@ typedef vector<PII> VPII;
 #define MP make_pair
 #define _1 first
 #define _2 second
+
+// matrix
+vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
 
 // priority queue
 #define MAX_PQ(T) priority_queue<T>
