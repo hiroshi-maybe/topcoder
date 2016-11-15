@@ -66,7 +66,7 @@ vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
 
 // debug cerr
 #define dump(x)  cerr << #x << " = " << (x) << endl;
-#define dump(x,y)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
+#define dump2(x,y)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
 #define dumpAR(ar) FORR(x,(ar)) { cerr << x << ','; } cerr << endl;
 // debug cout
 #define dump(x)  cout << #x << " = " << (x) << endl;
