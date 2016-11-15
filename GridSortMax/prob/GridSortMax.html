@@ -1,0 +1,134 @@
+<html>
+<head>
+    <title>GridSortMax</title>
+</head>
+<body>
+<h1><a href="/tc?module=ProblemDetail&amp;rd=16832&amp;pm=14444">GridSortMax</a></h1>
+
+<p><em>Single Round Match 702 Sponsored By BAH Round 1 - Division I, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>Charlie has a grid of <em>n</em> rows by <em>m</em> columns.
+The rows are numbered 0 through <em>n</em>-1 from top to bottom.
+The columns are numbered 0 through <em>m</em>-1 from left to right.</p>
+
+<p>Each cell of the grid contains a positive integer.
+The integers in Charlie's grid are a permutation of the numbers 1 through <em>n</em><em>*m</em>.
+(I.e., each of these numbers occurs in the grid exactly once.)</p>
+
+<p>Given a grid, its value list is a sequence constructed by listing all values in the grid in row major order.
+That is, we first list the values in row 0 from left to right, then the values in row 1 from left to right, and so on.</p>
+
+<p>You are given the ints <em>n</em> and <em>m</em>: the dimensions of Charlie's grid.
+You are also given a int[] <em>grid</em>: the value list for Charlie's grid.
+(Formally, <em>grid</em>[i<em>*m</em>+j] is the value stored in row i, column j of the grid.)</p>
+
+<p>In Charlie's eyes, the most beautiful of all grids is the sorted grid: the grid whose value list is the ordered ordered sequence {1,2,3,...,<em>n</em><em>*m</em>}.</p>
+
+<p>Given a grid, its similarity string is a string of zeroes and ones that describes the similarity between that particular grid and the sorted grid. More precisely:</p>
+
+<p>The similarity string is a string of length <em>n</em><em>*m</em>.
+For each i, character i of the similarity string is '1' if both grids have the same i-th element in their value lists, and it is '0' if those values differ. (All indices in the previous sentence are 0-based.)</p>
+
+<p>For example, suppose <em>n</em>=2 and <em>m</em>=3. The sorted grid has the value list {1,2,3,4,5,6}, and its similarity string is "111111". Another possible grid with these dimensions has the value list {1,5,2,4,3,6}. The similarity string for this grid is "100101".</p>
+
+<p>Charlie can modify his grid in two ways: He may swap any two rows, and he may swap any two columns.
+He wants to use these operations to obtain a grid with the lexicographically largest possible similarity string.
+Find and return that string.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>GridSortMax</code></li>
+<li><em>Method</em>: <code>findMax</code></li>
+<li><em>Parameters</em>: <code>int, int, int[]</code></li>
+<li><em>Returns</em>: <code>String</code></li>
+<li><em>Method signature</em>: <code>String findMax(int n, int m, int[] grid)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li>n,m will be between 1 and 50, inclusive.</li>
+<li><em>grid</em> will be a permutation of [1,...,<em>n</em><em>*m</em>]</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>2,<br />2,<br />[<br /> 1,2,<br /> 3,4<br />]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"1111"</c></p>
+
+<h4>Reason</h4>
+
+<p>Charlie's grid is the sorted grid.
+Its similarity string is therefore "1111".
+Charlie should make no changes to the grid, as this is already the lexicographically largest of all possible strings.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>2,<br />2,<br />[<br /> 2,1,<br /> 3,4<br />]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"1100"</c></p>
+
+<h4>Reason</h4>
+
+<p>The similarity string for Charlie's current grid is "0011", as the values 3 and 4 are in the same places as in the sorted grid.
+Charlie should swap the two columns.
+That swap will produce a grid with the similarity string "1100": now the values 1 and 2 are in their correct places but the values 3 and 4 aren't.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>2,<br />2,<br />[<br /> 4,2,<br /> 3,1<br />]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"1001"</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>1,<br />10,<br />[10,6,2,3,5,7,1,9,4,8]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"1111111111"</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>3,<br />5,<br />[<br /> 5,2,10,7,9,<br /> 3,4,14,11,1,<br /> 15,12,6,8,13<br />]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"101100100100000"</c></p>
+
+<h3>Example 6</h3>
+
+<h4>Input</h4>
+
+<p><c>6,<br />2,<br />[<br /> 3,9,<br /> 5,1,<br /> 10,6,<br /> 2,7,<br /> 8,11,<br /> 12,4<br />]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"100000101010"</c></p>
+
+</body>
+</html>
