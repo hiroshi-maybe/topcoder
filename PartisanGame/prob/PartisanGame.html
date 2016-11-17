@@ -1,0 +1,115 @@
+<html>
+<head>
+    <title>PartisanGame</title>
+</head>
+<body>
+<h1><a href="/tc?module=ProblemDetail&amp;rd=16822&amp;pm=14426">PartisanGame</a></h1>
+
+<p><em>Single Round Match 701 Sponsored By BAH Round 1 - Division I, Level One</em></p>
+
+<h2>Statement</h2>
+
+<p>Alice and Bob play a game with a pile of stones.
+Initially, there are <em>n</em> stones in the pile.
+The players take alternating turns, Alice goes first.</p>
+
+<p>You are given two int[]s: <em>a</em> and <em>b</em>.
+The elements of <em>a</em> are allowed moves for Alice, and the elements of <em>b</em> are allowed moves for Bob.</p>
+
+<p>In each turn, the current player must remove some stones from the pile.
+The number of removed stones must be equal to one of the player's allowed moves.
+If a player cannot take a valid turn, they lose the game.</p>
+
+<p>Assume that both Alice and Bob play the game optimally.
+Return "Alice" if Alice wins, or "Bob" if Bob wins.
+In other words, return "Alice" if and only if the first player has a winning strategy for the given <em>n</em>, <em>a</em>, and <em>b</em>.</p>
+
+<h2>Definitions</h2>
+
+<ul>
+<li><em>Class</em>: <code>PartisanGame</code></li>
+<li><em>Method</em>: <code>getWinner</code></li>
+<li><em>Parameters</em>: <code>int, int[], int[]</code></li>
+<li><em>Returns</em>: <code>String</code></li>
+<li><em>Method signature</em>: <code>String getWinner(int n, int[] a, int[] b)</code></li>
+</ul>
+
+
+<h2>Constraints</h2>
+
+<ul>
+<li><em>n</em> will be between 0 and 1,000,000,000, inclusive.</li>
+<li>all elements of a will be distinct.</li>
+<li>all elements of b will be distinct.</li>
+<li>all elements of a will be between 1 and 5, inclusive.</li>
+<li>all elements of b will be between 1 and 5, inclusive.</li>
+</ul>
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+
+<h4>Input</h4>
+
+<p><c>7,<br />[3, 4],<br />[4]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Alice"</c></p>
+
+<h4>Reason</h4>
+
+<p>Alice should take 4 stones from the pile.
+This will leave a pile of only 3 stones.
+In that situation, Bob has no valid move.
+(His only allowed move is 4, but it is not possible to remove 4 stones from a pile of only 3 stones.)
+Thus, Bob loses the game.</p>
+
+<h3>Example 2</h3>
+
+<h4>Input</h4>
+
+<p><c>10,<br />[1],<br />[4, 3, 2]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Bob"</c></p>
+
+<h4>Reason</h4>
+
+<p>One winning strategy for Bob is to always take 4 stones.
+If Bob follows this strategy, Alice will lose the game during her third turn.</p>
+
+<h3>Example 3</h3>
+
+<h4>Input</h4>
+
+<p><c>104982,<br />[2, 3, 4, 5],<br />[2, 5]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Alice"</c></p>
+
+<h3>Example 4</h3>
+
+<h4>Input</h4>
+
+<p><c>999999999,<br />[4],<br />[5]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Bob"</c></p>
+
+<h3>Example 5</h3>
+
+<h4>Input</h4>
+
+<p><c>1000000000,<br />[1,2,3,4,5],<br />[1,2,3,4,5]</c></p>
+
+<h4>Output</h4>
+
+<p><c>"Alice"</c></p>
+
+</body>
+</html>
