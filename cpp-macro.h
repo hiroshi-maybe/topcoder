@@ -78,3 +78,9 @@ vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
 #define FILL(dp,x) memset(dp, x, sizeof(dp))
 #define MINUS(dp) memset(dp, -1, sizeof(dp))
 #define ZERO(dp) memset(dp, 0, sizeof(dp))
+
+// main
+#define MAIN int main(int argc, char const *argv[])
+
+// g++ -Wall -O2 xxx.cpp && ./a.out
+
