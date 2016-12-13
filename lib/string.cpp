@@ -10,20 +10,19 @@ string join(const vector<string> &strs, string delimitor) {
   return res;
 };
 
-vector<string> split(const string &str, char ch) {
+vector<string> split(const string &s, char c) {
   vector<string> ar;
 
-  int i = 0;
-  while (i<SZ(str)) {
-    string el = "";
-    while (str[i]!=ch && i<SZ(str)) {
-      el+=str[i];
-      i++;
-    }
-    if (SZ(el)!=0) {
-      PUSH(ar, el);
-    }
-    i++;
+  string::size_type i = 0;
+  string::size_type j = s.find(c);
+
+  while (j != string::npos) {
+    ar.push_back(s.substr(i, j-i));
+    i = ++j;
+    j = s.find(c, j);
+
+    if (j == string::npos)
+      ar.push_back(s.substr(i, s.length()));
   }
 
   return ar;
