@@ -22,9 +22,15 @@ using namespace std;
 const int INF = 1e9;
 typedef unsigned long UL;
 typedef long long LL;
+
+typedef vector < bool > VB;
 typedef vector < int > VI;
+typedef vector < string > VS;
 typedef vector < vector < int > > VVI;
 typedef unordered_map < int, int > MAPII;
+typedef unordered_map < string, int > MAPSI;
+typedef unordered_set < int > SETI;
+typedef unordered_set < string > SETS;
 
 // repetition
 #define FOR(i,a,b) for(int i=(a);i<(b);++i)
