@@ -3,10 +3,10 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <set>
 #include <map>
 #include <iostream>
 #include <utility>
-#include <set>
 #include <cctype>
 #include <queue>
 #include <stack>
@@ -16,6 +16,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <limits.h>
+#include <cstring>
 
 using namespace std;
 
@@ -71,6 +72,12 @@ vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
 #define LB(a,n,k) lower_bound(a,a+(n),(k))
 #define UB(a,n,k) upper_bound(a,a+(n),(k))
 
+// dp
+#define DP(dp,i,j) int dp[i][j]
+#define FILL(dp,x) memset(dp, x, sizeof(dp))
+#define MINUS(dp) memset(dp, -1, sizeof(dp))
+#define ZERO(dp) memset(dp, 0, sizeof(dp))
+
 // debug cerr
 #define dump(x)  cerr << #x << " = " << (x) << endl;
 #define dump2(x,y)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
@@ -79,12 +86,6 @@ vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
 #define dump(x)  cout << #x << " = " << (x) << endl;
 #define dump2(x,y)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
 #define dumpAR(ar) FORR(x,(ar)) { cout << x << ','; } cout << endl;
-
-// dp
-#define DP(dp,i,j) int dp[i][j]
-#define FILL(dp,x) memset(dp, x, sizeof(dp))
-#define MINUS(dp) memset(dp, -1, sizeof(dp))
-#define ZERO(dp) memset(dp, 0, sizeof(dp))
 
 // main
 #define MAIN int main(int argc, char const *argv[])
