@@ -17,6 +17,7 @@
 #include <unordered_map>
 #include <limits.h>
 #include <cstring>
+#include <tuple>
 
 using namespace std;
 
@@ -54,12 +55,14 @@ typedef unordered_set < string > SETS;
 #define DEFAULT(s,e,x) if (!EXIST(s, e)) { s[e]=x; }
 #define ITER(i,s) for(auto i=s.begin(); i!=s.end(); i++)
 
-// pair
-typedef pair< int , int > PII;
-typedef vector<PII> VPII;
+// pair/tuple
+typedef pair< int , int > II;
+typedef vector<II> VII;
 #define MP make_pair
 #define _1 first
 #define _2 second
+typedef tupple< int , int, int > III;
+#define MT make_tuple
 
 // matrix
 vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
