@@ -61,7 +61,7 @@ typedef vector<II> VII;
 #define MP make_pair
 #define _1 first
 #define _2 second
-typedef tupple< int , int, int > III;
+typedef tuple< int , int, int > III;
 #define MT make_tuple
 
 // matrix
