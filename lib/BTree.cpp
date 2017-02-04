@@ -16,7 +16,7 @@ void inorder(TreeNode* root) {
                 // reached parent
                 pre->right = NULL;
 
-                proc(root, pick);
+                proc(root);
                 root = root->right;
             }
         }
