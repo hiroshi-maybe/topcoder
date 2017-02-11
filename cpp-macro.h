@@ -95,5 +95,5 @@ vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
 // main
 #define MAIN int main(int argc, char const *argv[])
 
-// g++ -Wall -O2 xxx.cpp && ./a.out
+// g++ -Wall -O2 -fsanitize=undefined -D_GLIBCXX_DEBUG xxx.cpp && ./a.out
 
