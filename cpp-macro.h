@@ -77,7 +77,10 @@ vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
 // debug cerr
 #define dump(x)  cerr << #x << " = " << (x) << endl;
 #define dump2(x,y)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
-#define dumpAR(ar) FORR(x,(ar)) { cerr << x << ','; } cerr << endl;
+#define dump3(x,y,z)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << endl;
+#define dump4(x,y,z,a)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl;
+#define dumpAR(ar) FORR(x,(ar)) { cout << x << ','; } cerr << endl;
+
 // debug cout
 #define dump(x)  cout << #x << " = " << (x) << endl;
 #define dump2(x,y)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
