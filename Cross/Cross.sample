@@ -1,0 +1,41 @@
+-- Example 0
+3
+.##
+###
+##.
+
+Exist
+-- Example 1
+3
+.##
+###
+#..
+
+Does not exist
+-- Example 2
+7
+######
+######
+######
+######
+######
+######
+######
+
+Exist
+-- Example 3
+4
+.#.#
+#.#.
+.#.#
+#.#.
+
+Does not exist
+-- Example 4
+4
+.#.#
+###.
+.###
+#.#.
+
+Exist
