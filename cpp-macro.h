@@ -1,3 +1,4 @@
+#include <fstream> // for greed plugin
 #include <iostream>
 #include <algorithm> // max,min
 #include <vector>
