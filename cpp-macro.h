@@ -44,16 +44,9 @@ typedef unordered_set < string > SETS;
 #define REPS(i,arr)  for(int i=0; i<(arr).size(); ++i)
 
 // vector
-#define PUSH(s, e) (s).push_back(e)
-#define POP(s) (s).pop_back()
 #define REVERSE(c) reverse((c).begin(),(c).end())
 #define SORT(c) sort((c).begin(),(c).end())
 #define CONCAT(a,b) (a).insert((a).begin(), (b).begin(),(b).end())
-#define ERASE(arr,i) (arr).erase((arr).begin()+i)
-
-#define EXIST(s,e) ((s).find(e)!=(s).end())
-#define DEFAULT(s,e,x) if (!EXIST(s, e)) { s[e]=x; }
-#define ITER(i,s) for(auto i=s.begin(); i!=s.end(); i++)
 
 // pair/tuple
 typedef pair< int , int > II;
