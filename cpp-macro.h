@@ -18,6 +18,7 @@
 #include <limits.h>
 #include <cstring>
 #include <tuple>
+#include <cassert>
 
 using namespace std;
 
