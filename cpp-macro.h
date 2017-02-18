@@ -65,6 +65,7 @@ vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
 // priority queue
 #define MAX_PQ(T) priority_queue<T>
 #define MIN_PQ(T) priority_queue<T,vector<T>,greater<T>>
+#define PQ(T, comp, Q) priority_queue<T,vector<T>,decltype(&comp)> Q(&comp);
 
 // binary search
 #define LB(a,n,k) lower_bound(a,a+(n),(k))
