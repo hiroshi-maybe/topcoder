@@ -13,6 +13,10 @@ void initUnionSet(int n) {
   }
 }
 
+/*
+
+iterative
+
 int find(int n) {
   while(n != parent[n]) {
     // shorten path
@@ -21,6 +25,12 @@ int find(int n) {
   }
 
   return n;
+}
+*/
+
+int find(int i) {
+  if (uf[i]==i) return i;
+  return uf[i]=find(uf[i]);
 }
 
 bool unioned(int p, int q) {
