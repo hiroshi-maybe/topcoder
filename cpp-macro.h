@@ -94,5 +94,8 @@ vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
 // main
 #define MAIN int main(int argc, char const *argv[])
 
+// mod
+constexpr int MOD = 1e9+7;
+
 // $ g++ -std=c++11 -Wall -O2 -D_GLIBCXX_DEBUG Cross.cpp && ./a.out
 
