@@ -1,11 +1,3 @@
-//
-//  graph.cpp
-//
-//
-//  Created by Hiroshi Kori on 5/21/17.
-//
-//
-
 #include <iostream>
 #include <vector>
 #include <unordered_map>
@@ -53,7 +45,7 @@ vector<int> dijkstra(int V, vector<unordered_map<int, int>> E, int s) {
   set<pair<int,int>> Q;
   
   res[s] = 0;
-  Q.emplace(INT_MAX, 0);
+  Q.emplace(0, s);
   
   while(Q.size()) {
     auto it = *(Q.begin()); Q.erase(it);
@@ -93,6 +85,41 @@ vector<vector<int>> floydWarshall(vector<vector<int>> W) {
   
   return W;
 }
+
+vector<vector<int>> johnson(vector<unordered_map<int, int>> E, int V) {
+  if (E.empty()) return {{}};
+  
+  // initialize G'
+  int V2 = V+1;
+  vector<unordered_map<int, int>> E2(E.begin(), E.end());
+  E2.push_back(unordered_map<int, int>());
+  for(int i=0; i<V2; ++i) E2[V][i] = 0;
+  
+  // get h(i) by bellman-ford
+  vector<int> H = bellmanford(V2, E2, V);
+  if (H.empty()) return {};
+  
+  for(int u=0; u<V; ++u) {
+    auto &es = E2[u];
+    for(auto &kvp : es) {
+      int v=kvp.first;
+      E[u][v] = kvp.second + H[u] - H[v];
+    }
+  }
+  
+  // calc distance by Dijkstra
+  vector<vector<int>> D;
+  for(int u=0; u<V; ++u) {
+    D.push_back(dijkstra(V, E, u));
+    for(int v=0; v<D[u].size(); ++v) {
+      if (D[u][v] != INT_MAX) D[u][v] += H[v] - H[u];
+    }
+  }
+  
+  return D;
+}
+
+/***********************   test code below   ***********************/
 
 // helper
 
@@ -139,6 +166,16 @@ int main(int argc, char const *argv[]) {
     {  3,  5,  10,  7,  2,   0},
   };
   assertVVec(fwres, fwresExpected);
+  
+  int V=(int)W.size();
+  vector<unordered_map<int, int>> E0(V);
+  for(int u=0; u<V; ++u) {
+    for(int v=0; v<V; ++v) {
+      if (W[u][v]!=INT_MAX) E0[u][v] = W[u][v];
+    }
+  }
+  vector<vector<int>> jhres = johnson(E0, V);
+  assertVVec(jhres, fwresExpected);
   
   // CLRS Figure 24.4
   vector<unordered_map<int, int>> E1 = {
