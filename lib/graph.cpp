@@ -62,6 +62,8 @@ vector<int> dijkstra(int V, vector<unordered_map<int, int>> E, int s) {
     
     for(auto &kvp : E[u]) {
       int v = kvp.first, w = kvp.second;
+      assert(w>=0);
+      
       if (visited[v]) continue;
       if (res[u]==INT_MAX) continue;
       
@@ -76,15 +78,15 @@ vector<int> dijkstra(int V, vector<unordered_map<int, int>> E, int s) {
   return res;
 }
 
-vector<vector<long>> floydWarshall(vector<vector<long>> W) {
+vector<vector<int>> floydWarshall(vector<vector<int>> W) {
   if (W.empty()) return W;
   int V=W.size();
   
   for(int k=0; k<V; ++k) {
     for(int i=0; i<V; ++i) {
       for(int j=0; j<V; ++j) {
+        if (W[i][k]==INT_MAX || W[k][j]==INT_MAX) continue;
         W[i][j] = min(W[i][j], W[i][k]+W[k][j]);
-        W[i][j] = min(W[i][j], (long)INT_MAX);
       }
     }
   }
@@ -94,7 +96,7 @@ vector<vector<long>> floydWarshall(vector<vector<long>> W) {
 
 // helper
 
-void print(vector<vector<long>> Mx) {
+void print(vector<vector<int>> Mx) {
   for(int i=0; i<Mx.size(); ++i) {
     dumpAR(Mx[i]);
   }
@@ -106,12 +108,19 @@ void assertVec(vector<int> actual, vector<int> expected) {
     assert(actual[i]==expected[i]);
   }
 }
+void assertVVec(vector<vector<int>> actual, vector<vector<int>> expected) {
+  assert(actual.size()==expected.size());
+  for(int i=0; i<actual.size(); ++i) {
+    assertVec(actual[i], expected[i]);
+  }
+}
 
 // main
 
 int main(int argc, char const *argv[]) {
   int Inf = INT_MAX;
-  vector<vector<long>> W = {
+  // CLRS Figure 25.2
+  vector<vector<int>> W = {
     {   0, Inf, Inf, Inf,  -1, Inf },
     {   1,   0, Inf,   2, Inf, Inf },
     { Inf,   2,   0, Inf, Inf,  -8 },
@@ -119,9 +128,17 @@ int main(int argc, char const *argv[]) {
     { Inf,   7, Inf, Inf,   0, Inf },
     { Inf,   5,  10, Inf, Inf,   0 }
   };
+  vector<vector<int>> fwres = floydWarshall(W);
   
-  W = floydWarshall(W);
-  // print(W);
+  vector<vector<int>> fwresExpected = {
+    {  0,  6, Inf,  8, -1, Inf},
+    { -2,  0, Inf,  2, -3, Inf},
+    { -5, -3,   0, -1, -6,  -8},
+    { -4,  2, Inf,  0, -5, Inf},
+    {  5,  7, Inf,  9,  0, Inf},
+    {  3,  5,  10,  7,  2,   0},
+  };
+  assertVVec(fwres, fwresExpected);
   
   // CLRS Figure 24.4
   vector<unordered_map<int, int>> E1 = {
@@ -133,8 +150,8 @@ int main(int argc, char const *argv[]) {
   };
   
   vector<int> bres = bellmanford(E1.size(), E1, 0);
-  vector<int> bresExpected = { 0,2,4,7,-2 };
   
+  vector<int> bresExpected = { 0,2,4,7,-2 };
   assertVec(bres, bresExpected);
   
   // CLRS Figure 24.6
@@ -147,7 +164,7 @@ int main(int argc, char const *argv[]) {
   };
   
   vector<int> dres = dijkstra(E2.size(), E2, 0);
-  vector<int> dresExpected = { 0,8,9,5,7 };
   
+  vector<int> dresExpected = { 0,8,9,5,7 };
   assertVec(dres, dresExpected);
 }
