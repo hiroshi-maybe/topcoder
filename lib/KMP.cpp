@@ -28,6 +28,7 @@ vector<int> kmpFT(string s) {
   return lps;
 }
 
+// COMPUTE-PREFIX-FUNCTION(P) in CLRS 32.4
 // longest prefix/suffix
 vector<int> lps(string s) {
   int L = s.size();
@@ -52,6 +53,7 @@ vector<int> lps(string s) {
   return lps;
 }
 
+// KMP algorithm - returns index of T where P begins
 int KMP(string s, string p) {
   int i = 0, j = 0, L = s.size(), M = p.size();
   
