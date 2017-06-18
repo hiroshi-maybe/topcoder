@@ -28,7 +28,8 @@ int meguru(vector<int> ns, int ok, int ng, int k) {
     }
   }
 
-  return ok;
+  bool c = ok<ng ? ns[ok]<=k : ns[ok]>=k;
+  return c ? ok : -1;
 }
 
 void test(vector<int> ns, int k) {
