@@ -84,10 +84,47 @@ vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
 #define dump4(x,y,z,a)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl;
 #define dumpAR(ar) FORR(x,(ar)) { cout << x << ','; } cerr << endl;
 
-// 8:29 start
-// 9:05 got it. +1 for each even/odd
-// 9:33 hmmm, ok not necessarily +1...  gave up
+/*
+ 6/29/2017
+ 
+ 8:29 start
+ 9:05 got it. +1 for each even/odd
+ 9:33 hmmm, ok not necessarily +1...  gave up
+ 
+ 6/30/2017
+ 
+ read edtorials..
+ https://www.topcoder.com/blog/single-round-match-714-editorials/
+ http://kmjp.hatenablog.jp/entry/2017/05/10/1000
+ 
+ 20:20-20:40 passed samples
+ 20:44 passed system tests
+ */
+
 class NAddOdd {
+public:
+  long long solve(long long L, long long R, int K) {
+    return dfs(R, K) - dfs(L-1, K);
+  }
+  
+  unordered_map <LL, LL> memo;
+  LL dfs(LL x, LL K) {
+    if (x<=K) return 0;
+    if (memo.count(x)) return memo[x];
+    
+    LL res = 0;
+    
+    LL ce = x/2 - K/2;
+    LL co = (x+1)/2 - (K+1)/2;
+    assert(co==x-K-ce);
+    
+    res += ce + dfs(x/2, K);
+    res += 2*co + dfs((x+K)/2, K);
+    
+    return memo[x] = res;
+  }
+};
+class NAddOdd_wrong {
   public:
   long long solve(long long L, long long R, int K) {
     if (L<=K) L = K+1;
