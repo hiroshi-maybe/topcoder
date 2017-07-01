@@ -99,10 +99,13 @@ vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
  8:45 retry
  8:47 figured out small misunderstanding of the problem
  8:59 read https://www.topcoder.com/blog/single-round-match-713-editorials/
- 
- 
- 
+ 9:58 passed system test
  */
+LL fact(LL n) {
+  LL res=1;
+  FOR(m,1,n+1) res*=m;
+  return res;
+}
 
 class DFSCountEasy {
   public:
@@ -123,49 +126,47 @@ class DFSCountEasy {
     }
     
     REP(i,N) {
-      res += dfs(1<<i, i);
+      res += dfs(done, i);
     }
     
     return res;
   }
   
+  // mask == available nodes
   LL dfs(int mask, int cur) {
-    if (mask==done) return 1;
+    mask = mask & (~(1<<cur));
     if (memo[cur].count(mask)) return memo[cur][mask];
     
-    //dump(mask);
-    
-    LL res = 0;
-    bool adj = false;
-    REP(next, N) {
-      //dump3(next,visited(mask, next),adjacent(mask, next));
-      if (!visited(mask, next) && E[cur].count(next)) {
-        //dump3(cur,"->",next);
-        adj = true;
-        res += dfs(mask|(1<<next), next);
+    unordered_map<int, LL> comps;
+    REP(start, N) {
+      if (canVisit(mask, start) && E[cur].count(start)) {
+        int compmask = 1<<start;
+        queue<int> Q; Q.push(start);
+        while(Q.size()) {
+          int u = Q.front(); Q.pop();
+          REP(v,N) {
+            if (!canVisit(mask,v)) continue;
+            if (!E[u].count(v)) continue;
+            if (compmask&(1<<v)) continue;
+            
+            Q.push(v);
+            compmask |= (1<<v);
+          }
+        }
+        
+        comps[compmask] += dfs(compmask, start);
       }
     }
-    if (adj) return memo[cur][mask] = res;
     
-    // fall back to warp case
-    REP(next, N) {
-      //dump3(next,visited(mask, next),adjacent(mask, next));
-      if (!visited(mask, next) && adjacent(mask, next)) {
-        res += dfs(mask|(1<<next), next);
-      }
-    }
+    LL res = 1;
+    for(auto &kvp : comps) res*=kvp.second;
+    res *= fact((LL)comps.size());
     
     return memo[cur][mask] = res;
   }
           
-  bool visited(int mask, int p) {
+  bool canVisit(int mask, int p) {
     return (mask&(1<<p))!=0;
-  }
-  bool adjacent(int mask, int p) {
-    REP(i,N) {
-      if(visited(mask, i) && E[i].count(p)) return true;
-    }
-    return false;
   }
 };
 
