@@ -1,0 +1,49 @@
+-- Example 0
+1234
+3
+70
+4
+
+Greater
+-- Example 1
+1010
+3
+101010
+2
+
+Equal
+-- Example 2
+1234
+10
+456
+20
+
+Less
+-- Example 3
+5
+9
+555555555
+1
+
+Equal
+-- Example 4
+5
+9
+555555554
+1
+
+Greater
+-- Example 5
+5
+9
+555555556
+1
+
+Less
+-- Example 6
+1000000000
+50
+1000000000
+50
+
+Equal
