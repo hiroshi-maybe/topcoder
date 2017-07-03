@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder SRM 711 - 1000: TreeMovingDiv2</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #CCCCCC;
+    /* background color */
+    background-color: #333333;
+}
+.section .section-title {
+    /* title color */
+    color: white;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #303030;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>SRM 711</span>
+        <span id='contest-division'>2</span>
+        <span id='problem-score'>1000</span>
+        <span id='problem-name'>TreeMovingDiv2</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1">You are given m trees.
+The trees are labeled T(0) through T(m-1).
+Each tree contains <b>n</b> vertices labeled 0 through <b>n</b>-1.
+
+A cyclic rotation of edges is the following procedure:
+<ol>
+<li>In each tree you choose one of its edges. Let e(i) be the edge chosen in the tree T(i).</li>
+<li>You remove the chosen edge from the tree, producing a graph with <b>n</b> vertices and only <b>n</b>-2 edges.</li>
+<li>For each valid i, you add the edge e(i) to the tree T(i+1). Also, you add the edge e(m-1) to the tree T(0). For example, if e(0) was an edge that connected vertices 4 and 7 in T(0), the graph T(1) will now get a new edge that connects its vertices 4 and 7.</li>
+<li>The procedure was successful if and only if each T(i) is a tree again.</li>
+</ol>
+
+Count all possible ways in which we can successfully perform a cyclic rotation of edges.
+Return that count modulo (10^9 + 7).
+
+You are given the <type>int</type> <b>n</b>.
+You are also given the <type>int[]</type>s <b>roots</b>, <b>a</b>, <b>b</b>, and <b>c</b>, each with m elements.
+These are inputs to a pseudorandom generator that will produce the trees.
+
+In order to generate the tree T(i), we will first generate a temporary sequence X:
+<pre>
+X[0] = c[i]
+for k = 1 to n-2:
+    X[k] = (a[i] * X[k - 1] + b[i]) modulo 1,000,000,007
+</pre>
+
+and then we use that sequence to generate the edges of the tree:
+<pre>
+for j = 0 to n-2:
+    u[j] = (roots[i] + j + 1) modulo n
+    v[j] = (roots[i] + (X[j] modulo (j + 1))) modulo n
+    add the edge between u[j] and v[j] to the tree T(i)
+</pre></intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>TreeMovingDiv2</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>count</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        int
+                    , 
+                        vector&lt;int&gt;
+                    , 
+                        vector&lt;int&gt;
+                    , 
+                        vector&lt;int&gt;
+                    , 
+                        vector&lt;int&gt;
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        int
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        int count(int n, vector&lt;int&gt; roots, vector&lt;int&gt; a, vector&lt;int&gt; b, vector&lt;int&gt; c)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>2.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>512</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <!-- Notes -->
+    <div class="section">
+        <h2 class="section-title">Notes</h2>
+        <ul class="notes">
+        
+            <li><note escaped="1">The author's solution does not depend on any properties of the pseudorandom generator. It would solve any input of the allowed size within the given limits.</note></li>
+        
+        </ul>
+    </div>
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1"><b>n</b> will be between 2 and 50, inclusive.  </user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>roots</b> will contain between 2 and 50 elements, inclusive.  </user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>a</b> and <b>roots</b> will contain the same number of elements.  </user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>b</b> and <b>roots</b> will contain the same number of elements.  </user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>c</b> and <b>roots</b> will contain the same number of elements.  </user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>roots</b> will be between 0 and <b>n</b> - 1, inclusive.  </user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>a</b> will be between 1 and 1,000,000,006, inclusive.  </user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>b</b> will be between 0 and 1,000,000,006, inclusive.  </user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>c</b> will be between 0 and 1,000,000,006, inclusive.  </user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">n</span>
+                                <span class="value data">
+                                
+                                    3
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">roots</span>
+                                <span class="value data">
+                                
+                                    { 0, 2 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">a</span>
+                                <span class="value data">
+                                
+                                    { 1, 2 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">b</span>
+                                <span class="value data">
+                                
+                                    { 1, 0 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">c</span>
+                                <span class="value data">
+                                
+                                    { 3, 5 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            2
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">There are two trees, each of them contains 3 vertices.
+The tree T(0) is generated as follows:
+<ol>
+<li>X[0] = c[0] = 3</li>
+<li>X[1] = (a[0] * X[0] + b[0]) modulo 1,000,000,007 = 4</li>
+<li>u[0] = (roots[0] + 1) modulo n = 1</li>
+<li>v[0] = (roots[0] + (X[0] modulo 1)) modulo n = 0</li>
+<li>u[1] = (roots[0] + 2) modulo n = 2</li>
+<li>v[1] = (roots[0] + (X[1] modulo 2)) modulo n = 0</li>
+</ol>
+Hence, the tree T(0) contains the edges 1-0 and 2-0.
+<p>
+The tree T(1) contains the edges 0-2 and 1-2.
+</p>
+There are two ways to do a successful cyclic rotation of edges:
+we can either choose the edge 0-2 in each tree, or we can choose the edge 0-1 in T(0) and the edge 1-2 in T(1).</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">n</span>
+                                <span class="value data">
+                                
+                                    3
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">roots</span>
+                                <span class="value data">
+                                
+                                    { 0, 0, 1 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">a</span>
+                                <span class="value data">
+                                
+                                    { 6, 1, 3 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">b</span>
+                                <span class="value data">
+                                
+                                    { 6, 5, 5 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">c</span>
+                                <span class="value data">
+                                
+                                    { 2, 5, 9 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            2
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment"><p>
+T(0) contains edges 1-0 and 2-0.  
+</p>
+<p>
+T(1) contains edges 1-0 and 2-0.
+</p>
+<p>
+T(2) contains edges 2-1 and 0-1.
+</p></div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">n</span>
+                                <span class="value data">
+                                
+                                    5
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">roots</span>
+                                <span class="value data">
+                                
+                                    { 0, 1, 1, 1, 2 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">a</span>
+                                <span class="value data">
+                                
+                                    { 7, 4, 7, 9, 2 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">b</span>
+                                <span class="value data">
+                                
+                                    { 8, 3, 9, 5, 3 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">c</span>
+                                <span class="value data">
+                                
+                                    { 6, 0, 1, 5, 9 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            22
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">n</span>
+                                <span class="value data">
+                                
+                                    2
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">roots</span>
+                                <span class="value data">
+                                
+                                    { 1, 0, 0 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">a</span>
+                                <span class="value data">
+                                
+                                    { 122064284, 9662111, 120616497 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">b</span>
+                                <span class="value data">
+                                
+                                    { 20137061, 408976122, 494878172 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">c</span>
+                                <span class="value data">
+                                
+                                    { 242061783, 603049107, 805670429 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            1
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">Watch out for integer overflow when generating the temporary sequence X.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">n</span>
+                                <span class="value data">
+                                
+                                    15
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">roots</span>
+                                <span class="value data">
+                                
+                                    { 11, 3, 13, 5, 0, 3, 0, 8, 9, 4, 9, 7, 5, 12, 12, 11, 12, 2, 6, 5, 13, 13, 11, 8, 14, 9, 2, 0, 3, 11, 10, 12, 10, 11, 11, 12, 13, 7, 12, 11, 2, 14, 8, 3, 6, 6, 4, 13, 5, 8 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">a</span>
+                                <span class="value data">
+                                
+                                    { 983816220, 620877501, 728957664, 719453482, 891241034, 959047323, 459235325, 188837384, 749336264, 40650017, 404049008, 121578182, 640967952, 444329307, 181115164, 697849277, 12923013, 711014676, 308063158, 403714366, 341206103, 674610097, 743172147, 27978413, 95548595, 93823839, 844476902, 863583697, 568069127, 618319911, 659846531, 341309147, 735202433, 531047579, 967335611, 311192666, 753647731, 36420180, 609571991, 208600401, 915548304, 926479460, 672275772, 545217041, 864561330, 32472050, 852336473, 144521601, 383750815, 616511468 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">b</span>
+                                <span class="value data">
+                                
+                                    { 715457951, 308091233, 686233659, 523365634, 260145657, 96581518, 754153775, 622990522, 78662953, 689973864, 609423534, 534351235, 56822117, 899080526, 236413795, 747521954, 249656307, 790813221, 238598034, 203856426, 170015231, 791645278, 991710627, 747864180, 331241135, 416320805, 820623220, 811261319, 154661650, 914880513, 270905767, 954448019, 261442212, 954262444, 293791600, 493225233, 67542211, 911866345, 567575019, 95716070, 410883122, 337767450, 375732581, 616839717, 416849487, 140196829, 200763187, 51759408, 992789421, 882490836 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">c</span>
+                                <span class="value data">
+                                
+                                    { 650915191, 363659051, 226659197, 706291662, 748630395, 163284394, 663006670, 2890697, 639793395, 728890798, 570088430, 967259303, 101778889, 249725396, 968816738, 276471315, 905010209, 467925249, 798793109, 857289233, 494026470, 476417587, 98570430, 596160845, 211373787, 188742439, 364805067, 757845257, 317224756, 74104796, 455729968, 78933290, 769895010, 476555278, 45379277, 957039727, 395817921, 447349376, 629724490, 287334171, 227424105, 603337884, 467060652, 254067677, 237332026, 976429932, 93075762, 960441433, 132935737, 671265490 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            755767349
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">Watch out for integer overflow while calculating the answer.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
