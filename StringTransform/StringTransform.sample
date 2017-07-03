@@ -1,0 +1,25 @@
+-- Example 0
+abc
+aba
+
+Possible
+-- Example 1
+abc
+bbc
+
+Impossible
+-- Example 2
+topcoder
+topcoder
+
+Possible
+-- Example 3
+rdmcxnnbbe
+rdrrxrnxbe
+
+Possible
+-- Example 4
+rdmcxnnbbe
+rdqrxrnxbe
+
+Impossible
