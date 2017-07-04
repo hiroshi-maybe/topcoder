@@ -1,0 +1,30 @@
+-- Example 0
+aba
+13
+
+2
+-- Example 1
+abbaa
+123
+
+2
+-- Example 2
+aaaa
+1230
+
+1
+-- Example 3
+ababbaaba
+0311
+
+3
+-- Example 4
+aabbbabbbb
+332233
+
+2
+-- Example 5
+aaaabbbababababababaaabaa
+02232
+
+9
