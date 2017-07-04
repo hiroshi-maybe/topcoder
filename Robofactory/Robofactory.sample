@@ -1,0 +1,68 @@
+-- Example 0
+3
+3
+2
+2
+3
+Odd
+Odd
+Even
+
+1
+-- Example 1
+4
+1
+3
+5
+10
+4
+Odd
+Odd
+Odd
+Even
+
+0
+-- Example 2
+4
+2
+3
+5
+10
+4
+Even
+Odd
+Odd
+Even
+
+-1
+-- Example 3
+4
+2
+4
+6
+10
+4
+Even
+Even
+Even
+Even
+
+-1
+-- Example 4
+1
+107
+1
+Odd
+
+0
+-- Example 5
+3
+1
+1
+1
+3
+Odd
+Odd
+Even
+
+2
