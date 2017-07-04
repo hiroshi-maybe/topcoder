@@ -20,7 +20,7 @@
 #include <cstring>
 #include <tuple>
 #include <cassert>
-
+#include <numeric>
 using namespace std;
 
 // type alias
