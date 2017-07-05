@@ -43,10 +43,101 @@ typedef unordered_set < int > SETI;
 #define dump4(x,y,z,a)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl;
 #define dumpAR(ar) FORR(x,(ar)) { cout << x << ','; } cerr << endl;
 
-// 17:14-17:58 passed samples (227.75 pt)
-// 18:34 WA for 52
-// 18:36 passed
-class BuildingStrings {
+/**
+ 
+ 7/4/2017
+ 
+ 17:14-17:58 passed samples (227.75 pt)
+ 18:34 WA for 52
+ 18:36 passed
+ 
+ read https://community.topcoder.com/stat?c=problem_solution&rm=329687&rd=16852&pm=14538&cr=40001774
+ 19:54 add simpler base-50 solution
+ 20:29 add solution by DP
+ 
+ */
+
+// https://community.topcoder.com/stat?c=problem_solution&rd=16852&rm=329690&cr=40529803&pm=14538
+// DP solution
+const int MX = 1305;
+int chk[50005];
+int tr[50005];
+class BuildingStrings{
+public:
+  string P[MX];
+  vector<string> findAny(int K){
+    for(int i = 1; i <= 26; i++){
+      for(int j = i; j <= 50; j++){
+        if( P[i*j].size() ) continue;
+        for(int k = 1; k <= i; k++) P[i*j] += k + 'a' - 1;
+        for(int k = i+1; k <= j; k++) P[i*j] += 'a';
+      }
+    }
+    chk[0] = 0;
+    for(int i = 1; i <= K; i++) chk[i] = 1e9;
+    for(int i = 1; i <= 1300; i++){
+      if( P[i].size() == 0 ) continue;
+      for(int j = i; j <= K; j++){
+        // make an edge to j with `i` interval by DP table `chk`
+        if( chk[j-i] + 1 >= chk[j] ) continue;
+        // optimal path from j-i to j found
+        chk[j] = chk[j-i] + 1; tr[j] = i;
+      }
+    }
+    int c = K;
+    vector<string> ans;
+    // back track optimal path
+    while(c){
+      ans.push_back(P[tr[c]]);
+      c -= tr[c];
+    }
+    return ans;
+  }
+};
+
+string make(int len, int alpha) {
+  string res="";
+  REP(i,alpha) res.push_back('a'+i);
+  REP(_,len-alpha) res.push_back('a');
+  return res;
+}
+
+void test(vector<string> ss, int K) {
+  int sum=0;
+  FORR(s,ss) {
+    assert(SZ(s)<=50);
+    SETI S;
+    FORR(c,s) S.insert(c-'a');
+    sum+=SZ(S)*SZ(s);
+  }
+  dumpAR(ss);
+  dump2(sum,K);
+  assert(sum==K);
+}
+
+// https://community.topcoder.com/stat?c=problem_solution&rm=329687&rd=16852&pm=14538&cr=40001774
+// base 50 solution
+class BuildingStrings_base50 {
+public:
+  vector<string> findAny(int K) {
+    int n=K/50, m=K%50;
+    
+    vector<string> res;
+    while(n>=26) {
+      res.push_back(make(50,26));
+      n-=26;
+    }
+    if (n>0) res.push_back(make(50,n));
+    if (m>0) res.push_back(make(m,1));
+    
+//    test(res,K);
+    
+    return res;
+  }
+};
+
+// base 26 solution
+class BuildingStrings_org {
   public:
   vector<string> findAny(int _K) {
     int K=_K;
@@ -80,19 +171,6 @@ class BuildingStrings {
 //    test(res,_K);
     
     return res;
-  }
-  
-  void test(vector<string> ss, int K) {
-    int sum=0;
-    FORR(s,ss) {
-      assert(SZ(s)<=50);
-      SETI S;
-      FORR(c,s) S.insert(c-'a');
-      sum+=SZ(S)*SZ(s);
-    }
-    dumpAR(ss);
-    dump2(sum,K);
-    assert(sum==K);
   }
 };
 
