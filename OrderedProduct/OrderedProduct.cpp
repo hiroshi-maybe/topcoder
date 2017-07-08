@@ -68,31 +68,64 @@ constexpr int MOD = 1e9+7;
  */
 
 LL dp[2505];
-LL cmemo[5005][2505];
 
-LL choose(LL n, LL k) {
-  if (n==1&&k==1) return 1;
-  if(k<=0) return 1;
-  if(n<=0) return 0;
-  if(n-k<k) return choose(n,n-k);
-  if(cmemo[n][k]>=0) return cmemo[n][k];
+// compute (a^b) `mod` 1e9+7
+// O(lg b)
+LL powmod(LL a, LL b) {
+  assert(0<=a && a<MOD);
+  assert(0<=b);
   
-  LL res = choose(n-1,k-1)+choose(n-1,k);
-  res %= MOD;
-  
-  return cmemo[n][k]=res;
+  LL res=1;
+  for(LL mask=1; mask<=b; mask<<=1) {
+    if(b&mask) res*=a, res%=MOD;
+    a*=a; a%=MOD;
+  }
+  return res;
 }
 
-LL multichoose(LL n, LL k) {
-  if (k<=0&&n<=0) return 1;
+// https://en.wikipedia.org/wiki/Modular_multiplicative_inverse#Computation
+// Modular multiplicative inverse by Euler's theorem
+// a^-1 (`mod` mod) = a^(mod-2), a should be coprime to mod, mod=1e9+7
+// O(lg m)
+LL modinv(LL a) {
+  return powmod(a, MOD-2);
+}
+
+// memoized factorial(n) (`mod` 1e9+7)
+// O(n) before cache warmup
+LL factmod(LL n) {
+  static vector<LL> memo(1,1);
+  if(memo.size()<=n) {
+    LL l=memo.size();
+    memo.resize(n+1);
+    for(LL i=l; i<=n; ++i) memo[i]=memo[i-1]*i, memo[i]%=MOD;
+  }
+  return memo[n];
+}
+
+// n chooses k
+// C(n,k) = n!/((n-k)!*k!)
+LL choose(LL n, LL k) {
+  if (n<k) return 0;
+  k = min(n-k,k);
+  LL res=factmod(n);
+  res *= modinv(factmod(n-k)), res%=MOD;
+  res *= modinv(factmod(  k)), res%=MOD;
   
-  return choose(n+k-1,k)%MOD;
+  return res;
+}
+
+// multichoose
+// H(n,k) = C(n+k-1,k)
+LL multichoose(LL n, LL k) {
+  if(n==0&&k==0) return 1;
+  
+  return choose(n+k-1,k);
 }
 
 class OrderedProduct {
   public:
   int count(vector<int> a) {
-    memset(cmemo,-1,sizeof(cmemo));
     memset(dp,0,sizeof(dp));
     
     LL sum=accumulate(a.begin(),a.end(),0LL);
