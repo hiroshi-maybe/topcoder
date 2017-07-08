@@ -1,6 +1,11 @@
+#include <iostream>
 #include <cassert>
 #include <tuple>
+#include <algorithm>
 using namespace std;
+
+typedef long long LL;
+constexpr int MOD = 1e9+7;
 
 int gcd(int a, int b) {
     return b == 0 ? a : gcd(b, a % b);
@@ -19,21 +24,27 @@ tuple<int,int,int> gcd_extended(int a, int b) {
   return make_tuple(d2,y2,x2-(a/b)*y2);
 }
 
-// CLRS 31.6
-// compute (a^b) mod n
-int mod_exp(int a, int b, int n) {
-  assert(a>=0);
-  assert(b>=0);
-  assert(n>0);
+// CLRS 31.6 and https://kimiyuki.net/blog/2017/03/27/srm-711-med/
+// compute (a^b) mod n, n=1e9+7 by default
+// O(lg b)
+LL powmod(LL a, LL b, LL n=MOD) {
+  assert(0<=a && a<n);
+  assert(0<=b);
 
-  int d=1;
-  for(int i=31; i>=0; --i) {
-    d = (d*d)%n;
-    if ((b&(1<<i))!=0) {
-      d = (d*a)%n;
-    }
+  LL res=1;
+  for(LL mask=1; mask<=b; mask<<=1) {
+    if(b&mask) res*=a, res%=n;
+    a*=a; a%=n;
   }
-  return d;
+  return res;
+}
+
+// https://en.wikipedia.org/wiki/Modular_multiplicative_inverse#Computation
+// Modular multiplicative inverse by Euler's theorem
+// a^-1 (mod m) = a^(m-2), a should be coprime to m, m=1e9+7 by default
+// O(lg m)
+LL modinv(LL a, LL m=MOD) {
+  return powmod(a, m-2);
 }
 
 // main
@@ -46,6 +57,13 @@ int main(int argc, char const *argv[]) {
   assert(get<1>(t)==-6);
   assert(get<2>(t)==11);
 
-  int m = mod_exp(7,560,561);
-  assert(m==1);
+  int m1 = powmod(7,560,561);
+  assert(m1==1);
+  
+  int m2 = powmod(7,560);
+  assert(m2==108725231);
+  
+  LL m = 560;
+  LL mi = modinv(m,MOD);
+  assert((m*mi)%MOD==1);
 }
