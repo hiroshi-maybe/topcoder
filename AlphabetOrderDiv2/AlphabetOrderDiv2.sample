@@ -1,0 +1,74 @@
+-- Example 0
+3
+single
+round
+match
+
+Possible
+-- Example 1
+2
+topcoder
+topcoder
+
+Impossible
+-- Example 2
+2
+algorithm
+contest
+
+Impossible
+-- Example 3
+2
+pink
+floyd
+
+Possible
+-- Example 4
+5
+gimnasia
+y
+esgrima
+la
+plata
+
+Impossible
+-- Example 5
+2
+hello
+hello
+
+Possible
+-- Example 6
+8
+abc
+def
+ghi
+jkl
+mno
+pqrs
+tuv
+wxyz
+
+Possible
+-- Example 7
+2
+abc
+bca
+
+Impossible
+-- Example 8
+5
+aaaaa
+eeeee
+iiiii
+ooooo
+uuuuu
+
+Possible
+-- Example 9
+3
+ab
+bc
+ca
+
+Impossible
