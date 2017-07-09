@@ -72,6 +72,26 @@ LL choose(LL n, LL k) {
   return res;
 }
 
+#define dump(x)  cout << #x << " = " << (x) << endl;
+#define dump2(x,y)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
+#define dump3(x,y,z)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << endl;
+#define dump4(x,y,z,a)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl;
+#define dumpAR(ar) FORR(x,(ar)) { cout << x << ','; } cout << endl;
+
+// Populate n chooses k (n={1..N},k={1..N}) (accumulate by DP)
+// C(n,k) = C(n-1,k)+C(n-1,k-1)
+// O(N^2) time
+void choose(LL N, vector<vector<int>> &dp) {
+  dp[0][0]=1;
+  // i chooses j
+  for(int i=1; i<=N; ++i) {
+    dp[i][0]=1;
+    for(int j=1; j<=i; ++j) {
+      dp[i][j] = dp[i-1][j]+dp[i-1][j-1], dp[i][j]%=MOD;
+    }
+  }
+}
+
 // multichoose
 // H(n,k) = C(n+k-1,k)
 LL multichoose(LL n, LL k) {
@@ -100,4 +120,8 @@ int main(int argc, char const *argv[]) {
   assert(factmod(560)==597965522);
   assert(choose(771,50)==275127687);
   assert(multichoose(771,50)==954694855);
+  
+  vector<vector<int>> dp(201,vector<int>(201,0));
+  choose(200,dp);
+  assert(dp[200][23]==choose(200,23));
 }
