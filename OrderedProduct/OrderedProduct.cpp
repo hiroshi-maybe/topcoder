@@ -65,10 +65,14 @@ constexpr int MOD = 1e9+7;
  
  23:42-25:00 passed system test
  
+ 7/8/2017
+ 
+ 15:50 add solution with combination computation which uses modular multiplicative inverse by Euler's theorem
+ 23:40 add faster combination dp solution inspired by https://www.topcoder.com/blog/single-round-match-711-editorials/
+ 
  */
 
-LL dp[2505];
-
+/*
 // compute (a^b) `mod` 1e9+7
 // O(lg b)
 LL powmod(LL a, LL b) {
@@ -121,12 +125,30 @@ LL multichoose(LL n, LL k) {
   if(n==0&&k==0) return 1;
   
   return choose(n+k-1,k);
+}*/
+
+LL dp[2505];
+LL C[5010][5010];
+// Populate n chooses k (n={1..N},k={1..N}) (accumulate by DP)
+// C(n,k) = C(n-1,k)+C(n-1,k-1)
+// O(N^2) time
+void choose(LL N) {
+  C[0][0]=1;
+  // i chooses j
+  for(int i=1; i<=N; ++i) {
+    C[i][0]=1;
+    for(int j=1; j<=i; ++j) {
+      C[i][j] = C[i-1][j]+C[i-1][j-1], C[i][j]%=MOD;
+    }
+  }
 }
 
-class OrderedProduct {
-  public:
+/*
+LL dp2[2505];
+class OrderedProduct_ord {
+public:
   int count(vector<int> a) {
-    memset(dp,0,sizeof(dp));
+    memset(dp2,0,sizeof(dp2));
     
     LL sum=accumulate(a.begin(),a.end(),0LL);
     
@@ -135,14 +157,47 @@ class OrderedProduct {
     FOR(l,1,sum+1) {
       
       // dp[L] = ∏{H(L,a[i]),i=1..N}-∑{C(n,k)*dp[k],k=1..L}
+      dp2[l]=1;
+      FORR(ai,a) {
+        dp2[l] *= (multichoose(l,(LL)ai)%MOD);
+        dp2[l] %= MOD;
+      }
+      for(LL k=1; k<l; ++k) {
+        dp2[l] += MOD;
+        dp2[l] -= ((choose(l,k)%MOD)*(dp2[k]%MOD))%MOD;
+        dp2[l] += MOD;
+        dp2[l] %= MOD;
+      }
+      res += dp2[l];
+      res %=MOD;
+    }
+    
+    return res;
+  }
+};*/
+
+class OrderedProduct {
+public:
+  int count(vector<int> a) {
+    memset(dp,0,sizeof(dp));
+    
+    LL sum=accumulate(a.begin(),a.end(),0LL);
+    
+    choose(5009);
+    
+    LL res=0;
+    // res = ∑{dp[L],L=1..sum}
+    FOR(l,1,sum+1) {
+      
+      // dp[L] = ∏{H(L,a[i]),i=1..N}-∑{C(n,k)*dp[k],k=1..L}
       dp[l]=1;
       FORR(ai,a) {
-        dp[l] *= (multichoose(l,(LL)ai)%MOD);
+        dp[l] *= (C[l+ai-1][ai]%MOD);
         dp[l] %= MOD;
       }
       for(LL k=1; k<l; ++k) {
         dp[l] += MOD;
-        dp[l] -= ((choose(l,k)%MOD)*(dp[k]%MOD))%MOD;
+        dp[l] -= ((C[l][k]%MOD)*(dp[k]%MOD))%MOD;
         dp[l] += MOD;
         dp[l] %= MOD;
       }
