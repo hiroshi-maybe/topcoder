@@ -1,0 +1,51 @@
+-- Example 0
+5
+2
+1
+1
+2
+1
+
+5
+NNNYN
+NNNNN
+NNNNN
+YNNNN
+NNNNN
+-- Example 1
+4
+1
+1
+1
+1
+
+4
+NNNN
+NNNN
+NNNN
+NNNN
+-- Example 2
+3
+3
+3
+3
+
+3
+NYY
+YNY
+YYN
+-- Example 3
+5
+4
+4
+4
+4
+4
+
+0
+-- Example 4
+1
+1
+
+1
+N
