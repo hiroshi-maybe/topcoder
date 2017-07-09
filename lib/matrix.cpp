@@ -8,7 +8,7 @@ typedef long long LL;
 const int MX=105;
 LL A[MX][MX], S[MX][MX];
 
-void timeMat(LL n, int N, LL A[MX][MX], LL B[MX][MX]) {
+void timeMat(int N, LL A[MX][MX], LL B[MX][MX]) {
   LL tmp[MX][MX]; memset(tmp,0,sizeof(tmp));
   
   for(int i=0; i<N; ++i) {
@@ -27,13 +27,13 @@ void timeMat(LL n, int N, LL A[MX][MX], LL B[MX][MX]) {
 void powerMat(LL n, int N) {
   assert(n>=0);
   
-  LL X[105][105];
+  LL X[MX][MX];
   for(int i=0; i<N; ++i) for(int j=0; j<N; ++j) X[i][j]=A[i][j];
   
   while(n) {
     // invariant: X = A^(2^i)
-    if (n&1) timeMat(n,N,S,X);
-    timeMat(n,N,X,X);
+    if (n&1) timeMat(N,S,X);
+    timeMat(N,X,X);
     n>>=1;
   }
 }
