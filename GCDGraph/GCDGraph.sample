@@ -1,0 +1,49 @@
+-- Example 0
+12
+2
+8
+9
+
+Possible
+-- Example 1
+12
+2
+11
+12
+
+Impossible
+-- Example 2
+12
+2
+11
+11
+
+Possible
+-- Example 3
+10
+2
+8
+9
+
+Impossible
+-- Example 4
+1000000
+1000
+12345
+54321
+
+Possible
+-- Example 5
+1000000
+2000
+12345
+54321
+
+Impossible
+-- Example 6
+2
+0
+1
+2
+
+Possible
