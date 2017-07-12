@@ -43,11 +43,6 @@ typedef unordered_set < int > SETI;
 #define dump4(x,y,z,a)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl;
 #define dumpAR(ar) FORR(x,(ar)) { cout << x << ','; } cerr << endl;
 
-int F,B;
-double memo[15][5000]; // 5000 > 2^12 (block state), 15 > 12 (maximum die)
-VI use[12];
-VI block;
-
 /**
  
  7/10/2017
@@ -72,8 +67,68 @@ VI block;
  7/11/2017
  
  24:20-24:50 read editorials again
+ 25:21 copied and passed bottom-up bitmask DP solution
+ 
+ 7/12/2017
+ 
+ iterate all subset by bitmanipulation
+ 10.Iterate through all subsets of a subset y (not including empty set): http://codeforces.com/blog/entry/18169
+ for ( x = y; x > 0; x = ( y & (x-1) ) )
+ 
+ https://apps.topcoder.com/forums/?module=Thread&threadID=671150&mc=20&view=threaded
+ 
+ Another trick is to iterate over all the subsets of a subset in O(3^n) time:
+ 
+ // iterate over all the subsets
+ for (int i=0; i < (1<<n); i++)
+ {
+    // iterate over all the subsets of the i-th subset
+    for(int i2 = i; i2 > 0; i2 = (i2-1) & i)
+    {
+        // generate the subset induced by i2
+        ...
+    }
+ }
+ 
+ There are exactly 3^n pairs (A,B) where B is a set of elements of {1, ..., n} and A is a subset of B. To see this, notice that each pair of sets like this can be associated to a n-digit ternary number (with leading zeros, possibly): Put a 0 in the i-th position if i is in neither A nor B, an 1 if i is in B but not A, and a 2 if i is in both sets. Since this is clearly a bijection, we've proved the result.
+ 
+ If you take O(1) time per subset while iterating, you then have a O(3^n) algorithm for iterating over all pairs as above.
  
  */
+
+double E[1<<12];
+int sum[1<<12];
+
+// O(3^B*F) time
+class SubsetSumExtreme {
+public:
+  double getExpectation(vector<int> block, vector<int> face) {
+    int F=SZ(face), B=SZ(block);
+    memset(E, 0, sizeof E);
+    memset(sum, 0, sizeof sum);
+    
+    REP(mask,1<<12) {
+      REP(i,12) if(mask&(1<<i)) sum[mask]+=block[i];
+      
+      FORR(f, face) {
+        double x = sum[mask];
+        for(int submask=mask; submask>0; submask = (submask-1)&mask) {
+          // mask^submask subtracts submask from mask (drop duplicated bit)
+          // more generic way: mask&(~submask)
+          if(sum[submask]==f) x = min(x, E[mask^submask]);
+        }
+        E[mask] += x/(double)F;
+      }
+    }
+    
+    return E[(1<<B)-1];
+  }
+};
+
+/*
+double memo[15][5000]; // 5000 > 2^12 (block state), 15 > 12 (maximum die)
+VI use[12];
+VI block;
 
 double dfs(int x, int mask) {
   if (memo[x][mask]>=0) return memo[x][mask];
@@ -98,7 +153,7 @@ double dfs(int x, int mask) {
 }
 
 // O(B^2*2^B*F) time
-class SubsetSumExtreme {
+class SubsetSumExtreme_org {
 public:
   double getExpectation(vector<int> _block, vector<int> face) {
     F=SZ(face), B=SZ(_block);
@@ -159,7 +214,7 @@ public:
     
     return res;
   }
-};
+};*/
 
 // CUT begin
 ifstream data("SubsetSumExtreme.sample");
