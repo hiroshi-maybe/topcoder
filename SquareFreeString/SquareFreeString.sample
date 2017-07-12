@@ -1,0 +1,20 @@
+-- Example 0
+bobo
+
+not square-free
+-- Example 1
+apple
+
+not square-free
+-- Example 2
+pen
+
+square-free
+-- Example 3
+aydyamrbnauhftmphyrooyq
+
+not square-free
+-- Example 4
+qwertyuiopasdfghjklzxcvbnm
+
+square-free
