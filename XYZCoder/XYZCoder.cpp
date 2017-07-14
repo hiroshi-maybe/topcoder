@@ -70,16 +70,79 @@ constexpr int MOD = 1e9+7;
  21:41 start coding
  22:40 couldn't find bug. copied existing solution.
  23:00 resumed original design
- 23:30 passed
+ 23:30 passed by {room} x {rank} DP solution
   - It took a lot of time to find bug to cut room assignment by `rank<=room*S`
   - confused by relationship between current rank and remaining slot
+  - https://community.topcoder.com/stat?c=problem_solution&rm=329345&rd=16821&pm=14401&cr=40385045
+ 
+ 24:51 add unbalanced parenthesis {rank} x {balance} DP solution
+ https://apps.topcoder.com/wiki/display/tc/SRM+700
+ 
+ 24:58 add {room} x {not winner} DP solution
+ https://community.topcoder.com/stat?c=problem_solution&rm=329341&rd=16821&pm=14401&cr=40494673
+ 
+ Others
+ - count up in room iteration. No factorial at last.
+ - https://community.topcoder.com/stat?c=problem_solution&rm=329343&rd=16821&pm=14401&cr=40489461
+ - http://kmjp.hatenablog.jp/entry/2016/10/26/0930
+ 
  */
 
-LL memo[10005][105];
-LL R,S;
-
+// {room} x {not winner} DP
+// https://community.topcoder.com/stat?c=problem_solution&rm=329341&rd=16821&pm=14401&cr=40494673
 class XYZCoder {
 public:
+  LL memo[105][10005];
+  LL R,S;
+  
+  int countWays(int r, int s) {
+    R=r,S=s;
+    memset(memo, -1, sizeof memo);
+    LL res=dfs(0,0);
+    FOR(n,1,R+1) res*=n, res%=MOD;
+    return res;
+  }
+  
+  LL dfs(int i, int rem) {
+    if(i>=R) return 1;
+    if(memo[i][rem]>=0) return memo[i][rem];
+    
+    LL res=0;
+    res += dfs(i+1,rem+S-1), res%=MOD;
+    if(rem>0) res+=dfs(i,rem-1), res%=MOD;
+    
+    return memo[i][rem]=res;
+  }
+};
+
+// parenthesis pairing solution {rank} x {balance} DP
+// https://apps.topcoder.com/wiki/display/tc/SRM+700
+class XYZCoder_pairing {
+public:
+  int countWays(int R, int S) {
+    vector<vector<LL>> dp(2,vector<LL>(R*S+1,0));
+    dp[0][0]=1;
+    REP(i,R*S) {
+      int i2=(i+1)%2,i1=i%2;
+      fill(dp[i2].begin(), dp[i2].end(), 0);
+      REP(bal,R*S+1) {
+        if(bal+S-1<=R*S) dp[i2][bal+S-1]+=dp[i1][bal], dp[i2][bal+S-1]%=MOD;
+        if(bal>0) dp[i2][bal-1]+=dp[i1][bal], dp[i2][bal-1]%=MOD;
+      }
+    }
+  
+    LL res=dp[(R*S)%2][0];
+    FOR(n,1,R+1) res*=n, res%=MOD;
+    return res;
+  }
+};
+
+// {room} x {rank} DP
+class XYZCoder_org {
+public:
+  LL memo[10005][105];
+  LL R,S;
+
   int x=0;
   int dfs(int rank, int room) {
     if(room>R) return 0;
@@ -102,6 +165,9 @@ public:
 
 class XYZCoder_wrong {
   public:
+  LL memo[10005][105];
+  LL R,S;
+  
   int dfs(int i, int rank) {
     if(i==R) return 1;
     if(rank==R*S) return 0;
