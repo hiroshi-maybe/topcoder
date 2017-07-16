@@ -106,12 +106,9 @@ void dfs1(int u, int pre, int bit) {
       
       x1=x0*cnt1[v][1]+x1*(cnt1[v][1]+cnt1[v][0]+1), x1%=MOD;
       x0*=cnt1[v][0]+1, x0%=MOD;
-      
-//      if(u==0&&pre==-1&&bit==1&&mybit==0) dump3(v,x0,x1);
     }
   }
-  if(n==0) cnt1[u][0]=!mybit, cnt1[u][1]=mybit; // leaf
-  else cnt1[u][0]=x0, cnt1[u][1]=x1;
+  cnt1[u][0]=x0, cnt1[u][1]=x1;
 }
 
 void dfs2(int u, int pre, int bit) {
@@ -136,27 +133,15 @@ void dfs2(int u, int pre, int bit) {
     // cnt[u][1][j] = cnt[u][0][j-1]*cnt[v][1] + cnt[u][1]*(cnt[v][0]+cnt[v][1]+1)
     
     LL a0 = cnt2[u][0],a1=cnt2[u][1];
-//    if(u==2&&pre==0&&bit==0&&mybit==0) { dump3(v,cnt2[v][0],cnt2[v][1]); dump2(a0,a1); }
     cnt2[u][0] = a0*(1+cnt2[v][0]);
     cnt2[u][1] = a0*cnt2[v][1]+a1*(cnt2[v][1] + cnt2[v][0] + 1);
-//    if(u==2&&pre==0&&bit==0&&mybit==0) { dump3(a1,cnt2[v][1]+cnt2[v][0]+1,a1*(cnt2[v][1] + cnt2[v][0] + 1)); dump2(cnt2[u][0],cnt2[u][1]); }
-    //    cnt[u][0]%=MOD,cnt[u][1]%=MOD;
-    //    assert(cnt[u][0]>=0);     assert(cnt[u][1]>=0);
   }
   
-  //  if(x0!=cnt[u][0]) { dump3(u,bit,mybit); dump2(x0,cnt[u][0]); }
   if(cnt1[u][1]!=cnt2[u][1]) {
     dump4(u,pre,bit,mybit);
     dump2(cnt2[u][0],cnt2[u][1]);
     dump2(cnt1[u][0],cnt1[u][1]);
     assert(false);
-    
-    /*
-    REP(i, SZ(E[u])) {
-      int v=E[u][i];
-      if(v==pre) continue;
-      dump3(v,cnt1[v][0],cnt[v][1]);
-    }*/
   }
 }
 
@@ -177,10 +162,7 @@ public:
 //      dfs2(0,-1,i);
       
       LL tot = 0;
-      REP(u,51) {
-        tot+=cnt1[u][1], tot%=MOD;
-//        dump2(cnt[u][1],tot);
-      }
+      REP(u,51) tot+=cnt1[u][1], tot%=MOD;
       res += (tot<<i)%MOD, res%=MOD;
     }
     
