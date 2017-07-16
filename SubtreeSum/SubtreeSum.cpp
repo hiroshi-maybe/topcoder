@@ -73,6 +73,20 @@ constexpr int MOD = 1e9+7;
  14:00 found another bug in recursive relation. count up is wrong.
  14:57 passed by my own implementation
  
+ Eventually count up was wrong. There are two points
+ - When looking at another adjacent node, add 1 to count up a case where the node is not taken
+ - Count up of combination is defined by recursive relation. Make sure counting is covering all the cases.
+ 
+ // recursive relation in a graph rooted at `u`
+ // cnt[u][0][j] = cnt[u][0][j-1]*(cnt[v][0]+1)
+ // cnt[u][1][j] = cnt[u][0][j-1]*cnt[v][1] (this case was missing when mybit is 0) + cnt[u][1][j-1]*(cnt[v][0]+cnt[v][1]+1)
+
+ Challenge of this problem
+ - simplify by suming by bits separated
+ - tree DP
+ - count up comprehensively
+ - easier to count up in recursive manner
+ 
  */
 
 VI E[51];
@@ -130,7 +144,7 @@ void dfs2(int u, int pre, int bit) {
     
     // recursive relation in a graph rooted at `u`
     // cnt[u][0][j] = cnt[u][0][j-1]*(cnt[v][0]+1)
-    // cnt[u][1][j] = cnt[u][0][j-1]*cnt[v][1] + cnt[u][1]*(cnt[v][0]+cnt[v][1]+1)
+    // cnt[u][1][j] = cnt[u][0][j-1]*cnt[v][1] + cnt[u][1][j-1]*(cnt[v][0]+cnt[v][1]+1)
     
     LL a0 = cnt2[u][0],a1=cnt2[u][1];
     cnt2[u][0] = a0*(1+cnt2[v][0]);
