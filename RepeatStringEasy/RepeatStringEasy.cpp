@@ -89,19 +89,21 @@ class RepeatStringEasy {
     */
     
     // delivering DP
-    int res=0;
     REP(i,M) {
       REP(j,N) {
         if(s[i]==t[j]) {
-          dp[i+1][j+1]=max(dp[i+1][j+1],dp[i][j]+1);
+          dp[i+1][j+1]=dp[i][j]+1;//max(dp[i+1][j+1],dp[i][j]+1);
         } else {
           dp[i+1][j]=max(dp[i+1][j],dp[i][j]);
           dp[i][j+1]=max(dp[i][j+1],dp[i][j]);
         }
-        res=max(res,dp[i+1][j+1]);
       }
     }
-    return res;
+    // at index [*][N] and [M][*], optimal value has not moved to [M][N]
+    REP(i,M) dp[i+1][N]=max(dp[i+1][N],dp[i][N]);
+    REP(j,N) dp[M][j+1]=max(dp[M][j+1],dp[M][j]);
+    
+    return dp[M][N];
   }
 };
 
@@ -184,6 +186,8 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
 }
 
 int main(int argc, char *argv[]) {
+//  RepeatStringEasy* x=new RepeatStringEasy();
+//  x->lcs("ncdkabagam", "bgmrxbyb");
     cout.setf(ios::fixed, ios::floatfield);
     cout.precision(2);
     set<int> cases;
