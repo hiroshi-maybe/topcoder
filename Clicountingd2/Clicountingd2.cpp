@@ -62,7 +62,7 @@ typedef vector<II> VII;
  
  Keys
  - z-transform DP
- - max clique
+ - max clique (NP-hard)
  
  21:15-21:40 add solution
  
