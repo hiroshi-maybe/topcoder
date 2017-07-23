@@ -97,7 +97,7 @@ class TreeAndCycle {
     if (!conn) {
       FORR(kvp1,E[u]) FORR(kvp2,E[u]) if (kvp1.first!=kvp2.first) {
         int v=kvp1.first,w=kvp2.first;
-        int x=f(v,u,1)+f(w,u,1)+E[pre][u];
+        int x=f(v,u,1)+f(w,u,1)+(pre==-1?0:E[pre][u]);
         FORR(kvp3,E[u]) if(kvp3.first!=v&&kvp3.first!=w) x+=f(kvp3.first,u,0);
         res = min(res, x);
       }
@@ -126,7 +126,6 @@ class TreeAndCycle {
     }
     memset(memo,-1,sizeof memo);
     
-    //return min(f(0,-1,0), f(0,-1,1)+costV[0]);
     return f(0,-1,0);
   }
 };
