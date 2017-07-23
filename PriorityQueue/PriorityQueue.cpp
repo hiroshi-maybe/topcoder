@@ -49,10 +49,34 @@ typedef unordered_set < int > SETI;
  
  8:25-8:31 passed system test (236.72 pt)
  
+ Read editoaial
+ - https://apps.topcoder.com/wiki/display/tc/SRM+692
+ 
+ Read linear solutions
+ - https://community.topcoder.com/stat?c=problem_solution&rm=328871&rd=16747&pm=14295&cr=40384876
+ - https://community.topcoder.com/stat?c=problem_solution&rm=328878&rd=16747&pm=14295&cr=40440173
+ 
+ if s[i]='b'..
+ res += ∑{a[j], j=0..i-1}
+ 
  */
 
-// O(N^2) time
+// O(N) time
 class PriorityQueue {
+public:
+  int findAnnoyance(string S, vector<int> a) {
+    int tot=0, res=0;
+    REP(i,SZ(S)) {
+      if(S[i]=='b') res+=tot;
+      tot += a[i];
+    }
+    
+    return res;
+  }
+};
+
+// O(N^2) time
+class PriorityQueue_org {
   public:
   int findAnnoyance(string S, vector<int> a) {
     int res=0;
