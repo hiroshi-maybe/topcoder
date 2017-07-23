@@ -1,0 +1,48 @@
+-- Example 0
+xy
+2
+1
+
+2079
+-- Example 1
+q
+2
+1
+
+1926
+-- Example 2
+ababab
+5
+4
+
+527166180
+-- Example 3
+fgcdx
+10
+3
+
+586649223
+-- Example 4
+ghjhhhgjhjhgjhghghjhjg
+8
+10
+
+192161304
+-- Example 5
+"pdpfrpfdfdpfdpfdpfpdfldfpfldpfe" 
+49
+25
+
+164673990
+-- Example 6
+a
+7
+0
+
+357828722
+-- Example 7
+"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" 
+50
+50
+
+960113657
