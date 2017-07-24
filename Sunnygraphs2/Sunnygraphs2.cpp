@@ -56,6 +56,8 @@ typedef unordered_set < int > SETI;
  - http://ry0u.github.io/blog/2016/05/31/srm691-d2m-sunnygraphs2/
   - separate graphs into connected components by union-found
   - find cycle length by dfs passing depth
+ - https://apps.topcoder.com/wiki/display/tc/SRM+691
+  - find cycles by iterative dfs
  
  res=0
  All the vertices are connected? res += 1
