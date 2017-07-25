@@ -1,0 +1,24 @@
+-- Example 0
+MAZAIMAZAI
+
+square
+-- Example 1
+MAMAZAIZAI
+
+not square
+-- Example 2
+IOI
+
+not square
+-- Example 3
+AA
+
+square
+-- Example 4
+ABCCBA
+
+not square
+-- Example 5
+Y
+
+not square
