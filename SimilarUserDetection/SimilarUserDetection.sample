@@ -1,0 +1,45 @@
+-- Example 0
+4
+top
+coder
+TOPCODER
+TOPC0DER
+
+Similar handles found
+-- Example 1
+4
+Topcoder
+topcoder
+t0pcoder
+topcOder
+
+Similar handles not found
+-- Example 2
+4
+same
+same
+same
+different
+
+Similar handles found
+-- Example 3
+6
+0123
+0I23
+0l23
+O123
+OI23
+Ol23
+
+Similar handles found
+-- Example 4
+7
+i23
+123
+456
+789
+000
+o
+O
+
+Similar handles not found
