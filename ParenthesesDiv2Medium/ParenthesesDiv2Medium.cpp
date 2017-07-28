@@ -60,13 +60,18 @@ typedef unordered_set < int > SETI;
  
  Same approach as my solution
  - https://community.topcoder.com/stat?c=problem_solution&rm=328554&rd=16709&pm=14225&cr=40037225
- - 
  
  Summary
  - tried to flip `()()()..` though, noticed that I was missing N/2+1 condition. It fails
  - tried to find existing pair and extend it though, it was not easy to keep extension
   - keep balance in left side and right side is not easy in this approach.
  - figured out that left most parenthesis must be '('. From that fact solved by keeping balance from left to right and flipping if needed.
+ 
+ 7/27/2017
+ 
+ Actually there is an official editorial:
+ - https://apps.topcoder.com/wiki/display/tc/SRM+688
+  - oh DP solution is shown :)
  
  */
 class ParenthesesDiv2Medium {

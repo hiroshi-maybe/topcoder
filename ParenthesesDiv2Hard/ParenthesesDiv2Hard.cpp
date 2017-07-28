@@ -72,6 +72,11 @@ typedef unordered_set < int > SETI;
   - do swap
   - count balance only in intervals
  
+ 7/28/2017
+ 
+ official editorial found
+ - https://apps.topcoder.com/wiki/display/tc/SRM+688
+ 
  */
 
 class ParenthesesDiv2Hard {
