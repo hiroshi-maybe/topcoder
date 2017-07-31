@@ -1,0 +1,87 @@
+-- Example 0
+2
+0
+1
+2
+0
+1
+
+Does not exist
+-- Example 1
+2
+1
+1
+2
+1
+1
+
+Exists
+-- Example 2
+3
+1
+2
+2
+3
+2
+2
+2
+
+Exists
+-- Example 3
+3
+2
+2
+2
+3
+2
+2
+2
+
+Does not exist
+-- Example 4
+4
+1
+2
+0
+3
+4
+3
+2
+0
+3
+
+Exists
+-- Example 5
+6
+1
+2
+0
+4
+3
+5
+6
+1
+2
+3
+5
+4
+5
+
+Exists
+-- Example 6
+6
+1
+2
+0
+4
+4
+5
+6
+1
+2
+3
+5
+4
+5
+
+Does not exist
