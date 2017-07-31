@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 #include <cassert>
 #include <set>
 
@@ -119,6 +120,67 @@ vector<vector<int>> johnson(vector<unordered_map<int, int>> E, int V) {
   return D;
 }
 
+/**
+ 
+ Build Strongly Connected Components a.k.a. SCCs (CLRS 22.5)
+ 
+ Θ(V+E) time
+ 
+ Usage:
+ 
+ ```
+ SCC scc(V);
+ scc.edge(u1,v1); scc.edge(u2,v2); ...
+ scc.build()
+ scc.contract()
+ ```
+ 
+ */
+struct SCC {
+public:
+  // input
+  int V;
+  vector<vector<int>> G, G_T; /* G_T=(V,E_T) where E_T = {(u,v):(v,u)∈E} */
+  SCC(int V): V(V), G(V), G_T(V), cid(V, -1), viz(V) {}
+  void edge(int u, int v) {
+    assert(u<V&&v<V);
+    G[u].push_back(v);
+    G_T[v].push_back(u);
+  }
+  
+  // build SCCs, Θ(V+E) time
+  vector<int> cid; /* vertex -> component ID */
+  vector<vector<int>> CC; /* component ID -> vertices */
+  void build() {
+    for(int u=0; u<V; ++u) dfs(u);
+    int id=0;
+    for(int i=(int)fins.size()-1; i>=0; --i) if(cid[fins[i]]==-1) dfs_t(fins[i], id++);
+    CC.resize(id);
+    for(int u=0; u<V; ++u) CC[cid[u]].push_back(u);
+  }
+  
+  // contract SCCs and build component graph, Θ(V+E) time
+  vector<vector<int>> G_SCC;
+  void contract() {
+    set<pair<int, int>> es;
+    for(int u=0; u<V; ++u) for(int v : G[u]) if(cid[u]!=cid[v]) es.emplace(cid[u],cid[v]);
+    G_SCC.resize(CC.size());
+    for(auto e : es) G_SCC[e.first].push_back(e.second);
+  }
+private:
+  vector<int> viz, fins;
+  void dfs(int u) {
+    if(viz[u]) return;
+    viz[u]=true;
+    for(int v : G[u]) dfs(v);
+    fins.push_back(u);
+  }
+  void dfs_t(int u, int id) {
+    cid[u]=id;
+    for(int v : G_T[u]) if(cid[v]==-1) dfs_t(v, id);
+  }
+};
+
 /***********************   test code below   ***********************/
 
 // helper
@@ -142,10 +204,18 @@ void assertVVec(vector<vector<int>> actual, vector<vector<int>> expected) {
   }
 }
 
+int toi(char c) { return c-'a'; }
+
+void assertComponents(unordered_set<char> c, SCC &scc) {
+  int cid=scc.cid[toi(*c.begin())];
+  for(char u : c) assert(scc.cid[toi(u)]==cid);
+}
+
 // main
 
 int main(int argc, char const *argv[]) {
   int Inf = INT_MAX;
+  // floyd-warshall test
   // CLRS Figure 25.2
   vector<vector<int>> W = {
     {   0, Inf, Inf, Inf,  -1, Inf },
@@ -166,7 +236,8 @@ int main(int argc, char const *argv[]) {
     {  3,  5,  10,  7,  2,   0},
   };
   assertVVec(fwres, fwresExpected);
-  
+
+  // Johnson test
   int V=(int)W.size();
   vector<unordered_map<int, int>> E0(V);
   for(int u=0; u<V; ++u) {
@@ -177,6 +248,7 @@ int main(int argc, char const *argv[]) {
   vector<vector<int>> jhres = johnson(E0, V);
   assertVVec(jhres, fwresExpected);
   
+  // bellmanford test
   // CLRS Figure 24.4
   vector<unordered_map<int, int>> E1 = {
     { {1,6}, {3,7} },
@@ -191,6 +263,7 @@ int main(int argc, char const *argv[]) {
   vector<int> bresExpected = { 0,2,4,7,-2 };
   assertVec(bres, bresExpected);
   
+  // Dijkstra's algorithm test
   // CLRS Figure 24.6
   vector<unordered_map<int, int>> E2 = {
     { {1,10}, {3,5} },
@@ -204,4 +277,46 @@ int main(int argc, char const *argv[]) {
   
   vector<int> dresExpected = { 0,8,9,5,7 };
   assertVec(dres, dresExpected);
+  
+  // Strongly connected component test
+  // CLRS Figure 22.9
+  SCC scc(8);
+  set<pair<char,char>> E3={
+    {'a','b'},
+    {'b','c'},{'b','f'},{'b','e'},
+    {'c','d'},{'c','g'},
+    {'d','c'},{'d','h'},
+    {'e','a'},{'e','f'},
+    {'f','g'},
+    {'g','f'},{'g','h'},
+    {'h','h'}
+  };
+  for(auto p : E3) scc.edge(toi(p.first), toi(p.second));
+  scc.build();
+  
+  unordered_set<char> c1={'a','b','e'};
+  unordered_set<char> c2={'c','d'};
+  unordered_set<char> c3={'f','g'};
+  unordered_set<char> c4={'h'};
+  
+  assertComponents(c1,scc);
+  assertComponents(c2,scc);
+  assertComponents(c3,scc);
+  assertComponents(c4,scc);
+  
+  scc.contract();
+  
+  int cid1=scc.cid[toi(*(c1.begin()))];
+  int cid2=scc.cid[toi(*(c2.begin()))];
+  int cid3=scc.cid[toi(*(c3.begin()))];
+  int cid4=scc.cid[toi(*(c4.begin()))];
+  
+  vector<int> cid1Expected = { cid2, cid3 };
+  assertVec(scc.G_SCC[cid1], cid1Expected);
+  vector<int> cid2Expected = { cid3, cid4 };
+  assertVec(scc.G_SCC[cid2], cid2Expected);
+  vector<int> cid3Expected = { cid4 };
+  assertVec(scc.G_SCC[cid3], cid3Expected);
+  vector<int> cid4Expected = {  };
+  assertVec(scc.G_SCC[cid4], cid4Expected);
 }
