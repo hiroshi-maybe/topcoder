@@ -1,0 +1,24 @@
+-- Example 0
+aa
+
+1
+-- Example 1
+abcd
+
+0
+-- Example 2
+aba
+
+1
+-- Example 3
+abab
+
+3
+-- Example 4
+aaaab
+
+7
+-- Example 5
+onetwothreeonetwothree
+
+86
