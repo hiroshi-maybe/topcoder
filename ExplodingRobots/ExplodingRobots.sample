@@ -1,0 +1,40 @@
+-- Example 0
+1
+0
+2
+0
+L
+
+Explosion
+-- Example 1
+1
+0
+2
+0
+U
+
+Safe
+-- Example 2
+1
+0
+2
+0
+UL
+
+Explosion
+-- Example 3
+3
+3
+5
+5
+LURLL
+
+Safe
+-- Example 4
+10
+5
+-9
+-10
+LULULULLLUULRULULULULULULLULULLULD
+
+Explosion
