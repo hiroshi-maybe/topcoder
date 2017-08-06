@@ -29,6 +29,8 @@ typedef long long LL;
 typedef vector < int > VI;
 typedef unordered_map < int, int > MAPII;
 typedef unordered_set < int > SETI;
+typedef pair< int , int > II;
+typedef tuple< int, int, int > III;
 
 // repetition
 #define FOR(i,a,b) for(int i=(a);i<(b);++i)
@@ -36,12 +38,16 @@ typedef unordered_set < int > SETI;
 #define FORR(x,arr) for(auto& x:arr)
 #define SZ(a) int((a).size())
 
-// debug cerr
-#define dump(x)  cerr << #x << " = " << (x) << endl;
-#define dump2(x,y)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
-#define dump3(x,y,z)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << endl;
-#define dump4(x,y,z,a)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl;
-#define dumpAR(ar) FORR(x,(ar)) { cout << x << ','; } cerr << endl;
+// DP
+#define MINUS(dp) memset(dp, -1, sizeof(dp))
+#define ZERO(dp) memset(dp, 0, sizeof(dp))
+
+// debug cout
+#define dump(x)  cout << #x << " = " << (x) << endl;
+#define dump2(x,y)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
+#define dump3(x,y,z)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << endl;
+#define dump4(x,y,z,a)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl;
+#define dumpAR(ar) FORR(x,(ar)) { cout << x << ','; } cout << endl;
 
 class ${ClassName} {
   public:
