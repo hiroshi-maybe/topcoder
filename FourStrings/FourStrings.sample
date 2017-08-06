@@ -1,0 +1,50 @@
+-- Example 0
+abc
+ab
+bc
+b
+
+3
+-- Example 1
+a
+bc
+def
+ghij
+
+10
+-- Example 2
+top
+coder
+opco
+pcode
+
+8
+-- Example 3
+thereare
+arelots
+lotsof
+ofcases
+
+19
+-- Example 4
+aba
+b
+b
+b
+
+3
+-- Example 5
+x
+x
+x
+x
+
+1
+-- Example 6
+bbbbba
+babaaa
+aab
+abaabab
+
+15
+
