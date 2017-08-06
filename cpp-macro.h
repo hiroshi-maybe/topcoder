@@ -24,8 +24,7 @@
 using namespace std;
 
 // type alias
-const int INF = 1e9;
-typedef unsigned long UL;
+const int Inf = 1e9;
 typedef long long LL;
 
 typedef vector < bool > VB;
@@ -53,11 +52,9 @@ typedef unordered_set < string > SETS;
 // pair/tuple
 typedef pair< int , int > II;
 typedef vector<II> VII;
-#define MP make_pair
 #define _1 first
 #define _2 second
-typedef tuple< int , int, int > III;
-#define MT make_tuple
+typedef tuple< int, int, int > III;
 
 // matrix
 vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
@@ -72,8 +69,6 @@ vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
 #define UB(a,n,k) upper_bound(a,a+(n),(k))
 
 // dp
-#define DP(dp,i,j) int dp[i][j]
-#define FILL(dp,x) memset(dp, x, sizeof(dp))
 #define MINUS(dp) memset(dp, -1, sizeof(dp))
 #define ZERO(dp) memset(dp, 0, sizeof(dp))
 
@@ -82,7 +77,7 @@ vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
 #define dump2(x,y)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
 #define dump3(x,y,z)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << endl;
 #define dump4(x,y,z,a)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl;
-#define dumpAR(ar) FORR(x,(ar)) { cout << x << ','; } cerr << endl;
+#define dumpAR(ar) FORR(x,(ar)) { cerr << x << ','; } cerr << endl;
 
 // debug cout
 #define dump(x)  cout << #x << " = " << (x) << endl;
