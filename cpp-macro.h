@@ -38,11 +38,9 @@ typedef unordered_set < string > SETS;
 
 // repetition
 #define FOR(i,a,b) for(int i=(a);i<(b);++i)
-#define ROF(i,a,b) for(int i=(a);i>=(b);--i)
 #define REP(i,n)  for(int i=0;i<(n);++i)
 #define FORR(x,arr) for(auto& x:arr)
 #define SZ(a) int((a).size())
-#define REPS(i,arr)  for(int i=0; i<(arr).size(); ++i)
 
 // vector
 #define REVERSE(c) reverse((c).begin(),(c).end())
