@@ -77,34 +77,50 @@ typedef unordered_set < int > SETI;
 
 constexpr int MOD = 1e9+9;
 
+// build string match transition table `SMT[][]` for character set ∑={'a'-'z'}
+// in CLRS 32.3
+//
+// input: P (|P|<=1024)
+// output: SMT
+//
+// SMT[i][j] = length (or next matching index) of longest prefix of P for suffix of P[0..i]+('a'+j)
+// SMT[i][j] = max { k : P[0..<k] ⊐ P[0..i]+('a'+j) }
+//
+// O(|P|^3*|∑|) time
+int SMT[1024][26];
+void buildSMT(string P) {
+  memset(SMT, 0, sizeof SMT);
+  int L=P.size();
+  for(int i=0; i<=L; ++i) {
+    for(int j=0; j<26; ++j) {
+      char c = 'a'+j;
+      if (i<L&&c==P[i]) {
+        // matched
+        SMT[i][j]=i+1;
+      } else {
+        // unmatched
+        string suf = P.substr(0,i)+c;
+        int SL=(int)suf.size();
+        // find longest prefix P[0..<k]
+        for(int k=1; k<=i; ++k) if(P.substr(0,k)==suf.substr(SL-k)) SMT[i][j]=k;
+      }
+    }
+  }
+}
+
 class LinenCenterEasy {
 public:
   int L;
-  int PRE[50][26]={};
   int OK[50]={};
   int memo[51][51][51]={};
   int countStrings(string S, int N, int K) {
     L=SZ(S);
     REP(i,L) {
-      // prefix + S = S?
       string pre=(S.substr(0,i)+S).substr(0,L);
       OK[i]=(i==0)||(pre!=S);
-      REP(j,26) {
-        char c='a'+j;
-        PRE[i][j]=0; // by default go to head
-        // prefix + ch
-        string t = S.substr(0,i) + c;
-        
-        for(int l=SZ(t); l>=0; --l) {
-          assert(S.substr(0,l).length() == t.substr(t.size()-l).length());
-          // prefix of S == suffix of t (t=prefix of S + x)
-          if(S.substr(0,l)==t.substr(SZ(t)-l)) {
-            PRE[i][j] = l;
-            break;
-          }
-        }
-      }
     }
+    buildSMT(S);
+    
     memset(memo, -1, sizeof memo);
     return f(0, K, N);
   }
@@ -116,7 +132,7 @@ public:
     if(p==L) return memo[p][k][n]=0;
     if(k==0) ++res;
     if(n>0) {
-      REP(i,26) res+=f(PRE[p][i],k,n-1), res%=MOD;
+      REP(i,26) res+=f(SMT[p][i],k,n-1), res%=MOD;
     }
     if(k>0&&OK[p]) res += f(0,k-1,n), res%=MOD; // insert S
     
