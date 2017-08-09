@@ -63,6 +63,8 @@ typedef tuple< int, int, int > III;
  - https://apps.topcoder.com/wiki/display/tc/SRM+675
  
  11:03-23:12 add cleaner solution
+ 23:30- add beautiful✨ floyd-warshall solution
+  - https://community.topcoder.com/stat?c=problem_solution&rm=327655&rd=16625&pm=14091&cr=40063207
  
  Key:
   - keep another state in Dijkstra's algorithm
@@ -81,11 +83,33 @@ typedef tuple< int, int, int > III;
  */
 
 int Inf=1e9;
+int W[51][51][51];
+class ShortestPathWithMagic {
+public:
+  set<DII> Q;
+  double getTime(vector<string> D, int K) {
+    int V=SZ(D);
+    REP(i,V)REP(j,V)REP(k,K+1) W[i][j][k]=Inf;
+    REP(i,V) REP(j,V) {
+      W[i][j][0]=(D[i][j]-'0')*2;
+      W[i][j][1]=(D[i][j]-'0');
+    }
+    // inside k,i,j loop, try all the combinations of k1 and k2
+    REP(k,V)REP(i,V)REP(j,V)for(int k1=0; k1<=K; ++k1)for(int k2=0;k1+k2<=K; ++k2) {
+      W[i][j][k1+k2] = min(W[i][j][k1+k2], W[i][k][k1]+W[k][j][k2]);
+    }
+    
+    int res=Inf;
+    for(int k=0; k<=K; ++k) res=min(res,W[0][1][k]);
+    return res/2.0;
+  }
+};
+
 int E[55][55];
 int dist[55][55]; //v,k
 
 // O(E+V*lg V) = O(K*N^2 + K*N*lg(K*N)) time
-class ShortestPathWithMagic {
+class ShortestPathWithMagic_dijkstra {
 public:
   set<DII> Q;
   double getTime(vector<string> D, int K) {
