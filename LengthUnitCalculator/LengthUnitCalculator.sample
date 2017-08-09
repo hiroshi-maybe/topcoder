@@ -1,0 +1,36 @@
+-- Example 0
+1
+mi
+ft
+
+5280.0
+-- Example 1
+1
+ft
+mi
+
+1.893939393939394E-4
+-- Example 2
+123
+ft
+yd
+
+41.0
+-- Example 3
+1000
+mi
+in
+
+6.336E7
+-- Example 4
+1
+in
+mi
+
+1.5782828282828283E-5
+-- Example 5
+47
+mi
+mi
+
+47.0
