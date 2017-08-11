@@ -82,9 +82,8 @@ LL choose(LL n, LL k) {
 // C(n,k) = C(n-1,k)+C(n-1,k-1)
 // O(N^2) time
 void choose(LL N, vector<vector<int>> &dp) {
-  dp[0][0]=1;
   // i chooses j
-  for(int i=1; i<=N; ++i) {
+  for(int i=0; i<=N; ++i) {
     dp[i][0]=1;
     for(int j=1; j<=i; ++j) {
       dp[i][j] = dp[i-1][j]+dp[i-1][j-1], dp[i][j]%=MOD;
