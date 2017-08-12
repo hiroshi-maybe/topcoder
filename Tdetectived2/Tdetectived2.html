@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder SRM 672 - 1000: Tdetectived2</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #CCCCCC;
+    /* background color */
+    background-color: #333333;
+}
+.section .section-title {
+    /* title color */
+    color: white;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #303030;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>SRM 672</span>
+        <span id='contest-division'>2</span>
+        <span id='problem-score'>1000</span>
+        <span id='problem-name'>Tdetectived2</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1"><p>There is a group of n people.
+The people are numbered 0 through n-1.
+Person number 0 is the principal witness.
+Exactly one of people 1 through n-1 is the killer.
+In addition to the n people there is a single detective who wants to find the killer.</p>
+
+<p>Whenever the detective talks to a person, he can determine with absolute certainty whether the person is the killer or not.
+Thus, all he needs to do is to talk to all the people in some order and he will certainly find the killer.
+However, the time needed to find the killer depends on the order in which the detective talks to the suspects.</p>
+
+<p>During the investigation the detective maintains a list of his suspicion levels:
+for each person between 0 and n-1, inclusive, the suspicion level of that person is an integer between 0 and 9, inclusive.
+(The larger the number, the more the detective currently suspects the person.)
+Initially, the suspicion levels of all n suspects are equal to 0.
+
+At the beginning of investigation, the detective will interview the principal witness (person 0) and he will use the information he receives to update his suspicion levels. (The way this works is explained in detail below.)</p>
+
+<p>The investigation then proceeds in rounds.
+Each round of investigation looks as follows:
+First, the detective must choose whom to interview next.
+Then, the detective interviews the chosen person.
+If that person is the killer, the investigation is over.
+Otherwise, the detective will receive new information from the witness and he will use it to update his suspicion levels.</p>
+
+When choosing whom to interview next, the detective decides as follows:
+<ul>
+<li>He <i>must</i> choose a person he did not interview yet.</li>
+<li>Among those, he <i>must</i> choose a person with the highest suspicion level.</li>
+<li>Among those, he <i>may</i> choose any person.</li>
+</ul>
+
+<p>You are given a <type>String[]</type> <b>s</b> with n elements, each with n characters.
+Each of those characters is a digit between 0 and 9, inclusive.
+The string <b>s</b>[i] is the information received when the detective interviews person i and that person is not the killer.
+For each j, the digit <b>s</b>[i][j] is the level to which person i and person j dislike each other.
+(Note that the information in <b>s</b> is symmetric: <b>s</b>[i][j] always equals <b>s</b>[j][i].)
+The more person i dislikes person j, the more incriminating evidence against person j will be presented by person i to the detective.
+When the detective receives this information, he will update the suspicion level of person j from its current value to the maximum of its current value and the value <b>s</b>[i][j].
+(For example, after interviewing person 0 the detective's current suspicion level of each person j is increased from 0 to <b>s</b>[0][j].)</p>
+
+<p>For each k between 1 and n-1, we are now going to solve the following problem:
+Assume person k is the killer.
+What is the smallest number of rounds of interviewing (NOT counting the initial interview with person 0) the detective needs to interview in order to find the killer?
+Let's denote the answer to this question as ans[k].
+In other words, ans[k] is the smallest value X such that there is a valid sequence of X people the detective could interview after person 0 (according to the above rules) that ends with person k.</p>
+
+<p>Compute the value ans[k] for each valid k.
+Return the sum of k*ans[k] over all valid k.
+(For example, if n=4, return the value 1*ans[1] + 2*ans[2] + 3*ans[3].)</p></intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>Tdetectived2</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>reveal</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        vector&lt;string&gt;
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        int
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        int reveal(vector&lt;string&gt; s)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>2.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>256</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1"><b>s</b> will contain n elements.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">n will be between 2 and 18, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element in <b>s</b> will contain exactly n characters.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each character in <b>s</b> will be between '0' and '9', inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>s</b> will be symmetric, so <b>s</b>[i][j] will be equal to <b>s</b>[j][i].</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Diagonal characters are not significant, so <b>s</b>[i][i] will be equal to '0'.</user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">s</span>
+                                <span class="value data">
+                                
+                                    {&quot;000&quot;,<br />&nbsp;&quot;000&quot;,<br />&nbsp;&quot;000&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            3
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment"><p>Nobody knows anything about anybody else.</p>
+
+<p>If the killer is person 1, the smallest number of rounds is ans[1]=1:
+after the initial interview of person 0 there will be a single round in which the detective interviews person 1.</p>
+
+<p>If the killer is person 2, the smallest number of rounds is again ans[1]=1:
+after interviewing person 0 both other people have the same suspicion level, so the detective can also choose person 2 in the first round.</p>
+
+<p>The correct return value is 1*1 + 2*1 = 3.</p></div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">s</span>
+                                <span class="value data">
+                                
+                                    {&quot;0224&quot;,<br />&nbsp;&quot;2011&quot;,<br />&nbsp;&quot;2104&quot;,<br />&nbsp;&quot;4140&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            10
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment"><p>After the initial interview the detective will always choose person 3 in the first round.
+If person 3 is not the killer, the detective will receive new information that will increase the suspicion level of person 2.
+Therefore, in the second round the detective will interview person 2.
+If person 2 is also not the killer, there will be a third round in which the detective interviews the last remaining person: person 1.</p>
+
+<p>Hence, the answers are ans[1]=3, ans[2]=2, and ans[3]=1.
+Therefore, the correct return value is 1*3 + 2*2 + 3*1 = 10.</p></div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">s</span>
+                                <span class="value data">
+                                
+                                    {&quot;0886&quot;,<br />&nbsp;&quot;8086&quot;,<br />&nbsp;&quot;8801&quot;,<br />&nbsp;&quot;6610&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            12
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">s</span>
+                                <span class="value data">
+                                
+                                    {&quot;064675511&quot;,<br />&nbsp;&quot;603525154&quot;,<br />&nbsp;&quot;430262731&quot;,<br />&nbsp;&quot;652030511&quot;,<br />&nbsp;&quot;726302420&quot;,<br />&nbsp;&quot;552020464&quot;,<br />&nbsp;&quot;517544052&quot;,<br />&nbsp;&quot;153126500&quot;,<br />&nbsp;&quot;141104200&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            170
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">s</span>
+                                <span class="value data">
+                                
+                                    {&quot;0313131&quot;,<br />&nbsp;&quot;3030020&quot;,<br />&nbsp;&quot;1301132&quot;,<br />&nbsp;&quot;3010031&quot;,<br />&nbsp;&quot;1010003&quot;,<br />&nbsp;&quot;3233003&quot;,<br />&nbsp;&quot;1021330&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            37
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
