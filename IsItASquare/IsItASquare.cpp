@@ -62,9 +62,13 @@ typedef tuple< int, int, int > III;
     - vector rotation by 90 degrees
     - ∃ p1,p2 s.t. p1==A+C, p2==B+C, C=rotate(A-B, 90 degrees)
       - rotate(A=(a,b), 90 degrees) = (-b,a)
+  - https://topcoder.g.hatena.ne.jp/yambe2002/20150916/1442373452
+    - number of distinct distances is at most 2 <=> square
+    - most simple and beautiful solution ✨
  
  23:30-23:37 add @kmjp solution
  23:40-23:47 add solution which simplified original one
+ 23:55-
  
  Key:
   - ab==bc==cd==da && ac==bd <=> (a,b,c,d) forms square
@@ -127,7 +131,7 @@ public:
   }
 };
 
-class IsItASquare {
+class IsItASquare_side_diagonals {
 public:
   int dist(II p1, II p2) {
     int dx=p1.first-p2.first,dy=p1.second-p2.second;
@@ -146,11 +150,28 @@ public:
     int mind=*min_element(ds.begin(),ds.end());
     int maxd=*max_element(ds.begin(),ds.end());
     if(mind!=maxd||mind==0||maxd==0) return "Not a square";
-  
+    
     int d1=dist(ps[0],ps[3]),d2=dist(ps[1],ps[2]);
     if(d1!=d2||d1==0||d2==0) return "Not a square";
     
     return "It's a square";
+  }
+};
+
+class IsItASquare {
+public:
+  string ok="It's a square",ng="Not a square";
+  int dist(II p1, II p2) {
+    int dx=p1.first-p2.first,dy=p1.second-p2.second;
+    return dx*dx+dy*dy;
+  }
+  
+  string isSquare(vector<int> X, vector<int> Y) {
+    SETI ds;
+    REP(i,4)FOR(j,i+1,4) {
+      ds.insert(dist({X[i],Y[i]},{X[j],Y[j]}));
+    }
+    return SZ(ds)<=2 ? ok : ng;
   }
 };
 
