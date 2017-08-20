@@ -1,0 +1,24 @@
+-- Example 0
+ab
+
+Good
+-- Example 1
+aab
+
+Bad
+-- Example 2
+aabb
+
+Good
+-- Example 3
+ababab
+
+Good
+-- Example 4
+abaababababbaabbaaaabaababaabbabaaabbbbbbbb
+
+Bad
+-- Example 5
+aaaaaaaabbbaaabaaabbabababababaabbbbaabbabbbbbbabb
+
+Good
