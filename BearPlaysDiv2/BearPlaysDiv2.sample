@@ -1,0 +1,30 @@
+-- Example 0
+10
+15
+35
+
+possible
+-- Example 1
+1
+1
+2
+
+impossible
+-- Example 2
+4
+6
+8
+
+impossible
+-- Example 3
+18
+18
+18
+
+possible
+-- Example 4
+225
+500
+475
+
+possible
