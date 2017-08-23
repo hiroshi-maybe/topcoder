@@ -27,6 +27,46 @@ void ztransform_subset(int N) {
   }
 }
 
+// Returns all the submasks of given mask
+// https://e-maxx-eng.appspot.com/algebra/all-submasks.html
+// https://www.topcoder.com/community/data-science/data-science-tutorials/a-bit-of-fun-fun-with-bits/
+//
+// // O(3^N) time for all the super sets
+// REP(mask,1<<N) for(int s=mask; s>0; s=(s-1)&mask) { ... }
+//
+vector<int> submasks(int mask) {
+  vector<int> S;
+  for(int s=mask; s>0; s=(s-1)&mask) {
+    S.push_back(s);
+  }
+  return S;
+}
+
+// test if number is power of 2
+bool isPowerOfTwo(int n) {
+  return (n&(n-1))==0;
+}
+
+// unset least significant (right-most) bit
+int unsetLSB(int n) {
+  return n&(n-1);
+}
+
+// get number with least significant (right-most) bit
+int getLSB(int n) {
+  return n&-n;
+}
+
+/*
+ 
+ GCC built-in libraries:
+ 
+  __builtin_popcount(mask) // count number of ON bit
+  __builtin_ctz(mask)      // count number of trailing zeros
+  __builtin_clz(mask)      // count number of leading zeros
+ 
+ */
+
 /***********************   test code below   ***********************/
 
 int main(int argc, char const *argv[]) {
@@ -41,4 +81,14 @@ int main(int argc, char const *argv[]) {
   vector<int> exp2 = {0,1,2,6,4,10,12,28};
   for(int i=0; i<(1<<N); ++i) assert(f[i]==exp2[i]);
 
+  vector<int> exp3 = {26, 24, 18, 16, 10, 8, 2};
+  vector<int> S = submasks(26);
+  assert(S.size()==exp3.size());
+  for(int i=0; i<S.size(); ++i) assert(exp3[i]==S[i]);
+  
+  assert(isPowerOfTwo(32));
+  assert(!isPowerOfTwo(31));
+  
+  assert(unsetLSB(26)==24);
+  assert(getLSB(26)==2);
 }
