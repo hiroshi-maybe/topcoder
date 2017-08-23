@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder SRM 663 - 1000: CheeseRolling</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #CCCCCC;
+    /* background color */
+    background-color: #333333;
+}
+.section .section-title {
+    /* title color */
+    color: white;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #303030;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>SRM 663</span>
+        <span id='contest-division'>2</span>
+        <span id='problem-score'>1000</span>
+        <span id='problem-name'>CheeseRolling</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1"><p>N people (where N is a power of 2) are taking part in a single-elimination tournament in cheese rolling.
+The diagram below illustrates the structure of the tournament bracket.</p>
+<br />
+<p>
+<img src="http://www.topcoder.com/contest/problem/CheeseRolling/Pic1.png"></img></p>
+<br />
+<p>
+The people entering the tournament are numbered from 0 to N-1.
+For each potential cheese rolling match you know who would win the match.
+You are given this information encoded as a <type>String[]</type> <b>wins</b> with N elements, each containing N characters.
+For each valid i and j, <b>wins</b>[i][j] is 'Y' if person i beats person j.
+Otherwise, <b>wins</b>[i][j] is 'N'.
+The relation is not necessarily transitive: it may be the case that person i beats person j, person j beats person k, and person k beats person i.</p>
+<br />
+<p>
+There are N! (N factorial) ways to assign the people to positions in the bracket.
+Different assignments may produce a different winner of the tournament.
+Return a <type>long[]</type> with N elements.
+For each valid i, element i of the return value should be the exact number of assignments for which person i wins the tournament.</p></intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>CheeseRolling</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>waysToWin</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        vector&lt;string&gt;
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        vector&lt;long long&gt;
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        vector&lt;long long&gt; waysToWin(vector&lt;string&gt; wins)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>4.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>256</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1">N will be between 2 and 16, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">N will be a power of 2.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>wins</b> will contain exactly N elements.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>wins</b> will have a length of exactly N.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>wins</b> will be composed of the characters 'Y' and 'N'.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">For each i from 0 to N-1, <b>wins</b>[i][i] = 'N'.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">For all distinct integers i and j from 0 to N-1, exactly one of <b>wins</b>[i][j] and <b>wins</b>[j][i] will be 'Y'.</user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">wins</span>
+                                <span class="value data">
+                                
+                                    {&quot;NN&quot;,<br />&nbsp;&quot;YN&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { 0LL, 2LL }
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">There are 2 ways to assign the players:
+<ul>
+<li>Player 0 goes to position 0 and player 1 goes to position 1.</li>
+<li>Player 1 goes to position 0 and player 0 goes to position 1.</li>
+</ul>
+In both assignments, player 1 will win the match against player 0 because <b>wins</b>[1][0] = 'Y'.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">wins</span>
+                                <span class="value data">
+                                
+                                    {&quot;NYNY&quot;,<br />&nbsp;&quot;NNYN&quot;,<br />&nbsp;&quot;YNNY&quot;,<br />&nbsp;&quot;NYNN&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { 8LL, 0LL, 16LL, 0LL }
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">wins</span>
+                                <span class="value data">
+                                
+                                    {&quot;NYNYNYNY&quot;,<br />&nbsp;&quot;NNYNYNYY&quot;,<br />&nbsp;&quot;YNNNNNNN&quot;,<br />&nbsp;&quot;NYYNNYNY&quot;,<br />&nbsp;&quot;YNYYNYYY&quot;,<br />&nbsp;&quot;NYYNNNNN&quot;,<br />&nbsp;&quot;YNYYNYNN&quot;,<br />&nbsp;&quot;NNYNNYYN&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { 4096LL, 8960LL, 0LL, 2048LL, 23808LL, 0LL, 1408LL, 0LL }
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">wins</span>
+                                <span class="value data">
+                                
+                                    {&quot;NYNNNNYYNYYNNYNN&quot;,<br />&nbsp;&quot;NNNNNNNNNYYNYYNY&quot;,<br />&nbsp;&quot;YYNYYNNNNYYYYYYN&quot;,<br />&nbsp;&quot;YYNNYYYNYNNYYYNY&quot;,<br />&nbsp;&quot;YYNNNYYNYYNNNNYY&quot;,<br />&nbsp;&quot;YYYNNNNYYNNYYNYN&quot;,<br />&nbsp;&quot;NYYNNYNYNYNYYYYN&quot;,<br />&nbsp;&quot;NYYYYNNNYYNYNYYY&quot;,<br />&nbsp;&quot;YYYNNNYNNYYYYNNN&quot;,<br />&nbsp;&quot;NNNYNYNNNNNNYYNY&quot;,<br />&nbsp;&quot;NNNYYYYYNYNYYYNN&quot;,<br />&nbsp;&quot;YYNNYNNNNYNNYNNY&quot;,<br />&nbsp;&quot;YNNNYNNYNNNNNYNN&quot;,<br />&nbsp;&quot;NNNNYYNNYNNYNNYY&quot;,<br />&nbsp;&quot;YYNYNNNNYYYYYNNN&quot;,<br />&nbsp;&quot;YNYNNYYNYNYNYNYN&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { 331616878592LL, 37267079168LL, 2426798866432LL, 2606831599616LL, 994941665280LL, 1162501849088LL, 1888166674432LL, 4632734203904LL, 832881524736LL, 84707409920LL, 3007127748608LL, 55490052096LL, 17818550272LL, 254672666624LL, 629921447936LL, 1959311671296LL }
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">wins</span>
+                                <span class="value data">
+                                
+                                    {&quot;NYYYYYYYYYYYYYYY&quot;,<br />&nbsp;&quot;NNYYYYYYYYYYYYYY&quot;,<br />&nbsp;&quot;NNNYYYYYYYYYYYYY&quot;,<br />&nbsp;&quot;NNNNYYYYYYYYYYYY&quot;,<br />&nbsp;&quot;NNNNNYYYYYYYYYYY&quot;,<br />&nbsp;&quot;NNNNNNYYYYYYYYYY&quot;,<br />&nbsp;&quot;NNNNNNNYYYYYYYYY&quot;,<br />&nbsp;&quot;NNNNNNNNYYYYYYYY&quot;,<br />&nbsp;&quot;NNNNNNNNNYYYYYYY&quot;,<br />&nbsp;&quot;NNNNNNNNNNYYYYYY&quot;,<br />&nbsp;&quot;NNNNNNNNNNNYYYYY&quot;,<br />&nbsp;&quot;NNNNNNNNNNNNYYYY&quot;,<br />&nbsp;&quot;NNNNNNNNNNNNNYYY&quot;,<br />&nbsp;&quot;NNNNNNNNNNNNNNYY&quot;,<br />&nbsp;&quot;NNNNNNNNNNNNNNNY&quot;,<br />&nbsp;&quot;NNNNNNNNNNNNNNNN&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { 20922789888000LL, 0LL, 0LL, 0LL, 0LL, 0LL, 0LL, 0LL, 0LL, 0LL, 0LL, 0LL, 0LL, 0LL, 0LL, 0LL }
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">Player 0 wins no matter how the positions are assigned, so the answer is 16! = 20922789888000.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
