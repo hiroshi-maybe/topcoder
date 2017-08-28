@@ -25,9 +25,10 @@ tuple<int,int,int> gcd_extended(int a, int b) {
   return make_tuple(d2,y2,x2-(a/b)*y2);
 }
 
-// CLRS 31.6
+// CLRS 31.6 powers of an element
 // compute (a^b) `mod` 1e9+7
 // O(lg b)
+// famous for name of "repeated squaring"
 LL powmod(LL a, LL b) {
   assert(0<=a && a<MOD);
   assert(0<=b);
