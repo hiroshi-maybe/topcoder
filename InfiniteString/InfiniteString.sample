@@ -1,0 +1,30 @@
+-- Example 0
+ab
+abab
+
+Equal
+-- Example 1
+abc
+bca
+
+Not equal
+-- Example 2
+abab
+aba
+
+Not equal
+-- Example 3
+aaaaa
+aaaaaa
+
+Equal
+-- Example 4
+ababab
+abab
+
+Equal
+-- Example 5
+a
+z
+
+Not equal
