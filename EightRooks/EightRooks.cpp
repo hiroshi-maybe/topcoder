@@ -56,7 +56,7 @@ typedef tuple< int, int, int > III;
  9:45-9:51 system test passed (240.73 pt)
  
  editorial:
-  -
+  - https://apps.topcoder.com/wiki/display/tc/SRM+657
  
  */
 class EightRooks {

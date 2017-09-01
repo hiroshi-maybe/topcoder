@@ -73,6 +73,9 @@ typedef tuple< int, int, int > III;
   - brute force by backtracking
    - https://community.topcoder.com/stat?c=problem_solution&rm=326021&rd=16416&pm=13749&cr=40122674
  
+ Another editorial:
+  - http://torus711.hatenablog.com/entry/20150427/1430142353
+ 
  */
 
 double P[11][11];
