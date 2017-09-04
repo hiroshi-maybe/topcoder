@@ -11,7 +11,7 @@ public:
   Vector(pair<int,int> p1, pair<int,int> p2): Vector(p1.first-p2.first, p1.second-p2.second) {}
   Vector(int x, int y): x(x), y(y) {}
     
-  int distance() {
+  long long distance() {
       return x*x + y*y;
   }
 };
@@ -42,7 +42,7 @@ pair<int,int> makePair(vector<int> v) {
    u is counter-clockwise from v
 
  */
-int det(Vector u, Vector v) {
+long long det(Vector u, Vector v) {
   return u.x*v.y - u.y*v.x;
 }
 /*
@@ -57,11 +57,11 @@ int det(Vector u, Vector v) {
   o->p1 is counter clockwise against o->p2
  
  */
-int det(pair<int,int> p1, pair<int,int> p2, pair<int,int> origin) {
+long long det(pair<int,int> p1, pair<int,int> p2, pair<int,int> origin) {
   auto vs = makeVectors(p1,p2,origin);
   return det(vs.first,vs.second);
 }
-int dot(Vector u, Vector v) {
+long long dot(Vector u, Vector v) {
   return u.x*v.x + u.y*v.y;
 }
 
@@ -70,13 +70,12 @@ bool isVertical(Vector u, Vector v) {
   return dot(u,v)==0;
 }
 
-int distance(pair<int,int> p1, pair<int,int> p2) {
+long long distance(pair<int,int> p1, pair<int,int> p2) {
   int dx = p1.first-p2.first, dy = p1.second-p2.second;
   return dx*dx + dy*dy;
 }
 
-// CLRS 33.1
-// p1->p2 intersects p3->p4
+// CLRS 33.1 ON-SEGMENT(pi,pj,pk)
 bool onSegment(pair<int,int> p1, pair<int,int> p2, pair<int,int> pi) {
   int xmin=min(p1.first, p2.first),
       xmax=max(p1.second, p2.second),
@@ -84,13 +83,15 @@ bool onSegment(pair<int,int> p1, pair<int,int> p2, pair<int,int> pi) {
       ymax=max(p1.second,p2.second);
   return xmin<=pi.first && pi.first<=xmax && ymin<=pi.second && pi.second<=ymax;
 }
+// CLRS 33.1 SEGMENTS-INTERSECT(p1,p2,p3,p4)
+// p1->p2 intersects p3->p4
 bool intersect(pair<int,int> p1, pair<int,int> p2, pair<int,int> p3, pair<int,int> p4) {
-  int d1 = det(p3,p4,p1),
-      d2 = det(p3,p4,p2),
-      d3 = det(p1,p2,p3),
-      d4 = det(p1,p2,p4);
+  long long d1 = det(p3,p4,p1),
+            d2 = det(p3,p4,p2),
+            d3 = det(p1,p2,p3),
+            d4 = det(p1,p2,p4);
 
-  if (d1*d2<0 && d3*d4<0) return true;
+  if (((d1>0&&d2<0)||(d1<0&&d2>0)) && ((d3>0&&d4<0)||(d3<0&&d4>0))) return true;
   if (d1==0 && onSegment(p3,p4,p1)) return true;
   if (d2==0 && onSegment(p3,p4,p2)) return true;
   if (d3==0 && onSegment(p1,p2,p3)) return true;
