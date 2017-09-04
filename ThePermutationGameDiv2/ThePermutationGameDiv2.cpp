@@ -58,6 +58,7 @@ typedef tuple< int, int, int > III;
   - https://apps.topcoder.com/wiki/display/tc/SRM+652
   - http://kmjp.hatenablog.jp/entry/2015/03/13/0930
   - https://ik-fib.com/2015/03/srm652-div2/
+  - http://torus711.hatenablog.com/entry/20150317/1426581825
  
  res = LCM { 1..N }
  

@@ -140,6 +140,7 @@ bool intersect(pair<int,int> p1, pair<int,int> p2, pair<int,int> p3, pair<int,in
   - https://apps.topcoder.com/wiki/display/tc/SRM+652
   - http://kmjp.hatenablog.jp/entry/2015/03/13/1000
   - http://roiti46.hatenablog.com/entry/2015/03/13/TopCoder_SRM_652_Div2_Hard%3A_NoRightTurnDiv2
+  - http://topcoder.g.hatena.ne.jp/kuuso1/20150315/1426380787
  
  Find left-bottom point to start scan.
  If we take the most right outer point, then all other remaining points are in counter clock position.
@@ -148,6 +149,8 @@ bool intersect(pair<int,int> p1, pair<int,int> p2, pair<int,int> p3, pair<int,in
  by keeping this invariant, we can pick all the points without intersection.
  
  key:
+  - Jarvis's march: https://en.wikipedia.org/wiki/Gift_wrapping_algorithm
+    - CLRS 33.3 finding the convex hull
   - greedy selection of starting point
     - or brute-force first point and discard it if intersection is found (@kmjp's solution)
   - keep selecting a point which is clock-wise from any other remaining points

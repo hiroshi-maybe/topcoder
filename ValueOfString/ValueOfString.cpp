@@ -58,6 +58,7 @@ typedef tuple< int, int, int > III;
  editorial:
   - https://apps.topcoder.com/wiki/display/tc/SRM+652
   - https://ik-fib.com/2015/03/srm652-div2/
+  - http://torus711.hatenablog.com/entry/20150317/1426581827
  
  summary:
   - misunderstanding problem first. wasted time 👎
