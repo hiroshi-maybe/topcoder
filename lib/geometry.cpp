@@ -27,23 +27,36 @@ pair<int,int> makePair(vector<int> v) {
 
 /*
  
- Cross product ×
+ cross product u×v
  
- u×v = u.x * v.y - u.y * v.x
+ u×v = det(u,v)
+     = u.x * v.y - u.y * v.x
      = |u|*|v|*sin𝛩
      = area of parallelogram formed by u and v
  
- 1) u×v = 0
-   u and v are colinear
- 2) u×v > 0
-   u->v is clockwise
- 3) u×v < 0
-   u->v is anti-clockwise
+ 1) u×v = det(u,v) = 0
+   u and v are colinear from origin
+ 2) u×v = det(u,v) > 0
+   u is clockwise from v
+ 3) u×v = det(u,v) < 0
+   u is counter-clockwise from v
 
  */
 int det(Vector u, Vector v) {
   return u.x*v.y - u.y*v.x;
 }
+/*
+ 
+ cross product det(o->p1, o->p2)
+ 
+ 1) det(p1,p2,o) = 0
+  o->p1 is colinear with o->p2
+ 2) det(p1,p2,o) > 0
+  o->p1 is clockwise against o->p2
+ 3) det(p1,p2,o) < 0
+  o->p1 is counter clockwise against o->p2
+ 
+ */
 int det(pair<int,int> p1, pair<int,int> p2, pair<int,int> origin) {
   auto vs = makeVectors(p1,p2,origin);
   return det(vs.first,vs.second);
