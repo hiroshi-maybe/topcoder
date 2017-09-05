@@ -81,14 +81,14 @@ typedef tuple< int, int, int > III;
  17:21-17:39 add visualized shapes for fun :D
  
  generated shapes:
-  - K=8: 2725 shapes
-  - K=7:  760 shapes
-  - K=6:  216 shapes
-  - K=5:   63 shapes
-  - K=4:   19 shapes
-  - K=3:    6 shapes
-  - K=2:    2 shapes
-  - K=1:    1 shape
+  - K=8: 2725 shapes https://github.com/k-ori/topcoder/blob/master/FoxConnection4/8-shape.txt
+  - K=7:  760 shapes https://github.com/k-ori/topcoder/blob/master/FoxConnection4/7-shape.txt
+  - K=6:  216 shapes https://github.com/k-ori/topcoder/blob/master/FoxConnection4/6-shape.txt
+  - K=5:   63 shapes https://github.com/k-ori/topcoder/blob/master/FoxConnection4/5-shape.txt
+  - K=4:   19 shapes https://github.com/k-ori/topcoder/blob/master/FoxConnection4/4-shape.txt
+  - K=3:    6 shapes https://github.com/k-ori/topcoder/blob/master/FoxConnection4/3-shape.txt
+  - K=2:    2 shapes https://github.com/k-ori/topcoder/blob/master/FoxConnection4/2-shape.txt
+  - K=1:    1 shape  https://github.com/k-ori/topcoder/blob/master/FoxConnection4/1-shape.txt
  
  */
 
