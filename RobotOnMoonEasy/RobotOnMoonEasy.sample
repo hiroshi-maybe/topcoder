@@ -1,0 +1,53 @@
+-- Example 0
+4
+.....
+.###.
+..S#.
+...#.
+URURURURUR
+
+Alive
+-- Example 1
+4
+.....
+.###.
+..S..
+...#.
+URURURURUR
+
+Dead
+-- Example 2
+4
+.....
+.###.
+..S..
+...#.
+URURU
+
+Alive
+-- Example 3
+5
+#####
+#...#
+#.S.#
+#...#
+#####
+DRULURLDRULRUDLRULDLRULDRLURLUUUURRRRDDLLDD
+
+Alive
+-- Example 4
+5
+#####
+#...#
+#.S.#
+#...#
+#.###
+DRULURLDRULRUDLRULDLRULDRLURLUUUURRRRDDLLDD
+
+Dead
+-- Example 5
+1
+S
+R
+
+Dead
