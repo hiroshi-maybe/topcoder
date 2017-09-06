@@ -61,6 +61,7 @@ typedef tuple< int, int, int > III;
   - http://kmjp.hatenablog.jp/entry/2015/02/19/0930
   - http://mayokoex.hatenablog.com/entry/2015/03/20/205715
   - http://torus711.hatenablog.com/entry/20150227/1425050883
+  - https://apps.topcoder.com/wiki/display/tc/SRM+650
  
  19:08-19:35 add solution by count check in dfs
  
@@ -76,8 +77,8 @@ typedef tuple< int, int, int > III;
  
  perfect binary tree:
   - in any subtree, number of nodes in left subtree is same as one in right subtree
-  - number of nodes are 2^h-1 for a tree whose height is `h`
-    - |left tree| = |right tree|
+  - number of nodes are 2^h-1 at height `h`
+    - |left tree| = |right tree| = 2^(h-1)-1
  
  => degree properties
   root: degree=2, cnt=1
@@ -94,9 +95,55 @@ typedef tuple< int, int, int > III;
   - didn't have idea to find root by degree=2. thus it was tough to check graph
    - if root is determined, it's easy to check by dfs
  
+ 22:20-22:35 add more strict dfs check inspired by official editorial
+ 
  */
 VI E[1025];
 class TheKingsRoadsDiv2 {
+public:
+  int N;
+  const int Inf=1e5;
+  VI viz;
+  
+  int dfs(int u, int pre, int h) {
+    if(viz[u]) return -Inf;
+    viz[u]=true;
+    VI cnt;
+    FORR(v,E[u]) if(v!=pre) {
+      cnt.push_back(dfs(v,u,h-1));
+    }
+    if(h==1) return cnt.empty()?1:-Inf;
+    if(SZ(cnt)!=2) return -Inf;
+    int l=cnt[0],r=cnt[1],t=(1<<(h-1))-1;
+    if(l!=t||r!=t) return -Inf;
+    return l+r+1;
+  }
+
+  string getAnswer(int H, vector<int> A, vector<int> B) {
+    N=SZ(A);
+    if(H==1) return "Correct";
+    REP(i,N) A[i]=A[i]-1, B[i]=B[i]-1;
+    REP(i,N) {
+      REP(j,N) E[j].clear();
+      REP(j,N) if(i!=j) {
+        int u=A[j],v=B[j];
+        E[u].emplace_back(v);
+        E[v].emplace_back(u);
+      }
+      
+      int root=-1;
+      REP(u,N) if(SZ(E[u])==2) root=u;
+      if(root==-1) continue;
+      
+      viz=VI(N,0);
+      if(dfs(root,-1,H)>=0) return "Correct";
+    }
+    
+    return "Incorrect";
+  }
+};
+
+class TheKingsRoadsDiv2_dfs1 {
 public:
   int N;
   const int Inf=1e5;
