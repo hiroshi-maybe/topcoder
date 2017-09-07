@@ -1,0 +1,40 @@
+-- Example 0
+sunuke
+snuke
+
+Possible
+-- Example 1
+snuke
+skue
+
+Impossible
+-- Example 2
+snuke
+snuke
+
+Impossible
+-- Example 3
+snukent
+snuke
+
+Impossible
+-- Example 4
+aaaaa
+aaaa
+
+Possible
+-- Example 5
+aaaaa
+aaa
+
+Impossible
+-- Example 6
+topcoder
+tpcoder
+
+Possible
+-- Example 7
+singleroundmatch
+singeroundmatc
+
+Impossible
