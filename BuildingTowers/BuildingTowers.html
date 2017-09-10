@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder SRM 647 - 1000: BuildingTowers</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #CCCCCC;
+    /* background color */
+    background-color: #333333;
+}
+.section .section-title {
+    /* title color */
+    color: white;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #303030;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>SRM 647</span>
+        <span id='contest-division'>2</span>
+        <span id='problem-score'>1000</span>
+        <span id='problem-name'>BuildingTowers</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1"><p>
+The citizens of Byteland want to build <b>N</b> new buildings.
+The new buildings will all stand in a line and they will be labeled 1 through <b>N</b>, in order.
+The city regulations impose some restrictions on the heights of the new buildings.
+You are given the parameters used in these restrictions: an <type>int</type> <b>K</b> and two <type>int[]</type>s <b>x</b> and <b>t</b>.
+The restrictions are described below.
+
+<ul>
+<li>The height of each building must be a nonnegative integer.</li>
+<li>The height of building 1 must be 0.</li>
+<li>The absolute value of the difference between any two adjacent buildings must be at most <b>K</b>.</li>
+<li>For each valid i, the height of building <b>x</b>[i] must be <b>t</b>[i] or less.</li>
+</ul>
+</p>
+
+<p>
+Given these restrictions, the citizens of Byteland want to build a building that will be as tall as possible.
+Return the largest possible height some of the <b>N</b> buildings may have.
+</p></intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>BuildingTowers</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>maxHeight</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        int
+                    , 
+                        int
+                    , 
+                        vector&lt;int&gt;
+                    , 
+                        vector&lt;int&gt;
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        long long
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        long long maxHeight(int N, int K, vector&lt;int&gt; x, vector&lt;int&gt; t)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>2.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>256</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1"><b>N</b> will be between 1 and 1,000,000,000, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>K</b> will be between 1 and 1,000,000,000, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>x</b> will contain between 0 and min(<b>N</b>,500) elements, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>t</b> will have exactly the same number of elements as <b>x</b></user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>x</b> will be between 1 and <b>N</b>, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>x</b>[i] &lt; <b>x</b>[i+1] for all valid i.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>t</b> will be between 1 and 1,000,000,000, inclusive.</user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">N</span>
+                                <span class="value data">
+                                
+                                    10
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">K</span>
+                                <span class="value data">
+                                
+                                    1
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">x</span>
+                                <span class="value data">
+                                
+                                    { 3, 8 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">t</span>
+                                <span class="value data">
+                                
+                                    { 1, 1 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            3
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment"><p>
+In this case we are going to build 10 buildings.
+The difference in height between adjacent buildings is at most 1.
+We also have two additional constraints: the height of building 3 can be at most 1, and the height of building 8 can also be at most 1.
+The tallest possible new building in this city can have height 3.
+One optimal skyline looks as follows: {0,1,1,2,3,3,2,1,1,0}.
+</p></div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">N</span>
+                                <span class="value data">
+                                
+                                    1000000000
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">K</span>
+                                <span class="value data">
+                                
+                                    1000000000
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">x</span>
+                                <span class="value data">
+                                
+                                    {  }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">t</span>
+                                <span class="value data">
+                                
+                                    {  }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            999999999000000000
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">There are no additional constraints so, for each valid i, the height of building i can be (i-1)*1000000000.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">N</span>
+                                <span class="value data">
+                                
+                                    20
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">K</span>
+                                <span class="value data">
+                                
+                                    3
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">x</span>
+                                <span class="value data">
+                                
+                                    { 4, 7, 13, 15, 18 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">t</span>
+                                <span class="value data">
+                                
+                                    { 8, 22, 1, 55, 42 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            22
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">N</span>
+                                <span class="value data">
+                                
+                                    780
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">K</span>
+                                <span class="value data">
+                                
+                                    547990606
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">x</span>
+                                <span class="value data">
+                                
+                                    { 34, 35, 48, 86, 110, 170, 275, 288, 313, 321, 344, 373, 390, 410, 412, 441, 499, 525, 538, 568, 585, 627, 630, 671, 692, 699, 719, 752, 755, 764, 772 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">t</span>
+                                <span class="value data">
+                                
+                                    { 89, 81, 88, 42, 55, 92, 19, 91, 71, 42, 72, 18, 86, 89, 88, 75, 29, 98, 63, 74, 45, 11, 68, 34, 94, 20, 69, 33, 50, 69, 54 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            28495511604
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">N</span>
+                                <span class="value data">
+                                
+                                    7824078
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">K</span>
+                                <span class="value data">
+                                
+                                    2374
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">x</span>
+                                <span class="value data">
+                                
+                                    { 134668, 488112, 558756, 590300, 787884, 868112, 1550116, 1681439, 1790994, 1796091, 1906637, 2005485, 2152813, 2171716, 2255697, 2332732, 2516853, 2749024, 2922558, 2930163, 3568190, 3882735, 4264888, 5080550, 5167938, 5249191, 5574341, 5866912, 5936121, 6142348, 6164177, 6176113, 6434368, 6552905, 6588059, 6628843, 6744163, 6760794, 6982172, 7080464, 7175493, 7249044 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">t</span>
+                                <span class="value data">
+                                
+                                    { 8, 9, 171315129, 52304509, 1090062, 476157338, 245, 6, 253638067, 37, 500, 29060, 106246500, 129, 22402, 939993108, 7375, 2365707, 40098, 10200444, 3193547, 55597, 24920935, 905027, 1374, 12396141, 525886, 41, 33, 3692, 11502, 180, 3186, 5560, 778988, 42449532, 269666, 10982579, 48, 3994, 1, 9 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            1365130725
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
