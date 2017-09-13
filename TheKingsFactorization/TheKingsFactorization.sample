@@ -1,0 +1,116 @@
+-- Example 0
+12
+2
+2LL
+3LL
+
+3
+2LL
+2LL
+3LL
+-- Example 1
+7
+1
+7LL
+
+1
+7LL
+-- Example 2
+1764
+3
+2LL
+3LL
+7LL
+
+6
+2LL
+2LL
+3LL
+3LL
+7LL
+7LL
+-- Example 3
+49
+1
+7LL
+
+2
+7LL
+7LL
+-- Example 4
+210
+2
+2LL
+5LL
+
+4
+2LL
+3LL
+5LL
+7LL
+-- Example 5
+100000
+5
+2LL
+2LL
+2LL
+5LL
+5LL
+
+10
+2LL
+2LL
+2LL
+2LL
+2LL
+5LL
+5LL
+5LL
+5LL
+5LL
+-- Example 6
+65432
+2
+2LL
+2LL
+
+4
+2LL
+2LL
+2LL
+8179LL
+-- Example 7
+92233292289161182
+1
+2LL
+
+2
+2LL
+46116646144580591LL
+-- Example 8
+427651727822255162
+2
+2LL
+982451653LL
+
+3
+2LL
+217645177LL
+982451653LL
+-- Example 9
+837108
+4
+2LL
+3LL
+3LL
+337LL
+
+7
+2
+2
+3
+3
+3
+23
+337
+
