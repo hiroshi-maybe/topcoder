@@ -1,0 +1,25 @@
+-- Example 0
+absdefgh
+asdf
+
+Yep, it's wood.
+-- Example 1
+oxoxoxox
+ooxxoo
+
+Nope.
+-- Example 2
+oxoxoxox
+xxx
+
+Yep, it's wood.
+-- Example 3
+qwerty
+qwerty
+
+Yep, it's wood.
+-- Example 4
+string
+longstring
+
+Nope.
