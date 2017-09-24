@@ -1,0 +1,71 @@
+-- Example 0
+1
+0
+1
+7
+3
+
+Possible
+-- Example 1
+1
+0
+1
+8
+2
+
+Impossible
+-- Example 2
+2
+0
+1
+2
+3
+1
+0
+
+Impossible
+-- Example 3
+3
+5
+0
+2
+3
+2
+3
+5
+2
+
+Impossible
+-- Example 4
+8
+5
+1
+-10
+7
+12
+2
+10
+20
+8
+3
+4
+2
+7
+1
+4
+3
+4
+6
+
+Possible
+-- Example 5
+2
+-1000
+-998
+2
+3
+3
+1
+
+Impossible
+
