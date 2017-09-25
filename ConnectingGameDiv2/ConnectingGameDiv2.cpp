@@ -91,13 +91,124 @@ typedef tuple< int, int, int > III;
   - Floyd-warshall
     - https://community.topcoder.com/stat?c=problem_solution&rm=324147&rd=16080&pm=13507&cr=23184967
  
+ 9/25/2017
+ 
+ 24:51- add solution by min-cut by @kmjp
+ 
  */
 
-VI moves={-1,0,1};
+#define MAX_V 1100
+vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
+
+template<class V> class MaxFlow_dinic {
+public:
+  void addEdge(int from, int to, V cap) {
+    E[from].push_back((Edge){  to, (int)E[  to].size()  , cap});
+    E[  to].push_back((Edge){from, (int)E[from].size()-1,   0}); // residual graph
+  }
+  
+  V maxFlow(int s, int t) {
+    V flow = 0;
+    while (true) {
+      bfs(s);
+      if (level[t] < 0) return flow; // t is unreachable
+      
+      memset(iter, 0, sizeof(iter));
+      int f;
+      while ((f = dfs(s, t, numeric_limits<V>::max())) > 0) {
+        flow += f;
+      }
+    }
+    
+    return flow;
+  }
+private:
+  struct Edge { int to, rev; V cap; };
+  vector<Edge> E[MAX_V]; // Graph
+  int level[MAX_V]; // distance from `s`
+  int iter[MAX_V];
+  
+  // initialize shoftest path and store in `level`
+  void bfs(int s) {
+    memset(level, -1, sizeof(level));
+    
+    queue<int> Q;
+    level[s] = 0;
+    Q.push(s);
+    
+    while (!Q.empty()) {
+      int u = Q.front(); Q.pop();
+      
+      for (int i = 0; i < E[u].size(); i++) {
+        Edge &e = E[u][i];
+        int v = e.to;
+        if (e.cap<=0) continue;
+        if (level[v]>=0) continue; // visited
+        
+        level[v] = level[u] + 1;
+        Q.push(v);
+      }
+    }
+  }
+  
+  // find augmenting path in residual network and update f
+  int dfs(int u, int t, V f) {
+    if (u == t) return f;
+    for (int &i = iter[u]; i < E[u].size(); i++) {
+      Edge &e = E[u][i];
+      V v = e.to;
+      if (e.cap <= 0) continue;
+      if (level[u] >= level[v]) continue;
+      
+      int d = dfs(v, t, min(f, e.cap));
+      if (d <= 0) continue;
+      e.cap -= d;
+      E[v][e.rev].cap += d;
+      return d;
+    }
+    
+    return 0;
+  }
+};
+
+int cap[256],top[256],bottom[256];
+int mx[256][256];
+int const Inf=1e8;
+class ConnectingGameDiv2 {
+public:
+  int getmin(vector<string> board) {
+    int M=SZ(board),N=SZ(board[0]);
+    ZERO(cap); ZERO(top); ZERO(bottom); ZERO(mx);
+    
+    REP(j,N) top[board[0][j]]=bottom[board[M-1][j]]=1;
+    REP(i,M)REP(j,N) ++cap[board[i][j]];
+    REP(i,M)REP(j,N) FORR(m,moves) {
+      int i2=i+m.first,j2=j+m.second;
+      if(i2<0||i2>=M||j2<0||j2>=N) continue;
+      char r1=board[i][j],r2=board[i2][j2];
+      if(r1!=r2) mx[r1][r2]=1;
+    }
+    
+    MaxFlow_dinic<int> mf;
+    int source=0,sink=530;
+    REP(r1,256) {
+      int s=r1+1,t=r1+257;
+      if(top[r1])    mf.addEdge(source,s,Inf);
+      if(bottom[r1]) mf.addEdge(t,sink,Inf);
+      mf.addEdge(s,t,cap[r1]);
+      REP(r2,256) if(mx[r1][r2]) mf.addEdge(t,r2+1,Inf);
+    }
+    
+    return mf.maxFlow(source,sink);
+  }
+};
+
 unordered_map<int,int> W[2505];
 int dist[2505];
-class ConnectingGameDiv2 {
+class ConnectingGameDiv2_dijkstra {
   public:
+  VI moves={-1,0,1};
+
   int getmin(vector<string> board) {
     int M=SZ(board),N=SZ(board[0]);
     unordered_map<char,int> S;
