@@ -1,0 +1,28 @@
+-- Example 0
+aabccb
+
+Possible
+-- Example 1
+aabccbb
+
+Impossible
+-- Example 2
+abcddcba
+
+Possible
+-- Example 3
+abab
+
+Impossible
+-- Example 4
+aaaaaaaaaa
+
+Possible
+-- Example 5
+aababbabbaba
+
+Impossible
+-- Example 6
+zzxzxxzxxzzx
+
+Possible
