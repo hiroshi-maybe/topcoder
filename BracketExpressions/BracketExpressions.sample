@@ -1,0 +1,24 @@
+-- Example 0
+([]{})
+
+possible
+-- Example 1
+(())[]
+
+possible
+-- Example 2
+({])
+
+impossible
+-- Example 3
+[]X
+
+impossible
+-- Example 4
+([]X()[()]XX}[])X{{}}]
+
+possible
+-- Example 5
+([)]
+
+impossible
