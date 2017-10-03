@@ -1,0 +1,65 @@
+-- Example 0
+2
+.A
+P.
+0
+
+1
+-- Example 1
+2
+.A
+P.
+1
+
+2
+-- Example 2
+3
+.PP
+PPA
+PAP
+3
+
+6
+-- Example 3
+10
+A.P.PAAPPA
+PPP..P.PPP
+AAP.A.PAPA
+P.PA.AAA.A
+...PA.P.PA
+P..A.A.P..
+PAAP..A.A.
+PAAPPA.APA
+.P.AP.P.AA
+..APAPAA..
+10
+
+21
+-- Example 4
+2
+AP
+PA
+2
+
+1
+-- Example 5
+2
+PP
+AA
+2
+
+2
+-- Example 6
+9
+AAAPAPPAA
+AAPAAAAAA
+PPAAPAAPA
+PAAPPAPPP
+APAAAPAPA
+AAAAPPAAP
+APPAPPAPA
+APAAAAAPA
+AAAAAPAAA
+83
+
+6
