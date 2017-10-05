@@ -120,22 +120,25 @@ typedef tuple< int, int, int > III;
  
  */
 
-int rank_gf2(VI X) {
-  int N=SZ(X);
-  REP(i,N) {
-    sort(X.begin()+i,X.end(),greater<int>());
-    if(X[i]==0) return i;
-    int msb=1;
-    while((msb<<1)<=X[i]) msb<<=1;
-    FOR(j,i+1,N) if(X[j]&msb) X[j]^=X[i];
+template<class T> void gf2_GE(vector<T>& V) {
+  int N=V.size();
+  for(int i=0; i<N; ++i) {
+    sort(V.begin()+i,V.end(),greater<T>());
+    if(V[i]==0) break;
+    T msb=1;
+    while((msb<<1)<=V[i]) msb<<=1;
+    for(int j=i+1; j<N; ++j) if(V[j]&msb) V[j]^=V[i];
   }
-  return N;
+}
+template<class T> int gf2_rank(vector<T>& V) {
+  gf2_GE<T>(V);
+  return (int)V.size()-count(V.begin(),V.end(),0);
 }
 
 class MixingColors {
   public:
   int minColors(vector<int> colors) {
-    return rank_gf2(colors);
+    return gf2_rank<int>(colors);
   }
 };
 
