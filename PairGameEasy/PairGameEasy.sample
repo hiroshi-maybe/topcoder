@@ -1,0 +1,42 @@
+-- Example 0
+1
+2
+3
+5
+
+Able to generate
+-- Example 1
+1
+2
+2
+1
+
+Not able to generate
+-- Example 2
+2
+2
+2
+999
+
+Not able to generate
+-- Example 3
+2
+2
+2
+1000
+
+Able to generate
+-- Example 4
+47
+58
+384
+221
+
+Able to generate
+-- Example 5
+1000
+1000
+1000
+1000
+
+Able to generate
