@@ -106,7 +106,7 @@ vector<int> computeLongestPrefixSuffix(const string P) {
   return pi;
 }
 
-// KMP algorithm - returns index of T where P begins
+// KMP algorithm - returns index of T where P begins, amortized Θ(M+N) time
 int doKMP(string s, string p) {
   int i = 0, j = 0, L = s.size(), M = p.size();
   
