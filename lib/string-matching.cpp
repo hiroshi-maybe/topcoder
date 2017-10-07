@@ -125,6 +125,40 @@ int doKMP(string s, string p) {
   return -1;
 }
 
+// Rabbin Karp algorithm by rolling hash, O(M+N) time
+//
+// Note that this implementation uses implicit `int` representation of `char`.
+//
+typedef long long LL;
+LL powmod(LL a, LL b, LL MOD) {
+  LL res=1;
+  for(LL mask=1; mask<=b; mask<<=1) {
+    if(b&mask) res*=a, res%=MOD;
+    a*=a; a%=MOD;
+  }
+  return res;
+}
+int doRabbinKarpMatch(string S, string P, int d=131, int MOD=1e9+7) {
+  int N=S.size(),M=P.size();
+  LL h=powmod(d,M-1,MOD); // d^(M-1) % MOD, helper to adjust rolling hash
+  
+  // Rolling hash x for X[i..<M]
+  // x=d^(M-1)*X[i]+d^(M-2)*X[i+1]+..+d^0*X[i+M-1]
+  LL s=0,p=0;
+  // preprocessing
+  for(int i=0; i<M; ++i) {
+    s=(1LL*d*s)%MOD+S[i],s%=MOD;
+    p=(1LL*d*p)%MOD+P[i],p%=MOD;
+  }
+  for(int i=0; i<N-M; ++i) {
+    if(s==p && S.substr(i,M)==P) return i;
+    // incremental update of hash code
+    // s=d(t-S[i]h)+S[i+M]
+    s=d*(s+MOD-(S[i]*h)%MOD)%MOD+S[i+M],s%=MOD;
+  }
+  return -1;
+}
+
 int main(int argc, char const *argv[]) {
   // CLRS Ex 32.4-1
   string P1="ababbabbabbababbabb";
@@ -161,4 +195,8 @@ int main(int argc, char const *argv[]) {
       assert(SMT[i][j]==expected[i][j]);
     }
   }
+  
+  string P2 = "qwertyuiop1234567890ZXCVBNM";
+  int idx2 = doRabbinKarpMatch("asdfghjklqwertyuiop1243567890ZXCVBNMqwertyuiop1234567890ZXCVBNMLKJHGFDSA", P2);
+  assert(idx2==36);
 }
