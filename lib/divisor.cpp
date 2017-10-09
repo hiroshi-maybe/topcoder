@@ -137,8 +137,18 @@ vector<LL> primeFactors(LL n) {
   return res;
 }
 vector<LL> distinctPrimeFactors(LL n) {
+  /*
   vector<LL> res=primeFactors(n);
   res.erase(unique(res.begin(),res.end()),res.end());
+  return res;
+   */
+  assert(n>=1);
+  vector<LL> res;
+  for(LL p=2; p*p<=n; ++p) {
+    res.push_back(p);
+    while(n%p==0) n/=p;
+  }
+  if(n>1) res.push_back(n);
   return res;
 }
 
