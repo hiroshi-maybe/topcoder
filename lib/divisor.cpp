@@ -1,8 +1,10 @@
 #include <iostream>
 #include <cassert>
-#include <tuple>
 #include <algorithm>
 #include <vector>
+#include <numeric>
+//#include <cmath>
+//#include <utility>
 using namespace std;
 
 typedef long long LL;
@@ -41,7 +43,10 @@ bool isPrime(LL N) {
  - this works if approximately N <= 10^7
  
  Sieve of Eratosthenes
- - http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+  - http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+ 
+ Usage:
+   vector<int> ps = findPrimes(10); // ps={2,3,5,7}
  
  */
 vector<int> findPrimes(int N) {
@@ -69,7 +74,7 @@ vector<int> findPrimes(int N) {
   - result is sorted
  
  Usage:
-  vector<int> divs = divisors(12) // divs={1,2,3,4,6,12}
+  vector<int> divs = divisors(12); // divs={1,2,3,4,6,12}
  
  */
 vector<LL> divisors(LL N) {
@@ -117,8 +122,8 @@ vector<LL> divisors(LL N) {
  𝜔'(10^9) = 9, n=223092870, prime factors = {2,3,5,7,11,13,17,19,23}
 
  Usage:
-  vector<int> facts = primeFactors(12)      // facts={2,2,3}
-  vector<int> ps = distinctPrimeFactors(12) // ps   ={2,3}
+  vector<int> facts = primeFactors(12);      // facts={2,2,3}
+  vector<int> ps = distinctPrimeFactors(12); // ps   ={2,3}
 
  */
 vector<LL> primeFactors(LL n) {
@@ -143,8 +148,12 @@ vector<LL> distinctPrimeFactors(LL n) {
  
  Euler's totient function (Euler's phi function):
   - https://en.wikipedia.org/wiki/Euler%27s_totient_function
+  - CLRS 31.1 Modular arithmetic
  
  𝜙(n) = n * ∏ { 1-1/p : p is distinct prime factor of n }
+ 
+ Usage:
+  int phi_n = totient(100);
  
  */
 int totient(LL N) {
@@ -156,8 +165,24 @@ int totient(LL N) {
   return res;
 }
 
-// main and test
+/*
+ 
+ Find numbers coprime to N in range [1,N], O(N*lg N) time
+ 
+ If you want to find only number of coprimes, `totient(N)` is more efficient (O(√N) time).
+ 
+ Usage:
+   vector<int> cops = findCoprimes(10); // cops={1,3,7,9}
+ 
+ */
+int gcd(int a, int b) { return b==0?a:gcd(b,a%b); }
+vector<int> findCoprimes(int N) {
+  vector<int> res;
+  for(int n=1; n<=N; ++n) if(gcd(n,N)==1) res.push_back(n);
+  return res;
+}
 
+// main and test
 void getMaxFact(int maxn) {
   vector<LL> xs1,xs2;
   int x1=0,x2=0,n1=0,n2=0;
@@ -186,19 +211,21 @@ void getMaxFact(int maxn) {
 int main(int argc, char const *argv[]) {
   assert(isPrime(131));
   assert(!isPrime(120));
+
+  vector<int> primes100 = {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97};
+  assert(findPrimes(100)==primes100);
   
-  vector<LL> divs = {1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 24, 30, 40, 60, 120};
+  vector<LL> divs = {1,2,3,4,5,6,8,10,12,15,20,24,30,40,60,120};
   assert(divs==divisors(120));
   
   vector<LL> fs = {2,2,2,3,5};
   vector<LL> ps = {2,3,5};
   assert(fs==primeFactors(120));
   assert(ps==distinctPrimeFactors(120));
-  
 //  getMaxFact(1e7);
-  
-  vector<int> primes100 = {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97};
-  assert(findPrimes(100)==primes100);
-  
   assert(totient(36)==12);
+
+  vector<int> coprimes100 = {1,3,7,9,11,13,17,19,21,23,27,29,31,33,37,39,41,43,47,49,51,53,57,59,61,63,67,69,71,73,77,79,81,83,87,89,91,93,97,99};
+  assert(findCoprimes(100)==coprimes100);
 }
+
