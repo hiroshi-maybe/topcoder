@@ -9,16 +9,19 @@ typedef long long LL;
 
 /*
  
- links
- http://sucrose.hatenablog.com/entry/2014/10/10/235805
- https://www.slideshare.net/kazumamikami1/ss-24712271
+ links:
+ - http://sucrose.hatenablog.com/entry/2014/10/10/235805
+  - Prime factorization, Sieve of Eratosthenes
+ - https://www.slideshare.net/kazumamikami1/ss-24712271
   - divisors, prime factorization, GCD
+ - http://d.hatena.ne.jp/uwitenpen/20111203
+  - finding primes
  
  */
 
 /*
  
- check if N is prime, O(√N) time
+ check if N is prime by trial division, O(√N) time
  
  Usage:
   isPrime(131) // true
@@ -33,8 +36,33 @@ bool isPrime(LL N) {
 
 /*
  
- compute all the divisers of N, O(√N) time
+ primes in range [1,N] by sieve of eratosthenes, O(N*lg lg N) time, O(N) space
  
+ - this works if approximately N <= 10^7
+ 
+ Sieve of Eratosthenes
+ - http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+ 
+ */
+vector<int> findPrimes(int N) {
+  vector<int> fs(N+1, true);
+  fs[0]=fs[1]=false;
+  for(int p=2; p*p<=N; ++p) if(fs[p]) {
+    for(int q=p*p; q<=N; q+=p) fs[q]=false;
+  }
+  vector<int> res;
+  for(int n=2; n<=N; ++n) if(fs[n]) res.push_back(n);
+  return res;
+}
+
+/*
+ 
+ compute all the divisers of N by trial division, O(√N) time
+ 
+ Trial division:
+  - https://en.wikipedia.org/wiki/Trial_division
+
+ Summary:
   - size of result is upper-bounded by HCN(N)
    - highly composite number: http://wwwhomes.uni-bielefeld.de/achim/highly.txt
    - HCN(10^9)≈1440, HCN(10^6)≈256
@@ -149,4 +177,7 @@ int main(int argc, char const *argv[]) {
   assert(ps==primes(120));
   
 //  getMaxFact(1e7);
+  
+  vector<int> primes100 = {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97};
+  assert(findPrimes(100)==primes100);
 }
