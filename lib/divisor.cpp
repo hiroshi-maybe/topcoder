@@ -117,8 +117,8 @@ vector<LL> divisors(LL N) {
  𝜔'(10^9) = 9, n=223092870, prime factors = {2,3,5,7,11,13,17,19,23}
 
  Usage:
-  vector<int> facts = primeFactors(12) // facts={2,2,3}
-  vector<int> ps = primes(12)          // ps   =  {2,3}
+  vector<int> facts = primeFactors(12)      // facts={2,2,3}
+  vector<int> ps = distinctPrimeFactors(12) // ps   ={2,3}
 
  */
 vector<LL> primeFactors(LL n) {
@@ -131,9 +131,28 @@ vector<LL> primeFactors(LL n) {
   if(n>1) res.push_back(n);
   return res;
 }
-vector<LL> primes(LL n) {
+vector<LL> distinctPrimeFactors(LL n) {
   vector<LL> res=primeFactors(n);
   res.erase(unique(res.begin(),res.end()),res.end());
+  return res;
+}
+
+/*
+ 
+ Count the positive integers up to a given integer n that are relatively prime to n, O(√N) time
+ 
+ Euler's totient function (Euler's phi function):
+  - https://en.wikipedia.org/wiki/Euler%27s_totient_function
+ 
+ 𝜙(n) = n * ∏ { 1-1/p : p is distinct prime factor of n }
+ 
+ */
+int totient(LL N) {
+  vector<LL> ps=distinctPrimeFactors(N);
+  int res=N;
+  for(auto p : ps) {
+    res=res/p*(p-1);
+  }
   return res;
 }
 
@@ -174,10 +193,12 @@ int main(int argc, char const *argv[]) {
   vector<LL> fs = {2,2,2,3,5};
   vector<LL> ps = {2,3,5};
   assert(fs==primeFactors(120));
-  assert(ps==primes(120));
+  assert(ps==distinctPrimeFactors(120));
   
 //  getMaxFact(1e7);
   
   vector<int> primes100 = {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97};
   assert(findPrimes(100)==primes100);
+  
+  assert(totient(36)==12);
 }
