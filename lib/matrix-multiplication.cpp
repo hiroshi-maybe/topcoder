@@ -47,30 +47,6 @@ void powerMat(LL n, int N) {
   }
 }
 
-/*
- 
- Compute rank by Gaussian elimination in GF(2), O(N^2*lg N) time
-   - http://personals.ac.upc.edu/enricm/Pubs/pdp2015_slides.pdf
- 
- Usage:
-  int rank = gf2_rank<int>(V);
- 
- */
-template<class T> void gf2_GE(vector<T>& V) {
-  int N=V.size();
-  for(int i=0; i<N; ++i) {
-    sort(V.begin()+i,V.end(),greater<T>());
-    if(V[i]==0) break;
-    T msb=1;
-    while((msb<<1)<=V[i]) msb<<=1;
-    for(int j=i+1; j<N; ++j) if(V[j]&msb) V[j]^=V[i];
-  }
-}
-template<class T> int gf2_rank(vector<T>& V) {
-  gf2_GE<T>(V);
-  return (int)V.size()-count(V.begin(),V.end(),0);
-}
-
 /***********************   test code below   ***********************/
 
 int main(int argc, char const *argv[]) {
@@ -92,7 +68,4 @@ int main(int argc, char const *argv[]) {
   assert(S[0][1]==142);
   assert(S[1][0]==297);
   assert(S[1][1]==214);
-  
-  vector<int> V = { 534, 251, 76, 468, 909, 410, 264, 387, 102, 982, 199, 111, 659, 386, 151 };
-  assert(gf2_rank<int>(V)==10);
 }
