@@ -15,8 +15,31 @@ int lcm(int a, int b) {
     return (a*b) / gcd(a,b);
 }
 
-// CLRS 31.2
-// returns (gcd,x,y) s.t. gcd = a*x + b*y
+/*
+ 
+ computes (gcd,x,y) s.t. d=gcd(a,b)=a*x+b*y, O(lg max(a,b)) time
+ 
+ - CLRS 31.2
+ - If gcd(a,b)=1, x=a^-1(mod b) (mod inverse of a in mod b) because a*x≡1(mod b)
+  - this is useful to solve modular equation a*x≡b(mod m)
+  - see CLRS 31.4 and `lib/equations.cpp`
+ 
+ Proof:
+ 
+ (dd,xx,yy) = gcde(a,b)
+ d=dd = b*xx+(a%B)*yy
+      = b*xx+(a-b*floor(a/b))*yy
+      = a*yy + b*(xx-floor(a/b)*yy)
+          ^      ^
+ Thus return (d,yy,xx-floor(a/b)*yy)
+ 
+ Usage:
+ 
+  int d,x,y;
+  auto t = gcd_extended(a,b);
+  tie(d,x,y) = t;
+ 
+ */
 tuple<int,int,int> gcd_extended(int a, int b) {
   if (b==0) return make_tuple(a, 1, 0);
   
