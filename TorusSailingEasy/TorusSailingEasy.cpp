@@ -59,11 +59,15 @@ typedef tuple< int, int, int > III;
  10/12/2017
  
  6:30-7:30,8:55-10:16 read editorials:
+  - https://www.slideshare.net/EmKjp/srm614-34320184
+    - writer's editorial
   - https://apps.topcoder.com/wiki/display/tc/SRM+614
     - https://apps.topcoder.com/forums/?module=Thread&threadID=814614&start=0
+    - search cycle and forward move by brute-force and solve system of linear equations in adhoc way
   - http://kmjp.hatenablog.jp/entry/2014/04/01/0930
-  - https://www.slideshare.net/EmKjp/srm614-34320184
+    - search forward move and backward move by brute-force and solve linear equations by Gauss-Jordan elimination
   - http://torus711.hatenablog.com/entry/20140331/1396285929
+    - run DP until difference goes under EPS
  
  Firstly find reachable cells and number of steps to reach goal.
  
@@ -120,30 +124,202 @@ typedef tuple< int, int, int > III;
  
  Solver of modular linear equations:
   - ant book 4-1 complex math problem
-  - CLRS 31.4 modular linear equations
+  - CLRS 31.4 modular linear equations (single equation case)
 
  Solver of linear equations by Gaussian elimination (Gauss-Jordan elimination):
   - https://en.wikipedia.org/wiki/Gaussian_elimination
   - ant book 4-1 complex math problem
   - CLRS 28.1 Solving systems of linear equations
  
- First hitting time or one dimensional randome walk:
+ First hitting time or one dimensional random walk:
   - http://galton.uchicago.edu/~lalley/Courses/312/RW.pdf
   - https://en.wikipedia.org/wiki/First-hitting-time_model
   - https://en.wikipedia.org/wiki/Hitting_time
   - https://math.stackexchange.com/questions/261889/expectation-of-stopping-time-w-r-t-a-brownian-motion
+  - ant book 4-1 complex math problem
  
  summary:
   - look at size constraint carefully
   - there are some smart techniques unerneath this problem though, we can avoid it by analysis or brute force
    - this is typical div2 hard in this perspective
  
+ submit solutions in contest
+  - brute-force forward move and backward move. multiple them and return it
+    - https://community.topcoder.com/stat?c=problem_solution&rm=321151&rd=15847&pm=13085&cr=23161191
+    - https://community.topcoder.com/stat?c=problem_solution&rm=321164&rd=15847&pm=13085&cr=23302067
+  - brute-force cycle and forward move. compute backward move by cycle-fmove and multiply them
+    - https://community.topcoder.com/stat?c=problem_solution&rm=321182&rd=15847&pm=13085&cr=23286857
+    - https://community.topcoder.com/stat?c=problem_solution&rm=321146&rd=15847&pm=13085&cr=23088657
+  - brute-force forward move, compute cycle by LCM(N,M) and return (cycle-fmove) * pmove
+    - https://community.topcoder.com/stat?c=problem_solution&rm=321140&rd=15847&pm=13085&cr=23197706
+ 
  */
 
 int gcd(int a, int b) { return b==0?a:gcd(b,a%b); }
 
-// brute force
+struct ModularLinearEquations {
+public:
+  ModularLinearEquations() {}
+  
+  pair<int, int> solve(const vector<int>& A, const vector<int>& B,
+                       const vector<int>& M) {
+    int b=0,m=1;
+    for(int i=0; i<A.size(); i++) {
+      int p=A[i]*m,q=B[i]-A[i]*b,d=gcd(M[i],p),mi=M[i]/d;
+      if (q%d!=0) return make_pair(0,-1); // solution not found
+      int t=(_modinv(p/d,mi)*q/d)%(mi);
+      b=b+m*t;
+      m*=mi;
+    }
+    b=(b+m)%m; // ensure that x is non-negative
+    return make_pair(b%m,m);
+  }
+  
+  int _modinv(int a, int m) {
+    assert(gcd(a,m)==1);
+    int x,y;
+    _extgcd(a,m,x,y);
+    return (m+x%m)%m; // ensure mod inverse is non-negative
+  }
+  int _extgcd(int a, int b, int& x, int& y) {
+    if(b==0) {
+      x=1,y=0;
+      return a;
+    }
+    int d=_extgcd(b, a%b, y, x);
+    y-=(a/b)*x;
+    return d;
+  }
+private:
+  int gcd(int a, int b) {
+    return b==0?a:gcd(b,a%b);
+  }
+} MLE;
+
+struct GaussJordanElimination {
+  const double eps=1e-8;
+  vector<double> solve(vector<vector<double>> A, vector<double> b) {
+    const int N=A.size();
+    vector<vector<double>> X(N, vector<double>(N+1)); // Augmented matrix which merges A with b
+    for(int i=0; i<N; ++i) {
+      for(int j=0; j<N; ++j) X[i][j] = A[i][j];
+      X[i][N] = b[i];
+    }
+    
+    for(int i=0; i<N; ++i) {
+      // invariant: X[p][p]=1 for p=0..i-1
+      int pivot=i;
+      for(int j=i; j<N; ++j) {
+        // find maximum coefficient to minimize precision error
+        if (fabs(X[j][i])>fabs(X[pivot][i])) pivot=j;
+      }
+      swap(X[i], X[pivot]);
+      // solution is undeterministic, or no solution exists
+      if (fabs(X[i][i])<eps) return vector<double>();
+      
+      // X[i][i]=1
+      for(int j=i+1; j<=N; ++j) X[i][j]/=X[i][i];
+      for(int j=0; j<N; ++j) if (i != j) {
+        // row reduction
+        for(int k=i+1; k<=N; ++k) X[j][k]-=X[j][i]*X[i][k];
+      }
+    }
+    
+    vector<double> xs(N);
+    for(int i=0; i<N; ++i) xs[i]=X[i][N];
+    return xs;
+  }
+} GJE;
+
+// Ant book
+const double EPS = 1E-8;
+typedef vector<double> vec;
+typedef vector<vec> mat;
+vec gauss_jordan(const mat& A, const vec& b) {
+  int n = A.size();
+  mat B(n, vec(n + 1));
+  for (int i = 0; i < n; i++)
+    for (int j = 0; j < n; j++) B[i][j] = A[i][j]; // 行列Aの後ろにbを並べ同時に処理する
+  for (int i = 0; i < n; i++) B[i][n] = b[i];
+  for (int i = 0; i < n; i++) {
+    // 注目している変数の係数の絶対値が大きい式をi番目に持ってくる
+    int pivot = i;
+    for (int j = i; j < n; j++) {
+      if (abs(B[j][i]) > abs(B[pivot][i])) pivot = j; }
+    swap(B[i], B[pivot]);
+    // 解がないか、一意でない
+    if (abs(B[i][i]) < EPS) return vec();
+    // 注目している変数の係数を1にする
+    for (int j = i + 1; j <= n; j++) B[i][j] /= B[i][i]; for (int j = 0; j < n; j++) {
+      if (i != j) {
+        // j番目の式からi番目の変数を消去
+        for (int k = i + 1; k <= n; k++) B[j][k] -= B[j][i] * B[i][k];
+      } }
+  }
+  vec x(n);
+  // 後ろに並べたbが解になる
+  for (int i = 0; i < n; i++) x[i] = B[i][n]; return x;
+}
+
+// @kmjp
+const int MAT=101;
+int Gauss(int n,double mat_[MAT][MAT],double v_[MAT],double r[MAT]) {
+  int i,j,k;
+  double mat[MAT][MAT],v[MAT];
+  memmove(mat,mat_,sizeof(mat));
+  memmove(v,v_,sizeof(v));
+  
+  REP(i,n) {
+    if(mat[i][i]==0) {
+      for(j=i+1;j<n;j++) if(mat[j][i]) break;
+      if(j>=n) return -1;
+      REP(k,n) swap(mat[i][k],mat[j][k]);
+      swap(v[i],v[k]);
+    }
+    v[i]/=mat[i][i];
+    for(k=n-1;k>=i;k--) mat[i][k]/=mat[i][i];
+    for(j=i+1;j<n;j++) {
+      v[j]-=v[i]*mat[j][i];
+      for(k=n-1;k>=i;k--) mat[j][k]-=mat[i][k]*mat[j][i];
+    }
+  }
+  
+  for(i=n-1;i>=0;i--) {
+    for(j=n-1;j>i;j--) v[i]-=mat[i][j]*v[j],mat[i][j]=0;
+    r[i]=v[i];
+  }
+  return 0;
+}
+
 class TorusSailingEasy {
+public:
+  double expectedTime(int N, int M, int GX, int GY) {
+    auto p = MLE.solve({1,1},{GX,GY},{N,M});
+    if (p.second<0) return -1;
+    int b=p.first,m=p.second;
+    
+    // Ax=B
+    vector<vector<double>> A(m+1,vector<double>(m+1,0.0));
+    vector<double> B(m+1,0.0);
+    for(int i=1; i<m; ++i) A[i][i-1]=A[i][i+1]=-0.5, B[i]=1;
+    for(int i=0; i<=m; ++i) A[i][i]=1;
+    
+    vector<double> sol=GJE.solve(A,B);
+    return sol[m-b];
+    
+    /*
+    double A[101][101]={0.0};
+    double B[101]={0.0},X[101]={0.0};
+    for(int i=1; i<m; ++i) A[i][i-1]=A[i][i+1]=-0.5, B[i]=1;
+    for(int i=0; i<=m; ++i) A[i][i]=1;
+    Gauss(m+1, A, B, X);
+    
+    return X[m-b];*/
+  }
+};
+
+// brute force solution of modular linear equation and solve system of linear equation in adhoc way
+class TorusSailingEasy_bruteforce {
 public:
   double expectedTime(int N, int M, int GX, int GY) {
     int Q=N*M;
@@ -198,36 +374,6 @@ pair<int, int> linear_congruence(const vector<int>& A, const vector<int>& B,
     m *= M[i] / d;
   }
   return make_pair(x % m, m);
-}
-
-const double EPS = 1E-8;
-typedef vector<double> vec;
-typedef vector<vec> mat;
-
-vec gauss_jordan(const mat& A, const vec& b) {
-  int n = A.size();
-  mat B(n, vec(n + 1));
-  for (int i = 0; i < n; i++)
-    for (int j = 0; j < n; j++) B[i][j] = A[i][j]; // 行列Aの後ろにbを並べ同時に処理する
-  for (int i = 0; i < n; i++) B[i][n] = b[i];
-  for (int i = 0; i < n; i++) {
-    // 注目している変数の係数の絶対値が大きい式をi番目に持ってくる
-    int pivot = i;
-    for (int j = i; j < n; j++) {
-      if (abs(B[j][i]) > abs(B[pivot][i])) pivot = j; }
-    swap(B[i], B[pivot]);
-    // 解がないか、一意でない
-    if (abs(B[i][i]) < EPS) return vec();
-    // 注目している変数の係数を1にする
-    for (int j = i + 1; j <= n; j++) B[i][j] /= B[i][i]; for (int j = 0; j < n; j++) {
-      if (i != j) {
-        // j番目の式からi番目の変数を消去
-        for (int k = i + 1; k <= n; k++) B[j][k] -= B[j][i] * B[i][k];
-      } }
-  }
-  vec x(n);
-  // 後ろに並べたbが解になる
-  for (int i = 0; i < n; i++) x[i] = B[i][n]; return x;
 }
 
 //int dp[51];
