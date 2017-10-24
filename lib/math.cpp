@@ -1,52 +1,11 @@
 #include <iostream>
 #include <cassert>
-#include <tuple>
 #include <algorithm>
 #include <vector>
 using namespace std;
 
 typedef long long LL;
 constexpr int MOD = 1e9+7;
-
-int gcd(int a, int b) {
-    return b == 0 ? a : gcd(b, a % b);
-}
-int lcm(int a, int b) {
-    return (a*b) / gcd(a,b);
-}
-
-/*
- 
- computes (gcd,x,y) s.t. d=gcd(a,b)=a*x+b*y, O(lg max(a,b)) time
- 
- - CLRS 31.2
- - If gcd(a,b)=1, x=a^-1(mod b) (mod inverse of a in mod b) because a*x≡1(mod b)
-  - this is useful to solve modular equation a*x≡b(mod m)
-  - see CLRS 31.4 and `lib/equations.cpp`
- 
- Proof:
- 
- (dd,xx,yy) = gcde(a,b)
- d=dd = b*xx+(a%B)*yy
-      = b*xx+(a-b*floor(a/b))*yy
-      = a*yy + b*(xx-floor(a/b)*yy)
-          ^      ^
- Thus return (d,yy,xx-floor(a/b)*yy)
- 
- Usage:
- 
-  int d,x,y;
-  auto t = gcd_extended(a,b);
-  tie(d,x,y) = t;
- 
- */
-tuple<int,int,int> gcd_extended(int a, int b) {
-  if (b==0) return make_tuple(a, 1, 0);
-  
-  int d2,x2,y2;
-  tie(d2,x2,y2) = gcd_extended(b, a%b);
-  return make_tuple(d2,y2,x2-(a/b)*y2);
-}
 
 // CLRS 31.6 powers of an element
 // compute (a^b) `mod` 1e9+7
@@ -64,12 +23,57 @@ LL powmod(LL a, LL b) {
   return res;
 }
 
-// https://en.wikipedia.org/wiki/Modular_multiplicative_inverse#Computation
-// Modular multiplicative inverse by Euler's theorem
-// a^-1 (`mod` mod) = a^(mod-2), a should be coprime to mod, mod=1e9+7
-// O(lg m)
-LL modinv(LL a) {
-  return powmod(a, MOD-2);
+/*
+ 
+ Compute modular multiplicative inverse, O(lg a)
+ 
+ - compute a^-1 (mod p) p is prime AND p ⧷ a
+ - proved by Fermat's little theorem
+ 
+ Fermat's little theorem:
+ 
+ a^p     ≡ a (mod p)       if p is prime
+ a^(p-1) ≡ 1 (mod p)       if p is prime AND p ⧷ a
+ a^-1    ≡ a^(p-2) (mod p) if p is prime AND p ⧷ a
+
+ References:
+  - https://en.wikipedia.org/wiki/Modular_multiplicative_inverse#Computation
+  - https://en.wikipedia.org/wiki/Fermat%27s_little_theorem
+ 
+ */
+LL modinv(LL a, LL p=MOD) {
+  return powmod(a, p-2);
+}
+
+/*
+ 
+ Compute Euler's totient function φ(n) (phi function), O(√n)
+ 
+ - φ(n) counts the positive integers up to a given integer n that are relatively prime to n
+ - X^(φ(n)) ≡ 1 (mod n) if gcd(X,n)=1 (X and n are relatively prime)
+   - Known as Euler's theorem or Fermat–Euler theorem
+   - generalization of Fermat's little theorem
+ 
+ φ(n) = n * ∏ { (p-1)/p : p|n and p is prime }
+ 
+ If n is prime, φ(n) = n-1. Thus X^(φ(n)) ≡ X^(n-1) ≡ 1 (mod n) as shown in Fermat's little theorem
+ 
+ References:
+  - CLRS 31.3 Modular arithmetic
+  - Ant book 4.1 more complex math problems
+  - https://en.wikipedia.org/wiki/Euler%27s_theorem
+  - https://en.wikipedia.org/wiki/Euler%27s_totient_function
+ 
+ */
+int euler_phi(int n) {
+  int res=n;
+  // prime factorization
+  for(int p=2; p*p<=n; ++p) if(n%p==0) {
+    res=res/p*(p-1);
+    while(n%p==0) n/=p;
+  }
+  if(n!=1) res=res/n*(n-1);
+  return res;
 }
 
 // memoized factorial(n) (`mod` 1e9+7)
@@ -126,19 +130,14 @@ LL multichoose(LL n, LL k) {
 // main
 
 int main(int argc, char const *argv[]) {
-  assert(gcd(899,493)==29);
-
-  auto t = gcd_extended(899,493);
-  assert(get<0>(t)==29);
-  assert(get<1>(t)==-6);
-  assert(get<2>(t)==11);
-
   int m2 = powmod(7,560);
   assert(m2==108725231);
   
   LL m = 560;
   LL mi = modinv(m);
   assert((m*mi)%MOD==1);
+  
+  assert(euler_phi(36)==12);
   
   assert(factmod(560)==597965522);
   assert(choose(771,50)==275127687);
