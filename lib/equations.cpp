@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <vector>
 #include <numeric>
+#include <math.h>
 using namespace std;
 
 typedef long long LL;
@@ -200,6 +201,61 @@ template<class T> int gf2_rank(vector<T>& V) {
   return (int)V.size()-count(V.begin(),V.end(),0);
 }
 
+/*
+ 
+ Solver of system of linear equations by Gauss–Jordan elimination, Θ(N^3) time
+ 
+ - implementation from Ant book
+ 
+ Basic steps:
+ 1. Setup matrices A*x=b where A=NxN, b=Nx1
+ 2. By row reduction, transform A to echelon form (triangular form) which is U matrix in LU-composition
+ 3. Compute x by back-substitution
+ 
+ References:
+  - https://en.wikipedia.org/wiki/Gaussian_elimination
+  - https://en.wikipedia.org/wiki/LU_decomposition
+  - https://en.wikipedia.org/wiki/Triangular_matrix#Forward_and_back_substitution
+  - Ant book 4.1 more complex math problems
+  - CLRS 28.1 Solving systems of linear equations
+  - http://kmjp.hatenablog.jp/entry/2014/04/01/0930
+ 
+ */
+struct GaussJordanElimination {
+  const double eps=1e-8;
+  vector<double> solve(vector<vector<double>> A, vector<double> b) {
+    const int N=A.size();
+    vector<vector<double>> X(N, vector<double>(N+1)); // Augmented matrix which merges A with b
+    for(int i=0; i<N; ++i) {
+      for(int j=0; j<N; ++j) X[i][j] = A[i][j];
+      X[i][N] = b[i];
+    }
+    
+    for(int i=0; i<N; ++i) {
+      // invariant: X[p][p]=1 for p=0..i-1
+      int pivot=i;
+      for(int j=i; j<N; ++j) {
+        // find maximum coefficient to minimize precision error
+        if (fabs(X[j][i])>fabs(X[pivot][i])) pivot=j;
+      }
+      swap(X[i], X[pivot]);
+      // solution is undeterministic, or no solution exists
+      if (fabs(X[i][i])<eps) return vector<double>();
+      
+      // X[i][i]=1
+      for(int j=i+1; j<=N; ++j) X[i][j]/=X[i][i];
+      for(int j=0; j<N; ++j) if (i != j) {
+        // row reduction
+        for(int k=i+1; k<=N; ++k) X[j][k]-=X[j][i]*X[i][k];
+      }
+    }
+    
+    vector<double> xs(N);
+    for(int i=0; i<N; ++i) xs[i]=X[i][N];
+    return xs;
+  }
+} GJE;
+
 int main(int argc, char const *argv[]) {
   vector<int> V = { 534, 251, 76, 468, 909, 410, 264, 387, 102, 982, 199, 111, 659, 386, 151 };
   assert(gf2_rank<int>(V)==10);
@@ -217,4 +273,18 @@ int main(int argc, char const *argv[]) {
   auto p = MLE.solve(A,B,M);
   assert(p.first==23);
   assert(p.second==105);
+  
+  // test case from https://en.wikipedia.org/wiki/Gaussian_elimination
+  auto xs = GJE.solve({
+    {2,1,-1},
+    {-3,-1,2},
+    {-2,1,2}
+  },{
+    8,-11,-3
+  });
+  vector<double> sols={2.0,3.0,-1.0};
+  assert(sols.size()==xs.size());
+  for(int i=0; i<sols.size(); ++i) {
+    assert(fabs(xs[i]-sols[i])<1e-9);
+  }
 }
