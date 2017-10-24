@@ -143,6 +143,12 @@ typedef tuple< int, int, int > III;
   - there are some smart techniques unerneath this problem though, we can avoid it by analysis or brute force
    - this is typical div2 hard in this perspective
  
+ 10/24/2017
+ 
+ 8:00-8:30 Add solution by Modular Linear Equation solver and Gauss Jordan Elimination.
+ 8:49-9:04 Add solution by DP with infinite iterations
+ 
+ 
  submit solutions in contest
   - brute-force forward move and backward move. multiple them and return it
     - https://community.topcoder.com/stat?c=problem_solution&rm=321151&rd=15847&pm=13085&cr=23161191
@@ -154,6 +160,72 @@ typedef tuple< int, int, int > III;
     - https://community.topcoder.com/stat?c=problem_solution&rm=321140&rd=15847&pm=13085&cr=23197706
  
  */
+
+/*
+template < typename T = int > using VT = vector<T>;
+template < typename T = int > using VVT = VT< VT<T> >;
+
+template < typename T > inline T fromString( const string &s ){ T res; istringstream iss( s ); iss >> res; return res; };
+template < typename T > inline string toString( const T &a ){ ostringstream oss; oss << a; return oss.str(); };
+
+const int ITERATE_NUM = 100000;
+
+class TorusSailingEasy
+{
+public:
+  double expectedTime( int N, int M, int goalX, int goalY )
+  {
+    VT<VVT<double>> dp( ITERATE_NUM, VVT<double>( N, VT<double>( M ) ) );
+    dp[0][0][0] = 1;
+    
+    FOR( i, 0, ITERATE_NUM - 1 )
+    {
+      FOR( j, 0, N )
+      {
+        FOR( k, 0, M )
+        {
+          if ( j == goalX && k == goalY )
+          {
+            continue;
+          }
+          dp[ i + 1 ][ modAdd( j, 1, N ) ][ modAdd( k, 1, M ) ] += dp[i][j][k] / 2;
+          dp[ i + 1 ][ modAdd( j, -1, N ) ][ modAdd( k, -1, M ) ] += dp[i][j][k] / 2;
+        }
+      }
+    }
+    
+    double res = 0;
+    FOR( i, 0, ITERATE_NUM )
+    {
+      res += i * dp[i][ goalX ][ goalY ];
+    }
+    return res <= 1e-8 ? -1 : res;
+  }
+  
+  int modAdd( const int n, const int d, const int MOD )
+  {
+    return ( n + d + MOD ) % MOD;
+  }
+};
+*/
+
+class TorusSailingEasy {
+public:
+  double expectedTime(int N, int M, int GX, int GY) {
+    const int Inf=100000;
+    vector<vector<vector<double>>> dp(Inf+1,vector<vector<double>>(N, vector<double>(M,0)));
+    dp[0][0][0]=1.0;
+    
+    REP(s,Inf) REP(x,N) REP(y,M) if(x!=GX||y!=GY) {
+      dp[s+1][(x+1)%N][(y+1)%M]+=0.5*dp[s][x][y];
+      dp[s+1][(N+x-1)%N][(M+y-1)%M]+=0.5*dp[s][x][y];
+    }
+    
+    double res=0;
+    REP(s,Inf+1) res+=s*dp[s][GX][GY];
+    return res<=1e-8?-1:res;
+  }
+};
 
 int gcd(int a, int b) { return b==0?a:gcd(b,a%b); }
 
@@ -291,7 +363,7 @@ int Gauss(int n,double mat_[MAT][MAT],double v_[MAT],double r[MAT]) {
   return 0;
 }
 
-class TorusSailingEasy {
+class TorusSailingEasy_MLE_GJE {
 public:
   double expectedTime(int N, int M, int GX, int GY) {
     auto p = MLE.solve({1,1},{GX,GY},{N,M});
@@ -306,15 +378,6 @@ public:
     
     vector<double> sol=GJE.solve(A,B);
     return sol[m-b];
-    
-    /*
-    double A[101][101]={0.0};
-    double B[101]={0.0},X[101]={0.0};
-    for(int i=1; i<m; ++i) A[i][i-1]=A[i][i+1]=-0.5, B[i]=1;
-    for(int i=0; i<=m; ++i) A[i][i]=1;
-    Gauss(m+1, A, B, X);
-    
-    return X[m-b];*/
   }
 };
 
