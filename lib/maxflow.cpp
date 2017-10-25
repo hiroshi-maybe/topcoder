@@ -190,6 +190,78 @@ private:
   }
 };
 
+/*
+ 
+ Solver of bipartite matching problem by Ford-Fulkerson method, O(V*E) time
+ 
+  - compute max flow of bipartite graph with capacity 1
+  - no need to add edges with source or sink
+  - in bipartite graph, maximum matching = vertex cover number (Ant book 3-5 network flow)
+   - generally size of maximum independent set + vertex cover number = V
+   - thus in bipartite graph size of maximum independent set = V - maximum matching
+ 
+ References:
+  - Ant book 3-5 Network flow
+  - CLRS 26.3 Maximum bipartite matching
+  - https://en.wikipedia.org/wiki/Matching_(graph_theory)#In_unweighted_bipartite_graphs
+  - http://topcoder.g.hatena.ne.jp/agw/20120716/1342405575
+  - vertex cover: https://ja.wikipedia.org/wiki/%E9%A0%82%E7%82%B9%E8%A2%AB%E8%A6%86
+  - independent set: https://ja.wikipedia.org/wiki/%E7%8B%AC%E7%AB%8B%E9%9B%86%E5%90%88
+ 
+ Usage:
+
+  int V=9;
+  MaxBipartiteMatching BM(V); // number of vertices |L ∪ R|
+ 
+  // add possible pairs ∀v, v<V.
+  BM.addEdge(0,5); // vertex ID of left and right should be disjoint
+  BM.addEdge(1,7);
+ 
+  // compute maximum matching
+  int matching = BM.solve()
+ 
+ */
+class MaxBipartiteMatching {
+public:
+  MaxBipartiteMatching(int V) : V(V) {}
+  
+  void addEdge(int u, int v) {
+    assert(u<V&&v<V);
+    E[u].push_back(v);
+    E[v].push_back(u);
+  }
+  
+  int solve() {
+    int res=0;
+    memset(match, -1, sizeof(match));
+    for(int u=0; u<V; ++u) if(match[u]<0) {
+      memset(viz,0,sizeof viz);
+      res+=dfs(u);
+    }
+    
+    return res;
+  }
+private:
+  int V;
+  vector<int> E[MAX_V];
+  int match[MAX_V];
+  bool viz[MAX_V];
+  
+  // find augmenting path in residual network
+  bool dfs(int u) {
+    viz[u]=true;
+    for(auto v : E[u]) {
+      int w=match[v];
+      if(w<0||(!viz[w]&&dfs(w))) {
+        match[v]=u;
+        match[u]=v;
+        return true;
+      }
+    }
+    return false;
+  }
+};
+
 int main(int argc, char const *argv[]) {  
   // CLRS Figure 26.6
   vector<vector<int>> C = {
@@ -201,17 +273,37 @@ int main(int argc, char const *argv[]) {
     {   0,   0,   0,   0,   0,   0 }
   };
   
-  Dinic<int> f;
+  Dinic<int> d;
   FordFulkerson<int> ff;
   for(int u=0; u<C.size(); ++u) {
     for(int v=0; v<C.size(); ++v) {
       if (C[u][v]==0) continue;
-      f.addEdge(u,v,C[u][v]);
+      d.addEdge(u,v,C[u][v]);
       ff.addEdge(u,v,C[u][v]);
     }
   }
-  int maxf = f.maxFlow(0,C.size()-1);
+  int maxf = d.maxFlow(0,C.size()-1);
   assert(maxf == 23);
   int maxff = ff.maxFlow(0,C.size()-1);
   assert(maxff == 23);
+
+  // 0-4: L, 5-8: R
+  vector<pair<int,int>> es = {
+    {0,5},
+    {1,5},{1,7},
+    {2,6},{2,7},{2,8},
+    {3,7},
+    {4,7}
+  };
+  
+  MaxBipartiteMatching BM(9);
+  for(auto e : es) BM.addEdge(e.first,e.second);
+  int mm = BM.solve();
+  
+  int source=9,sink=10;
+  Dinic<int> f2;
+  for(int u=0; u<5; ++u) f2.addEdge(source,u,1);
+  for(int v=5; v<9; ++v) f2.addEdge(v,sink,1);
+  for(auto e : es) f2.addEdge(e.first,e.second,1);
+  assert(f2.maxFlow(source,sink)==mm); // 3
 }
