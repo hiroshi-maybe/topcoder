@@ -7,13 +7,38 @@ using namespace std;
 
 /*
  
+ Flow prolems
+ 
+ 1. Max-flow problem: https://en.wikipedia.org/wiki/Maximum_flow_problem
+  - maximize flow from source to sink in given capacity constraint
+  - max flow equals to
+    - Max-flow min-cut theorem: https://en.wikipedia.org/wiki/Max-flow_min-cut_theorem
+  - Solutions:
+    - The Ford-Fulkerson method in O(F*E) time
+     - greedily 
+    - Dinic's algorithm in O(E*V^2) time
+
+ 2. Minimum-cost flow problem: https://en.wikipedia.org/wiki/Minimum-cost_flow_problem
+  - flow `d` is given while computation of flow is goal in max-flow problem
+  - compute min-cost which achieves flow `d`
+  - special case of other problems
+   - if there is no capacity constraint, it's reduced to the shortest path problem
+   - if cost is zero, it's reduced to the max flow problem
+  - Solutions:
+   - Dijkstra's algorithm in O(F*E*lg V) time
+   - linear programming as shown in CLRS 29.2 Formulating problems as linear programs
+ 
+ */
+
+/*
+ 
  Max flow algorithm Dinic, O(E*V^2)
  
  Usage:
   // Don't miss updating MAX_V constant
   
   // initialize
-  MaxFlow_dinic<int> f;
+  Dinic<int> f;
  
   // configure edges with capacity
   f.addEdge(u0,v0,c0);
@@ -23,10 +48,8 @@ using namespace std;
   flow = f.maxFlow(source, sink)
  
  */
-
 #define MAX_V 100
-
-template<class V> class MaxFlow_dinic {
+template<class V> class Dinic {
 public:
   void addEdge(int from, int to, V cap) {
     E[from].push_back((Edge){  to, (int)E[  to].size()  , cap});
@@ -108,7 +131,7 @@ int main(int argc, char const *argv[]) {
     {   0,   0,   0,   0,   0,   0 }
   };
   
-  MaxFlow_dinic<int> f;
+  Dinic<int> f;
   for(int u=0; u<C.size(); ++u) {
     for(int v=0; v<C.size(); ++v) {
       if (C[u][v]==0) continue;
