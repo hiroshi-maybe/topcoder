@@ -77,6 +77,9 @@ typedef tuple< int, int, int > III;
    - https://community.topcoder.com/stat?c=problem_solution&rm=320286&rd=15838&pm=12821&cr=22877671
    - https://community.topcoder.com/stat?c=problem_solution&rm=320303&rd=15838&pm=12821&cr=23031909
  
+ Algorithm to compute in O(R*C) time
+  http://www.geeksforgeeks.org/maximum-size-sub-matrix-with-all-1s-in-a-binary-matrix/
+ 
  */
 
 int cum[51][51];
