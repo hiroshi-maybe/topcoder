@@ -1,0 +1,44 @@
+-- Example 0
+2
+tokyo
+kyoto
+
+1
+-- Example 1
+2
+aaaaa
+bbbbb
+
+0
+-- Example 2
+3
+ababab
+bababa
+aaabbb
+
+1
+-- Example 3
+3
+eel
+ele
+lee
+
+3
+-- Example 4
+8
+aaa
+aab
+aba
+abb
+baa
+bab
+bba
+bbb
+
+6
+-- Example 5
+2
+top
+coder
+
+0
