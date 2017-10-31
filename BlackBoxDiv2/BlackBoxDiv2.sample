@@ -1,0 +1,25 @@
+-- Example 0
+BB
+BB
+
+7
+-- Example 1
+...
+.....
+
+1
+-- Example 2
+...
+BBB
+
+0
+-- Example 3
+...BB.B....
+B.B.B.B.B
+
+16081
+-- Example 4
+BBBBB.BBBBBBBBB.BBBBBBB.BBBB.B.BB..BB.B.BBBBBBBBBB
+.B.BBB..BBBBBB.BBBB.B...BBBB.BB.BBBBBBBBBB.....BBB
+
+771030153
