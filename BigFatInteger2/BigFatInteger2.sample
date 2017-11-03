@@ -1,0 +1,42 @@
+-- Example 0
+6
+1
+2
+1
+
+divisible
+-- Example 1
+2
+1
+6
+1
+
+not divisible
+-- Example 2
+1000000000
+1000000000
+1000000000
+200000000
+
+divisible
+-- Example 3
+8
+100
+4
+200
+
+not divisible
+-- Example 4
+999999937
+1000000000
+999999929
+1
+
+not divisible
+-- Example 5
+2
+2
+4
+1
+
+divisible
