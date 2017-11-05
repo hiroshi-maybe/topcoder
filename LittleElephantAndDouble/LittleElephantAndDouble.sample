@@ -1,0 +1,46 @@
+-- Example 0
+2
+1
+2
+
+YES
+-- Example 1
+3
+1
+2
+3
+
+NO
+-- Example 2
+5
+4
+8
+2
+1
+16
+
+YES
+-- Example 3
+5
+94
+752
+94
+376
+1504
+
+YES
+-- Example 4
+3
+148
+298
+1184
+
+NO
+-- Example 5
+4
+7
+7
+7
+7
+
+YES
