@@ -105,6 +105,8 @@ typedef tuple< int, int, int > III;
   - Made a mistake in running analysis. Therefore my code TLEed
   - Fixing palidrome rows by brute-force was right approach though, I couldn't figure out how to handle propagating equality constraint
   - Impressive problem to reduce to subproblem which builds small graphs
+
+ Clean DFS solution: https://community.topcoder.com/stat?c=problem_solution&rm=319671&rd=15712&pm=12876&cr=23201092
  
  */
 int memo[9][9];

@@ -59,7 +59,7 @@ typedef tuple< int, int, int > III;
  
  11/5/2017
  
- 9:50-11:03, 12:15- read editorials:
+ 9:50-11:03, 12:15-13:15 read editorials:
   - https://apps.topcoder.com/wiki/display/tc/SRM+597
    - brute force x steps (x=0..N) and finding suffix in greedy manner
   - https://twitter.com/kinaba/status/403158608910626816
