@@ -1,0 +1,16 @@
+-- Example 0
+wolf
+
+VALID
+-- Example 1
+wwolfolf
+
+INVALID
+-- Example 2
+wolfwwoollffwwwooolllfffwwwwoooollllffff
+
+VALID
+-- Example 3
+flowolf
+
+INVALID
