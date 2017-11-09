@@ -1,0 +1,102 @@
+-- Example 0
+3
+...
+.o.
+...
+
+1
+-- Example 1
+2
+o.
+oo
+
+3
+-- Example 2
+5
+.o.o.
+o.o.o
+.o.o.
+o.o.o
+.o.o.
+
+0
+-- Example 3
+5
+.o.o.
+o.o.o
+.o.o.
+o.o.o
+.....
+
+10
+-- Example 4
+11
+.o.o.o.o.o.
+o.ooo.ooo.o
+.o.......o.
+oo.......oo
+.o...o...o.
+o...o.o...o
+.o...o...o.
+oo.......oo
+.o.......o.
+o.ooo.ooo.o
+.o.o.o.o.o.
+
+4
+-- Example 5
+11
+...ooo.....
+...o.o.....
+.ooo.ooo...
+.o.....o...
+.ooo.ooo...
+...o.o.....
+...ooo.....
+....o......
+....o...ooo
+....ooooo.o
+........ooo
+
+38
+-- Example 6
+11
+ooooooooooo
+o.........o
+o...ooo...o
+o...o.o...o
+o...ooo...o
+o....o....o
+o....oooooo
+o..........
+o.......ooo
+o.......o.o
+ooooooooooo
+
+0
+-- Example 7
+15
+oo.o.ooo.o..o..
+...ooo.o..oo.oo
+o..o.o.ooo.o..o
+oo.......oo.ooo
+..oo.o.o.o.ooo.
+..oo..oo..o.ooo
+oo.o.oo..o.oooo
+.oo.o..ooo.o.oo
+o..o.o.o.o.oo..
+.oo.oo...o....o
+o.o.oo....oo..o
+.o.o..o.oo..ooo
+o.o.o..o..o....
+ooo.oooooooo..o
+o..oo.o..o.ooo.
+
+60
+-- Example 8
+3
+oo.
+oo.
+.o.
+
+0
