@@ -1,0 +1,25 @@
+-- Example 0
+DD
+FF
+
+0
+-- Example 1
+AAAA
+ABCD
+
+3
+-- Example 2
+AAIAIA
+BCDBEE
+
+3
+-- Example 3
+ABACDCECDCDAAABBFBEHBDFDDHHD
+GBGCDCECDCHAAIBBFHEBBDFHHHHE
+
+9
+-- Example 4
+FHA
+III
+
+2
