@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder SRM 590 - 500: FoxAndGo</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #CCCCCC;
+    /* background color */
+    background-color: #333333;
+}
+.section .section-title {
+    /* title color */
+    color: white;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #303030;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>SRM 590</span>
+        <span id='contest-division'>2</span>
+        <span id='problem-score'>500</span>
+        <span id='problem-name'>FoxAndGo</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1">Fox Ciel is teaching her friend Jiro to play Go.
+Ciel has just placed some white and some black tokens onto a board.
+She now wants Jiro to find the best possible move.
+(This is defined more precisely below.)<br />
+<br />
+<br />
+You are given a <type>String[]</type> <b>board</b>.
+Character j of element i of <b>board</b> represents the cell (i,j) of the board:
+'o' is a cell with a white token, 'x' a cell with a black token, and '.' is an empty cell.
+At least one cell on the board will be empty.<br />
+<br />
+<br />
+Jiro's move will consist of adding a single black token to the board.
+The token must be placed onto an empty cell.
+Once Jiro places the token, some white tokens will be removed from the board according to the rules described in the next paragraphs.<br />
+<br />
+<br />
+The white tokens on the board can be divided into connected components using the following rules:
+If two white tokens lie in cells that share an edge, they belong to the same component.
+Being in the same component is transitive: if X lies in the same component as Y and Y lies in the same component as Z, then X lies in the same component as Z.<br />
+<br />
+<br />
+Each component of white tokens is processed separately.
+For each component of white tokens we check whether it is adjacent to an empty cell.
+(That is, whether there are two cells that share an edge such that one of them is empty and the other contains a white token from the component we are processing.)
+If there is such an empty cell, the component is safe and its tokens remain on the board.
+If there is no such empty cell, the component is killed and all its tokens are removed from the board.<br />
+<br />
+<br />
+Jiro's score is the total number of white tokens removed from the board after he makes his move.
+Return the maximal score he can get for the given board.
+</intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>FoxAndGo</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>maxKill</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        vector&lt;string&gt;
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        int
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        int maxKill(vector&lt;string&gt; board)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>2.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>64</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <!-- Notes -->
+    <div class="section">
+        <h2 class="section-title">Notes</h2>
+        <ul class="notes">
+        
+            <li><note escaped="1">The position described by <b>board</b> does not have to be a valid Go position. In particular, there can already be components of white tokens that have no adjacent empty cell.</note></li>
+        
+            <li><note escaped="1">Please ignore official Go rules. The rules described in the problem statement are slightly different. For example, in this problem the black tokens cannot be killed, and it is allowed to place the black token into any empty cell.</note></li>
+        
+        </ul>
+    </div>
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1">n will be between 2 and 19, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>board</b> will contain exactly n elements.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element in <b>board</b> will contain exactly n characters.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each character in <b>board</b> will be 'o', 'x' or '.'.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">There will be at least one '.' in <b>board</b>.</user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">board</span>
+                                <span class="value data">
+                                
+                                    {&quot;.....&quot;,<br />&nbsp;&quot;..x..&quot;,<br />&nbsp;&quot;.xox.&quot;,<br />&nbsp;&quot;.....&quot;,<br />&nbsp;&quot;.....&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            1
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">To kill the only white token, Jiro must place his black token into the cell (3,2). (Both indices are 0-based.)</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">board</span>
+                                <span class="value data">
+                                
+                                    {&quot;ooooo&quot;,<br />&nbsp;&quot;xxxxo&quot;,<br />&nbsp;&quot;xxxx.&quot;,<br />&nbsp;&quot;xxxx.&quot;,<br />&nbsp;&quot;ooooo&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            6
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">By placing the token to the cell (2,4) Jiro kills 6 white tokens. The other possible move only kills 5 tokens.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">board</span>
+                                <span class="value data">
+                                
+                                    {&quot;.xoxo&quot;,<br />&nbsp;&quot;ooxox&quot;,<br />&nbsp;&quot;oooxx&quot;,<br />&nbsp;&quot;xoxox&quot;,<br />&nbsp;&quot;oxoox&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            13
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">There is only one possible move. After Jiro makes it, all the white tokens are killed.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">board</span>
+                                <span class="value data">
+                                
+                                    {&quot;.......&quot;,<br />&nbsp;&quot;.......&quot;,<br />&nbsp;&quot;.......&quot;,<br />&nbsp;&quot;xxxx...&quot;,<br />&nbsp;&quot;ooox...&quot;,<br />&nbsp;&quot;ooox...&quot;,<br />&nbsp;&quot;ooox...&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            9
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">Regardless of where Jiro moves, the 9 white tokens in the lower left corner will be killed.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">board</span>
+                                <span class="value data">
+                                
+                                    {&quot;.......&quot;,<br />&nbsp;&quot;.xxxxx.&quot;,<br />&nbsp;&quot;.xooox.&quot;,<br />&nbsp;&quot;.xo.ox.&quot;,<br />&nbsp;&quot;.xooox.&quot;,<br />&nbsp;&quot;.xxxxx.&quot;,<br />&nbsp;&quot;.......&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            8
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">board</span>
+                                <span class="value data">
+                                
+                                    {&quot;o.xox.o&quot;,<br />&nbsp;&quot;..xox..&quot;,<br />&nbsp;&quot;xxxoxxx&quot;,<br />&nbsp;&quot;ooo.ooo&quot;,<br />&nbsp;&quot;xxxoxxx&quot;,<br />&nbsp;&quot;..xox..&quot;,<br />&nbsp;&quot;o.xox.o&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            12
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">board</span>
+                                <span class="value data">
+                                
+                                    {&quot;.......&quot;,<br />&nbsp;&quot;..xx...&quot;,<br />&nbsp;&quot;.xooox.&quot;,<br />&nbsp;&quot;.oxxox.&quot;,<br />&nbsp;&quot;.oxxxo.&quot;,<br />&nbsp;&quot;...oo..&quot;,<br />&nbsp;&quot;.......&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            4
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">board</span>
+                                <span class="value data">
+                                
+                                    {&quot;.ox....&quot;,<br />&nbsp;&quot;xxox...&quot;,<br />&nbsp;&quot;..xoox.&quot;,<br />&nbsp;&quot;..xoox.&quot;,<br />&nbsp;&quot;...xx..&quot;,<br />&nbsp;&quot;.......&quot;,<br />&nbsp;&quot;.......&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            5
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">board</span>
+                                <span class="value data">
+                                
+                                    {&quot;...................&quot;,<br />&nbsp;&quot;...................&quot;,<br />&nbsp;&quot;...o..........o....&quot;,<br />&nbsp;&quot;................x..&quot;,<br />&nbsp;&quot;...............x...&quot;,<br />&nbsp;&quot;...................&quot;,<br />&nbsp;&quot;...................&quot;,<br />&nbsp;&quot;...................&quot;,<br />&nbsp;&quot;...................&quot;,<br />&nbsp;&quot;...................&quot;,<br />&nbsp;&quot;...................&quot;,<br />&nbsp;&quot;...................&quot;,<br />&nbsp;&quot;...................&quot;,<br />&nbsp;&quot;...................&quot;,<br />&nbsp;&quot;................o..&quot;,<br />&nbsp;&quot;..x................&quot;,<br />&nbsp;&quot;...............x...&quot;,<br />&nbsp;&quot;...................&quot;,<br />&nbsp;&quot;...................&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            0
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
