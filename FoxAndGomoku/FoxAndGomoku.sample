@@ -1,0 +1,112 @@
+-- Example 0
+6
+....o.
+...o..
+..o...
+.o....
+o.....
+......
+
+found
+-- Example 1
+5
+oooo.
+.oooo
+oooo.
+.oooo
+.....
+
+not found
+-- Example 2
+5
+oooo.
+.oooo
+oooo.
+.oooo
+....o
+
+found
+-- Example 3
+6
+o.....
+.o....
+..o...
+...o..
+....o.
+......
+
+found
+-- Example 4
+5
+o....
+o.o..
+o.o.o
+o.o..
+o....
+
+found
+-- Example 5
+10
+..........
+..........
+..oooooo..
+..o.......
+..o.......
+..oooooo..
+.......o..
+.......o..
+..oooooo..
+..........
+
+found
+-- Example 6
+10
+..........
+..........
+..oooo.o..
+..o.......
+..o.......
+..o.oooo..
+.......o..
+.......o..
+..oooo.o..
+..........
+
+not found
+-- Example 7
+5
+ooooo
+ooooo
+ooooo
+ooooo
+ooooo
+
+found
+-- Example 8
+5
+.....
+.....
+.....
+.....
+.....
+
+not found
+-- Example 9
+5
+oooo.
+.oooo
+oooo.
+.oooo
+.....
+
+not found
+-- Example 10
+6
+....o.
+...o..
+..o...
+.o....
+o.....
+......
+
+found
