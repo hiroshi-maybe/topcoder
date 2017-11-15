@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder SRM 588 - 1000: GameInDarknessDiv2</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #CCCCCC;
+    /* background color */
+    background-color: #333333;
+}
+.section .section-title {
+    /* title color */
+    color: white;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #303030;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>SRM 588</span>
+        <span id='contest-division'>2</span>
+        <span id='problem-score'>1000</span>
+        <span id='problem-name'>GameInDarknessDiv2</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1">Alice and Bob are playing a game on a rectangular board.
+Rows and columns are both numbered starting from 0.
+We will use (i, j) to denote the cell in row i, column j.
+The cell (0, 0) is in the top left corner of the board.
+Some cells contain walls, others are empty.
+The game is played on empty cells only. <br />
+
+The game is played as follows:
+Each player has one piece on the board.
+Initially, each piece occupies a different cell.
+The players take alternating turns, Alice starts.
+In each turn, the player moves his/her piece onto one of the adjacent empty cells.
+(Note that moving the piece is mandatory, it is not allowed to keep it in its current cell.) <br />
+
+If at any moment the two tokens occupy the same cell, Alice wins.
+If Alice gives up (described below), Bob wins. <br />
+
+You are given a <type>String[]</type> <b>field</b> that describes the game board.
+Character j of element i of <b>field</b> describes the initial content of the cell (i, j).
+The character '.' represents an empty cell, '#' represents a wall, 'A' is an empty cell where Alice's piece starts, and 'B' is an empty cell where Bob's piece starts. <br />
+
+Here is the twist:
+The game board is completely in the dark.
+Alice and Bob each know the initial location of both pieces.
+During the game, Alice has no idea how Bob moves his piece.
+However, Bob knows exactly how Alice will play the game.
+(Note that this is actually possible: as Alice does not gain any information during the game, she may as well determine her entire strategy in advance.) <br />
+
+You are given a <type>String[]</type> <b>moves</b> that represents Alice's strategy.
+Concatenate all elements of <b>moves</b> to obtain a <type>String</type> M.
+For each i, in her i-th turn, Alice will move her piece according to the character M[i-1].
+Assume that before Alice's i-th turn her piece was at (y, x).
+In the i-th turn she moves as follows:
+<ul>
+<li>If M[i-1] is 'U' (quotes for clarity): she moves to (y-1, x). </li>
+<li>If M[i-1] is 'R' (quotes for clarity): she moves to (y, x+1). </li>
+<li>If M[i-1] is 'L' (quotes for clarity): she moves to (y, x-1). </li>
+<li>If M[i-1] is 'D' (quotes for clarity): she moves to (y+1, x). </li>
+</ul>
+It is guaranteed that M will represent a valid sequence of moves that only uses empty cells and never leaves the board.
+If Alice gets to the situation where she has to make a move but has no more letters in M, she gives up and Bob wins the game. <br />
+
+Bob can use his knowledge of M and his knowledge of the game board when planning his own moves.
+If it is possible for Bob to win the game, return &quot;Bob wins&quot; (quotes for clarity).
+Otherwise, return &quot;Alice wins&quot;.
+</intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>GameInDarknessDiv2</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>check</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        vector&lt;string&gt;
+                    , 
+                        vector&lt;string&gt;
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        string
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        string check(vector&lt;string&gt; field, vector&lt;string&gt; moves)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>2.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>64</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <!-- Notes -->
+    <div class="section">
+        <h2 class="section-title">Notes</h2>
+        <ul class="notes">
+        
+            <li><note escaped="1">Note that the return value is case sensitive.</note></li>
+        
+        </ul>
+    </div>
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1"><b>field</b> and <b>moves</b> will contain between 1 and 50 elements, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>field</b> and <b>moves</b> will contain between 1 and 50 characters, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>field</b> will contain the same number of characters.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each character of each element of <b>field</b> will be either '.', '#', 'A' or 'B' (quotes for clarity).</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>field</b> will contain exactly one 'A' and 'B' each.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each character of <b>moves</b> will be either 'U', 'D', 'L' or 'R' (quotes for clarity).</user-constraint></li>
+        
+            <li><user-constraint escaped="1">The sequence of moves represented by <b>moves</b> will be a valid sequence of moves for Alice's piece.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">In the starting position each player will have at least one possible move.</user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">field</span>
+                                <span class="value data">
+                                
+                                    {&quot;A.B..&quot;,<br />&nbsp;&quot;##.##&quot;,<br />&nbsp;&quot;##.##&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">moves</span>
+                                <span class="value data">
+                                
+                                    { &quot;RRDUR&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            &quot;Alice wins&quot;
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">In this game, M=&quot;RRDUR&quot;.
+In this case Alice can always win regardless of how Bob moves.
+One possible game is as follows:
+<ul>
+<li>Alice moves her piece to (0, 1).</li>
+<li>Bob moves his piece to (0, 3).</li>
+<li>Alice moves to (0, 2).</li>
+<li>Bob moves to (0, 4).</li>
+<li>Alice moves to (1, 2).</li>
+<li>Bob moves to (0, 3).</li>
+<li>Alice moves to (0, 2).</li>
+<li>Bob moves to (0, 4).</li>
+<li>Alice moves to (0, 3).</li>
+<li>Bob moves to (0, 3). Alice and Bob are on the same cell, so Alice wins.</li>
+</ul>
+Note that Alice has used up all characters of M. Even so, Alice doesn't give up unless she needs to make her 6-th move.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">field</span>
+                                <span class="value data">
+                                
+                                    {&quot;A.B..&quot;,<br />&nbsp;&quot;##.##&quot;,<br />&nbsp;&quot;##...&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">moves</span>
+                                <span class="value data">
+                                
+                                    { &quot;RRRLD&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            &quot;Bob wins&quot;
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">field</span>
+                                <span class="value data">
+                                
+                                    {&quot;###.#&quot;,<br />&nbsp;&quot;###..&quot;,<br />&nbsp;&quot;A..B#&quot;,<br />&nbsp;&quot;###..&quot;,<br />&nbsp;&quot;###.#&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">moves</span>
+                                <span class="value data">
+                                
+                                    { &quot;RR&quot;, &quot;R&quot;, &quot;UDD&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            &quot;Alice wins&quot;
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">Make sure to concatenate the elements of <b>moves</b>.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">field</span>
+                                <span class="value data">
+                                
+                                    {&quot;A.###&quot;,<br />&nbsp;&quot;.B...&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">moves</span>
+                                <span class="value data">
+                                
+                                    { &quot;RDRRRLLLLUDUDRLURDLUD&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            &quot;Bob wins&quot;
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">field</span>
+                                <span class="value data">
+                                
+                                    {&quot;.....&quot;,<br />&nbsp;&quot;.#.#.&quot;,<br />&nbsp;&quot;##.#.&quot;,<br />&nbsp;&quot;A###.&quot;,<br />&nbsp;&quot;B....&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">moves</span>
+                                <span class="value data">
+                                
+                                    { &quot;D&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            &quot;Alice wins&quot;
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">field</span>
+                                <span class="value data">
+                                
+                                    {&quot;.#...#....#.......#....#......&quot;,<br />&nbsp;&quot;...###.#.#..#.#.#..###...#.#.#&quot;,<br />&nbsp;&quot;.#.#...#...#..#..#.....##.#...&quot;,<br />&nbsp;&quot;#..#.##..##..#.#..###.#....#.#&quot;,<br />&nbsp;&quot;..#..#..#...#...#....#..##.#..&quot;,<br />&nbsp;&quot;#..##..#..##.#.#.####..#.#...#&quot;,<br />&nbsp;&quot;.#....##.#.....#......##.#.#..&quot;,<br />&nbsp;&quot;.###.#...#.#.#..#.#.##...##.#.&quot;,<br />&nbsp;&quot;.....#.#.##..#.#..##...##...#.&quot;,<br />&nbsp;&quot;#.#.#...#...#.#.#...#.#.#.##.#&quot;,<br />&nbsp;&quot;.#..##.#..##..#.###...........&quot;,<br />&nbsp;&quot;..##.....####.......##.#.#.##.&quot;,<br />&nbsp;&quot;#....##.#.#...####.#...#.#.#..&quot;,<br />&nbsp;&quot;#.#.#......##.#...#..#.#..#..#&quot;,<br />&nbsp;&quot;..#..#.#.##...#.#..#..#..#..#.&quot;,<br />&nbsp;&quot;.#..#...#...#..#..#.#..#..#A#.&quot;,<br />&nbsp;&quot;..#..#.#.B##.##..#...#.#.##...&quot;,<br />&nbsp;&quot;#.#.##..#......#.#.#.#.#...#.#&quot;,<br />&nbsp;&quot;#.#...#.######...#.#.#.#.#.#..&quot;,<br />&nbsp;&quot;..#.##.#.....#.##..#...#.#.#.#&quot;,<br />&nbsp;&quot;.#..#..#.#.#.#.#..#.#####..#.#&quot;,<br />&nbsp;&quot;..#.#.##.#.#.##.#......#..#...&quot;,<br />&nbsp;&quot;#..#.....#.#.....#.#.##..##.#.&quot;,<br />&nbsp;&quot;##..###.#..#.#.#.#..##..#...##&quot;,<br />&nbsp;&quot;##.#...#..##.#.#..#.#..#.#.#..&quot;,<br />&nbsp;&quot;#..#.#.####..#..#..#..#......#&quot;,<br />&nbsp;&quot;..#..#.....####..#.##.#.###.#.&quot;,<br />&nbsp;&quot;.#..#.####.#.#..#.....#...#...&quot;,<br />&nbsp;&quot;..##.......#...#..####.##.#.#.&quot;,<br />&nbsp;&quot;#....#.#.#..#.###....#....#..#&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">moves</span>
+                                <span class="value data">
+                                
+                                    { &quot;UURURUULLLLLLLLLLDLLLLUDLLUDDLRDDDULLDLLDDRRRRRDDU&quot;, &quot;RRUUURUULLD&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            &quot;Alice wins&quot;
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
