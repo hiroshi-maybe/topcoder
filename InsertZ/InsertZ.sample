@@ -1,0 +1,35 @@
+-- Example 0
+fox
+fozx
+
+Yes
+-- Example 1
+fox
+zfzoxzz
+
+Yes
+-- Example 2
+foon
+foon
+
+Yes
+-- Example 3
+topcoder
+zopzoder
+
+No
+-- Example 4
+aaaaaaaaaa
+a
+
+No
+-- Example 5
+mvixrdnrpxowkasufnvxaq
+mvizzxzzzrdzznzrpxozzwzzkazzzszzuzzfnvxzzzazzq
+
+Yes
+-- Example 6
+opdlfmvuicjsierjowdvnx
+zzopzdlfmvzuicjzzsizzeijzowvznxzz
+
+No
