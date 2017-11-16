@@ -1,0 +1,35 @@
+-- Example 0
+1
+Z
+
+Yes
+-- Example 1
+2
+NZ
+NZ
+
+Yes
+-- Example 2
+2
+ZZZ
+ZNZ
+
+No
+-- Example 3
+7
+NZNZNNN
+NNZNNNZ
+NNNNZZZ
+ZZZNZZN
+ZZNZNNN
+NZZZZNN
+ZZZNZNN
+
+No
+-- Example 4
+3
+ZZZZ
+ZZZZ
+ZZZZ
+
+Yes
