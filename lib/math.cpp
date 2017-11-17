@@ -7,10 +7,17 @@ using namespace std;
 typedef long long LL;
 constexpr int MOD = 1e9+7;
 
-// CLRS 31.6 powers of an element
-// compute (a^b) `mod` 1e9+7
-// O(lg b)
-// famous for name of "repeated squaring"
+/*
+ 
+ Power mod by repeated squaring, O(lg b)
+ 
+ powmod(a,b) = (a^b) % MOD
+ 
+ Reference:
+  - CLRS 31.6 powers of an element
+  - Ant boo 2-6 how to solve math problem
+ 
+ */
 LL powmod(LL a, LL b) {
   assert(0<=a && a<MOD);
   assert(0<=b);
@@ -76,8 +83,14 @@ int euler_phi(int n) {
   return res;
 }
 
-// memoized factorial(n) (`mod` 1e9+7)
-// O(n) before cache warmup
+/*
+ 
+ factorial(n) % MOD, O(n)
+ 
+ - lazily computed and cached
+ - O(1) time if cached
+ 
+ */
 LL factmod(LL n) {
   static vector<LL> memo(1,1);
   if(memo.size()<=n) {
@@ -88,8 +101,15 @@ LL factmod(LL n) {
   return memo[n];
 }
 
-// n chooses k
-// C(n,k) = n!/((n-k)!*k!)
+/*
+ 
+ n chooses k (% MOD) (binomial coefficient), O(n)
+ 
+ C(n,k) = n!/((n-k)!*k!)
+ 
+ - compute on-demand by mod inverse and factorial mod
+ 
+ */
 LL choose(LL n, LL k) {
   if (n<k) return 0;
   k = min(n-k,k);
@@ -106,21 +126,37 @@ LL choose(LL n, LL k) {
 #define dump4(x,y,z,a)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl;
 #define dumpAR(ar) FORR(x,(ar)) { cout << x << ','; } cout << endl;
 
-// Populate n chooses k (n={1..N},k={1..N}) (accumulate by DP)
-// C(n,k) = C(n-1,k)+C(n-1,k-1)
-// O(N^2) time
-void choose(LL N, vector<vector<int>> &dp) {
+/*
+ 
+ n chooses k (% MOD) (binomial coefficient), O(N^2) time
+ 
+ C(n,k) = C(n-1,k)+C(n-1,k-1)
+ 
+ - Precompute n chooses k for n={1..N},k={1..N}
+ - DP following Pascal's triangle
+  - https://en.wikipedia.org/wiki/Pascal%27s_triangle
+ 
+ */
+void choose(LL N, vector<vector<int>> &C) {
   // i chooses j
   for(int i=0; i<=N; ++i) {
-    dp[i][0]=1;
+    C[i][0]=1;
     for(int j=1; j<=i; ++j) {
-      dp[i][j] = dp[i-1][j]+dp[i-1][j-1], dp[i][j]%=MOD;
+      C[i][j] = C[i-1][j]+C[i-1][j-1], C[i][j]%=MOD;
     }
   }
 }
 
-// multichoose
-// H(n,k) = C(n+k-1,k)
+/*
+ 
+ Multichoose k of n elements (% MOD), O(n+k) time
+
+ H(n,k) = C(n+k-1,k) % MOD
+ 
+ - Compute on-demand by binomial coefficient
+ - Populate k slots by infinite n elements with repetion
+ 
+ */
 LL multichoose(LL n, LL k) {
   if(n==0&&k==0) return 1;
 
