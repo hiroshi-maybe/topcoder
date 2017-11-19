@@ -9,6 +9,14 @@ using namespace std;
 
 #define dumpAR(ar) for(auto &x : (ar)) { cout << x << ','; } cout << endl;
 
+/*
+ 
+ Bellman-ford algorithm, O(V*E)
+ 
+ - Solver of single-source shortest path problem
+ - negative cycle detection
+ 
+ */
 vector<int> bellmanford(int V, vector<unordered_map<int, int>> E, int s) {
   vector<int> res(V, INT_MAX);
   res[s] = 0;
@@ -40,6 +48,15 @@ vector<int> bellmanford(int V, vector<unordered_map<int, int>> E, int s) {
   return res;
 }
 
+/*
+ 
+ Dijkstra's algorithm, O((V+E)*lg V) time
+ 
+ - Solver of single-source shortest path problem
+ - More efficient than Bellman-ford algorithm
+   - However, this cannot solve graph with negative weight
+ 
+ */
 vector<int> dijkstra(int V, vector<unordered_map<int, int>> E, int s) {
   vector<int> visited(V, false);
   vector<int> res(V, INT_MAX);
@@ -71,6 +88,17 @@ vector<int> dijkstra(int V, vector<unordered_map<int, int>> E, int s) {
   return res;
 }
 
+/*
+ 
+ Floyd-warshall algorithm, O(V^3)
+ 
+  - Solver of all pairs shortest paths
+  - Find connected component
+   - If W[u][v]!=Inf and W[u][v]!=Inf, u and v are both part of connected component
+   - If W[u][v]=Inf, vertex u is not connected to v
+   - Or W[i][j]=W[i][j]|(W[i][k]&W[k][j]) directly solves connectivity problem
+ 
+ */
 vector<vector<int>> floydWarshall(vector<vector<int>> W) {
   if (W.empty()) return W;
   int V=W.size();
@@ -87,6 +115,13 @@ vector<vector<int>> floydWarshall(vector<vector<int>> W) {
   return W;
 }
 
+/*
+ 
+ Johnson's algorithm, O(V^3)
+ 
+ - Solver of all pairs shortest paths
+ 
+ */
 vector<vector<int>> johnson(vector<unordered_map<int, int>> E, int V) {
   if (E.empty()) return {{}};
   
@@ -122,9 +157,7 @@ vector<vector<int>> johnson(vector<unordered_map<int, int>> E, int V) {
 
 /**
  
- Build Strongly Connected Components a.k.a. SCCs (CLRS 22.5)
- 
- Θ(V+E) time
+ Build Strongly Connected Components a.k.a. SCCs (CLRS 22.5), Θ(V+E) time
  
  Usage:
  
