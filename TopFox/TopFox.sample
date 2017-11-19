@@ -1,0 +1,30 @@
+-- Example 0
+ab
+cd
+
+4
+-- Example 1
+abb
+bbc
+
+7
+-- Example 2
+fox
+ciel
+
+12
+-- Example 3
+abbbb
+bbbbbbbc
+
+16
+-- Example 4
+abxy
+xyxyxc
+
+21
+-- Example 5
+ababababab
+bababababa
+
+68
