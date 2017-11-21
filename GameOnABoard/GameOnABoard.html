@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder SRM 583 - 900: GameOnABoard</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #CCCCCC;
+    /* background color */
+    background-color: #333333;
+}
+.section .section-title {
+    /* title color */
+    color: white;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #303030;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>SRM 583</span>
+        <span id='contest-division'>2</span>
+        <span id='problem-score'>900</span>
+        <span id='problem-name'>GameOnABoard</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1"><p><i>This problem statement contains superscripts and/or subscripts. These may not display properly outside the applet.</i></p>
+
+<p>Alice and Bob are playing a game on a rectangular board. We use (i, j) to denote the j-th cell in the i-th row (0-based index). Each cell has a cost of either 0 or 1 and they are given by the <type>String[]</type> <b>cost</b>. The j-th character of i-th element in <b>cost</b> (0-based index) denotes the cost of cell (i, j). A path between two distinct cells (x<sub>1</sub>, y<sub>1</sub>) and (x<sub>2</sub>, y<sub>2</sub>) is a sequence of cells (c<sub>0</sub>, c<sub>1</sub>, ..., c<sub>k</sub>) such that c<sub>0</sub>=(x<sub>1</sub>, y<sub>1</sub>), c<sub>k</sub>=(x<sub>2</sub>, y<sub>2</sub>) and for each i from 0 to k-1, cells c<sub>i</sub> and c<sub>i+1</sub> have a common side. Cost of a path is the total cost of cells on this path.</p>
+
+<p>The game is played as follows: First Alice chooses a cell (x<sub>1</sub>,y<sub>1</sub>), then Bob chooses a cell (x<sub>2</sub>,y<sub>2</sub>) which is different from (x<sub>1</sub>, y<sub>1</sub>). Finally, they compute the value L: the minimum cost of a path between (x<sub>1</sub>,y<sub>1</sub>) and (x<sub>2</sub>,y<sub>2</sub>). Alice's goal is to minimize L, and Bob's goal is to maximize L. Compute and return the value L that will be achieved if both players play optimally.</p></intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>GameOnABoard</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>optimalChoice</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        vector&lt;string&gt;
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        int
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        int optimalChoice(vector&lt;string&gt; cost)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>2.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>64</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <!-- Notes -->
+    <div class="section">
+        <h2 class="section-title">Notes</h2>
+        <ul class="notes">
+        
+            <li><note escaped="1">Two cells (x<sub>1</sub>, y<sub>1</sub>) and (x<sub>2</sub>, y<sub>2</sub>) have a common side if |x<sub>1</sub>-x<sub>2</sub>|+|y<sub>1</sub>-y<sub>2</sub>|=1.</note></li>
+        
+        </ul>
+    </div>
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1"><b>cost</b> will contain between 2 and 40 elements, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>cost</b> will be between 2 and 40 characters long, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>cost</b> will be of the same length.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>cost</b> will consist of '0's and '1's only.</user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">cost</span>
+                                <span class="value data">
+                                
+                                    {&quot;11&quot;,<br />&nbsp;&quot;10&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            2
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment"><p>Regardless of Alice's choice, Bob can always achieve L=2 by choosing the opposite corner.</p>
+<p>Sometimes he also has other optimal moves. For example, if Alice chooses (0,0), Bob can choose any of the other three cells to get L=2.</p></div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">cost</span>
+                                <span class="value data">
+                                
+                                    {&quot;01&quot;,<br />&nbsp;&quot;10&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            1
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment"><p>Alice will not choose the cell (0,1), nor the cell (1,0). If she chooses one of those, Bob will choose the other one and L will be 2.</p>
+<p>Alice prefers the other option. If she chooses one of the cells (0,0) or (1,1), Bob can only achieve L=1.</p></div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">cost</span>
+                                <span class="value data">
+                                
+                                    {&quot;111001&quot;,<br />&nbsp;&quot;001000&quot;,<br />&nbsp;&quot;111111&quot;,<br />&nbsp;&quot;001111&quot;,<br />&nbsp;&quot;001100&quot;,<br />&nbsp;&quot;001011&quot;,<br />&nbsp;&quot;111001&quot;,<br />&nbsp;&quot;010011&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            3
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">cost</span>
+                                <span class="value data">
+                                
+                                    {&quot;001001101011&quot;,<br />&nbsp;&quot;110011001101&quot;,<br />&nbsp;&quot;111111000001&quot;,<br />&nbsp;&quot;111101010001&quot;,<br />&nbsp;&quot;011100101111&quot;,<br />&nbsp;&quot;110010111000&quot;,<br />&nbsp;&quot;111111110101&quot;,<br />&nbsp;&quot;111011110111&quot;,<br />&nbsp;&quot;111100100011&quot;,<br />&nbsp;&quot;000000000110&quot;,<br />&nbsp;&quot;101011011110&quot;,<br />&nbsp;&quot;011111000111&quot;,<br />&nbsp;&quot;101111001011&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            5
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">cost</span>
+                                <span class="value data">
+                                
+                                    {&quot;110010100101010110100010001100111011&quot;,<br />&nbsp;&quot;001000000110100011010100000001001000&quot;,<br />&nbsp;&quot;011000110111101001011101110111000100&quot;,<br />&nbsp;&quot;111001011000100101111010100110110011&quot;,<br />&nbsp;&quot;111000011101001010000100001010000010&quot;,<br />&nbsp;&quot;111001110010100101000001001100011011&quot;,<br />&nbsp;&quot;111110100111010101100000100111000111&quot;,<br />&nbsp;&quot;011111111100100111111110000001110111&quot;,<br />&nbsp;&quot;110000010101001111100011110000001000&quot;,<br />&nbsp;&quot;010010110111111100011101100000011010&quot;,<br />&nbsp;&quot;110001100001111001101000101110110001&quot;,<br />&nbsp;&quot;110010000111011110000010110111010101&quot;,<br />&nbsp;&quot;100100110101001001101000001101101101&quot;,<br />&nbsp;&quot;001011101101001100111110101111001110&quot;,<br />&nbsp;&quot;111010111111111100110100000011111100&quot;,<br />&nbsp;&quot;110101101000001001000100101011100000&quot;,<br />&nbsp;&quot;011011001011010001001000100000110101&quot;,<br />&nbsp;&quot;011111111100000011010111010011010100&quot;,<br />&nbsp;&quot;111001111110001110001110010100111010&quot;,<br />&nbsp;&quot;000001111000001100101010000001101110&quot;,<br />&nbsp;&quot;010000110000010010111110111000010101&quot;,<br />&nbsp;&quot;100010010100110011000111101001101011&quot;,<br />&nbsp;&quot;111010110001101011010001111101111100&quot;,<br />&nbsp;&quot;000111110000110000000101100101000110&quot;,<br />&nbsp;&quot;110000010111001001110001101010111100&quot;,<br />&nbsp;&quot;011111101101001011011010011111100010&quot;,<br />&nbsp;&quot;110101111101010100110010000011001101&quot;,<br />&nbsp;&quot;101101111001010100101111100001110001&quot;,<br />&nbsp;&quot;000110010100101111011011110010010010&quot;,<br />&nbsp;&quot;110101010011101000111011100000010011&quot;,<br />&nbsp;&quot;110001010001110011010100110000010001&quot;,<br />&nbsp;&quot;111010101100111100100011001101010100&quot;,<br />&nbsp;&quot;011000000000100001011010000100010001&quot;,<br />&nbsp;&quot;100000110110000001010001001111010000&quot;,<br />&nbsp;&quot;100011111110010011011011001110011111&quot;,<br />&nbsp;&quot;101100001111100101001101100000100001&quot;,<br />&nbsp;&quot;010000111011010110011001110011111000&quot;,<br />&nbsp;&quot;100010100111110111001010100101111010&quot;,<br />&nbsp;&quot;000110011110111011111000101000001000&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            7
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
