@@ -1,0 +1,36 @@
+-- Example 0
+buffalo buffalo
+
+Good
+-- Example 1
+buffalobuffalo
+
+Not good
+-- Example 2
+buffalo buffalo buffalo
+
+Good
+-- Example 3
+buf falo buffalo
+
+Not good
+-- Example 4
+cow
+
+Not good
+-- Example 5
+buffalo  buffalo
+
+Not good
+-- Example 6
+ 
+
+Not good
+-- Example 7
+  
+
+Not good
+-- Example 8
+buffalo 
+
+Not good
