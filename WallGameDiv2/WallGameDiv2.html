@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder SRM 580 - 1000: WallGameDiv2</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #CCCCCC;
+    /* background color */
+    background-color: #333333;
+}
+.section .section-title {
+    /* title color */
+    color: white;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #303030;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>SRM 580</span>
+        <span id='contest-division'>2</span>
+        <span id='problem-score'>1000</span>
+        <span id='problem-name'>WallGameDiv2</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1"><p>
+Rabbit and Eel are playing a board game.
+The game is played with a single token on a rectangular board that is divided into a grid of unit cells.
+Some cells contain a digit that represents the cost of placing the token onto that cell.
+Other cells contain the letter 'x' that represents a blocked cell.
+It is not allowed to place the token onto a blocked cell.
+</p>
+<p>
+Initially, the token is placed on the leftmost cell of the topmost row.
+(The constraints guarantee that this cell will never be blocked and its cost will always be 0.)
+Eel starts the game by putting up some walls.
+Eel may place as many walls as he wants, including none.
+Each wall must be placed between two adjacent cells in the same column.
+</p>
+<p>
+Once Eel has placed the walls, Rabbit gets to move the token.
+In each step, Rabbit may move the token one cell left, one cell right, or one cell down.
+(Note that Rabbit is not allowed to move the token upwards.)
+Rabbit may only move the token into cells that are not blocked.
+Each time Rabbit moves the token into a cell, he has to pay the cost associated with that cell.
+</p>
+<p>
+The game ends when Rabbit first moves the token into the bottommost row.
+The constraints guarantee that this can be achieved if Eel does not place any walls.
+The game must always be allowed to end.
+That is, Eel must not place a set of walls that blocks all possible paths to the bottommost row.
+</p>
+<p>
+Rabbit's goal is to minimize and Eel's goal is to maximize the total cost paid by Rabbit during the game.
+You are given the <type>String[]</type> <b>costs</b> representing the costs of cells:
+character j of element i of <b>cost</b> is either a digit that represents the cost written in the cell in row i, column j; or it is the letter 'x' that represents a blocked cell.
+Return the total cost of the game assuming that both Rabbit and Eel play optimally.
+</p></intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>WallGameDiv2</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>play</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        vector&lt;string&gt;
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        int
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        int play(vector&lt;string&gt; costs)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>2.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>64</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1"><b>costs</b> will contain between 2 and 50 elements, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>costs</b> will contain between 1 and 50 characters, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>costs</b> will contain the same number of characters.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each character of each element of <b>costs</b> will be a letter 'x' or a decimal digit ('0'-'9').</user-constraint></li>
+        
+            <li><user-constraint escaped="1">There will be at least one valid path from the leftmost cell of topmost row to a cell in the bottommost row.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>costs[0][0]</b> will always be '0'.</user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">costs</span>
+                                <span class="value data">
+                                
+                                    {&quot;042&quot;,<br />&nbsp;&quot;391&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            13
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">Eel's optimal stategy is to put two walls: between '0'-'3' and between '2'-'1'. Then Rabbit's optimal strategy is to move the token along the path '0'-&gt;'4'-&gt;'9'. The total cost will be 13.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">costs</span>
+                                <span class="value data">
+                                
+                                    {&quot;0xxxx&quot;,<br />&nbsp;&quot;1x111&quot;,<br />&nbsp;&quot;1x1x1&quot;,<br />&nbsp;&quot;11191&quot;,<br />&nbsp;&quot;xxxx1&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            16
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">There's only one path from the starting cell to the bottom row and Eel isn't allowed to block it. Rabbit will move the token along this path and will get to pay a cost of 16. Note that it is not allowed to move the token upwards.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">costs</span>
+                                <span class="value data">
+                                
+                                    {&quot;0&quot;,<br />&nbsp;&quot;5&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            5
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">costs</span>
+                                <span class="value data">
+                                
+                                    {&quot;0698023477896606x2235481563x59345762591987823x663&quot;,<br />&nbsp;&quot;1x88x8338355814562x2096x7x68546x18x54xx1077xx5131&quot;,<br />&nbsp;&quot;64343565721335639575x18059738478x156x781476124780&quot;,<br />&nbsp;&quot;2139850139989209547489708x3466104x5x3979260330074&quot;,<br />&nbsp;&quot;15316x57171x182167994729710304x24339370252x2x8846&quot;,<br />&nbsp;&quot;459x479948xx26916349194540891252317x99x4329x34x91&quot;,<br />&nbsp;&quot;96x3631804253899x69460666282614302698504342364742&quot;,<br />&nbsp;&quot;4x41693527443x7987953128673046855x793298x8747219x&quot;,<br />&nbsp;&quot;7735427289436x56129435153x83x37703808694432026643&quot;,<br />&nbsp;&quot;340x973216747311x970578x9324423865921864682853036&quot;,<br />&nbsp;&quot;x1442314831447x860181542569525471281x762734425650&quot;,<br />&nbsp;&quot;x756258910x0529918564126476x481206117984425792x97&quot;,<br />&nbsp;&quot;467692076x43x91258xx3xx079x34x29xx916574022682343&quot;,<br />&nbsp;&quot;9307x08x451x2882604411x67995x333x045x0x5xx4644590&quot;,<br />&nbsp;&quot;4x9x088309856x342242x12x79x2935566358156323631235&quot;,<br />&nbsp;&quot;04596921625156134477422x2691011895x8564609x837773&quot;,<br />&nbsp;&quot;223x353086929x27222x48467846970564701987061975216&quot;,<br />&nbsp;&quot;x4x5887805x89746997xx1419x758406034689902x6152567&quot;,<br />&nbsp;&quot;20573059x699979871151x444449x5170122650576586x898&quot;,<br />&nbsp;&quot;683344308229681464514453186x51040742xx138x5170x93&quot;,<br />&nbsp;&quot;1219892x9407xx63107x24x4914598xx4x478x31485x69139&quot;,<br />&nbsp;&quot;856756530006196x8722179365838x9037411399x41126560&quot;,<br />&nbsp;&quot;73012x9290145x1764125785844477355xx827269976x4x56&quot;,<br />&nbsp;&quot;37x95684445661771730x80xx2x459547x780556228951360&quot;,<br />&nbsp;&quot;54532923632041379753304212490929413x377x204659874&quot;,<br />&nbsp;&quot;30801x8716360708478705081091961915925276739027360&quot;,<br />&nbsp;&quot;5x74x4x39091353819x10x433010250089676063173896656&quot;,<br />&nbsp;&quot;03x07174x648272618831383631629x020633861270224x38&quot;,<br />&nbsp;&quot;855475149124358107x635160129488205151x45274x18854&quot;,<br />&nbsp;&quot;091902044504xx868401923845074542x50x143161647934x&quot;,<br />&nbsp;&quot;71215871802698346x390x2570413992678429588x5866973&quot;,<br />&nbsp;&quot;87x4538137828472265480468315701832x24590429832627&quot;,<br />&nbsp;&quot;9479550007750x658x618193862x80317248236583631x846&quot;,<br />&nbsp;&quot;49802902x511965239855908151316389x972x253946284x6&quot;,<br />&nbsp;&quot;053078091010241324x8166428x1x93x83809001454563464&quot;,<br />&nbsp;&quot;2176345x693826342x093950x12x7290x1186505760xx978x&quot;,<br />&nbsp;&quot;x9244898104910492948x2500050208763770568x92514431&quot;,<br />&nbsp;&quot;6855xx7x145213846746325656963x0419064369747824511&quot;,<br />&nbsp;&quot;88x15690xxx31x20312255171137133511507008114887695&quot;,<br />&nbsp;&quot;x391503034x01776xx30264908792724712819642x291x750&quot;,<br />&nbsp;&quot;17x1921464904885298x58x58xx174x7x673958x9615x9230&quot;,<br />&nbsp;&quot;x9217049564455797269x484428813681307xx85205112873&quot;,<br />&nbsp;&quot;19360179004x70496337008802296x7758386170452xx359x&quot;,<br />&nbsp;&quot;5057547822326798x0x0569420173277288269x486x582463&quot;,<br />&nbsp;&quot;2287970x0x474635353111x85933x33443884726179587xx9&quot;,<br />&nbsp;&quot;0x697597684843071327073893661811597376x4767247755&quot;,<br />&nbsp;&quot;668920978869307x17435748153x4233659379063530x646x&quot;,<br />&nbsp;&quot;0019868300350499779516950730410231x9x18749463x537&quot;,<br />&nbsp;&quot;00508xx083203827x42144x147181308668x3192478607467&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            3512
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
