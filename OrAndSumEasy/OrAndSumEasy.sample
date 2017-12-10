@@ -1,0 +1,25 @@
+-- Example 0
+7
+11
+
+Possible
+-- Example 1
+11
+7
+
+Impossible
+-- Example 2
+999799115789631487
+999999999999999999
+
+Possible
+-- Example 3
+1
+100
+
+Impossible
+-- Example 4
+0
+0
+
+Possible
