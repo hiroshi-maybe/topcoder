@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder SRM 724 - 1000: UnfinishedTournamentEasy</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #CCCCCC;
+    /* background color */
+    background-color: #333333;
+}
+.section .section-title {
+    /* title color */
+    color: white;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #303030;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>SRM 724</span>
+        <span id='contest-division'>2</span>
+        <span id='problem-score'>1000</span>
+        <span id='problem-name'>UnfinishedTournamentEasy</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1">A tournament is being played.
+There are n participants, numbered 0 through n-1.
+The tournament is a single round-robin tournament.
+In other words, each player is supposed to play each other player exactly once.
+There are no ties, each match will be won by one of the two players.
+<br />
+<br />
+Some games may have already been played.
+You are given the information about the current state of the tournament in the <type>String[]</type> <b>G</b>.
+For each x and y, if x won the game against y, we have <b>G</b>[x][y] = 'W' and <b>G</b>[y][x] = 'L'.
+For the games that haven't been played yet we have <b>G</b>[x][y] = <b>G</b>[y][x] = '?'.
+<br />
+<br />
+The winning rate of a player is the percentage of games they won.
+In particular, at the end of the tournament the winning rate of a player can be computed as the number of games they won divided by n-1.
+<br />
+<br />
+The variance of a sequence is the average square distance of an element of the sequence from the mean of the sequence.
+Formally, suppose you have a sequence s[0], ..., s[n-1].
+Then:
+<ul>
+<li>The mean of this sequence is mu(s) = ( s[0] + ... + s[n-1] ) / n.</li>
+<li>The variance of this sequence is var(s) = ( (s[0]-mu(s))^2 + ... + (s[n-1]-mu(s))^2 ) / n.</li>
+</ul>
+<br />
+Let r[0], ..., r[n-1] be the sequence of the winning rates of our n players at the end of the tournament.
+Fill in the results of the remaining matches in a way that maximizes the variance of r.
+Return the maximal possible value of var(r).</intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>UnfinishedTournamentEasy</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>maximal</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        vector&lt;string&gt;
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        double
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        double maximal(vector&lt;string&gt; G)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>2.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>256</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <!-- Notes -->
+    <div class="section">
+        <h2 class="section-title">Notes</h2>
+        <ul class="notes">
+        
+            <li><note escaped="1">Your answer will be considered correct if its absolute or relative error does not exceed 10^(-9).</note></li>
+        
+        </ul>
+    </div>
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1">n will be between 2 and 20, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>G</b> will contain exactly n elements.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element in <b>G</b> will contain exactly n characters.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each character in <b>G</b> will be one of {'W', 'L', '?', '-'}.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">For each i, <b>G</b>[i][i] = '-'.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">For each i != j: {<b>G</b>[i][j], <b>G</b>[j][i]} = {'W', 'L'} or <b>G</b>[i][j] = <b>G</b>[j][i] = '?'.</user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">G</span>
+                                <span class="value data">
+                                
+                                    {&quot;-??&quot;,<br />&nbsp;&quot;?-?&quot;,<br />&nbsp;&quot;??-&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            0.16666666666666669
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">One of the optimal solutions is the following tournament:
+<pre>
+-WW
+L-W
+LL-
+</pre>
+For this tournament the winning rates of the three players are {1, 0.5, 0}.
+Thus, the mean is 0.5 and the variance is ((1-0.5)^2 + (0.5-0.5)^2 + (0-0.5)^2) / 3 = 0.5 / 3 = 0.16667.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">G</span>
+                                <span class="value data">
+                                
+                                    {&quot;-WL&quot;,<br />&nbsp;&quot;L-W&quot;,<br />&nbsp;&quot;WL-&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            0.0
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">This time all matches are finished. The winning rates are {0.5, 0.5, 0.5} thus the variance is 0.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">G</span>
+                                <span class="value data">
+                                
+                                    {&quot;-WWL&quot;,<br />&nbsp;&quot;L-??&quot;,<br />&nbsp;&quot;L?-?&quot;,<br />&nbsp;&quot;W??-&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            0.1388888888888889
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">G</span>
+                                <span class="value data">
+                                
+                                    {&quot;-WWL&quot;,<br />&nbsp;&quot;L-WW&quot;,<br />&nbsp;&quot;LL-?&quot;,<br />&nbsp;&quot;WL?-&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            0.08333333333333331
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">G</span>
+                                <span class="value data">
+                                
+                                    {&quot;-?&quot;,<br />&nbsp;&quot;?-&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            0.25
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">G</span>
+                                <span class="value data">
+                                
+                                    {&quot;-WWL?&quot;,<br />&nbsp;&quot;L-L??&quot;,<br />&nbsp;&quot;LW-?W&quot;,<br />&nbsp;&quot;W??-L&quot;,<br />&nbsp;&quot;??LW-&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            0.07500000000000001
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
