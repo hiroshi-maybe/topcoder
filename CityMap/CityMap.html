@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder SRM 574 - 250: CityMap</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #CCCCCC;
+    /* background color */
+    background-color: #333333;
+}
+.section .section-title {
+    /* title color */
+    color: white;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #303030;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>SRM 574</span>
+        <span id='contest-division'>2</span>
+        <span id='problem-score'>250</span>
+        <span id='problem-name'>CityMap</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1">Manao arrived to a city he's never been to. He bought a city map that depicts the city as a grid H squares high and W squares wide. Each square in this grid can either contain a street segment or a single point of interest of some type.
+<br /><br />
+It was later when Manao noticed that the map lacked a legend. The map legend is the list of all types of points of interest (further referred to as POIs) present on the map. Each POI type is coupled with the corresponding symbol denoting this type on the map. For example, you might have seen an 'M' sign denoting a metro station or a fork-and-spoon sign denoting a restaurant on a city map.
+<br /><br />
+Fortunately, not all is lost: the map contains a legend summary. The summary states how many POIs of each type are there on the map (for example, it could say: all in all, there are 9 restaurants and 4 metro stations on the map). Moreover, it turned out that all quantities are pairwise distinct. Manao realized that he could guess the signs using this information (for instance, if there were 4 triangle signs on the map Manao would know that triangle stands for a metro station).
+<br /><br />
+You are given a <type>String[]</type> <b>cityMap</b> containing H elements, each of them W characters long. Each character of <b>cityMap</b> designates the corresponding square on Manao's city map and is '.' if there is a street segment in that square or an uppercase letter if the square contains a POI. Different types of POIs are denoted by different letters, two POIs of the same type are always denoted with the same letter. As you see, the letters just stand for the different signs on the map.
+<br /><br />
+You are also given a <type>int[]</type> <b>POIs</b>. <b>POIs</b>[i] is the number of occurences of the i-th type POIs on the map. It is guaranteed that the information given is consistent, i.e. there are exactly as many different letters in <b>cityMap</b> as elements in <b>POIs</b> and there exists a valid assignment of letters to POI types.
+<br /><br />
+For each POI type, determine the letter with which it is denoted on the map. Return a <type>String</type> of as many characters as elements in <b>POIs</b>, where the character at the i-th position is the letter corresponding to the i-th POI type.</intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>CityMap</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>getLegend</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        vector&lt;string&gt;
+                    , 
+                        vector&lt;int&gt;
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        string
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        string getLegend(vector&lt;string&gt; cityMap, vector&lt;int&gt; POIs)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>2.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>64</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1"><b>cityMap</b> will contain between 1 and 50 elements, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>cityMap</b> will be between 1 and 50 characters long, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">The elements of <b>cityMap</b> will be of the same length.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Elements of <b>cityMap</b> will consist of '.' and 'A'-'Z' characters only.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>POIs</b> will contain between 1 and 26 elements, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>POIs</b> will be between 1 and 2500, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">All elements of <b>POIs</b> will be distinct.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">There will exist a valid assignment of letters in <b>cityMap</b> to POI types.</user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">cityMap</span>
+                                <span class="value data">
+                                
+                                    {&quot;M....M&quot;,<br />&nbsp;&quot;...R.M&quot;,<br />&nbsp;&quot;R..R.R&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">POIs</span>
+                                <span class="value data">
+                                
+                                    { 3, 4 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            &quot;MR&quot;
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">The city map is 3 squares high and 6 squares wide. There are 3 'M' signs and 4 'R' signs on the map. The legend summary states that there are three POIs of type 0 and four POIs of type 1 on the map. Obviously, the former are denoted with 'M' on the map and the latter are denoted with 'R'.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">cityMap</span>
+                                <span class="value data">
+                                
+                                    { &quot;XXXXXXXZXYYY&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">POIs</span>
+                                <span class="value data">
+                                
+                                    { 1, 8, 3 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            &quot;ZXY&quot;
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">There is a single 'Z' on the map, thus the legend should state that POIs of type 0 are denoted with 'Z'. There are three 'Y's on the map, therefore POIs of type 2 are surely denoted with 'Y'. Finally, it's now obvious that 'X's stand for the POIs of type 1.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">cityMap</span>
+                                <span class="value data">
+                                
+                                    {&quot;...........&quot;,<br />&nbsp;&quot;...........&quot;,<br />&nbsp;&quot;...........&quot;,<br />&nbsp;&quot;..........T&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">POIs</span>
+                                <span class="value data">
+                                
+                                    { 1 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            &quot;T&quot;
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">The poor city has only one point of interest in the farmost corner.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">cityMap</span>
+                                <span class="value data">
+                                
+                                    {&quot;AIAAARRI.......GOAI.&quot;,<br />&nbsp;&quot;.O..AIIGI.OAAAGI.A.I&quot;,<br />&nbsp;&quot;.A.IAAAARI..AI.AAGR.&quot;,<br />&nbsp;&quot;....IAI..AOIGA.GAIA.&quot;,<br />&nbsp;&quot;I.AIIIAG...GAR.IIAGA&quot;,<br />&nbsp;&quot;IA.AOA....I....I.GAA&quot;,<br />&nbsp;&quot;IOIGRAAAO.AI.AA.RAAA&quot;,<br />&nbsp;&quot;AI.AAA.AIR.AGRIAAG..&quot;,<br />&nbsp;&quot;AAAAIAAAI...AAG.RGRA&quot;,<br />&nbsp;&quot;.J.IA...G.A.AA.II.AA&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">POIs</span>
+                                <span class="value data">
+                                
+                                    { 16, 7, 1, 35, 11, 66 }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            &quot;GOJIRA&quot;
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>

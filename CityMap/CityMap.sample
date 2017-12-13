@@ -1,0 +1,50 @@
+-- Example 0
+3
+M....M
+...R.M
+R..R.R
+2
+3
+4
+
+MR
+-- Example 1
+1
+XXXXXXXZXYYY
+3
+1
+8
+3
+
+ZXY
+-- Example 2
+4
+...........
+...........
+...........
+..........T
+1
+1
+
+T
+-- Example 3
+10
+AIAAARRI.......GOAI.
+.O..AIIGI.OAAAGI.A.I
+.A.IAAAARI..AI.AAGR.
+....IAI..AOIGA.GAIA.
+I.AIIIAG...GAR.IIAGA
+IA.AOA....I....I.GAA
+IOIGRAAAO.AI.AA.RAAA
+AI.AAA.AIR.AGRIAAG..
+AAAAIAAAI...AAG.RGRA
+.J.IA...G.A.AA.II.AA
+6
+16
+7
+1
+35
+11
+66
+
+GOJIRA
