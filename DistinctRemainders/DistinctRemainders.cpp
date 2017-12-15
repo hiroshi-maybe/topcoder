@@ -50,6 +50,7 @@ typedef tuple< int, int, int > III;
 #define dumpAR(ar) FORR(x,(ar)) { cout << x << ','; } cout << endl;
 
 constexpr int MOD = 1e9+7;
+/*
 LL powmod(LL a, LL b) {
   assert(0<=a && a<MOD);
   assert(0<=b);
@@ -73,27 +74,33 @@ LL factmod(LL n) {
   }
   return memo[n];
 }
-/*
-LL choose(LL N_, LL C_) {
-  int i;
-  const int num=100;
-  static LL rev[num+1],revt[num+1];
-  
-  if(rev[1]==0) {
-    rev[1]=1; for(i=2;i<=num;i++) rev[i]=rev[MOD%i]*(MOD-MOD/i)%MOD;
-    revt[0]=1; for(i=1;i<=num;i++) revt[i]=revt[i-1]*rev[i]%MOD;
-  }
-  LL ret=revt[C_];
-  REP(i,C_) ret = (ret * ((N_-i)%MOD))%MOD;
-  return ret;
-}*/
 LL choose(LL n, LL k) {
   if(n<k) return 0;
   k = min(n-k,k);
   LL res=modinv(factmod(k));
   REP(i,k) res*=(n-i)%MOD,res%=MOD;
   return res;
+}*/
+
+LL choose(LL n, LL k) {
+  if(n<k) return 0;
+  k = min(n-k,k);
+  
+  const int MAXK = 200;
+  assert(k<=MAXK);
+  static LL inv[MAXK+1],invfact[MAXK+1];
+  
+  if(inv[1]==0) {
+    inv[1]=1;
+    for(int i=2;i<=MAXK;i++) inv[i]=inv[MOD%i]*(MOD-MOD/i)%MOD;
+    invfact[0]=1;
+    for(int i=1;i<=MAXK;i++) invfact[i]=invfact[i-1]*inv[i]%MOD;
+  }
+  LL res=invfact[k];
+  for(int i=0;i<k;++i) res*=(n-i)%MOD,res%=MOD;
+  return res;
 }
+
 LL multichoose(LL n, LL k) {
   if(n==0&&k==0) return 1;
 //  dump(n+k-1);
@@ -143,6 +150,10 @@ LL multichoose(LL n, LL k) {
  
  We can compute ordered set from unordered set with distinct elements by multiplying |S|!
  res = ∑ { H(cnt,Y)*cnt!*dp[sum][cnt][M] : (N-sum)%M==0 }
+ 
+ Editorial:
+  - https://apps.topcoder.com/wiki/display/tc/SRM+573
+  - http://kenkoooo.hatenablog.com/entry/2016/05/21/031423
  
  Key:
   - Count number of set S[i]%M by DP

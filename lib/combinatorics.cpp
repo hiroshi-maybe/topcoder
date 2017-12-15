@@ -95,16 +95,60 @@ LL choose_deprecated(LL n, LL k) {
  
  n chooses k (% MOD) (binomial coefficient), O(k)
  
- C(n,k) = ∏ {(n-i): i=0..k } * 1/k!
+   C(n,k)
+ = ∏ {(n-i): i=0..k } * 1/k!
+ = ∏ {(n-i): i=0..k } * modinv(k!)
  
- - Efficient O(k) algorithm
+ - dependency to modinv() and factmod()
+ - compute k! first and get its mod inverse
+ 
+ */
+LL choose_factmod(LL n, LL k) {
+  if(n<k) return 0;
+  k = min(n-k,k);
+  LL res=modinv(factmod(k));
+  for(int i=0; i<k; ++i) res*=(n-i)%MOD,res%=MOD;
+  return res;
+}
+
+/*
+ 
+ n chooses k (% MOD) (binomial coefficient), O(k) in cache warmup
+ 
+   C(n,k)
+ = ∏ {(n-i): i=0..k } * 1/k!
+ = ∏ {(n-i): i=0..k } * ∏ { modinv(i): i=1..k }
+ 
+ - Pre-compute factorial of mod inverse of k (<=MAXK) first in O(k)
+ 
+ Mod inverse is pre-computed based on below formula:
+
+     i*(MOD/i)+MOD%i = MOD
+ <=> inv(i) ≡ (inv(MOD%a) * -(MOD/i)) (mod MOD)
+ 
+ References:
+  - https://www37.atwiki.jp/uwicoder/pages/2118.html
+  - https://discuss.codechef.com/questions/3869/best-known-algos-for-calculating-ncr-m
+  - https://comeoncodeon.wordpress.com/2011/10/09/modular-multiplicative-inverse/
+   - compute mod multiplicative inverse in linear time used in this function
  
  */
 LL choose(LL n, LL k) {
   if(n<k) return 0;
+  k = min(n-k,k);
   
-  LL res=modinv(factmod(k));
-  for(int i=0; i<k; ++i) res*=(n-i)%MOD,res%=MOD;
+  const int MAXK = 200;
+  assert(k<=MAXK);
+  static LL inv[MAXK+1],invfact[MAXK+1];
+  
+  if(inv[1]==0) {
+    inv[1]=1;
+    for(int i=2;i<=MAXK;i++) inv[i]=inv[MOD%i]*(MOD-MOD/i)%MOD;
+    invfact[0]=1;
+    for(int i=1;i<=MAXK;i++) invfact[i]=invfact[i-1]*inv[i]%MOD;
+  }
+  LL res=invfact[k];
+  for(int i=0;i<k;++i) res*=(n-i)%MOD,res%=MOD;
   return res;
 }
 
