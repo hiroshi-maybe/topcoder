@@ -54,37 +54,6 @@ LL modinv(LL a, LL p=MOD) {
 
 /*
  
- Compute Euler's totient function φ(n) (phi function), O(√n)
- 
- - φ(n) counts the positive integers up to a given integer n that are relatively prime to n
- - X^(φ(n)) ≡ 1 (mod n) if gcd(X,n)=1 (X and n are relatively prime)
-   - Known as Euler's theorem or Fermat–Euler theorem
-   - generalization of Fermat's little theorem
- 
- φ(n) = n * ∏ { (p-1)/p : p|n and p is prime }
- 
- If n is prime, φ(n) = n-1. Thus X^(φ(n)) ≡ X^(n-1) ≡ 1 (mod n) as shown in Fermat's little theorem
- 
- References:
-  - CLRS 31.3 Modular arithmetic
-  - Ant book 4.1 more complex math problems
-  - https://en.wikipedia.org/wiki/Euler%27s_theorem
-  - https://en.wikipedia.org/wiki/Euler%27s_totient_function
- 
- */
-int euler_phi(int n) {
-  int res=n;
-  // prime factorization
-  for(int p=2; p*p<=n; ++p) if(n%p==0) {
-    res=res/p*(p-1);
-    while(n%p==0) n/=p;
-  }
-  if(n!=1) res=res/n*(n-1);
-  return res;
-}
-
-/*
- 
  factorial(n) % MOD, O(n)
  
  - lazily computed and cached
@@ -107,16 +76,35 @@ LL factmod(LL n) {
  
  C(n,k) = n!/((n-k)!*k!)
  
- - compute on-demand by mod inverse and factorial mod
+  - compute on-demand by mod inverse and factorial mod
+  - deprecated because it's not efficient for large n
+   - use O(k) version
  
  */
-LL choose(LL n, LL k) {
+LL choose_deprecated(LL n, LL k) {
   if (n<k) return 0;
   k = min(n-k,k);
   LL res=factmod(n);
   res *= modinv(factmod(n-k)), res%=MOD;
   res *= modinv(factmod(  k)), res%=MOD;
   
+  return res;
+}
+
+/*
+ 
+ n chooses k (% MOD) (binomial coefficient), O(k)
+ 
+ C(n,k) = ∏ {(n-i): i=0..k } * 1/k!
+ 
+ - Efficient O(k) algorithm
+ 
+ */
+LL choose(LL n, LL k) {
+  if(n<k) return 0;
+  
+  LL res=modinv(factmod(k));
+  for(int i=0; i<k; ++i) res*=(n-i)%MOD,res%=MOD;
   return res;
 }
 
@@ -128,7 +116,7 @@ LL choose(LL n, LL k) {
 
 /*
  
- n chooses k (% MOD) (binomial coefficient), O(N^2) time
+ Create n chooses k (% MOD) table (k=0..n), O(N^2) time
  
  C(n,k) = C(n-1,k)+C(n-1,k-1)
  
@@ -138,10 +126,10 @@ LL choose(LL n, LL k) {
  
  */
 void choose(LL N, vector<vector<int>> &C) {
-  // i chooses j
   for(int i=0; i<=N; ++i) {
     C[i][0]=1;
     for(int j=1; j<=i; ++j) {
+      // i chooses j
       C[i][j] = C[i-1][j]+C[i-1][j-1], C[i][j]%=MOD;
     }
   }
@@ -159,7 +147,6 @@ void choose(LL N, vector<vector<int>> &C) {
  */
 LL multichoose(LL n, LL k) {
   if(n==0&&k==0) return 1;
-
   return choose(n+k-1,k);
 }
 
@@ -172,8 +159,6 @@ int main(int argc, char const *argv[]) {
   LL m = 560;
   LL mi = modinv(m);
   assert((m*mi)%MOD==1);
-  
-  assert(euler_phi(36)==12);
   
   assert(factmod(560)==597965522);
   assert(choose(771,50)==275127687);

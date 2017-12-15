@@ -155,12 +155,22 @@ vector<LL> distinctPrimeFactors(LL n) {
 /*
  
  Count the positive integers up to a given integer n that are relatively prime to n, O(√N) time
+ (compute Euler's totient function φ(n) (phi function))
  
- Euler's totient function (Euler's phi function):
+ - φ(n) counts the positive integers up to a given integer n that are relatively prime to n
+ - X^(φ(n)) ≡ 1 (mod n) if gcd(X,n)=1 (X and n are relatively prime)
+  - Known as Euler's theorem or Fermat–Euler theorem
+  - generalization of Fermat's little theorem
+ 
+ φ(n) = n * ∏ { (p-1)/p : p|n and p is prime factor of n }
+ 
+ If n is prime, φ(n) = n-1. Thus X^(φ(n)) ≡ X^(n-1) ≡ 1 (mod n) as shown in Fermat's little theorem
+ 
+ References:
+  - CLRS 31.3 Modular arithmetic
+  - Ant book 4.1 more complex math problems
+  - https://en.wikipedia.org/wiki/Euler%27s_theorem
   - https://en.wikipedia.org/wiki/Euler%27s_totient_function
-  - CLRS 31.1 Modular arithmetic
- 
- 𝜙(n) = n * ∏ { 1-1/p : p is distinct prime factor of n }
  
  Usage:
   int phi_n = totient(100);
@@ -172,6 +182,16 @@ int totient(LL N) {
   for(auto p : ps) {
     res=res/p*(p-1);
   }
+  return res;
+}
+int euler_phi(int n) {
+  int res=n;
+  // prime factorization
+  for(int p=2; p*p<=n; ++p) if(n%p==0) {
+    res=res/p*(p-1);
+    while(n%p==0) n/=p;
+  }
+  if(n!=1) res=res/n*(n-1);
   return res;
 }
 
