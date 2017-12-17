@@ -54,8 +54,8 @@ typedef vector<II> VII;
 #define _2 second
 typedef tuple< int, int, int > III;
 
-// matrix
-vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
+// grid move (cloci wise order)
+vector< pair < int, int > >  moves = { {0,1},{1,0},{0,-1},{-1,0} };
 
 // priority queue
 #define MAX_PQ(T) priority_queue<T>
