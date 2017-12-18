@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder SRM 725 - 250: FiveRooks</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #CCCCCC;
+    /* background color */
+    background-color: #333333;
+}
+.section .section-title {
+    /* title color */
+    color: white;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #303030;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>SRM 725</span>
+        <span id='contest-division'>1</span>
+        <span id='problem-score'>250</span>
+        <span id='problem-name'>FiveRooks</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1"><p>
+You have an 8x8 chessboard.
+Each cell is either empty or contains a single rook.
+You are given a description of the chessboard in the <type>String[]</type> <b>board</b>.
+Empty cells are represented by '.' (period), rooks are represented by 'R'.
+The character <b>board</b>[r][c] describes the cell in row r, column c.
+(Hence, both rows and columns are numbered from 0 to 7.)
+</p>
+
+<p>
+There are many rooks. More precisely, it is guaranteed that the board has strictly more rooks than empty squares.
+</p>
+
+<p>
+Your task is to choose exactly five rooks.
+The five chosen rooks will remain on the chessboard, all other rooks will be removed.
+The five rooks must be chosen in such a way that on the resulting chessboard no two of them will attack each other.
+In other words, the five chosen rooks must be in five distinct rows and at the same time they must be in five distinct columns.
+It is guaranteed that for the given constraints such a set of five rooks always exists.
+</p>
+
+<p>
+Return a <type>int[]</type> with exactly 10 elements.
+The first two elements denote the row and column of the first rook, the third and fourth element describe the second rook, and so on.
+If there are multiple solutions, you may return any one of them.
+</p>
+
+</intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>FiveRooks</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>find</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        vector&lt;string&gt;
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        vector&lt;int&gt;
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        vector&lt;int&gt; find(vector&lt;string&gt; board)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>2.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>256</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1"><b>board</b> will have exactly 8 elements.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>board</b> will have exactly 8 characters.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each character of <b>board</b> will be '.' or 'R'.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">There are strictly more 'R' characters than '.' characters within all elements of <b>board</b>.</user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">board</span>
+                                <span class="value data">
+                                
+                                    {&quot;RRRRRRRR&quot;,<br />&nbsp;&quot;RRRRRRRR&quot;,<br />&nbsp;&quot;RRRRRRRR&quot;,<br />&nbsp;&quot;RRRRRRRR&quot;,<br />&nbsp;&quot;R.......&quot;,<br />&nbsp;&quot;........&quot;,<br />&nbsp;&quot;........&quot;,<br />&nbsp;&quot;........&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { 0, 7, 1, 3, 2, 4, 3, 6, 4, 0 }
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">The return value corresponds to the following chosen rooks:
+
+<pre>
+{
+&quot;RRRRRRR*&quot;,
+&quot;RRR*RRRR&quot;,
+&quot;RRRR*RRR&quot;,
+&quot;RRRRRR*R&quot;,
+&quot;*.......&quot;,
+&quot;........&quot;,
+&quot;........&quot;,
+&quot;........&quot;
+}
+</pre></div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">board</span>
+                                <span class="value data">
+                                
+                                    {&quot;R.R.R.R.&quot;,<br />&nbsp;&quot;.R.R.R.R&quot;,<br />&nbsp;&quot;R.R.R.R.&quot;,<br />&nbsp;&quot;.R.RRR.R&quot;,<br />&nbsp;&quot;R.R.R.R.&quot;,<br />&nbsp;&quot;.R.R.R.R&quot;,<br />&nbsp;&quot;R.R.R.R.&quot;,<br />&nbsp;&quot;.R.R.R.R&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { 0, 0, 1, 7, 2, 6, 3, 5, 4, 4 }
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">board</span>
+                                <span class="value data">
+                                
+                                    {&quot;RRRRRRRR&quot;,<br />&nbsp;&quot;RRRRRRRR&quot;,<br />&nbsp;&quot;RRRRRRRR&quot;,<br />&nbsp;&quot;RRRRRRRR&quot;,<br />&nbsp;&quot;RRRRRRRR&quot;,<br />&nbsp;&quot;RRRRRRRR&quot;,<br />&nbsp;&quot;RRRRRRRR&quot;,<br />&nbsp;&quot;RRRRRRRR&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { 0, 7, 1, 3, 2, 4, 3, 6, 4, 0 }
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">board</span>
+                                <span class="value data">
+                                
+                                    {&quot;.RRRRRR.&quot;,<br />&nbsp;&quot;RRRRRRRR&quot;,<br />&nbsp;&quot;....RRRR&quot;,<br />&nbsp;&quot;...RRRR.&quot;,<br />&nbsp;&quot;..RRRR..&quot;,<br />&nbsp;&quot;.RRRR...&quot;,<br />&nbsp;&quot;RRRR....&quot;,<br />&nbsp;&quot;RRR.....&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { 1, 7, 2, 6, 3, 5, 4, 4, 5, 3 }
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">board</span>
+                                <span class="value data">
+                                
+                                    {&quot;.RRRRRR.&quot;,<br />&nbsp;&quot;RRRRRRRR&quot;,<br />&nbsp;&quot;....RRRR&quot;,<br />&nbsp;&quot;...RRRR.&quot;,<br />&nbsp;&quot;..RRRR..&quot;,<br />&nbsp;&quot;.RRRR...&quot;,<br />&nbsp;&quot;RRRRRRRR&quot;,<br />&nbsp;&quot;.RRRRRR.&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { 1, 7, 2, 6, 3, 5, 4, 4, 5, 3 }
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">board</span>
+                                <span class="value data">
+                                
+                                    {&quot;.RRRRRR.&quot;,<br />&nbsp;&quot;RRRRRRRR&quot;,<br />&nbsp;&quot;.RRRR...&quot;,<br />&nbsp;&quot;..RRRR..&quot;,<br />&nbsp;&quot;...RRRR.&quot;,<br />&nbsp;&quot;....RRRR&quot;,<br />&nbsp;&quot;RRRRRRRR&quot;,<br />&nbsp;&quot;.RRRRRR.&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { 1, 7, 3, 5, 4, 4, 6, 2, 7, 1 }
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
