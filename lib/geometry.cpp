@@ -2,6 +2,7 @@
 #include <vector>
 #include <utility>
 #include <cassert>
+#include <cmath>
 
 using namespace std;
 
@@ -50,11 +51,13 @@ long long det(Vector u, Vector v) {
  cross product det(o->p1, o->p2)
  
  1) det(p1,p2,o) = 0
-  o->p1 is colinear with o->p2
+  o, p1 and p2 are co-linear (o->p1 is colinear with o->p2)
  2) det(p1,p2,o) > 0
-  o->p1 is clockwise against o->p2
+  p1->p2->o is counter-clockwise order
+  (o->p1 is clockwise from o->p2)
  3) det(p1,p2,o) < 0
-  o->p1 is counter clockwise against o->p2
+  p1->p2->o is clockwise order
+  (o->p1 is counter clockwise from o->p2)
  
  */
 long long det(pair<int,int> p1, pair<int,int> p2, pair<int,int> origin) {
@@ -63,6 +66,20 @@ long long det(pair<int,int> p1, pair<int,int> p2, pair<int,int> origin) {
 }
 long long dot(Vector u, Vector v) {
   return u.x*v.x + u.y*v.y;
+}
+
+/*
+ 
+ Compute area of triangle formed by p1, p2 and p3
+ 
+ A = det(p1,p2,p3) / 2
+ 
+ */
+double area(pair<double,double> p1, pair<double,double> p2, pair<double,double> p3) {
+  pair<double,double> v1={ p2.first-p1.first,p2.second-p1.second };
+  pair<double,double> v2={ p3.first-p1.first,p3.second-p1.second };
+  
+  return abs(v1.first*v2.second-v1.second*v2.first)*0.5;
 }
 
 // 90 degree
@@ -191,6 +208,46 @@ bool surrounded(pair<int,int> p, vector<pair<int, int>>& ps) {
   return true;
 }
 
+/*
+ 
+ Transform degree (0-360º) to radian (0-2𝛑)
+ 
+ radian = degree * 𝛑 / 180
+ 
+ */
+double deg2rad(double deg) {
+  return deg*M_PI/180.0;
+}
+
+/*
+ 
+ Transform polar system (r,Θ) to cartesian system (x,y)
+ 
+ (x,y) = (r * cosΘ, r * sinΘ)
+ 
+ */
+pair<double,double> polar2cartesianSys(double r, double deg) {
+  double rad=deg2rad(deg);
+  return { r*cos(rad), r*sin(rad) };
+}
+
+/*
+ 
+ Rotate (x,y) by `deg` degree
+ 
+ (x',y') = (x*cosΘ - y*sinΘ, x*sinΘ + y*cosΘ)
+ 
+ https://en.wikipedia.org/wiki/Rotation_matrix
+ 
+ */
+pair<double,double> rotate(pair<double,double> p, double deg) {
+  double x=p.first,y=p.second;
+  double rad=deg2rad(deg);
+  double C = cos(rad);
+  double S = sin(rad);
+  return { x*C-y*S, x*S+y*C };
+}
+
 int main(int argc, char const *argv[]) {
   pair<int,int> origin={0,0}, p1={1,0}, p2={0,1}, p3={-1,0}, p4={0,-1};
 
@@ -216,4 +273,16 @@ int main(int argc, char const *argv[]) {
   assert(surrounded(origin, onsegment));
   vector<pair<int,int>> notsurrounding = {{1,1},{2,1},{1,2},{2,2}};
   assert(!surrounded(origin, notsurrounding));
+  
+  const double eps=1e-9;
+  assert(abs(deg2rad(60)-M_PI/3.0)<eps);
+  pair<double,double> pp1=polar2cartesianSys(10,60);
+  assert(abs(pp1.first-10.0/2.0)<eps);
+  assert(abs(pp1.second-10.0*sqrt(3.0)/2.0)<eps);
+  
+  pair<double,double> pp2=rotate(pp1,60);
+  assert(abs(pp2.first+pp1.first)<eps);
+  assert(abs(pp2.second-pp1.second)<eps);
+  
+  assert(abs(area({-2,0},{0,4},{3,0})-10.0)<eps);
 }
