@@ -1,0 +1,35 @@
+-- Example 0
+Ciel
+CieCiell
+
+Yes
+-- Example 1
+Ciel
+FoxCiel
+
+No
+-- Example 2
+FoxCiel
+FoxFoxCielCiel
+
+Yes
+-- Example 3
+FoxCiel
+FoxCielCielFox
+
+No
+-- Example 4
+Ha
+HaHaHaHa
+
+No
+-- Example 5
+TheHandleCanBeVeryLong
+TheHandleCanBeVeryLong
+
+No
+-- Example 6
+Long
+LongLong
+
+Yes
