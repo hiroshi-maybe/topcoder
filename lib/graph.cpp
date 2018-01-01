@@ -214,6 +214,101 @@ private:
   }
 };
 
+/*
+ 
+ # Eulerian cycle (tour), O(E) time
+ 
+ Cycle which visits every "edge" exactly once
+ 
+ ## References:
+ 
+ - https://en.wikipedia.org/wiki/Eulerian_path
+ - CLRS problem 22-3
+ - CLRS 34. NP-Completeness
+ - https://leetcode.com/problems/reconstruct-itinerary/description/
+ - https://discuss.leetcode.com/topic/36383/share-my-solution
+ - https://www.geeksforgeeks.org/eulerian-path-and-circuit/
+ - http://www.geeksforgeeks.org/hierholzers-algorithm-directed-graph/
+ 
+ ## Undirected graph
+ 
+ - There is Eulerian CYCLE when ALL the vertices have odd degree
+ - There is Eulerian PATH when ONLY 2 vertices have odd degree
+ 
+ ## Directed graph
+ 
+ - There is Eulerian CYCLE when both below conditions are satisfied
+  a. every vertex has equal in degree and out degree
+  b. All of its vertices with nonzero degree belong to a single SCC
+ 
+ - There is Eulerian PATH
+  a. At most one vertex has (out-degree)−(in-degree)=1
+  b. At most one vertex has (in-degree)−(out-degree)=1
+  c. Every other vertex has equal in-degree and out-degree
+  d. All of its vertices with nonzero degree belong to a single connected component of the underlying undirected graph.
+ 
+ ## Construction of Euler cycles
+ 
+ - Hierholzer's algorithm, O(E) time
+ 
+ # Hamilton cycle, NP-complete
+ 
+ Cycle (path) which visits every "vertex" exactly once.
+ 
+ Reference:
+  - https://en.wikipedia.org/wiki/Hamiltonian_path
+ 
+ # Travelling salesman problem, NP-complete
+ 
+ Shortest cycle which visits every "vertex".
+ 
+ Decision version of the TSP (given a length L, the task is to decide whether the graph has any tour shorter than L) belongs to the class of NP-complete problems.
+ 
+ Reference:
+  - https://en.wikipedia.org/wiki/Travelling_salesman_problem
+ 
+ */
+
+/**
+ 
+ Find Eulerian cycle, O(V+E) time
+ 
+ Hierholzer's algorithm
+ 
+ Usage:
+ 
+ ```
+ EC ec(V);
+ ec.edge(u1,v1); ec.edge(u2,v2); ...
+ vector<int> p = ec.solve()
+ ```
+ 
+ */
+struct EC {
+public:
+  // input
+  int V;
+  vector<vector<int>> G;
+  vector<int> viz; // pointer to next edge to be visited
+  EC(int V): V(V), G(V), viz(V) {}
+  void edge(int u, int v) {
+    assert(u<V&&v<V);
+    G[u].push_back(v);
+  }
+  vector<int> solve(int u) {
+    vector<int> res;
+    dfs(u,res);
+    return vector<int>(res.rbegin(),res.rend());
+  }
+private:
+  void dfs(int u, vector<int> &res) {
+    while(viz[u]<G[u].size()) {
+      int v=G[u][viz[u]++];
+      dfs(v,res);
+    }
+    res.push_back(u);
+  }
+};
 /***********************   test code below   ***********************/
 
 // helper
@@ -352,4 +447,16 @@ int main(int argc, char const *argv[]) {
   assertVec(scc.G_SCC[cid3], cid3Expected);
   vector<int> cid4Expected = {  };
   assertVec(scc.G_SCC[cid4], cid4Expected);
+  
+  EC ec(7);
+  ec.edge(0,1),ec.edge(0,6);
+  ec.edge(1,2);
+  ec.edge(2,0),ec.edge(2,3);
+  ec.edge(3,4);
+  ec.edge(4,2),ec.edge(4,5);
+  ec.edge(5,0);
+  ec.edge(6,4);
+  vector<int> cycle=ec.solve(0);
+  vector<int> cycleExpected={0,1,2,0,6,4,2,3,4,5,0};
+  assertVec(cycle, cycleExpected);
 }
