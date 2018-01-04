@@ -1,0 +1,74 @@
+-- Example 0
+3
+BA
+SS
+AB
+
+0
+-- Example 1
+1
+.
+
+-1
+-- Example 2
+2
+ABBA
+BAAB
+
+0
+-- Example 3
+2
+AA
+AA
+
+-1
+-- Example 4
+4
+..AB
+B..A
+....
+A.B.
+
+-1
+-- Example 5
+5
+A1B8A2B
+16A.B22
+BAB.9.A
+ABA.7.B
+B12345A
+
+31
+-- Example 6
+5
+..A.B
+.1.2.
+A.B..
+.3.4.
+B...A
+
+0
+-- Example 7
+3
+ASBSBSA
+S.S.S.S
+BSASASB
+
+-1
+-- Example 8
+13
+A..1...BAB...
+B.ABABA...A9B
+A.B....ABABBA
+....BA.B..AAB
+2BA.A.B8AB.BA
+...4.BAAB..AB
+....BA.B.A.BA
+BA..A.BA.B.AB
+A3B..BABA.B.A
+B.A..5...A..B
+A.B.BA...B.A.
+B.A.A.B...AB.
+..BAB66ABAB7A
+
+45
