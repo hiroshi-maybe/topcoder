@@ -1,0 +1,36 @@
+-- Example 0
+RRGGBB
+1
+1
+
+5
+-- Example 1
+R**GB*
+1
+1
+
+5
+-- Example 2
+BRRB
+2
+7
+
+30
+-- Example 3
+R*RR*GG
+10
+58
+
+204
+-- Example 4
+*B**B**B*BB*G*BBB**B**B*
+5
+2
+
+33
+-- Example 5
+*R*RG*G*GR*RGG*G*GGR***RR*GG
+7
+1
+
+30
