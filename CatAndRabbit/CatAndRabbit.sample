@@ -1,0 +1,28 @@
+-- Example 0
+#..
+
+Cat
+-- Example 1
+.#.
+
+Rabbit
+-- Example 2
+###
+
+Rabbit
+-- Example 3
+#..##.#
+
+Cat
+-- Example 4
+...
+
+Rabbit
+-- Example 5
+###...####....###...####....
+
+Rabbit
+-- Example 6
+.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.#.
+
+Cat
