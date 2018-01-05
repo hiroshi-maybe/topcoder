@@ -8,18 +8,32 @@ using namespace std;
 
 /*
  
- Grundy number calculator, O(K*N) time (for single heap Nim game)
+ Sample implementation of Grundy number, O(K*N) time
  
- grundy number:
+ Grundy number is applicable for finite 2-person impartial games with perfect information.
+ Grundy number is a technique to reduce a problem to Nim game.
+ One problem corresponds to one pile of stones in Nim.
+ 
+ If problem is separated to combination of multiple subproblems...
+   G(original problem) = G(subproblem 0)^G(subproblem 1)^..
+ 
+ ⚠️ This is sample implementation for Nim game. Customize state transition.
+ Note that grundy number of Nim with `n` remaining stone is n (G[n]=n),
+ because grundy number reduces games to Nim with `n` remaining stones.
+ 
+ Reference (grundy number):
   - Ant book 4-2 game theory
   - https://www.hackerrank.com/topics/game-theory-and-grundy-numbers
+  - https://www.topcoder.com/community/data-science/data-science-tutorials/algorithm-games/
   - https://github.com/k-ori/topcoder/blob/master/GameOfSegments/GameOfSegments.cpp
+  - https://github.com/k-ori/topcoder/blob/master/CatAndRabbit/CatAndRabbit.cpp
+   - Nim game
  
  Usage:
  
    string solve() {
      calcGrundy(N);
-     return G[N]!=0?"Alice":"Bob"
+     return G[N]==0?"Bob":"Alice"
    }
  
  */
@@ -31,7 +45,7 @@ int grundy(int a, int K) {
   unordered_set<int> S;
 
   // Iterate all the possible state transitions from `a`.
-  // This is sample implementation of Nim game. Customize if needed.
+  // ⚠️ This is sample implementation of Nim game. Customize here to apply other game
   for(int i=1; i<=K; ++i) if(a>=i) {
     S.emplace(G[a-i]); // if devided into multiple independent problems, G[x]^G[y]^..
   }
@@ -60,7 +74,7 @@ string solveNim(vector<int> ns) {
   int N=ns.size();
   int res=0;
   for(int i=0; i<N; ++i) res^= G[ns[i]];
-  return res!=0?"Alice":"Bob"; // Grundy number == 0 => "LOST"
+  return res==0?"Bob":"Alice"; // Grundy number == 0 => "LOST"
 }
 
 int main(int argc, char const *argv[]) {
