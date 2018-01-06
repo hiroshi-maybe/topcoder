@@ -4,16 +4,22 @@
 
 using namespace std;
 
-// build string match transition table `SMT[][]` for character set ∑={'a'-'z'}
-// in CLRS 32.3
-//
-// input: P (|P|<=1024)
-// output: SMT
-//
-// SMT[i][j] = length (or next matching index) of longest prefix of P for suffix of P[0..i]+('a'+j)
-// SMT[i][j] = max { k : P[0..<k] ⊐ P[0..i]+('a'+j) }
-//
-// O(|P|^3*|∑|) time
+/*
+ 
+ build string match automaton, O(|P|^3*|∑|) time
+
+ input: P (|P|<=1024)
+ output: SMT
+ 
+ build string match transition table `SMT[][]` for character set ∑={'a'-'z'} in CLRS 32.3
+ SMT[i][j] = length (or next matching index) of longest prefix of P for suffix of P[0..i]+('a'+j)
+ SMT[i][j] = max { k : P[0..<k] ⊐ P[0..i]+('a'+j) }
+ 
+ Used problems:
+  - https://github.com/k-ori/topcoder/blob/master/LinenCenterEasy/LinenCenterEasy.cpp
+  - https://github.com/k-ori/topcoder/blob/master/FoxAndMountain/FoxAndMountain.cpp
+ 
+ */
 int SMT[1024][26];
 void buildSMT(string P) {
   memset(SMT, 0, sizeof SMT);
@@ -35,17 +41,25 @@ void buildSMT(string P) {
   }
 }
 
-// Build prefix function 𝞹 `pi` of pattern string P for KMP string matching
-//  - COMPUTE-PREFIX-FUNCTION(P) in CLRS 32.4
-//  - Note that this 𝞹 is slightly different from `computeLongestPrefixSuffix()` due to 0-based array index
-//
-// input: P
-// output: 𝞹[|P|]
-//
-//  𝝅[q] = next matching index of P when P[q] unmatched
-//  𝝅[q] = max { k : k<=q AND P[0..<k] ⊐ P[0..<q] }
-//
-// Θ(|P|) time
+/*
+ 
+ Build prefix function for KMP string matching, Θ(|P|) time
+ 
+ input: P
+ output: 𝞹[|P|]
+ 
+ Build prefix function 𝞹 `pi` of pattern string P for KMP string matching
+ Implementation of COMPUTE-PREFIX-FUNCTION(P) in CLRS 32.4
+ Note that this 𝞹 is slightly different from `computeLongestPrefixSuffix()` due to 0-based array index.
+ 
+ 𝝅[q] = next matching index of P when P[q] unmatched
+ 𝝅[q] = max { k : k<=q AND P[0..<k] ⊐ P[0..<q] }
+                   ^ k<q in `computeLongestPrefixSuffix()`
+ 
+ Used problems:
+  - https://github.com/k-ori/topcoder/blob/master/FoxAndMountain/FoxAndMountain.cpp
+ 
+ */
 vector<int> buildPrefixFunction(const string P) {
   int L = P.size();
   vector<int> pi(L+1, 0);
@@ -73,14 +87,17 @@ vector<int> buildPrefixFunction(const string P) {
   return pi;
 }
 
-// Compute length of longest prefix of P for suffix of P[0..q]
-//
-// input: P
-// output: 𝝅[|P|]
-//
-//  𝝅[q] = max { k : k<q AND P[0..<k] ⊐ P[0..q] }
-//
-// Θ(|P|) time
+/*
+ 
+ Compute length of longest prefix of P for suffix of P[0..q], Θ(|P|) time
+ 
+ input: P
+ output: 𝝅[|P|]
+ 
+ 𝝅[q] = max { k : k<q AND P[0..<k] ⊐ P[0..q] }
+                   ^ k<=q in `buildPrefixFunction()`
+ 
+ */
 vector<int> computeLongestPrefixSuffix(const string P) {
   int L = P.size();
   vector<int> pi(L, 0);
@@ -106,7 +123,13 @@ vector<int> computeLongestPrefixSuffix(const string P) {
   return pi;
 }
 
-// KMP algorithm - returns index of T where P begins, amortized Θ(M+N) time
+/*
+ 
+ KMP string matching algorithm, amortized Θ(M+N) time
+ 
+ Returns index of T where P begins. See CLRS `32.4 The Knuth-Morris-Pratt algorithm`
+ 
+ */
 int doKMP(string s, string p) {
   int i = 0, j = 0, L = s.size(), M = p.size();
   
