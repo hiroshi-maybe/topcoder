@@ -60,13 +60,36 @@ bool isPowerOfTwo(int n) {
 }
 
 // unset least significant (right-most) bit
-int unsetLSB(int n) {
+int unsetLSB(long long n) {
+  assert(n>0);
   return n&(n-1);
 }
 
 // get number with least significant (right-most) bit
-int getLSB(int n) {
+int getLSB(long long n) {
+  assert(n>0);
   return n&-n;
+  // or 1LL<<__builtin_ctzll(n)
+}
+
+// get position of LSB
+int getLSBPos(long long n) {
+  return __builtin_ctzll(n);
+}
+
+string n2bin(long long n) {
+  assert(n>=0);
+  string res="";
+  while(n>0) res+=(n%2LL?'1':'0'),n/=2LL;
+  return string(res.rbegin(), res.rend());
+}
+
+long long bin2n(string s) {
+  long long res=0;
+  for(int i=0; i<s.size(); ++i) {
+    res=2LL*res+(s[i]=='1');
+  }
+  return res;
 }
 
 /*
@@ -76,6 +99,10 @@ int getLSB(int n) {
   __builtin_popcount(mask) // count number of ON bit
   __builtin_ctz(mask)      // count number of trailing zeros
   __builtin_clz(mask)      // count number of leading zeros
+
+ __builtin_popcountll(mask)
+ __builtin_ctzll(mask)
+ __builtin_clzll(mask)
  
  */
 
@@ -103,4 +130,8 @@ int main(int argc, char const *argv[]) {
   
   assert(unsetLSB(26)==24);
   assert(getLSB(26)==2);
+  assert(1LL<<__builtin_ctzll(26)==2);
+  
+  assert(n2bin(2384185791015625LL)=="1000011110000110011110000011001001101110101011001001");
+  assert(bin2n("1000011110000110011110000011001001101110101011001001")==2384185791015625LL);
 }
