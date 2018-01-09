@@ -37,6 +37,8 @@ typedef unordered_set < int > SETI;
 typedef unordered_set < string > SETS;
 
 // repetition
+#define FORE(i,a,b) for(int i=(a);i<=(b);++i)
+#define REPE(i,n)  for(int i=0;i<=(n);++i)
 #define FOR(i,a,b) for(int i=(a);i<(b);++i)
 #define REP(i,n)  for(int i=0;i<(n);++i)
 #define FORR(x,arr) for(auto& x:arr)
@@ -50,12 +52,16 @@ typedef unordered_set < string > SETS;
 // pair/tuple
 typedef pair< int , int > II;
 typedef vector<II> VII;
-#define _1 first
-#define _2 second
 typedef tuple< int, int, int > III;
 
-// grid move (cloci wise order)
-vector< pair < int, int > >  moves = { {0,1},{1,0},{0,-1},{-1,0} };
+// minmax
+#define MAXS(a,b) a = max(a,b)
+#define MINS(a,b) a = min(a,b)
+
+// grid move (clock wise order)
+vector< pair < int, int > >  moves = { {0,1}/*R*/,{1,0}/*D*/,{0,-1}/*L*/,{-1,0}/*U*/ };
+// grid moves with diagonal direction
+vector< pair < int, int > >  movesd = { {0,1}/*R*/,{1,1}/*RD*/,{1,0}/*D*/,{1,-1}/*DL*/,{0,-1}/*L*/,{-1,-1}/*UL*/,{-1,0}/*U*/,{-1,1}/*UR*/ };
 
 // priority queue
 #define MAX_PQ(T) priority_queue<T>
@@ -71,24 +77,26 @@ vector< pair < int, int > >  moves = { {0,1},{1,0},{0,-1},{-1,0} };
 #define ZERO(dp) memset(dp, 0, sizeof(dp))
 
 // debug cerr
-#define dump(x)  cerr << #x << " = " << (x) << endl;
-#define dump2(x,y)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
-#define dump3(x,y,z)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << endl;
-#define dump4(x,y,z,a)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl;
-#define dumpAR(ar) FORR(x,(ar)) { cerr << x << ','; } cerr << endl;
+#define TRACE true
+#define dump(x) if(TRACE) { cerr << #x << " = " << (x) << endl; }
+#define dump2(x,y) if(TRACE) { cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << endl; }
+#define dump3(x,y,z) if(TRACE) { cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << endl; }
+#define dump4(x,y,z,a) if(TRACE) { cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl; }
+#define dumpAR(ar) if(TRACE) { FORR(x,(ar)) { cerr << x << ','; } cerr << endl; }
 
 // debug cout
-#define dump(x)  cout << #x << " = " << (x) << endl;
-#define dump2(x,y)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
-#define dump3(x,y,z)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << endl;
-#define dump4(x,y,z,a)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl;
-#define dumpAR(ar) FORR(x,(ar)) { cout << x << ','; } cout << endl;
+//#define TRACE true
+#define dump(x) if(TRACE) { cout << #x << " = " << (x) << endl; }
+#define dump2(x,y) if(TRACE) { cout << #x << " = " << (x) << ", " << #y << " = " << (y) << endl; }
+#define dump3(x,y,z) if(TRACE) { cout << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << endl; }
+#define dump4(x,y,z,a) if(TRACE) { cout << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl; }
+#define dumpAR(ar) if(TRACE) { FORR(x,(ar)) { cout << x << ','; } cout << endl; }
 
 // main
 #define MAIN int main(int argc, char const *argv[])
 
 // mod
-constexpr int MOD = 1e9+7;
+constexpr long long MOD = 1e9+7;
 
 // $ g++ -std=c++11 -Wall -O2 -D_GLIBCXX_DEBUG *.cpp && ./a.out
 
