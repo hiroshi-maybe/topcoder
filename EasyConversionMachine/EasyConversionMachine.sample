@@ -1,0 +1,30 @@
+-- Example 0
+aababba
+bbbbbbb
+2
+
+IMPOSSIBLE
+-- Example 1
+aabb
+aabb
+1
+
+IMPOSSIBLE
+-- Example 2
+aaaaabaa
+bbbbbabb
+8
+
+POSSIBLE
+-- Example 3
+aaa
+bab
+4
+
+POSSIBLE
+-- Example 4
+aababbabaa
+abbbbaabab
+9
+
+IMPOSSIBLE
