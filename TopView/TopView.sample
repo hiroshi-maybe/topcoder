@@ -1,0 +1,39 @@
+-- Example 0
+3
+..AA..
+.CAAC.
+.CAAC.
+
+CA
+-- Example 1
+2
+..47..
+..74..
+
+ERROR!
+-- Example 2
+5
+bbb666
+.655X5
+a65AA5
+a65AA5
+a65555
+
+65AXab
+-- Example 3
+13
+aabbaaaaaaaaaaaaaaaaaa
+aabbccccccccccccccaaaa
+aab11111ccccccccccaaaa
+aab12221ccccccccccaaaa
+aab12221ccccccccccaaaa
+aab12221ccccccccccaaaa
+aab12221ccccccccccaaaa
+aab12221ccccccccccaaaa
+aab12221ddddddddddaaaa
+aab13331DDDDDDDDDDaaaa
+aab13331DDDDDDDDDDaaaa
+aa.11111DDDDDDDDDDaaaa
+aaaaaaaaaaaaaaaaaaaaaa
+
+ERROR!
