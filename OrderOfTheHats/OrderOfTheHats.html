@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder SRM 549 - 1000: OrderOfTheHats</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #CCCCCC;
+    /* background color */
+    background-color: #333333;
+}
+.section .section-title {
+    /* title color */
+    color: white;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #303030;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>SRM 549</span>
+        <span id='contest-division'>2</span>
+        <span id='problem-score'>1000</span>
+        <span id='problem-name'>OrderOfTheHats</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1">The Order of the Hats is a magical organization. One of their duties is to teach students how to cast spells. There are N spells numbered from 0 to N-1. As an aid for the students, the teachers have prepared a spell chart. The chart lists suggestions on the order in which to study the spells. (This is explained in more detail below.)<br /><br />
+
+
+
+Recently, some changelings broke into the Order's spell archive and messed up the spell chart. You are given a <type>String[]</type> <b>spellChart</b> containing the new, messed-up state of the spell chart. Each character of each element of <b>spellChart</b> is either 'Y' or 'N'. The students will come to study soon. They will interpret the chart in the following way: If <b>spellChart</b>[i][j] is 'Y' then spell i must be learned before spell j. <br /><br />
+
+As the chart is now messed up, it may be impossible to learn all the spells in the chart because of cycles in the requirements. Your task is to repair the given chart. Determine the minimum number of changes needed to remove all the cycles in the requirements. In a single change, you may either change some character <b>spellChart</b>[i][j] from 'Y' to 'N', or change some character from 'N' to 'Y'. <br /><br /></intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>OrderOfTheHats</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>minChanged</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        vector&lt;string&gt;
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        int
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        int minChanged(vector&lt;string&gt; spellChart)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>2.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>64</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1"><b>spellChart</b> will contain between 1 and 20 elements, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>spellChart</b> will contain N characters, where N is the number of elements in <b>spellChart</b>.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each character in each element of <b>spellChart</b> will be either 'Y' or 'N'.</user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">spellChart</span>
+                                <span class="value data">
+                                
+                                    { &quot;Y&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            1
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">This spell chart contains a spell that should be learned before itself. The students would never be able to learn such a spell.
+We can remove this cyclic dependency by changing the 'Y' to 'N'.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">spellChart</span>
+                                <span class="value data">
+                                
+                                    {&quot;NYN&quot;,<br />&nbsp;&quot;NNY&quot;,<br />&nbsp;&quot;NNN&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            0
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">This spell chart is already OK.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">spellChart</span>
+                                <span class="value data">
+                                
+                                    {&quot;NYN&quot;,<br />&nbsp;&quot;NNY&quot;,<br />&nbsp;&quot;YNN&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            1
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">Changing any single 'Y' to a 'N' will fix this spell chart.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">spellChart</span>
+                                <span class="value data">
+                                
+                                    {&quot;NYYYYYY&quot;,<br />&nbsp;&quot;YNYYYYY&quot;,<br />&nbsp;&quot;YYNYYYY&quot;,<br />&nbsp;&quot;YYYNYYY&quot;,<br />&nbsp;&quot;YYYYNYY&quot;,<br />&nbsp;&quot;YYYYYNY&quot;,<br />&nbsp;&quot;YYYYYYN&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            21
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">spellChart</span>
+                                <span class="value data">
+                                
+                                    {&quot;NNNY&quot;,<br />&nbsp;&quot;YNYN&quot;,<br />&nbsp;&quot;YNNN&quot;,<br />&nbsp;&quot;YYYN&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            1
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">spellChart</span>
+                                <span class="value data">
+                                
+                                    {&quot;YYYYYNNYYYNYNNNNYNNY&quot;,<br />&nbsp;&quot;NYNNNYYNNYNYYYNYYYYY&quot;,<br />&nbsp;&quot;NNYNNNYYNNNNNNYYYYNY&quot;,<br />&nbsp;&quot;YYNYNYYNNYYYNYNNNYYY&quot;,<br />&nbsp;&quot;NYYNNYNYNYNNNNYYYNYN&quot;,<br />&nbsp;&quot;NNNNNYYNYNNYYYYNYYYN&quot;,<br />&nbsp;&quot;YNYNYYNNNYNNNNNYNNYY&quot;,<br />&nbsp;&quot;NYYYYNYNYNNYNNYNNNNY&quot;,<br />&nbsp;&quot;YYYYNYYNNYYYNNYNNYNY&quot;,<br />&nbsp;&quot;YYYYYYNYNYNYNNNNNNYN&quot;,<br />&nbsp;&quot;NNYYYYYNNNYNNNYNNNNY&quot;,<br />&nbsp;&quot;YYNNNYNYYNYYNYYNYNYN&quot;,<br />&nbsp;&quot;NNYNYYNYYNYYNYNYNYYN&quot;,<br />&nbsp;&quot;YNYNYYNYNNNYNYNYYNYY&quot;,<br />&nbsp;&quot;NNYNNNYYYYYYYYYYYNYY&quot;,<br />&nbsp;&quot;YYYYYNYYNYYYYYNNYNNN&quot;,<br />&nbsp;&quot;NYYYYYYYYNNNNNYYNNYN&quot;,<br />&nbsp;&quot;YNNYNNNYYNYYYNYNYYYY&quot;,<br />&nbsp;&quot;YYNNYNYYYNYYNNNYYNNY&quot;,<br />&nbsp;&quot;NNYNYNYYYNYYNYNNYNNN&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            79
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">spellChart</span>
+                                <span class="value data">
+                                
+                                    {&quot;YYNYNN&quot;,<br />&nbsp;&quot;YNYNNY&quot;,<br />&nbsp;&quot;YYYYNN&quot;,<br />&nbsp;&quot;NNNYNN&quot;,<br />&nbsp;&quot;NNNYNN&quot;,<br />&nbsp;&quot;YNYNYN&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            5
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">spellChart</span>
+                                <span class="value data">
+                                
+                                    {&quot;NNNNNNNNNN&quot;,<br />&nbsp;&quot;NNNNNNNNNN&quot;,<br />&nbsp;&quot;NNNYNNYNNN&quot;,<br />&nbsp;&quot;NNNYNNYNNN&quot;,<br />&nbsp;&quot;NNNYNNYNNN&quot;,<br />&nbsp;&quot;NNNNNNNNNN&quot;,<br />&nbsp;&quot;NNYYYYYYNN&quot;,<br />&nbsp;&quot;NNYNNNNYNN&quot;,<br />&nbsp;&quot;NNNYYYYNNN&quot;,<br />&nbsp;&quot;NNNNNNNNNN&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            6
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
