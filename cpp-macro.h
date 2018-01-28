@@ -55,8 +55,8 @@ typedef vector<II> VII;
 typedef tuple< int, int, int > III;
 
 // minmax
-#define MAXS(a,b) a = max(a,b)
-#define MINS(a,b) a = min(a,b)
+#define SMAX(a,b) a = max(a,b)
+#define SMIN(a,b) a = min(a,b)
 
 // grid move (clock wise order)
 vector< pair < int, int > >  moves = { {0,1}/*R*/,{1,0}/*D*/,{0,-1}/*L*/,{-1,0}/*U*/ };
