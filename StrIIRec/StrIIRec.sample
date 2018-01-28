@@ -1,0 +1,30 @@
+-- Example 0
+2
+1
+ab
+
+ba
+-- Example 1
+9
+1
+efcdgab
+
+efcdgabhi
+-- Example 2
+11
+55
+debgikjfc
+
+kjihgfedcba
+-- Example 3
+15
+0
+e
+
+eabcdfghijklmno
+-- Example 4
+9
+20
+fcdebiha
+
+fcdehigba
