@@ -3,8 +3,6 @@
 #include <algorithm>
 #include <vector>
 #include <numeric>
-//#include <cmath>
-//#include <utility>
 using namespace std;
 
 typedef long long LL;
@@ -125,6 +123,9 @@ vector<LL> divisors(LL N) {
   vector<int> facts = primeFactors(12);      // facts={2,2,3}
   vector<int> ps = distinctPrimeFactors(12); // ps   ={2,3}
 
+ Used problems:
+  - https://github.com/k-ori/topcoder/blob/master/FractionInDifferentBases/FractionInDifferentBases.cpp
+ 
  */
 vector<LL> primeFactors(LL n) {
   assert(n>=1);
@@ -144,7 +145,7 @@ vector<LL> distinctPrimeFactors(LL n) {
    */
   assert(n>=1);
   vector<LL> res;
-  for(LL p=2; p*p<=n; ++p) {
+  for(LL p=2; p*p<=n; ++p) if(n%p==0) {
     res.push_back(p);
     while(n%p==0) n/=p;
   }
