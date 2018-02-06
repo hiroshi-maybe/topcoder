@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder SRM 538 - 1050: SkewedPerspectives</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #CCCCCC;
+    /* background color */
+    background-color: #333333;
+}
+.section .section-title {
+    /* title color */
+    color: white;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #303030;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>SRM 538</span>
+        <span id='contest-division'>2</span>
+        <span id='problem-score'>1050</span>
+        <span id='problem-name'>SkewedPerspectives</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1"><i>NOTE: This problem statement contains images that may not display properly if viewed outside of the applet.</i><br />
+<br />
+Cat Taro has the following building blocks:<br />
+<ul>
+<li><b>cubes</b>[0] red unit cubes,</li>
+<li><b>cubes</b>[1] yellow unit cubes,</li>
+<li><b>cubes</b>[2] blue unit cubes,</li>
+<li><b>B</b> black rectangular prisms with dimensions 2x1x1.</li>
+</ul><br />
+
+Cat Taro is using the blocks to build <b>w</b> adjacent towers of blocks (some possibly empty), as shown on the right side of the picture below. Taro will always place the rectangular prisms vertically. In other words, each prism will look like two black unit cubes placed one on top of the other. Taro is not required to use all of the blocks when building the towers. (In fact, he may even decide not to use any blocks at all.)<br />
+<br />
+<img src="http://community.topcoder.com/contest/problem/SkewedPerspectives/pniub.jpg"></img> <br />
+<br />
+Rabbit Hanako is looking at Taro's towers from the left side of the room. To him, the towers seem as a single tower which we will call a <i>view</i>, as shown on the left side of the picture above. More precisely, at each height i Hanako sees the color of the block at height i in the leftmost tower that has such a block. Hanako's view can be described as a string of characters, giving the colors of each 1x1 square seen by Hanako in the order from bottom to top.
+Black squares will be denoted 'b', and colored squares will be denoted '0', '1', and '2' (in the same order used in <b>cubes</b>).<br />
+<br />
+You are given the <type>int[]</type> <b>cubes</b>, the <type>int</type> <b>B</b>, the <type>int</type> <b>w</b>, and a <type>String[]</type> <b>views</b>.
+Each element of <b>views</b> specifies one view Taro wants Hanako to see, in the format specified above.
+Return a <type>String[]</type> with the same number of elements as <b>views</b>.
+If Taro can build the towers in such a way that Hanako will see the view <b>views</b>[i], the i-th element of the return value should be &quot;valid&quot;, otherwise it should be &quot;invalid&quot; (quotes for clarity).</intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>SkewedPerspectives</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>areTheyPossible</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        vector&lt;int&gt;
+                    , 
+                        int
+                    , 
+                        int
+                    , 
+                        vector&lt;string&gt;
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        vector&lt;string&gt;
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        vector&lt;string&gt; areTheyPossible(vector&lt;int&gt; cubes, int B, int w, vector&lt;string&gt; views)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>2.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>64</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1"><b>w</b> will be between 1 and 50, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>cubes</b> will contain exactly 3 elements.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>cubes</b> will be between 0 and 100, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>B</b> will be between 0 and 100, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>views</b> will contain between 1 and 50 elements, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>views</b> will contain between 1 and 50 characters, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each character in each element of <b>views</b> will be one of 'b', '0', '1', and '2'.</user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">cubes</span>
+                                <span class="value data">
+                                
+                                    { 1, 1, 1 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">B</span>
+                                <span class="value data">
+                                
+                                    1
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">w</span>
+                                <span class="value data">
+                                
+                                    2
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">views</span>
+                                <span class="value data">
+                                
+                                    { &quot;012&quot;, &quot;012bb&quot;, &quot;bb0&quot;, &quot;21bb&quot;, &quot;21b&quot;, &quot;1bb20&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            {&quot;valid&quot;,<br />&nbsp;&quot;valid&quot;,<br />&nbsp;&quot;valid&quot;,<br />&nbsp;&quot;valid&quot;,<br />&nbsp;&quot;valid&quot;,<br />&nbsp;&quot;valid&quot;}
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">The following picture shows a way to achieve each of the given views.<br />
+<img src="http://community.topcoder.com/contest/problem/SkewedPerspectives/vqsa6c.jpg"></img></div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">cubes</span>
+                                <span class="value data">
+                                
+                                    { 0, 1, 0 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">B</span>
+                                <span class="value data">
+                                
+                                    3
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">w</span>
+                                <span class="value data">
+                                
+                                    2
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">views</span>
+                                <span class="value data">
+                                
+                                    { &quot;b&quot;, &quot;bb&quot;, &quot;bbb&quot;, &quot;bbbb&quot;, &quot;bbbbb&quot;, &quot;bbbbbb&quot;, &quot;1&quot;, &quot;1b&quot;, &quot;1bb&quot;, &quot;1bbb&quot;, &quot;1bbbb&quot;, &quot;1bbbbb&quot;, &quot;1bbbbbb&quot;, &quot;b1&quot;, &quot;b1b&quot;, &quot;b1bb&quot;, &quot;b1bbb&quot;, &quot;b1bbbb&quot;, &quot;b1bbbbb&quot;, &quot;bb1&quot;, &quot;bb1b&quot;, &quot;bb1bb&quot;, &quot;bb1bbb&quot;, &quot;bb1bbbb&quot;, &quot;bbb1&quot;, &quot;bbb1b&quot;, &quot;bbb1bb&quot;, &quot;bbb1bbb&quot;, &quot;bbbb1&quot;, &quot;bbbb1b&quot;, &quot;bbbb1bb&quot;, &quot;bbbbb1&quot;, &quot;bbbbb1b&quot;, &quot;bbbbbb1&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { &quot;invalid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;invalid&quot;, &quot;invalid&quot;, &quot;invalid&quot;, &quot;invalid&quot;, &quot;invalid&quot;, &quot;invalid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;invalid&quot;, &quot;valid&quot;, &quot;invalid&quot;, &quot;invalid&quot;, &quot;invalid&quot;, &quot;invalid&quot;, &quot;valid&quot;, &quot;invalid&quot;, &quot;valid&quot;, &quot;invalid&quot;, &quot;invalid&quot;, &quot;valid&quot; }
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">cubes</span>
+                                <span class="value data">
+                                
+                                    { 100, 0, 0 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">B</span>
+                                <span class="value data">
+                                
+                                    20
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">w</span>
+                                <span class="value data">
+                                
+                                    3
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">views</span>
+                                <span class="value data">
+                                
+                                    { &quot;00000000000000000000000000000000000000000000000000&quot;, &quot;00000000000000000000000000000000000b00000000000000&quot;, &quot;0000000000000000000000000000000000000000000000000b&quot;, &quot;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb0000000000000&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            {&quot;valid&quot;,<br />&nbsp;&quot;valid&quot;,<br />&nbsp;&quot;valid&quot;,<br />&nbsp;&quot;valid&quot;}
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">cubes</span>
+                                <span class="value data">
+                                
+                                    { 5, 6, 3 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">B</span>
+                                <span class="value data">
+                                
+                                    0
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">w</span>
+                                <span class="value data">
+                                
+                                    1
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">views</span>
+                                <span class="value data">
+                                
+                                    { &quot;00000111111222&quot;, &quot;0000111111222&quot;, &quot;0000011111222&quot;, &quot;000001111111222&quot;, &quot;0000011111122&quot;, &quot;b&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { &quot;valid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;invalid&quot;, &quot;valid&quot;, &quot;invalid&quot; }
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">cubes</span>
+                                <span class="value data">
+                                
+                                    { 100, 100, 100 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">B</span>
+                                <span class="value data">
+                                
+                                    100
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">w</span>
+                                <span class="value data">
+                                
+                                    50
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">views</span>
+                                <span class="value data">
+                                
+                                    { &quot;2&quot;, &quot;bb1b012012012012012012012&quot;, &quot;bb1b012012012012012012012b&quot;, &quot;bb1b012012012b012b012b012012b&quot;, &quot;bb1b0b1b2b0b1b2b0b1b2bb012b012b012012b&quot;, &quot;b1b0b1b2b0b1b2b0b1b2bb012b012b012012b&quot;, &quot;bbb1b012012012012012012012&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { &quot;valid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;valid&quot;, &quot;invalid&quot;, &quot;valid&quot; }
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">cubes</span>
+                                <span class="value data">
+                                
+                                    { 0, 0, 0 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">B</span>
+                                <span class="value data">
+                                
+                                    0
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">w</span>
+                                <span class="value data">
+                                
+                                    1
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">views</span>
+                                <span class="value data">
+                                
+                                    { &quot;0&quot;, &quot;bb&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            {&quot;invalid&quot;,<br />&nbsp;&quot;invalid&quot;}
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">Taro has no cubes and no prisms, therefore he cannot create any non-empty view.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">cubes</span>
+                                <span class="value data">
+                                
+                                    { 3, 0, 0 }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">B</span>
+                                <span class="value data">
+                                
+                                    4
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">w</span>
+                                <span class="value data">
+                                
+                                    3
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">views</span>
+                                <span class="value data">
+                                
+                                    { &quot;00b0b&quot;, &quot;bbbbbbbb&quot;, &quot;000b&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { &quot;invalid&quot;, &quot;valid&quot;, &quot;valid&quot; }
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
