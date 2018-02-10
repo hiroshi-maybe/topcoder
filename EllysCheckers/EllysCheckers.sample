@@ -1,0 +1,20 @@
+-- Example 0
+.o...
+
+YES
+-- Example 1
+..o..o
+
+YES
+-- Example 2
+.o...ooo..oo..
+
+NO
+-- Example 3
+......o.ooo.o......
+
+YES
+-- Example 4
+.o..o...o....o.....o
+
+NO
