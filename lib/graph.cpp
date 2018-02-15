@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include <cassert>
 #include <set>
-
+#include <tuple>
 using namespace std;
 
 #define dumpAR(ar) for(auto &x : (ar)) { cout << x << ','; } cout << endl;
@@ -309,6 +309,123 @@ private:
     res.push_back(u);
   }
 };
+
+/*
+ 
+ Kruskal's algorithm to compute minimum spanning tree, O(E*lg V) time
+ 
+ Greedily take edges until all the vertices are connected.
+ 
+ References:
+  - https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
+  - Ant book 2-5 graph
+  - CLRS Chapter 23 Minimum Spanning Trees
+
+ Used problems:
+  - https://github.com/k-ori/topcoder/blob/master/KingdomReorganization/KingdomReorganization.cpp#L94
+ 
+ Usage:
+  MST mst(10);
+  mst.edge(0,1,6);
+  mst.edge(1,2,3);
+  ..
+ 
+  res = mst.solve();
+
+ */
+struct MST {
+public:
+  int V;
+  vector<tuple<int,int,int>> E;
+  MST(int V): V(V) {
+    uf = vector<int>(V);
+    for(int i=0; i<V; ++i) uf[i]=i;
+  }
+  void edge(int u, int v, int w) {
+    assert(u<V&&v<V);
+    E.emplace_back(w,u,v);
+  }
+  int solve() {
+    sort(E.begin(),E.end());
+    
+    int res=0;
+    for(int i=0; i<E.size(); ++i) {
+      int u,v,w;
+      tie(w,u,v)=E[i];
+      if(!same(u,v)) res+=w,unite(u,v);
+    }
+    return res;
+  }
+private:
+  vector<int> uf;
+  int find(int x) { return uf[x]==x?x:uf[x]=find(uf[x]); }
+  void unite(int x, int y) {
+    int px=find(x),py=find(y);
+    if(px!=py) uf[px]=py;
+  }
+  int same(int x, int y) {
+    return find(x)==find(y);
+  }
+};
+
+/*
+ 
+ Prim's algorithm to compute minimum spanning tree, O(E*lg V) time
+ 
+ Greedily take edges until all the vertices are connected.
+ Note that undirected edge needs to be added in both direction u->v and v->u in Prim's algorithm.
+ 
+ References:
+  - https://en.wikipedia.org/wiki/Prim%27s_algorithm
+  - Ant book 2-5 graph
+  - CLRS Chapter 23 Minimum Spanning Trees
+ 
+ Used problems:
+  - https://github.com/k-ori/topcoder/blob/master/KingdomReorganization/KingdomReorganization.cpp#L152
+ 
+ Usage:
+  Prim mst(10);
+  mst.edge(0,1,6);
+  mst.edge(1,2,3);
+  ..
+ 
+  res = mst.solve();
+ 
+ */
+struct Prim {
+public:
+  int V;
+  vector<vector<pair<int,int>>> E;
+  Prim(int V): V(V) {
+    E = vector<vector<pair<int,int>>>(V);
+    viz = vector<int>(V,0);
+  }
+  void edge(int u, int v, int w) {
+    assert(u<V&&v<V);
+    E[u].emplace_back(v,w);
+  }
+  int solve() {
+    set<pair<int,int>> Q;
+    Q.emplace(0,0);
+    int res=0;
+    while(Q.size()) {
+      auto it=Q.begin();
+      auto p=*it;
+      int w=p.first,u=p.second;
+      Q.erase(it);
+      if(viz[u]) continue;
+      viz[u]=true;
+      res+=w;
+      for(auto p : E[u]) if(!viz[p.first]) {
+        Q.emplace(p.second,p.first);
+      }
+    }
+    return res;
+  }
+private:
+  vector<int> viz;
+};
+
 /***********************   test code below   ***********************/
 
 // helper
@@ -459,4 +576,26 @@ int main(int argc, char const *argv[]) {
   vector<int> cycle=ec.solve(0);
   vector<int> cycleExpected={0,1,2,0,6,4,2,3,4,5,0};
   assertVec(cycle, cycleExpected);
+  
+  // Minimum spanning tree
+  // CLRS 23.1 Growing a minimum spanning tree, Figure 23.1
+  vector<pair<int,int>/*(v,w)*/> G[9];
+  G[0]={{1,4},{7,8}};
+  G[1]={{0,4},{2,8},{7,11}};
+  G[2]={{1,8},{3,7},{5,4},{8,2}};
+  G[3]={{2,7},{4,9},{5,14}};
+  G[4]={{3,9},{5,10}};
+  G[5]={{2,4},{3,14},{4,10}};
+  G[6]={{5,2},{7,1},{8,6}};
+  G[7]={{0,8},{1,11},{6,1},{8,7}};
+  G[8]={{2,2},{6,6},{7,7}};
+  
+  MST mst1(9);
+  Prim mst2(9);
+  for(int u=0; u<9; ++u) for(auto p : G[u]) {
+    mst1.edge(u,p.first,p.second);
+    mst2.edge(u,p.first,p.second),mst2.edge(p.first,u,p.second);
+  }
+  assert(mst1.solve()==37);
+  assert(mst2.solve()==37);
 }
