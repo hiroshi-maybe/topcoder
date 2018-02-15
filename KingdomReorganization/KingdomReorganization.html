@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder SRM 531 - 950: KingdomReorganization</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #CCCCCC;
+    /* background color */
+    background-color: #333333;
+}
+.section .section-title {
+    /* title color */
+    color: white;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #303030;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>SRM 531</span>
+        <span id='contest-division'>2</span>
+        <span id='problem-score'>950</span>
+        <span id='problem-name'>KingdomReorganization</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1"><p><i>This problem statement contains subscripts and may not be shown properly outside of the applet.</i></p>
+<br />
+<p>The greatest king of all times, Michael IV, is going to make big changes in his kingdom. The kingdom is composed of N cities (for simplicity numbered from 0 to N-1). Some pairs of cities are connected by bidirectional roads. We say that there is a path between different cities A and B if there exists a sequence of unique cities {C<sub>1</sub>, C<sub>2</sub>, ..., C<sub>M</sub>}, such that C<sub>1</sub> = A and C<sub>M</sub> = B and for each index i &lt; M, there is a road between cities C<sub>i</sub> and C<sub>i+1</sub>.</p>
+<br />
+<p>The current state of the kingdom is miserable. Some pairs of cities are not connected by any path. On the other hand, other pairs of cities are connected by multiple different paths, and that leads to complicated traffic routing. Michael wants to build some new roads and destroy some of the already existing roads in the kingdom so that after the reconstruction there will exist exactly one path between every pair of distinct cities. As building new roads and destroying old ones costs a lot of money, Michael wants to minimize the total cost spent on the reconstruction.</p>
+<br />
+<p>You are given a <type>String[]</type> <b>kingdom</b> describing the current state of the kingdom. There is a road between the cities i and j if and only if <b>kingdom</b>[i][j] = '1' and <b>kingdom</b>[j][i] = '1'. You are also given a <type>String[]</type> <b>build</b> and a <type>String[]</type> <b>destroy</b>. If no road exists between cities i and j, then the cost of building it is encoded by <b>build</b>[i][j]. If there already is a road between cities i and j, then the cost of destroying it is encoded by <b>destroy</b>[i][j]. The costs in both <type>String[]</type>s are encoded as characters, where 'A', 'B', ..., 'Z' represent the costs 0, 1, ..., 25, respectively and 'a', 'b', ..., 'z' represent the costs 26, 27, ..., 51, respectively. Your task is to find and return the minimal cost needed for the kingdom reconstruction.</p></intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>KingdomReorganization</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>getCost</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        vector&lt;string&gt;
+                    , 
+                        vector&lt;string&gt;
+                    , 
+                        vector&lt;string&gt;
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        int
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        int getCost(vector&lt;string&gt; kingdom, vector&lt;string&gt; build, vector&lt;string&gt; destroy)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>2.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>64</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <!-- Notes -->
+    <div class="section">
+        <h2 class="section-title">Notes</h2>
+        <ul class="notes">
+        
+            <li><note escaped="1">N, the number of cities in the kingdom can be determined as the number of elements of <b>kingdom</b>.</note></li>
+        
+            <li><note escaped="1">Two paths {A<sub>1</sub>, A<sub>2</sub>, ..., A<sub>R</sub>} and {B<sub>1</sub>, B<sub>2</sub>, ..., B<sub>S</sub>} are considered different if either R is not equal to S or there exists i &lt;= R, such that A<sub>i</sub> is not equal to B<sub>i</sub>.</note></li>
+        
+            <li><note escaped="1">There can never exist a road leading from some city to itself.</note></li>
+        
+            <li><note escaped="1">The values in <b>build</b> that correspond to existing roads can simply be ignored. Similarly, ignore the values in <b>destroy</b> that correspond to nonexistent roads.</note></li>
+        
+        </ul>
+    </div>
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1">N will be between 1 and 50, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>kingdom</b>, <b>build</b> and <b>destroy</b> will each contain N elements.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each of the elements of <b>kingdom</b>, <b>build</b> and <b>destroy</b> will contain N characters.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each character in each element of <b>kingdom</b> will be either '0' or '1'.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">For each i, <b>kingdom</b>[i][i] will be '0'.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">For each i and j, <b>kingdom</b>[i][j] will be equal to <b>kingdom</b>[j][i].</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each character in each element of <b>build</b> and <b>destroy</b> will be either an uppercase letter ('A'-'Z') or a lowercase letter ('a'-'z').</user-constraint></li>
+        
+            <li><user-constraint escaped="1">For each i, <b>build</b>[i][i] and <b>destroy</b>[i][i] will be 'A'.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">For each i and j, <b>build</b>[i][j] will be equal to <b>build</b>[j][i].</user-constraint></li>
+        
+            <li><user-constraint escaped="1">For each i and j, <b>destroy</b>[i][j] will be equal to <b>destroy</b>[j][i].</user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">kingdom</span>
+                                <span class="value data">
+                                
+                                    {&quot;000&quot;,<br />&nbsp;&quot;000&quot;,<br />&nbsp;&quot;000&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">build</span>
+                                <span class="value data">
+                                
+                                    {&quot;ABD&quot;,<br />&nbsp;&quot;BAC&quot;,<br />&nbsp;&quot;DCA&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">destroy</span>
+                                <span class="value data">
+                                
+                                    {&quot;ABD&quot;,<br />&nbsp;&quot;BAC&quot;,<br />&nbsp;&quot;DCA&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            3
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">There are three cities in the kingdom, totally disconnected. <br />
+The only optimal solution is to build the roads between cities 0-1 (cost 1) and 1-2 (cost 2).</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">kingdom</span>
+                                <span class="value data">
+                                
+                                    {&quot;011&quot;,<br />&nbsp;&quot;101&quot;,<br />&nbsp;&quot;110&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">build</span>
+                                <span class="value data">
+                                
+                                    {&quot;ABD&quot;,<br />&nbsp;&quot;BAC&quot;,<br />&nbsp;&quot;DCA&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">destroy</span>
+                                <span class="value data">
+                                
+                                    {&quot;ABD&quot;,<br />&nbsp;&quot;BAC&quot;,<br />&nbsp;&quot;DCA&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            1
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">Now the three cities form a connected triangle and we need to destroy one road. <br />
+Optimal solution is to destroy the road between the cities 0-1 (cost 1).</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">kingdom</span>
+                                <span class="value data">
+                                
+                                    {&quot;011000&quot;,<br />&nbsp;&quot;101000&quot;,<br />&nbsp;&quot;110000&quot;,<br />&nbsp;&quot;000011&quot;,<br />&nbsp;&quot;000101&quot;,<br />&nbsp;&quot;000110&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">build</span>
+                                <span class="value data">
+                                
+                                    {&quot;ABDFFF&quot;,<br />&nbsp;&quot;BACFFF&quot;,<br />&nbsp;&quot;DCAFFF&quot;,<br />&nbsp;&quot;FFFABD&quot;,<br />&nbsp;&quot;FFFBAC&quot;,<br />&nbsp;&quot;FFFDCA&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">destroy</span>
+                                <span class="value data">
+                                
+                                    {&quot;ABDFFF&quot;,<br />&nbsp;&quot;BACFFF&quot;,<br />&nbsp;&quot;DCAFFF&quot;,<br />&nbsp;&quot;FFFABD&quot;,<br />&nbsp;&quot;FFFBAC&quot;,<br />&nbsp;&quot;FFFDCA&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            7
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">We have six cities forming two separate triangles. <br />
+Like in the Example 1, destroy one road in each triangle (costs 1 for each road) and then join the triangles by a new road (costs 5).</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">kingdom</span>
+                                <span class="value data">
+                                
+                                    { &quot;0&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">build</span>
+                                <span class="value data">
+                                
+                                    { &quot;A&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">destroy</span>
+                                <span class="value data">
+                                
+                                    { &quot;A&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            0
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">One city is okay just as it is.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">kingdom</span>
+                                <span class="value data">
+                                
+                                    {&quot;0001&quot;,<br />&nbsp;&quot;0001&quot;,<br />&nbsp;&quot;0001&quot;,<br />&nbsp;&quot;1110&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">build</span>
+                                <span class="value data">
+                                
+                                    {&quot;AfOj&quot;,<br />&nbsp;&quot;fAcC&quot;,<br />&nbsp;&quot;OcAP&quot;,<br />&nbsp;&quot;jCPA&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">destroy</span>
+                                <span class="value data">
+                                
+                                    {&quot;AWFH&quot;,<br />&nbsp;&quot;WAxU&quot;,<br />&nbsp;&quot;FxAV&quot;,<br />&nbsp;&quot;HUVA&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            0
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">We have four cities, which are connected in such a way that there is exactly one path between each two cities. <br />
+Thus there is nothing to reconstruct.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">kingdom</span>
+                                <span class="value data">
+                                
+                                    {&quot;0000000000&quot;,<br />&nbsp;&quot;0000000011&quot;,<br />&nbsp;&quot;0001010000&quot;,<br />&nbsp;&quot;0010010000&quot;,<br />&nbsp;&quot;0000001000&quot;,<br />&nbsp;&quot;0011000000&quot;,<br />&nbsp;&quot;0000100000&quot;,<br />&nbsp;&quot;0000000011&quot;,<br />&nbsp;&quot;0100000101&quot;,<br />&nbsp;&quot;0100000110&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">build</span>
+                                <span class="value data">
+                                
+                                    {&quot;AhPEqkSFMM&quot;,<br />&nbsp;&quot;hAfKPtsDad&quot;,<br />&nbsp;&quot;PfAyGQkaqN&quot;,<br />&nbsp;&quot;EKyAeLpRpm&quot;,<br />&nbsp;&quot;qPGeASfNwo&quot;,<br />&nbsp;&quot;ktQLSAnCAK&quot;,<br />&nbsp;&quot;SskpfnAdJS&quot;,<br />&nbsp;&quot;FDaRNCdAZz&quot;,<br />&nbsp;&quot;MaqpwAJZAn&quot;,<br />&nbsp;&quot;MdNmoKSznA&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">destroy</span>
+                                <span class="value data">
+                                
+                                    {&quot;AgTqWWxEYH&quot;,<br />&nbsp;&quot;gAXPgjzIRA&quot;,<br />&nbsp;&quot;TXAleTmWvT&quot;,<br />&nbsp;&quot;qPlAQkwxRO&quot;,<br />&nbsp;&quot;WgeQAqgbJJ&quot;,<br />&nbsp;&quot;WjTkqAiTzl&quot;,<br />&nbsp;&quot;xzmwgiAuHb&quot;,<br />&nbsp;&quot;EIWxbTuAwk&quot;,<br />&nbsp;&quot;YRvRJzHwAn&quot;,<br />&nbsp;&quot;HATOJlbknA&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            65
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
