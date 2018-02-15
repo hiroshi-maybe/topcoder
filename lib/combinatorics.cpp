@@ -152,12 +152,6 @@ LL choose(LL n, LL k) {
   return res;
 }
 
-#define dump(x)  cout << #x << " = " << (x) << endl;
-#define dump2(x,y)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << endl;
-#define dump3(x,y,z)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << endl;
-#define dump4(x,y,z,a)  cout << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl;
-#define dumpAR(ar) FORR(x,(ar)) { cout << x << ','; } cout << endl;
-
 /*
  
  Create n chooses k (% MOD) table (k=0..n), O(N^2) time
@@ -194,6 +188,155 @@ LL multichoose(LL n, LL k) {
   return choose(n+k-1,k);
 }
 
+/*
+ 
+ IEP (inclusion-exclusion principle) for union set when family of sets is homogeneous
+ 
+ - O(N*T(f)) time to compute
+ - O(N^2) to initialize combinatorics table
+ 
+ Compute cardinality of union set A[0]∪A[1]∪..∪A[N] when cardinality of intersection of `k` sets can be computed by f(k) (family of sets is homogeneous)
+ 
+   |∪ { A[i] : i=0..N-1 }|
+ = ∑ { (-1)^|X| * |∩ { A[i] : i∈X }| : X ⊆ {0..N-1} } // IEP
+ = ∑ { (-1)^|k+1| * C(N,k) * f(k) : k = 1..N }
+     where f(k) = |∩ { A[i] : i∈X, X⊆{0..N-1}, |X|=k }|
+ 
+ With homogeneous property, cardinality of intersection of C(N,k) families of sets is computed in the last step.
+ 
+ References:
+  - https://en.wikipedia.org/wiki/Inclusion%E2%80%93exclusion_principle#A_special_case
+  - Ant book 4-1 complex math (basic form)
+  - https://qiita.com/urutom/items/f192350c74394ae56e19
+ 
+ Usage:
+  // implement f(k)
+  IEP iep(N);
+  LL res=iep.solve();
+ 
+ */
+#define MAX_N 300
+struct IEP {
+public:
+  IEP(int N, long long MOD=1000000007): N(N), MOD(MOD) {
+    for(int i=0; i<=N; ++i) {
+      C[i][0]=1;
+      for(int j=1; j<=i; ++j) {
+        C[i][j] = C[i-1][j]+C[i-1][j-1], C[i][j]%=MOD;
+      }
+    }
+  }
+  long long solve() {
+    long long res=0;
+    for(int k=1; k<=N; ++k) {
+      long long sign=k%2==0?-1:1;
+      long long x=sign;
+      x*=C[N][k],x%=MOD;
+      x*=f(k),x%=MOD;
+      x+=MOD,x%=MOD;
+      res+=x,res%=MOD;
+    }
+    return res;
+  }
+  
+  // ⚠️ Implement this function
+  // Compute f(k) = |∩ { A[i] : i∈X, X⊆{0..N-1}, |X|=k }|
+  // Return size of intersection of `k` sets out of A[i], i=0..N-1
+  long long f(int k) {
+    // https://qiita.com/urutom/items/f192350c74394ae56e19
+    // example to compute number of derangement
+    // https://en.wikipedia.org/wiki/Derangement
+    // https://oeis.org/A000166/list
+    // f(k) = (N-k)!
+    long long res=1;
+    for(int n=1; n<=N-k; ++n) res*=n,res%=MOD;
+    return res;
+  }
+private:
+  int N;
+  long long MOD;
+  long long C[MAX_N][MAX_N];
+};
+
+/*
+ 
+ IEP (inclusion-exclusion principle) in COMPLEMENTARY form when family of sets is homogeneous
+ 
+ - O(N*T(f)) time to compute
+ - O(N^2) to initialize combinatorics table
+ 
+ https://en.wikipedia.org/wiki/Inclusion%E2%80%93exclusion_principle#Statement
+ > In applications it is common to see the principle expressed in its complementary form.
+ 
+ Compute cardinality of intersection set Ā[0]∩Ā[1]∩..∩Ā[N] when family of sets is homogeneous.
+ 
+   |∩ { Ā[i] : i=1..N }|
+ = |Ū { A[i] : i=0..N-1 }|                            // De Morgan's laws
+ = |U| - |∪ { A[i] : i=0..N-1 }|                      // U is universal set
+ = ∑ { (-1)^|X| * |∩ { A[i] : i∈X }| : X ⊆ {0..N-1} } // IEP
+ = ∑ { (-1)^|k| * C(N,k) * f(k) : k = 0..N }
+     where f(k) = |∩ { A[i] : i∈X, X⊆{0..N-1}, |X|=k }|
+ 
+ Note that universal set corresponds to k=0 case.
+ Also parity of exponent of `-1` is different.
+ 
+ References:
+ - https://en.wikipedia.org/wiki/Inclusion%E2%80%93exclusion_principle#A_special_case
+ - https://yukicoder.me/wiki/algorithm_summary
+ - https://qiita.com/urutom/items/f192350c74394ae56e19
+ 
+ Used problems:
+  - https://github.com/k-ori/topcoder/blob/master/NoRepeatPlaylist/NoRepeatPlaylist.cpp#L152
+ 
+ Usage:
+  // implement f(k)
+  IEP_comp iep(N);
+  LL res=iep.solve();
+ 
+ */
+#define MAX_N 300
+struct IEP_comp {
+public:
+  IEP_comp(int N, long long MOD=1000000007): N(N), MOD(MOD) {
+    for(int i=0; i<=N; ++i) {
+      C[i][0]=1;
+      for(int j=1; j<=i; ++j) {
+        C[i][j] = C[i-1][j]+C[i-1][j-1], C[i][j]%=MOD;
+      }
+    }
+  }
+  long long solve() {
+    long long res=0;
+    for(int k=0; k<=N; ++k) {
+      long long sign=k%2==0?1:-1;
+      long long x=sign;
+      x*=C[N][k],x%=MOD;
+      x*=f(k),x%=MOD;
+      x+=MOD,x%=MOD;
+      res+=x,res%=MOD;
+    }
+    return res;
+  }
+  
+  // ⚠️ Implement this function
+  // Compute f(k) = |∩ { A[i] : i∈X, X⊆{0..N-1}, |X|=k }|
+  // Return size of intersection of `k` sets out of A[i], i=0..N-1
+  long long f(int k) {
+    // https://qiita.com/urutom/items/f192350c74394ae56e19
+    // example to compute number of derangement
+    // https://en.wikipedia.org/wiki/Derangement
+    // https://oeis.org/A000166/list
+    // f(k) = (N-k)!
+    long long res=1;
+    for(int n=1; n<=N-k; ++n) res*=n,res%=MOD;
+    return res;
+  }
+private:
+  int N;
+  long long MOD;
+  long long C[MAX_N][MAX_N];
+};
+
 // main
 
 int main(int argc, char const *argv[]) {
@@ -211,4 +354,14 @@ int main(int argc, char const *argv[]) {
   vector<vector<int>> dp(201,vector<int>(201,0));
   choose(200,dp);
   assert(dp[200][23]==choose(200,23));
+  
+  int N=20;
+  long long dear20 = 895014631192902121LL%MOD;
+  long long factN=1;
+  for(int n=1; n<=N; ++n) factN*=n,factN%=MOD;
+  IEP ie(N);
+  long long dearrangement1=(factN-ie.solve()+MOD)%MOD;
+  assert(dearrangement1==dear20);
+  IEP_comp ie2(N);
+  assert(ie2.solve()==dear20);
 }
