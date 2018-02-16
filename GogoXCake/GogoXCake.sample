@@ -1,0 +1,74 @@
+-- Example 0
+4
+X.X
+...
+...
+X.X
+3
+.X
+..
+X.
+
+YES
+-- Example 1
+4
+..XX
+...X
+X...
+XX..
+2
+..
+..
+
+NO
+-- Example 2
+1
+...X...
+1
+...
+
+YES
+-- Example 3
+3
+.X.
+X.X
+.X.
+1
+.
+
+YES
+-- Example 4
+5
+XXXXXXX
+X.....X
+X.....X
+X.....X
+XXXXXXX
+3
+.X.
+XXX
+.X.
+
+NO
+-- Example 5
+3
+..
+X.
+.X
+3
+..
+.X
+X.
+
+NO
+-- Example 6
+3
+X..
+.XX
+.XX
+3
+.XX
+.XX
+X..
+
+NO
