@@ -1,0 +1,166 @@
+-- Example 0
+2
+Louis IX
+Louis VIII
+
+2
+Louis VIII
+Louis IX
+-- Example 1
+2
+Louis IX
+Philippe II
+
+2
+Louis IX
+Philippe II
+-- Example 2
+3
+Richard III
+Richard I
+Richard II
+
+3
+Richard I
+Richard II
+Richard III
+-- Example 3
+4
+John X
+John I
+John L
+John V
+
+4
+John I
+John V
+John X
+John L
+-- Example 4
+6
+Philippe VI
+Jean II
+Charles V
+Charles VI
+Charles VII
+Louis XI
+
+6
+Charles V
+Charles VI
+Charles VII
+Jean II
+Louis XI
+Philippe VI
+-- Example 5
+2
+Philippe II
+Philip II
+
+2
+Philip II
+Philippe II
+-- Example 6
+50
+1 I
+2 II
+3 III
+4 IV
+5 V
+6 VI
+7 VII
+8 VIII
+9 IX
+10 X
+11 XI
+12 XII
+13 XIII
+14 XIV
+15 XV
+16 XVI
+17 XVII
+18 XVIII
+19 XIX
+20 XX
+21 XXI
+22 XXII
+23 XXIII
+24 XXIV
+25 XXV
+26 XXVI
+27 XXVII
+28 XXVIII
+29 XXIX
+30 XXX
+31 XXXI
+32 XXXII
+33 XXXIII
+34 XXXIV
+35 XXXV
+36 XXXVI
+37 XXXVII
+38 XXXVIII
+39 XXXIX
+40 XL
+41 XLI
+42 XLII
+43 XLIII
+44 XLIV
+45 XLV
+46 XLVI
+47 XLVII
+48 XLVIII
+49 XLIX
+50 L
+
+50
+1 I
+10 X
+11 XI
+12 XII
+13 XIII
+14 XIV
+15 XV
+16 XVI
+17 XVII
+18 XVIII
+19 XIX
+2 II
+20 XX
+21 XXI
+22 XXII
+23 XXIII
+24 XXIV
+25 XXV
+26 XXVI
+27 XXVII
+28 XXVIII
+29 XXIX
+3 III
+30 XXX
+31 XXXI
+32 XXXII
+33 XXXIII
+34 XXXIV
+35 XXXV
+36 XXXVI
+37 XXXVII
+38 XXXVIII
+39 XXXIX
+4 IV
+40 XL
+41 XLI
+42 XLII
+43 XLIII
+44 XLIV
+45 XLV
+46 XLVI
+47 XLVII
+48 XLVIII
+49 XLIX
+5 V
+50 L
+6 VI
+7 VII
+8 VIII
+9 IX
