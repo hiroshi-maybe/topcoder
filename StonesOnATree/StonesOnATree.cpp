@@ -64,8 +64,6 @@ typedef tuple< int, int, int > III;
  Editorials:
   - http://hamayanhamayan.hatenablog.jp/entry/2018/02/21/110908
   - https://togetter.com/li/1201519
-  - https://twitter.com/_olphe/status/965946962263515136
-   - I cannot understand why monotonical property is needed 😡
  
  I thought that I could solve just by looking at neighbored 2 levels in subtree.
  However that's a stupid idea. This wrong analysis cannot catch up below case:
@@ -145,6 +143,23 @@ typedef tuple< int, int, int > III;
  iii) Single child case
  
  Single child case is simpler. f(a) = max(f(b), W[a]+W[b])
+ 
+ ***
+ 
+ Why weight needs to be monotonically decreasing?
+  - https://twitter.com/_olphe/status/965946962263515136
+  - https://twitter.com/shisashi/status/966346931181043713
+
+ Suppose we want to solve the problem for subtree rooted by `a`.
+ There are two subtrees T1 and T2.
+ 
+      a
+     / \
+   T1   T2
+ 
+ If weight is not monotonically decreasing towards root,
+ we cannot leverage optimality by putting a stone at root of either tree first.
+ We may want to put a stone in the middle of T1 and "lift up" stone in T2.
  
  Summary:
   - I'm stupid. Don't skip intermediate states before making a conclusion 👎
