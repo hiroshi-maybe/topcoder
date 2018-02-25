@@ -1,0 +1,55 @@
+-- Example 0
+3
+.o..
+oooo
+..o.
+3
+
+2
+-- Example 1
+6
+.....o
+......
+oooooo
+oooooo
+......
+o.....
+12
+
+3
+-- Example 2
+4
+....
+.oo.
+.oo.
+....
+3
+
+-1
+-- Example 3
+5
+.......
+..ooo..
+ooooooo
+.oo.oo.
+oo...oo
+12
+
+4
+-- Example 4
+12
+.................
+.ooooooo...oooo..
+.ooooooo..oooooo.
+.oo.......oo..oo.
+.oo.......oo..oo.
+.ooooo.....oooo..
+.ooooooo...oooo..
+.....ooo..oo..oo.
+......oo..oo..oo.
+.ooooooo..oooooo.
+.oooooo....oooo..
+.................
+58
+
+6
