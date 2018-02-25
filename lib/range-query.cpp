@@ -144,7 +144,7 @@ public:
     T.resize(N+1,0);
   }
   
-  // query ∑ { sum[i] : i=0..p }
+  // query in [0,r] : ∑ { sum[i] : i=0..r }
   int query(int r) {
     ++r; // 0-based index to 1-based index
     int res=0;
@@ -190,6 +190,43 @@ private:
   int lsone(int i) { return i&-i; }
 };
 
+/*
+ 
+ Two dimension cumulative sum, O(R*C) time to build, O(1) time to query
+ 
+  - Build cumulative sum 2d array from `X`
+  - It queries sum in rectangle r in [i1,i2), c in [j1,j2) in O(1) time
+ 
+ Usage:
+  TwoDimCumSum cum(X);
+  cout << X.query(0,1,2,3) << endl; // Query sum in (0,1)-(1,2) rectangle
+ 
+ Used problems:
+  - https://github.com/k-ori/leetcode/blob/master/304-Range-Sum-Query-2D/RangeSumQuery2D.cpp
+  - https://github.com/k-ori/topcoder/blob/master/DropCoins/DropCoins.cpp#L157
+ 
+ */
+struct TwoDimCumSum {
+public:
+  int R,C;
+  TwoDimCumSum(vector<vector<int>> &X) {
+    this->R=X.size();
+    if(R==0) return;
+    this->C=X[0].size();
+    this->cum=vector<vector<int>>(R+1,vector<int>(C+1,0));
+    
+    for(int i=0; i<R; ++i) for(int j=0; j<C; ++j) {
+      cum[i+1][j+1]=cum[i][j+1]+cum[i+1][j]-cum[i][j]+X[i][j];
+    }
+  }
+  // query of sum in rectangle r in [i1,i2), c in [j1,j2)
+  int query(int i1, int j1, int i2, int j2) {
+    return cum[i2][j2]-cum[i1][j2]-cum[i2][j1]+cum[i1][j1];
+  }
+private:
+  vector<vector<int>> cum;
+};
+
 int main(int argc, char const *argv[]) {
   vector<int> ns={2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
   
@@ -215,4 +252,19 @@ int main(int argc, char const *argv[]) {
   assert(T.query(3,8)==2);
   T.update(5,-1);
   assert(T.query(2,8)==-1);
+  
+  // 2D cumulative sum query
+  vector<vector<int>> mx={
+    {3, 0, 1, 4, 2},
+    {5, 6, 3, 2, 1},
+    {1, 2, 0, 1, 5},
+    {4, 1, 0, 1, 7},
+    {1, 0, 3, 0, 5}
+  };
+  TwoDimCumSum cum(mx);
+  assert(cum.query(2,1,5,4)==8);
+  assert(cum.query(1,1,3,3)==11);
+  assert(cum.query(1,2,3,5)==12);
+  assert(cum.query(1,2,1,2)==0);
+  assert(cum.query(1,2,0,1)==0);
 }
