@@ -1,0 +1,42 @@
+-- Example 0
+2
+.W..
+....
+
+YES
+-- Example 1
+2
+.W..
+..W.
+
+YES
+-- Example 2
+2
+.W..W..
+...WWW.
+
+NO
+-- Example 3
+2
+..
+WW
+
+YES
+-- Example 4
+2
+.WWWW.
+WWWWWW
+
+NO
+-- Example 5
+2
+.W.W.W.
+W.W.W.W
+
+YES
+-- Example 6
+2
+.............................................W.
+.............................................W.
+
+NO
