@@ -1,0 +1,66 @@
+-- Example 0
+3
+f
+o
+x
+3
+f
+o
+x
+
+1
+-- Example 1
+3
+x
+x
+x
+3
+x
+
+xx
+
+3
+-- Example 2
+3
+cd
+cd
+cd
+3
+dvd
+dvd
+dvd
+
+0
+-- Example 3
+3
+abab
+ab
+abab
+3
+abab
+ab
+abab
+
+11
+-- Example 4
+3
+qwer
+asdf
+zxcv
+3
+qaz
+wsx
+erdfcv
+
+1
+-- Example 5
+3
+xx
+xxx
+xx
+3
+xx
+xx
+xx
+
+0
