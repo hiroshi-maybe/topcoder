@@ -1,0 +1,24 @@
+-- Example 0
+ABBB
+
+Alice
+-- Example 1
+BBBB
+
+Bob
+-- Example 2
+BA
+
+Alice
+-- Example 3
+BABBABBB
+
+Bob
+-- Example 4
+ABABBBABAABBAA
+
+Alice
+-- Example 5
+BBBAAABBAAABBB
+
+Bob
