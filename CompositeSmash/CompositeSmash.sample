@@ -1,0 +1,40 @@
+-- Example 0
+517
+47
+
+Yes
+-- Example 1
+8
+4
+
+Yes
+-- Example 2
+12
+6
+
+No
+-- Example 3
+5
+8
+
+No
+-- Example 4
+100000
+100000
+
+Yes
+-- Example 5
+5858
+2
+
+Yes
+-- Example 6
+81461
+2809
+
+No
+-- Example 7
+65536
+256
+
+No
