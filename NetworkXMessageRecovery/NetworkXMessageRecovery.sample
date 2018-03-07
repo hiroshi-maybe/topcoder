@@ -1,0 +1,27 @@
+-- Example 0
+2
+acd
+bce
+
+abcde
+-- Example 1
+4
+ed
+dc
+cb
+ba
+
+edcba
+-- Example 2
+3
+Fox
+Ciel
+FoxCiel
+
+FoxCiel
+-- Example 3
+2
+a
+A
+
+Aa
