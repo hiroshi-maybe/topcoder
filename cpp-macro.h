@@ -102,3 +102,4 @@ constexpr long long MOD = 1e9+7;
 
 // highly composit number: http://wwwhomes.uni-bielefeld.de/achim/highly.txt
 // math helper: http://www.wolframalpha.com/input/?i=sqrt(x*x+%2B+42)
+// graph generator: http://emkjp.github.io/WebTools/dot.html
