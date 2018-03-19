@@ -157,16 +157,32 @@ vector<vector<int>> johnson(vector<unordered_map<int, int>> E, int V) {
 
 /**
  
- Build Strongly Connected Components a.k.a. SCCs (CLRS 22.5), Θ(V+E) time
+ Build Strongly Connected Components a.k.a. SCCs, Θ(V+E) time
+ 
+ - This is implementation of Kosaraju's algorithm
+ - Two dfs with transpose of original graph
+ 
+ References:
+  - CLRS 22.5
+  - https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm
+  - https://en.wikipedia.org/wiki/Strongly_connected_component
+ 
+ There are other algorithms
+  - Tarjan's algorithm
+   - https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm
+   - find cycle with stack which keeps vertices in the current path
+  - Path-based strong component algorithm
+   - https://en.wikipedia.org/wiki/Path-based_strong_component_algorithm
+   - dfs with two stacks
  
  Usage:
  
- ```
- SCC scc(V);
- scc.edge(u1,v1); scc.edge(u2,v2); ...
- scc.build()
- scc.contract()
- ```
+   ```
+   SCC scc(V);
+   scc.edge(u1,v1); scc.edge(u2,v2); ...
+   scc.build()
+   scc.contract()
+   ```
  
  */
 struct SCC {
@@ -426,6 +442,54 @@ private:
   vector<int> viz;
 };
 
+/*
+ 
+ Cycle detection in linear runtime, O(V+E) time
+ 
+ - Returns list of nodes whose descendent has NO cycle
+ - Variant of SCC library. This is even simpler because we don't need to group and contract cycles.
+ 
+ Used problems:
+  - https://leetcode.com/contest/weekly-contest-76/problems/find-eventual-safe-states/
+ 
+ */
+
+struct GraphCycle {
+public:
+  // input
+  int V;
+  vector<vector<int>> G;
+  GraphCycle(int V): V(V), G(V), done(V, -1), viz(V, 0) {}
+  void edge(int u, int v) {
+    assert(u<V&&v<V);
+    G[u].push_back(v);
+  }
+  
+  vector<int> findCycleFreeNodes() {
+    vector<int> res;
+    for(int u=0; u<V; ++u) {
+      if(!viz[u]) dfs(u);
+      if(!done[u]) res.push_back(u);
+    }
+    return res;
+  }
+private:
+  vector<int> done; // -1: not done, 0: descendent has NO cycle, 1: descendent has cycle
+  vector<int> viz;
+  
+  int dfs(int u) {
+    if(done[u]!=-1) return done[u];
+    viz[u]=true;
+    
+    int res=false;
+    for(int v : G[u]) {
+      if(!viz[v]) dfs(v);
+      res|=done[v]==-1?true:done[v];
+    }
+    return done[u]=res;
+  }
+};
+
 /***********************   test code below   ***********************/
 
 // helper
@@ -598,4 +662,11 @@ int main(int argc, char const *argv[]) {
   }
   assert(mst1.solve()==37);
   assert(mst2.solve()==37);
+  
+  // Cycle detection
+  vector<vector<int>> G_cycle={{1,2},{2,3},{5},{0},{5},{},{}};
+  GraphCycle gc(G_cycle.size());
+  for(int u=0; u<G_cycle.size(); ++u) for(int v : G_cycle[u]) gc.edge(u,v);
+  vector<int> cycleFreeNodes={2,4,5,6};
+  assertVec(gc.findCycleFreeNodes(), cycleFreeNodes);
 }
