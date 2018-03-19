@@ -1,0 +1,25 @@
+-- Example 0
+(())
+()
+
+Possible
+-- Example 1
+()
+()
+
+Possible
+-- Example 2
+(()()())
+((()))
+
+Impossible
+-- Example 3
+((())((())())())
+(()(())())
+
+Possible
+-- Example 4
+((())((())())())
+((()()()()()))
+
+Impossible
