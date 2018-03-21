@@ -126,6 +126,7 @@ vector<LL> divisors(LL N) {
  Used problems:
   - https://github.com/k-ori/topcoder/blob/master/FractionInDifferentBases/FractionInDifferentBases.cpp
   - https://github.com/k-ori/topcoder/blob/master/MagicDiamonds/MagicDiamonds.cpp#L107
+  - https://github.com/k-ori/topcoder/blob/master/DivideAndShift/DivideAndShift.cpp#L147
  
  */
 vector<LL> primeFactors(LL n) {
