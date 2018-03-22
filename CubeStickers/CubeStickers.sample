@@ -1,0 +1,61 @@
+-- Example 0
+7
+cyan
+magenta
+yellow
+purple
+black
+white
+purple
+
+YES
+-- Example 1
+10
+blue
+blue
+blue
+blue
+blue
+blue
+blue
+blue
+blue
+blue
+
+NO
+-- Example 2
+9
+red
+yellow
+blue
+red
+yellow
+blue
+red
+yellow
+blue
+
+YES
+-- Example 3
+7
+purple
+orange
+orange
+purple
+black
+orange
+purple
+
+NO
+-- Example 4
+8
+white
+gray
+green
+blue
+yellow
+red
+target
+admin
+
+YES
