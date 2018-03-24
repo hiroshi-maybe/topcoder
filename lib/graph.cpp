@@ -448,6 +448,10 @@ private:
  
  - Returns list of nodes whose descendent has NO cycle
  - Variant of SCC library. This is even simpler because we don't need to group and contract cycles.
+ - This is equivalent to classic white, gray, black coloring dfs in CLRS 22.3 Depth-first search
+  - white: not visited
+  - gray: processing going-on
+  - black: processing completed
  
  Used problems:
   - https://leetcode.com/contest/weekly-contest-76/problems/find-eventual-safe-states/
