@@ -233,7 +233,7 @@ pair<double,double> polar2cartesianSys(double r, double deg) {
 
 /*
  
- Rotate (x,y) by `deg` degree
+ Rotate (x,y) by `deg` degree (not radian) in 2D
  
  (x',y') = (x*cosΘ - y*sinΘ, x*sinΘ + y*cosΘ)
  
@@ -246,6 +246,105 @@ pair<double,double> rotate(pair<double,double> p, double deg) {
   double C = cos(rad);
   double S = sin(rad);
   return { x*C-y*S, x*S+y*C };
+}
+
+/*
+ 
+ Data structure in 3d coordinate
+ 
+ - Rotation in right-hand system
+  - https://en.wikipedia.org/wiki/Rotation_formalisms_in_three_dimensions#Rotation_matrix_%E2%86%94_Euler_angles
+  - https://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations
+ - Right-hand system
+  - Thumb: x-axis, Index-finger: y-axis, Middle-finger: z-axis in right hand
+   - x->y is counter-clockwise from top of z-axis
+  - Rotation is counter-clockwise for positive degree from top of rotation axis
+ 
+ */
+struct Vector3D {
+public:
+  double x, y, z;
+  Vector3D(vector<double> vec) {
+    assert(vec.size()==3);
+    this->x=vec[0],this->y=vec[1],this->z=vec[2];
+  }
+  Vector3D(double x, double y, double z): x(x), y(y), z(z) {}
+  
+  Vector3D rotateX(double rad) {
+    double s=sin(rad),c=cos(rad);
+    double xx=x;
+    double yy=c*y-s*z;
+    double zz=s*y+c*z;
+    return Vector3D(xx,yy,zz);
+  }
+  Vector3D rotateY(double rad) {
+    double s=sin(rad),c=cos(rad);
+    double xx=c*x+s*z;
+    double yy=y;
+    double zz=-s*x+c*z;
+    return Vector3D(xx,yy,zz);
+  }
+  Vector3D rotateZ(double rad) {
+    double s=sin(rad),c=cos(rad);
+    double xx=c*x-s*y;
+    double yy=s*x+c*y;
+    double zz=z;
+    return Vector3D(xx,yy,zz);
+  }
+};
+
+// x'=x, y'=y*cos𝛩-z*sin𝛩, z'=y*sin𝛩+z*cos𝛩
+vector<double> rotateX(vector<double> V, double rad) {
+  double s=sin(rad),c=cos(rad);
+  vector<double> res(3);
+  res[0]=V[0];
+  res[1]=c*V[1]-s*V[2];
+  res[2]=s*V[1]+c*V[2];
+  return res;
+}
+// x'=x*cos𝛩+z*sin𝛩, y'=y, z'=x*sin𝛩+z*cos𝛩
+vector<double> rotateY(vector<double> V, double rad) {
+  double s=sin(rad),c=cos(rad);
+  vector<double> res(3);
+  res[0]=c*V[0]+s*V[2];
+  res[1]=V[1];
+  res[2]=-s*V[0]+c*V[2];
+  return res;
+}
+// x'=x*cos𝛩-y*sin𝛩, y'=x*sin𝛩+y*cos𝛩, z'=z
+vector<double> rotateZ(vector<double> V, double rad) {
+  double s=sin(rad),c=cos(rad);
+  vector<double> res(3);
+  res[0]=c*V[0]-s*V[1];
+  res[1]=s*V[0]+c*V[1];
+  res[2]=V[2];
+  return res;
+}
+vector<double> rotateDegX(vector<double> V, double deg) {
+  return rotateX(V,deg2rad(deg));
+}
+vector<double> rotateDegY(vector<double> V, double deg) {
+  return rotateY(V,deg2rad(deg));
+}
+vector<double> rotateDegZ(vector<double> V, double deg) {
+  return rotateZ(V,deg2rad(deg));
+}
+
+/************************ test ************************/
+
+bool nearlyEqual(double x, double y) {
+  const double EPS=1e-9;
+  return abs(x-y)<EPS;
+}
+
+void assert_vector3D() {
+  auto v1 = Vector3D(1,2,3).rotateX(M_PI/2.0);
+  assert(nearlyEqual(v1.x,1)&&nearlyEqual(v1.y,-3)&&nearlyEqual(v1.z,2));
+  auto v2 = Vector3D(1,2,3).rotateY(M_PI/2.0);
+//  printf("%f,%f,%f\n",v2.x,v2.y,v2.z);
+  assert(nearlyEqual(v2.x,3)&&nearlyEqual(v2.y,2)&&nearlyEqual(v2.z,-1));
+  auto v3 = Vector3D(1,2,3).rotateZ(M_PI/2.0);
+  assert(nearlyEqual(v3.x,-2)&&nearlyEqual(v3.y,1)&&nearlyEqual(v3.z,3));
 }
 
 int main(int argc, char const *argv[]) {
@@ -274,15 +373,15 @@ int main(int argc, char const *argv[]) {
   vector<pair<int,int>> notsurrounding = {{1,1},{2,1},{1,2},{2,2}};
   assert(!surrounded(origin, notsurrounding));
   
-  const double eps=1e-9;
-  assert(abs(deg2rad(60)-M_PI/3.0)<eps);
+  assert(nearlyEqual(deg2rad(60),M_PI/3.0));
   pair<double,double> pp1=polar2cartesianSys(10,60);
-  assert(abs(pp1.first-10.0/2.0)<eps);
-  assert(abs(pp1.second-10.0*sqrt(3.0)/2.0)<eps);
+  assert(nearlyEqual(pp1.first,10.0/2.0));
+  assert(nearlyEqual(pp1.second,10.0*sqrt(3.0)/2.0));
   
   pair<double,double> pp2=rotate(pp1,60);
-  assert(abs(pp2.first+pp1.first)<eps);
-  assert(abs(pp2.second-pp1.second)<eps);
+  assert(nearlyEqual(pp2.first+pp1.first,0.0));
+  assert(nearlyEqual(pp2.second,pp1.second));
+  assert(nearlyEqual(area({-2,0},{0,4},{3,0}),10.0));
   
-  assert(abs(area({-2,0},{0,4},{3,0})-10.0)<eps);
+  assert_vector3D();
 }
