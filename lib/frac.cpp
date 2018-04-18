@@ -5,73 +5,75 @@
 
 using namespace std;
 
+/*
+ 
+ Fraction computation library
+ 
+  - N^2 should fit in signed long long (<1e18) in operators
+ 
+ Used problems:
+  - https://github.com/k-ori/topcoder/blob/master/MinimizeAbsoluteDifferenceDiv1/MinimizeAbsoluteDifferenceDiv1.cpp#L119
+ 
+ */
+
 struct Frac {
 public:
   // numerator / denominator
-  long long n,d;
-  Frac(int n, int d) {
-    assert(d>0);
-    bool neg=n<0;
-    n=abs(n);
-    long long g=gcd(n,d);
-    this->n=n/g;
-    if(neg) this->n=-1*this->n;
-    this->d=d/g;
-  }
-  Frac add(Frac &y) {
-    long long l=lcm(d,y.d);
-    long long n1=n*l/d,n2=y.n*l/y.d;
-    return Frac(n1+n2,l);
-  }
-  Frac sub(Frac &y) {
-    Frac yy(-y.n,y.d);
-    return add(yy);
-  }
-  Frac mul(Frac &y) {
-    long long nn=n*y.n,dd=d*y.d;
+  int n,d;
+  Frac(int nn, int dd) {
+    assert(dd>0);
+    bool neg=nn<0;
+    nn=neg?-nn:nn;
     long long g=gcd(nn,dd);
-    return Frac(nn/g, dd/g);
+    this->n=nn/g;
+    if(neg) this->n=-1*this->n;
+    this->d=dd/g;
   }
-  Frac div(Frac &y) {
-    Frac yy(y.d,y.n);
-    return mul(yy);
+  Frac abs() {
+    Frac res(n<0?-n:n,d);
+    return res;
   }
-  int comp(Frac &y) {
-    Frac a=sub(y);
-    if(a.n==0) return 0;
-    return a.n>0?1:-1;
+  void debug() {
+    printf("%d/%d\n",n,d);
   }
 private:
   long long gcd(long long a, long long b) {
     return b==0?a:gcd(b,a%b);
   }
-  long long lcm(long long a, long long b) {
-    return a*b/gcd(a,b);
-  }
 };
+Frac operator + (Frac a, Frac b) { return Frac((long long)a.n * b.d + (long long)b.n * a.d, (long long)a.d * b.d); }
+Frac operator - (Frac a, Frac b) { return a + Frac(-b.n, b.d); }
+Frac operator * (Frac a, Frac b) { return Frac((long long)a.n * b.n, (long long)a.d * b.d); }
+Frac operator / (Frac a, Frac b) { return a * Frac(b.d, b.n); }
+bool operator < (Frac a, Frac b) { return a.n *(long long) b.d < b.n *(long long) a.d; }
+bool operator > (Frac a, Frac b) { return b < a; }
+bool operator == (Frac a, Frac b) { return a.n == b.n && a.d == b.d; }
 
 int main(int argc, char const *argv[]) {
   Frac p(10,20);
   assert(p.n==1&&p.d==2);
   
   Frac x(5,6),y(3,4);
-  auto a=x.add(y);
+  auto a=x+y;
   assert(a.n==19&&a.d==12);
   
-  auto s=x.sub(y);
+  auto s=x-y;
   assert(s.n==1&&s.d==12);
 
-  auto m=x.mul(y);
+  auto m=x*y;
   assert(m.n==5&&m.d==8);
 
-  auto d=x.div(y);
+  auto d=x/y;
   assert(d.n==10&&d.d==9);
-  
-  int lg=x.comp(y);
-  assert(lg==1);
+
+  Frac z(-5,6);
+  auto a1=z.abs();
+  assert(a1.n==5&&a1.d==6);
+  auto a2=x.abs();
+  assert(a2.n==5&&a2.d==6);
+
+  assert(x>y);
   Frac x2(2,6),y2(1,3);
-  int eq=x2.comp(y2);
-  assert(eq==0);
-  int sm=y.comp(x);
-  assert(sm==-1);
+  assert(x2==y2);
+  assert(y<x);
 }
