@@ -35,75 +35,84 @@ using namespace std;
 
   Used problems:
    - https://github.com/k-ori/leetcode/blob/master/307-Range-Sum-Query/RangeSumQuery.cpp (RSQ)
+   - https://github.com/k-ori/csacademy/blob/master/solutions/R78-StrangeMatrix.cpp#L88
  
  */
+// 🛠 Customize node of segment tree
+const int MAX_N=1e5;
+struct Node {
+  static const int Inf=1e9;
+  int val;
+  Node(int val=Inf): val(val) {}
+  static Node IDE; // Identity element in monoid
+};
+// Merge operation should be associative A`op`(B`op`C) == (A`op`B)`op`C
+Node Node::IDE=Node();
+Node merge(const Node &a, const Node &b) {
+  return Node(min(a.val,b.val));
+}
+// 🛠 Customize node of segment tree
+
 struct SegmentTree {
 public:
-  int N;
-  SegmentTree(int N): N(N) {
+  int N__;
+  // Put tree array outside the struct to avoid seg fault due to memory allocation of large size array
+  Node Tree[4*MAX_N]; // Tree[0..2*N__-1] has values (Tree[0]: all, Tree[1]: left half, Tree[2]: right half, ..)
+  SegmentTree(int N) {
     int n=1;
-    // Make vector size power of 2
+    // Init by power of 2
     while(n<N) n<<=1;
-    T.resize(2*n-1,iV);
+    for(int i=0; i<2*n-1; ++i) Tree[i]=Node::IDE;
+    this->N__=n;
   }
   
   // Initialize tree with `ns`
-  void build(vector<int> &ns) {
-    assert(ns.size()<=T.size());
-    buildTree(ns,0,0,N);
+  void build(const vector<Node> &ns) {
+    buildTree(ns,0,0,N__);
   }
   
-  void update(int i, int x) {
-    updateTree(i,x,0,0,N);
+  // Update k-th (0-indexed) value
+  void update(int i, const Node &x) {
+    updateTree(i,x,0,0,N__);
   }
   
   // query in range [L,R)
-  int query(int L, int R) {
-    return queryTree(L,R,0,0,N);
-  }
-  
-  // ⚠️ Override point
-  // Note that operation should be associative A`op`(B`op`C) == (A`op`B)`op`C
-  const int iV=1e9;
-  int operate(int a, int b) {
-    return min(a,b); // RMQ
+  Node query(int L, int R) {
+    return queryTree(L,R,0,0,N__);
   }
 private:
-  vector<int> T; // T[1..N] has values (1-based index)
-  // T[i] manages query result in index range [l,r)
-  void buildTree(vector<int> &ns, int i, int l, int r) {
-    if (l==r-1) { T[i]=ns[l]; return; }
+  void buildTree(const vector<Node> &ns, int i, int l, int r) {
+    if (l==r-1) { Tree[i]=ns[l]; return; }
     
     int mid=l+(r-l)/2;
-    buildTree(ns,2*i+1,l,mid); // left child
-    buildTree(ns,2*i+2,mid,r); // right child
+    buildTree(ns,2*i+1,  l,mid); // left child
+    buildTree(ns,2*i+2,mid,  r); // right child
     
-    T[i]=operate(T[2*i+1],T[2*i+2]);
+    Tree[i]=merge(Tree[2*i+1],Tree[2*i+2]);
   }
   
-  void updateTree(int p, int x, int i, int l, int r) {
-    if (l==r-1) { T[i]=x; return; }
+  void updateTree(int p, const Node &x, int i, int l, int r) {
+    if (l==r-1) { Tree[i]=x; return; }
     
     int mid=l+(r-l)/2;
-    if(p<mid) updateTree(p,x,2*i+1,l,mid);
-    else       updateTree(p,x,2*i+2,mid,r);
+    if(p<mid) updateTree(p,x,2*i+1,  l,mid);
+    else      updateTree(p,x,2*i+2,mid,  r);
     
-    T[i]=operate(T[2*i+1],T[2*i+2]);
+    Tree[i]=merge(Tree[2*i+1],Tree[2*i+2]);
   }
   
-  int queryTree(int L, int R, int i, int l, int r) {
+  Node queryTree(int L, int R, int i, int l, int r) {
     // out of range
-    if (r<=L||R<=l) return iV;
+    if (r<=L||R<=l) return Node::IDE;
     
-    // match
-    if (L<=l&&r<=R) return T[i];
+    // all covered
+    if (L<=l&&r<=R) return Tree[i];
     
+    // partially covered
     int mid=l+(r-l)/2;
-    int res=iV;
-    int a=queryTree(L,R,2*i+1,l,mid);
-    int b=queryTree(L,R,2*i+2,mid,r);
-    res = operate(res,a);
-    res = operate(res,b);
+    Node a=queryTree(L,R,2*i+1,  l,mid);
+    Node b=queryTree(L,R,2*i+2,mid,  r);
+    Node res=merge(a,b);
     return res;
   }
 };
@@ -247,11 +256,14 @@ int main(int argc, char const *argv[]) {
   
   // Range minimum query
   SegmentTree T(N);
-  T.build(ns);
-  assert(T.query(2,8)==1);
-  assert(T.query(3,8)==2);
+  vector<Node> X;
+  for(int i=0; i<N; ++i) X.push_back(ns[i]);
+  T.build(X);
+  
+  assert(T.query(2,8).val==1);
+  assert(T.query(3,8).val==2);
   T.update(5,-1);
-  assert(T.query(2,8)==-1);
+  assert(T.query(2,8).val==-1);
   
   // 2D cumulative sum query
   vector<vector<int>> mx={
