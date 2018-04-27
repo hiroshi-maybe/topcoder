@@ -14,7 +14,7 @@ using namespace std;
  */
 int genRandNum(int lb, int ub) {
   // Helper to generate random integer in range [lb, ub)
-  int x = rand() % (int)(ub - lb + 1.0);
+  int x = rand() % (int)(ub - lb);
   return x + lb;
 }
 vector<int> genRandSeq(int size, int lb, int ub) {
