@@ -77,12 +77,14 @@ vector< pair < int, int > >  movesd = { {0,1}/*R*/,{1,1}/*RD*/,{1,0}/*D*/,{1,-1}
 #define ZERO(dp) memset(dp, 0, sizeof(dp))
 
 // debug cerr
+/*
 #define TRACE true
 #define dump(x) if(TRACE) { cerr << #x << " = " << (x) << endl; }
 #define dump2(x,y) if(TRACE) { cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << endl; }
 #define dump3(x,y,z) if(TRACE) { cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << endl; }
 #define dump4(x,y,z,a) if(TRACE) { cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl; }
 #define dumpAR(ar) if(TRACE) { FORR(x,(ar)) { cerr << x << ','; } cerr << endl; }
+*/
 
 // debug cout
 //#define TRACE true
@@ -99,6 +101,24 @@ vector< pair < int, int > >  movesd = { {0,1}/*R*/,{1,1}/*RD*/,{1,0}/*D*/,{1,-1}
 constexpr long long MOD = 1e9+7;
 
 // $ g++ -std=c++11 -Wall -O2 -D_GLIBCXX_DEBUG *.cpp && ./a.out
+
+// standard io template
+const int MAX_N=1e5+1;
+int A[MAX_N];
+int N;
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(0);
+  cin>>N;
+  REP(i,N) cin>>A[i];
+  
+  int res=0;
+  cout<<res<<endl;
+  // more precision in double in iostream
+  // cout<<setprecision(12)<<fixed<<res<<endl;
+  
+  return 0;
+}
 
 // highly composit number: http://wwwhomes.uni-bielefeld.de/achim/highly.txt
 // math helper: http://www.wolframalpha.com/input/?i=sqrt(x*x+%2B+42)
