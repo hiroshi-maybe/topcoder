@@ -36,18 +36,26 @@ bool isPrime(LL N) {
 
 /*
  
- primes in range [1,N] by sieve of eratosthenes, O(N*lg lg N) time, O(N) space
+ primes in range [1,N] by sieve of eratosthenes, O(N*ln ln N) time, O(N) space
  
  - this works if approximately N <= 10^7
  
  Sieve of Eratosthenes
   - http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
  
+ Let π(N) be the prime-counting function (number of prime numbers in range [1,N])
+  - https://en.wikipedia.org/wiki/Prime-counting_function
+  - https://oeis.org/A006880
+ 
+ π(N) is approximated by Prime Number Theorem (PNT) as below:
+ 
+ π(N) ~ N/ln(N)
+ 
  Usage:
-   vector<int> ps = findPrimes(10); // ps={2,3,5,7}
+   vector<int> ps = sieve(10); // ps={2,3,5,7}
  
  */
-vector<int> findPrimes(int N) {
+vector<int> sieve(int N) {
   vector<int> fs(N+1, true);
   fs[0]=fs[1]=false;
   for(int p=2; p*p<=N; ++p) if(fs[p]) {
@@ -157,6 +165,53 @@ vector<LL> distinctPrimeFactors(LL n) {
 
 /*
  
+ Fast prime factorization by precomputing prime numbers by sieve
+ 
+ precomputation:        O(N*ln ln N) time
+ query (factorization):      O(lg N) time
+ space:                         O(N) space
+ 
+ References:
+  - http://www.osak.jp/diary/diary_201310.html#20131017
+  - http://d.hatena.ne.jp/inamori/20091019/p1
+  - http://sucrose.hatenablog.com/entry/2014/10/10/235805
+ 
+ Usage:
+  PrimeFact pf(1e6);
+ 
+  vector<LL> facts = pf.fact(n);
+  facts.erase(unique(facts.begin(),facts.end()), facts.end());
+ 
+ Used problem(s):
+  - https://github.com/k-ori/topcoder/blob/master/TheRoundCityDiv1/TheRoundCityDiv1.cpp#L118
+ 
+ */
+
+const int MAX_N=1e6+10;
+struct PrimeFact {
+public:
+  PrimeFact(int N): N(N) {
+    // make prime table by sieve
+    memset(divp, 0, sizeof divp);
+    for(int p=2; p<=this->N; ++p) if(divp[p]==0) {
+      P.push_back(p);
+      divp[p]=p;
+      for(long long q=1LL*p*p; q<=N; q+=p) if(divp[q]==0) divp[q]=p;
+    }
+  }
+  vector<long long> fact(long long n) {
+    vector<long long> res;
+    while(n>1) res.push_back(divp[n]), n/=divp[n];
+    sort(res.begin(),res.end());
+    return res;
+  }
+  vector<int> P; // list of prime numbers
+private:
+  int N,divp[MAX_N];
+};
+
+/*
+ 
  Count the positive integers up to a given integer n that are relatively prime to n, O(√N) time
  (compute Euler's totient function φ(n) (phi function))
  
@@ -179,7 +234,7 @@ vector<LL> distinctPrimeFactors(LL n) {
   int phi_n = totient(100);
  
  */
-int totient(LL N) {
+int totient_combined(LL N) {
   vector<LL> ps=distinctPrimeFactors(N);
   int res=N;
   for(auto p : ps) {
@@ -187,7 +242,8 @@ int totient(LL N) {
   }
   return res;
 }
-int euler_phi(int n) {
+// stand alone
+int totient(int n) {
   int res=n;
   // prime factorization
   for(int p=2; p*p<=n; ++p) if(n%p==0) {
@@ -246,7 +302,7 @@ int main(int argc, char const *argv[]) {
   assert(!isPrime(120));
 
   vector<int> primes100 = {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97};
-  assert(findPrimes(100)==primes100);
+  assert(sieve(100)==primes100);
   
   vector<LL> divs = {1,2,3,4,5,6,8,10,12,15,20,24,30,40,60,120};
   assert(divs==divisors(120));
@@ -258,6 +314,10 @@ int main(int argc, char const *argv[]) {
 //  getMaxFact(1e7);
   assert(totient(36)==12);
 
+  PrimeFact pf(1e6);
+  vector<LL> xs=pf.fact(120);
+  assert(xs==fs);
+  
   vector<int> coprimes100 = {1,3,7,9,11,13,17,19,21,23,27,29,31,33,37,39,41,43,47,49,51,53,57,59,61,63,67,69,71,73,77,79,81,83,87,89,91,93,97,99};
   assert(findCoprimes(100)==coprimes100);
 }
