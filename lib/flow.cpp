@@ -219,6 +219,7 @@ private:
  
  Used problem:
   - https://github.com/k-ori/topcoder/blob/master/PointyWizardHats/PointyWizardHats.cpp
+  - https://github.com/k-ori/GCJ/blob/master/2018-R2/CostumeChange.cpp#L126
  
  Usage:
 
