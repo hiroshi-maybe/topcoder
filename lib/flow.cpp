@@ -44,11 +44,21 @@ using namespace std;
   - Dijkstra's algorithm in O(F*E*lg V) time
   - linear programming as shown in CLRS 29.2 Formulating problems as linear programs
  
+ 3. Vertex/edge cover, independent set
+ 
+    Independent (stable) set = V - Vertex cover
+ => Maximum independent (stable) set = V - Minimum vertex cover
+ 
+ Vertex cover: selected vertices cover all the edges
+ 
+ Minimum edge cover = Max matching + (V - 2*Max matching) = Max matching + V
+ 
  References:
   - Minimum cost flow
     - https://en.wikipedia.org/wiki/Minimum-cost_flow_problem
   - Minimum cost bipartite matching
     - http://theory.stanford.edu/~tim/w16/l/l5.pdf
+  - https://qiita.com/drken/items/7f98315b56c95a6181a4
  
  */
 
@@ -216,6 +226,7 @@ private:
   - http://topcoder.g.hatena.ne.jp/agw/20120716/1342405575
   - vertex cover: https://ja.wikipedia.org/wiki/%E9%A0%82%E7%82%B9%E8%A2%AB%E8%A6%86
   - independent set: https://ja.wikipedia.org/wiki/%E7%8B%AC%E7%AB%8B%E9%9B%86%E5%90%88
+  - https://qiita.com/drken/items/7f98315b56c95a6181a4
  
  Used problem:
   - https://github.com/k-ori/topcoder/blob/master/PointyWizardHats/PointyWizardHats.cpp
