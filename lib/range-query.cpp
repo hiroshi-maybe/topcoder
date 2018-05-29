@@ -190,6 +190,7 @@ public:
   int inversions(vector<int> ns) {
     int N=ns.size(),res=0;
     for(int i=N-1; i>=0; --i) {
+      // Count elements which stays in right side and smaller
       res+=query(ns[i]-1);
       add(ns[i],1);
     }
