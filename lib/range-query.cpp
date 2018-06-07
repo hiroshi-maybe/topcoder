@@ -143,6 +143,7 @@ private:
  Used problems:
   - https://leetcode.com/problems/global-and-local-inversions/
   - https://github.com/k-ori/leetcode/blob/master/307-Range-Sum-Query/RangeSumQuery.cpp
+  - https://github.com/k-ori/codeforces/blob/master/solutions/PetrAndPermutations.cpp#L90
  
  */
 struct BIT {
