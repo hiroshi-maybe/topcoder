@@ -1,0 +1,42 @@
+-- Example 0
+2
+3
+7
+18
+
+Possible
+-- Example 1
+1
+1
+3
+5
+
+Impossible
+-- Example 2
+3
+5
+300
+500
+
+Possible
+-- Example 3
+100
+1
+0
+2
+
+Impossible
+-- Example 4
+1000000000
+1000000000
+1000000000
+1000000000
+
+Possible
+-- Ecample 5
+98
+56164
+9399
+7072756
+
+Possible
