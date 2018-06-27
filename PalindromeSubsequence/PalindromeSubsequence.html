@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder Single Round Match 735 - 250: PalindromeSubsequence</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #CCCCCC;
+    /* background color */
+    background-color: #333333;
+}
+.section .section-title {
+    /* title color */
+    color: white;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #303030;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>Single Round Match 735</span>
+        
+        <span id='problem-score'>250</span>
+        <span id='problem-name'>PalindromeSubsequence</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1"><p>
+A <i>palindrome</i> is a string that is identical to its reverse. For example, &quot;a&quot;, &quot;abba&quot;, &quot;aaaaa&quot;, and &quot;abbabba&quot; are all palindromes.
+</p>
+
+<p>
+A <i>subsequence</i> of a string s is any string of the form s[i<sub>1</sub>]s[i<sub>2</sub>]...s[i<sub>k</sub>] such that the sequence of indices is strictly increasing.
+(Formally, 0 &lt;= i<sub>1</sub> &lt; i<sub>2</sub> ... &lt; i<sub>k</sub> &lt;= |s|-1.)
+</p>
+
+<p>
+For example, the strings &quot;&quot;, &quot;b&quot;, &quot;ace&quot;, and &quot;abcde&quot; are all subsequences of the string &quot;abcde&quot;, but the strings &quot;bb&quot; and &quot;cba&quot; are not subsequences of &quot;abcde&quot;.
+</p>
+
+<p>
+A <i>partition</i> of a string s is a set of subsequences that is constructed in such a way that each index into s is used for exactly one of the subsequences.
+</p>
+
+<p>
+For example, let s = &quot;aaabb&quot;. Then:
+</p>
+
+<ul>
+<li>{&quot;aaabb&quot;} is a valid partition of s.</li>
+<li>{&quot;ab&quot;, &quot;aab&quot;} is a valid partition of s.</li>
+<li>{&quot;a&quot;, &quot;b&quot;, &quot;a&quot;, &quot;b&quot;, &quot;a&quot;} is a valid partition of s.</li>
+<li>{&quot;ab&quot;, &quot;abb&quot;} is not a valid partition of s because you would have to use some 'b' multiple times.</li>
+<li>{&quot;ba&quot;, &quot;aab&quot;} is not a valid partition of s because &quot;ba&quot; is not a subsequence of s.</li>
+<li>{&quot;a&quot;, &quot;a&quot;, &quot;b&quot;, &quot;b&quot;} is not a valid partition of s because some letter of s remained unused.</li>
+</ul>
+
+<p>
+The <i>size</i> of a partition is the number of strings it contains. For example, the size of {&quot;aaabb&quot;} is 1, the size of {&quot;ab&quot;, &quot;aab&quot;} is 2, and the size of {&quot;a&quot;, &quot;ab&quot;, &quot;ab&quot;} is 3.
+</p>
+
+<p>
+You are given a <type>String</type> <b>s</b>.
+Each character in <b>s</b> is either 'a' or 'b'.
+Find a partition of <b>s</b> such that:
+</p>
+
+<ul>
+<li>Each string in the partition is a palindrome.</li>
+<li>The size of the partition is as small as possible.</li>
+</ul>
+
+<p>
+Suppose that you found a solution that uses k subsequences.
+Number those subsequences from 1 to k in any order.
+Return a <type>int[]</type> with |<b>s</b>| elements.
+For each valid i, element i of your return value should be the number of the subsequence that contains the character at index i in the string <b>s</b>.
+(See the examples for a clarification.)
+</p>
+
+<p>
+If there are multiple optimal solutions, you may return any of them.
+</p></intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>PalindromeSubsequence</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>optimalPartition</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        string
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        vector&lt;int&gt;
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        vector&lt;int&gt; optimalPartition(string s)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>2.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>256</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1"><b>s</b> will contain between 1 and 50 characters, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Every character of <b>s</b> will be either 'a' or 'b'.</user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">s</span>
+                                <span class="value data">
+                                
+                                    &quot;bababba&quot;
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { 1, 2, 2, 1, 2, 1, 2 }
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment"><p>
+Here, it is obvious that there is no valid partition of size 1.
+There are multiple valid partitions of size 2.
+The sample output describes one of them, as follows:
+</p>
+
+<pre>
+      string s = b a b a b b a
+  return value = 1 2 2 1 2 1 2
+------------------------------
+ subsequence 1 = b     a   b
+ subsequence 2 =   a b   b   a
+</pre>
+
+<p>
+In other words, we partitioned the string &quot;bababba&quot; into {&quot;bab&quot;, &quot;abba&quot;}.
+Both &quot;bab&quot; and &quot;abba&quot; are palindromes, so this is a valid solution.
+</p></div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">s</span>
+                                <span class="value data">
+                                
+                                    &quot;abba&quot;
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { 1, 1, 1, 1 }
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">Here the input is already palindrome, thus the optimum is 1.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">s</span>
+                                <span class="value data">
+                                
+                                    &quot;b&quot;
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { 1 }
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">s</span>
+                                <span class="value data">
+                                
+                                    &quot;babb&quot;
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { 1, 1, 1, 2 }
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
