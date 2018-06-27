@@ -126,6 +126,7 @@ vector<LL> divisors(LL N) {
  𝜔'(10^6) = 7, n=   510510, prime factors = {2,3,5,7,11,13,17}
  𝜔'(10^7) = 8, n=  9699690, prime factors = {2,3,5,7,11,13,17,19}
  𝜔'(10^9) = 9, n=223092870, prime factors = {2,3,5,7,11,13,17,19,23}
+ 𝜔'(10^15) = 13, n=3.0425026e+14, prime factors = {2,3,5,7,11,13,17,19,23,29,31,37,41}
 
  Usage:
   vector<int> facts = primeFactors(12);      // facts={2,2,3}
@@ -135,6 +136,10 @@ vector<LL> divisors(LL N) {
   - https://github.com/k-ori/topcoder/blob/master/FractionInDifferentBases/FractionInDifferentBases.cpp
   - https://github.com/k-ori/topcoder/blob/master/MagicDiamonds/MagicDiamonds.cpp#L107
   - https://github.com/k-ori/topcoder/blob/master/DivideAndShift/DivideAndShift.cpp#L147
+ 
+ Key:
+  - x^2≡x (mod M) <=> x*(x-1) ≡ 0 (mod M)
+  - x and x-1 are relatively prime
  
  */
 vector<LL> primeFactors(LL n) {

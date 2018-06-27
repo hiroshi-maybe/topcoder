@@ -66,6 +66,9 @@ typedef long long LL;
    vector<int> M={3,5,7};
    auto p = MLE.solve(A,B,M); // p.first==23, p.second==105
  
+ Used problems:
+  - https://github.com/k-ori/topcoder/blob/646f1e95c346aaaef68428e5825027350d4bf707/QuadraticIdentity/QuadraticIdentity.cpp#L122
+ 
  */
 struct ModularLinearEquations {
 public:
