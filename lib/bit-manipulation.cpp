@@ -5,13 +5,35 @@ using namespace std;
 
 int f[1<<20];
 
-// Suppose there is a set S (|S|=N) and subsets T[0],..,T[2^N-1] and we already know f(T[0]),..,f(T[2^n-1]).
-// Then z-transform(N) computes g(T[i]) = ∑{f(U),T[i]⊆U}.
-// Note that actually computation does not need to be summation ∑ if it's ring (max, *, gcd works too)
-//
-// Input: f[i] has f(T[i]) where T[i] is subset mask of S
-// Output: f[i] = g(T[i]) by summation
-// O(N*2^N) time
+/*
+ 
+ Compute  g(s) = ∑ { f(t) : t∈T⊆S (or T⊇s) } for ∀s∈S in O(N*2^N) time
+ 
+ Suppose there is a set S (|S|=N) and subsets T[0],..,T[2^N-1] and we already know f(T[0]),..,f(T[2^n-1]).
+ Then fast zeta transform computes g(T[i]) = ∑{f(U),T[i]⊆U}.
+  Note that actually computation does not need to be summation ∑ if it's ring (commutative). max, *, gcd works too
+ 
+ Input: f[i] has f(T[i]) where T[i] is subset mask of S
+ Output: f[i] = g(T[i]) by summation
+ O(N*2^N) time
+ 
+ References:
+  - https://topcoder.g.hatena.ne.jp/iwiwi/20120422/1335065228
+   - most famous article
+  - http://d.hatena.ne.jp/todo314/20120614/1339695202
+   - walk through
+  - https://www.slideshare.net/wata_orz/ss-12131479
+   - original article (p56)
+  - http://d.hatena.ne.jp/simezi_tan/20130522/1369203086
+   - proof
+  - http://naoyat.hatenablog.jp/entry/zeta-moebius
+   - links
+   - clear example of mebius transform with inclusion exclusion principle
+ 
+ Used problems:
+  - https://github.com/k-ori/atcoder/blob/master/solutions/OrPlusMax.cpp#L115
+ 
+ */
 void ztransform_superset(int N) {
   for(int i=0; i<N; ++i) {
     for(int T=0; T<(1<<N); ++T) {
