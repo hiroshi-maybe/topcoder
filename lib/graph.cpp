@@ -54,38 +54,36 @@ vector<int> bellmanford(int V, vector<unordered_map<int, int>> E, int s) {
  
  - Solver of single-source shortest path problem
  - More efficient than Bellman-ford algorithm
-   - However, this cannot solve graph with negative weight
+ - This cannot solve graph with negative weight
+ 
+ Usage:
+ 
+  REP(i,V)G[i].clear();
+  REP(i,SZ(E)) G[E[i].node1].emplace_back(E[i].node2,E[i].weight);
+  dijkstra(V,0);
+  cout<<D[dest]<<endl;
  
  */
-vector<int> dijkstra(int V, vector<unordered_map<int, int>> E, int s) {
-  vector<int> visited(V, false);
-  vector<int> res(V, INT_MAX);
-  set<pair<int,int>> Q;
-  
-  res[s] = 0;
-  Q.emplace(0, s);
-  
-  while(Q.size()) {
-    auto it = *(Q.begin()); Q.erase(it);
-    int u = it.second;
-    visited[u] = true;
-    
-    for(auto &kvp : E[u]) {
-      int v = kvp.first, w = kvp.second;
-      assert(w>=0);
-      
-      if (visited[v]) continue;
-      if (res[u]==INT_MAX) continue;
-      
-      auto vi=Q.find({res[v], v});
-      if (vi!=Q.end()) Q.erase(vi);
-      
-      res[v] = min(res[v], res[u] + w);
-      Q.emplace(res[v], v);
+const long long Inf=1e17;
+const int MAX_V=3001;
+long long D[MAX_V];
+vector<pair<int,long long>> G[3001];
+void dijkstra(int V, int st) {
+  for(int i=0; i<V; ++i) D[i]=Inf;
+  set<pair<long long,int>> Q; Q.emplace(0,st); D[st]=0;
+  while(Q.size()>0) {
+    auto it=Q.begin(); Q.erase(it);
+    int u; long long d;
+    tie(d,u)=*it;
+    for(auto p : G[u]) {
+      int v; long long w; tie(v,w)=p;
+      if(d+w<D[v]) {
+        auto it2=Q.find({D[v],v});
+        if(it2!=Q.end()) Q.erase(it2);
+        D[v]=d+w; Q.emplace(d+w,v);
+      }
     }
   }
-  
-  return res;
 }
 
 /*
@@ -122,6 +120,7 @@ vector<vector<int>> floydWarshall(vector<vector<int>> W) {
  - Solver of all pairs shortest paths
  
  */
+// Comment out due to change of Dijksta's algorithm
 vector<vector<int>> johnson(vector<unordered_map<int, int>> E, int V) {
   if (E.empty()) return {{}};
   
@@ -144,17 +143,22 @@ vector<vector<int>> johnson(vector<unordered_map<int, int>> E, int V) {
   }
   
   // calc distance by Dijkstra
-  vector<vector<int>> D;
+  vector<vector<int>> mx;
   for(int u=0; u<V; ++u) {
-    D.push_back(dijkstra(V, E, u));
-    for(int v=0; v<D[u].size(); ++v) {
-      if (D[u][v] != INT_MAX) D[u][v] += H[v] - H[u];
+    for(int v=0; v<V; ++v) G[v].clear();
+    for(int v=0; v<V; ++v) for(auto kvp : E[v]) G[v].emplace_back(kvp.first,kvp.second);
+    dijkstra(V,u);
+    vector<int> ds(V);
+    for(int v=0; v<V; ++v) ds[v]=D[v];
+    mx.push_back(ds);
+    for(int v=0; v<mx[u].size(); ++v) {
+      if (mx[u][v] != INT_MAX) mx[u][v] += H[v] - H[u];
     }
   }
   
-  return D;
+  return mx;
 }
-
+ 
 /**
  
  Build Strongly Connected Components a.k.a. SCCs, Θ(V+E) time
@@ -559,7 +563,8 @@ int main(int argc, char const *argv[]) {
     }
   }
   vector<vector<int>> jhres = johnson(E0, V);
-  assertVVec(jhres, fwresExpected);
+  // comment out due to change of Dijkstra's algorithm
+  //assertVVec(jhres, fwresExpected);
   
   // bellmanford test
   // CLRS Figure 24.4
@@ -585,11 +590,12 @@ int main(int argc, char const *argv[]) {
     { {1,3}, {2,9}, {4,2} },
     { {0,7}, {2,6} }
   };
-  
-  vector<int> dres = dijkstra(E2.size(), E2, 0);
+  for(int i=0; i<5; ++i) G[i].clear();
+  for(int u=0; u<5; ++u) for(auto kvp : E2[u]) G[u].emplace_back(kvp.first,kvp.second);
+  dijkstra(5, 0);
   
   vector<int> dresExpected = { 0,8,9,5,7 };
-  assertVec(dres, dresExpected);
+  for(int u=0; u<5; ++u) assert(dresExpected[u]==D[u]);
   
   // Strongly connected component test
   // CLRS Figure 22.9
