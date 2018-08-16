@@ -49,9 +49,17 @@ using namespace std;
     Independent (stable) set = V - Vertex cover
  => Maximum independent (stable) set = V - Minimum vertex cover
  
+ Problem to compute maximum independent (stable) set is painting vertices with two colors (no adjacent vertices don't have the same color).
+ Vertices in a color class with dominant set is the maximum independent (stable) set.
+ See https://en.wikipedia.org/wiki/Graph_coloring#Vertex_coloring
+ 
  Vertex cover: selected vertices cover all the edges
  
  Minimum edge cover = Max matching + (V - 2*Max matching) = Max matching + V
+ Intuitively it's matching + 𝛂 (extra vertices to be added)
+ 
+ Matching is a problem to make as many pairs as possible in a graph.
+ By adding additional edges to maximum matching to cover all the vertices which was out of matchings, we get minimum edge cover.
  
  References:
   - Minimum cost flow
@@ -219,6 +227,17 @@ private:
    - generally size of maximum independent set + vertex cover number = V
    - thus in bipartite graph size of maximum independent set = V - maximum matching
  
+ If you want to paint as many vertices as possible with the same color in bipartite graph, use this!
+ 
+     maximum matching + maximum independent set = V
+ <=> maximum independent set = V - maximum matching
+
+ Intuitively maximum matching + 𝛂 (extra vertices to be added) = maximum independent set
+ 
+ Properties of bipartite graph
+  - 2-coloring is possible
+  - Length of cycle is odd
+ 
  References:
   - Ant book 3-5 Network flow
   - CLRS 26.3 Maximum bipartite matching
@@ -231,6 +250,7 @@ private:
  Used problem:
   - https://github.com/k-ori/topcoder/blob/master/PointyWizardHats/PointyWizardHats.cpp
   - https://github.com/k-ori/GCJ/blob/master/2018-R2/CostumeChange.cpp#L126
+  - https://github.com/k-ori/atcoder/blob/master/solutions/Koukoku.cpp#L157
  
  Usage:
 
