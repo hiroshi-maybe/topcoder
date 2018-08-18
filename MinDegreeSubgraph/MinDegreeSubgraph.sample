@@ -1,0 +1,36 @@
+-- Example 0
+3
+3
+2
+
+ALL
+-- Example 1
+4
+3
+2
+
+SOME
+-- Example 2
+6
+10
+3
+
+ALL
+-- Example 3
+6
+15
+4
+
+ALL
+-- Example 4
+17
+53
+11
+
+NONE
+-- Example 5
+123233232
+1521114822468
+12345
+
+SOME
