@@ -15,7 +15,7 @@ using namespace std;
    - Range GCD query
   - Update `int operate(a,b)` method to reuse for diffirent query
   - Needs 2*X-1 space, where X = min { n : N<=2^n }
-   - X leaves + X-1 parents
+   - X leaves (i=X-1..2*X-2) + X-1 parents (i=0..X-2)
    - Data is populated in 0-indexed
  
   References:
@@ -36,6 +36,7 @@ using namespace std;
   Used problems:
    - https://github.com/k-ori/leetcode/blob/master/307-Range-Sum-Query/RangeSumQuery.cpp (RSQ)
    - https://github.com/k-ori/csacademy/blob/master/solutions/R78-StrangeMatrix.cpp#L88
+   - https://github.com/k-ori/codeforces/blob/master/solutions/ArrayRestoration.cpp#L164 (RMQ)
  
  */
 // 🛠 Customize node of segment tree
@@ -82,7 +83,10 @@ public:
   }
 private:
   void buildTree(const vector<Node> &ns, int i, int l, int r) {
-    if (l==r-1) { Tree[i]=ns[l]; return; }
+    if (l==r-1) {
+      if(l<ns.size()) Tree[i]=ns[l];
+      return;
+    }
     
     int mid=l+(r-l)/2;
     buildTree(ns,2*i+1,  l,mid); // left child
