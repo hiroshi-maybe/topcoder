@@ -4,6 +4,13 @@
 #include <vector>
 using namespace std;
 
+#define TRACE true
+#define dump(x) if(TRACE) { cerr << #x << " = " << (x) << endl; }
+#define dump2(x,y) if(TRACE) { cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << endl; }
+#define dump3(x,y,z) if(TRACE) { cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << endl; }
+#define dump4(x,y,z,a) if(TRACE) { cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl; }
+#define dumpAR(ar) if(TRACE) { FORR(x,(ar)) { cerr << x << ','; } cerr << endl; }
+
 typedef long long LL;
 constexpr int MOD = 1e9+7;
 
@@ -337,6 +344,171 @@ private:
   long long C[MAX_N][MAX_N];
 };
 
+/*
+ 
+ Twelvefold way
+ 
+ References:
+  - https://en.wikipedia.org/wiki/Twelvefold_way
+  - https://mathtrain.jp/twelveway
+  - http://kuno4n.hateblo.jp/entry/2013/12/14/140104#count8
+ 
+ Counting of how N balls are mapped to K boxes.
+ Depending on permutation of balls/boxes and number of balls in a box (at most 1 or at least 1),
+ there are twelve cases as shown below:
+ 
+ d10able = "distinguishable", A[i] = number of balls in a box
+ 
+ n balls     | k boxes     || any       | A[i]<=1 | A[i]>=1
+ ========================================================================================
+ d10able     | d10able     || k^n       | P(k,n)  | ∑ { (-1)^(k-i)*C(k,i)*i^n : i=1..k }
+ NOT d10able | d10able     || H(k,n)    | C(k,n)  | H(k-n,n)
+ d10able     | NOT d10able || Bell(n,k) | 1       | Stirling(n,k)
+ NOT d10able | NOT d10able || Part(n,k) | 1       | Part(n-k,k)
+ 
+ */
+
+/*
+ 
+ Query stirling number in O(n^2) time by dp
+ 
+ References:
+  - https://mathtrain.jp/stnum
+  - http://drken1215.hatenablog.com/entry/2018/02/01/200628
+  - https://mathtrain.jp/zensya
+  - https://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind
+  - https://oeis.org/A008277
+ 
+ Usage:
+  Stirling S;
+  cout<<S.query(n,k)<<endl;
+ 
+ */
+//#define MAX_N 300
+struct Stirling {
+public:
+  long long memo[MAX_N][MAX_N];
+  Stirling() {
+    memset(memo, -1, sizeof memo);
+  }
+  long long query(int n, int k) {
+    assert(n<MAX_N&&k<MAX_N);
+    assert(n>=k);
+    return f(n,k);
+  }
+private:
+  long long f(int n, int k) {
+    if(n==k) return 1;
+    if(k<=0) return 0;
+    if(k==1) return 1;
+    long long &res=memo[n][k];
+    if(res>=0) return res;
+    
+    long long a=f(n-1,k-1),b=f(n-1,k)*k%MOD;
+    return res=(a+b)%MOD;
+  }
+} Stir;
+
+void test_stirlingNumber() {
+  vector<vector<long long>> exp={
+    /*0*/  {1},
+    /*1*/  {0,  1},
+    /*2*/  {0,  1,  1},
+    /*3*/  {0,  1,  3,  1},
+    /*4*/  {0,  1,  7,  6,  1},
+    /*5*/  {0,  1,  15,  25,  10,  1},
+    /*6*/  {0,  1,  31,  90,  65,  15,  1},
+    /*7*/  {0,  1,  63,  301,  350,  140,  21,  1},
+    /*8*/  {0,  1,  127,  966,  1701,  1050,  266,  28,  1},
+    /*9*/  {0,  1,  255,  3025,  7770,  6951,  2646,  462,  36,  1},
+    /*10*/ {0,  1,  511,  9330,  34105,  42525,  22827,  5880,  750,  45,  1}
+  };
+  
+  for(int n=0; n<=10; ++n) for(int k=0; k<=n; ++k) {
+    assert(exp[n][k]==Stir.query(n,k));
+  }
+}
+
+/*
+ 
+ Query partition number in O(n^2) time by dp
+ 
+ References:
+  - http://drken1215.hatenablog.com/entry/2018/01/16/222843
+  - https://mathtrain.jp/zensya
+  - http://d.hatena.ne.jp/incognita/20110305/1299344781
+  - https://oeis.org/A000041
+  - https://ja.wikipedia.org/wiki/%E5%88%86%E5%89%B2%E6%95%B0
+  - https://en.wikipedia.org/wiki/Partition_(number_theory)#Restricted_part_size_or_number_of_parts
+ 
+ Usage:
+  Part P;
+  cout<<P.query(n,k)<<endl;
+ 
+ */
+
+//#define MAX_N 300
+struct Partition {
+public:
+  long long memo[MAX_N][MAX_N];
+  Partition() {
+    memset(memo, -1, sizeof memo);
+  }
+  long long query(int n, int k) {
+    assert(n<MAX_N&&k<MAX_N);
+    return f(n,k);
+  }
+private:
+  long long f(int n, int k) {
+    if(n<0) return 0;
+    if(k==0) return n==0;
+    if(n==0) return 1;
+    
+    long long &res=memo[n][k];
+    if(res>=0) return res;
+    
+    long long a=f(n-k,k),b=f(n,k-1);
+    return res=(a+b)%MOD;
+  }
+} Part;
+
+void test_partitionNumber() {
+  vector<vector<long long>> exp = {
+    /*0*/  {1},
+    /*1*/  {0,  1},
+    /*2*/  {0,  1,  2},
+    /*3*/  {0,  1,  2,  3},
+    /*4*/  {0,  1,  3,  4,  5},
+    /*5*/  {0,  1,  3,  5,  6,  7},
+    /*6*/  {0,  1,  4,  7,  9,  10, 11},
+    /*7*/  {0,  1,  4,  8,  11, 13, 14, 15},
+    /*8*/  {0,  1,  5,  10, 15, 18, 20, 21, 22},
+    /*9*/  {0,  1,  5,  12, 18, 23, 26, 28, 29, 30},
+    /*10*/  {0, 1,  6,  14, 23, 30, 35, 38, 40, 41, 42}
+  };
+
+  /*
+  int dp[1005][1005]={};
+  dp[0][0] = 1;
+  for(int i=1; i<1005; ++i) {
+    for(int j=0; j<1005; ++j) {
+      if(j-i >= 0) {
+        dp[i][j] = (dp[i-1][j] + dp[i][j-i]) % MOD;
+      } else {
+        dp[i][j] = dp[i-1][j];
+      }
+    }
+  }
+  for(int n=0; n<=10; ++n) {
+    for(int k=0; k<=n; ++k) cout<<dp[k][n]<<" ";
+    cout<<endl;
+  }*/
+  
+  for(int n=0; n<=10; ++n) for(int k=0; k<=n; ++k) {
+    assert(exp[n][k]==Part.query(n,k));
+  }
+}
+
 // main
 
 int main(int argc, char const *argv[]) {
@@ -364,4 +536,7 @@ int main(int argc, char const *argv[]) {
   assert(dearrangement1==dear20);
   IEP_comp ie2(N);
   assert(ie2.solve()==dear20);
+  
+  test_stirlingNumber();
+  test_partitionNumber();
 }
