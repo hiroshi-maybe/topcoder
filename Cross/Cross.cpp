@@ -84,6 +84,14 @@ vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
 #define dump4(x,y,z,a)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl;
 #define dumpAR(ar) FORR(x,(ar)) { cout << x << ','; } cerr << endl;
 
+/*
+ 
+ 1/27/2017 SRM707
+ 
+ AC after 15 mins submit 
+ 
+ */
+
 class Cross {
   public:
   string exist(vector<string> board) {

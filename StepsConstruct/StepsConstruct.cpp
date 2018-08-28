@@ -84,6 +84,17 @@ vector< pair < int, int > >  moves = { {0,1},{0,-1},{1,0},{-1,0} };
 #define dump4(x,y,z,a)  cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl;
 #define dumpAR(ar) FORR(x,(ar)) { cout << x << ','; } cerr << endl;
 
+/*
+ 
+ 1/27/2017 SRM707
+ 
+ AC after 40 submit
+ 
+ Editorial:
+  - http://tsutaj.hatenablog.com/entry/2017/01/31/171051
+ 
+ */
+
 string mlabels = "RLDU";
 int visited0[55][55];
 int visited1[55][55];
