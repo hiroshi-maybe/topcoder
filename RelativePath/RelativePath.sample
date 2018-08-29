@@ -1,0 +1,25 @@
+-- Example 0
+/home/top/data/file
+/home/user/pictures
+
+../../top/data/file
+-- Example 1
+/home/user/movies/title
+/home/user/pictures
+
+../movies/title
+-- Example 2
+/file
+/
+
+file
+-- Example 3
+/a/b/a/b/a/b
+/a/b/a/a/b/a/b
+
+../../../../b/a/b
+-- Example 4
+/root/root/root
+/root
+
+root/root
