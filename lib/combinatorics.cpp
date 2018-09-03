@@ -222,7 +222,8 @@ LL multichoose(LL n, LL k) {
   LL res=iep.solve();
  
  */
-#define MAX_N 300
+// segmentation fault if MAX_N>723
+#define MAX_N 723
 struct IEP {
 public:
   IEP(int N, long long MOD=1000000007): N(N), MOD(MOD) {
@@ -301,7 +302,6 @@ private:
   LL res=iep.solve();
  
  */
-#define MAX_N 300
 struct IEP_comp {
 public:
   IEP_comp(int N, long long MOD=1000000007): N(N), MOD(MOD) {
@@ -441,6 +441,18 @@ void test_stirlingNumber() {
   - https://ja.wikipedia.org/wiki/%E5%88%86%E5%89%B2%E6%95%B0
   - https://en.wikipedia.org/wiki/Partition_(number_theory)#Restricted_part_size_or_number_of_parts
  
+ Parition number for P(N,N)
+ 
+ 1   :                                1
+ 10  :                               42
+ 50  :                           204226 (≈2e5)
+ 100 :                        190569292 (≈2e5)
+ 200 :                    3972999029388 (≈4e12)
+ 300 :                 9253082936723602 (≈1e16)
+ 400 :              6727090051741041926 (≈6e18)
+ 500 :           2300165032574323995027 (≈2e21)
+ 1000: 24061467864032622473692149727991 (≈2e31)
+ 
  Usage:
   Part P;
   cout<<P.query(n,k)<<endl;
@@ -503,6 +515,10 @@ void test_partitionNumber() {
     for(int k=0; k<=n; ++k) cout<<dp[k][n]<<" ";
     cout<<endl;
   }*/
+  
+  for(int x=1; x<=1e3; x*=10) {
+//    cout<<x<<":"<<Part.query(x,x);
+  }
   
   for(int n=0; n<=10; ++n) for(int k=0; k<=n; ++k) {
     assert(exp[n][k]==Part.query(n,k));
