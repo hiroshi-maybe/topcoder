@@ -1,0 +1,16 @@
+-- Example 0
+ab
+
+2
+-- Example 1
+aaab
+
+0
+-- Example 2
+aabbbaa
+
+1
+-- Example 3
+abcdefghij
+
+3628800
