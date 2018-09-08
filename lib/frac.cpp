@@ -13,6 +13,7 @@ using namespace std;
  
  Used problems:
   - https://github.com/k-ori/topcoder/blob/master/MinimizeAbsoluteDifferenceDiv1/MinimizeAbsoluteDifferenceDiv1.cpp#L119
+  - https://github.com/k-ori/topcoder/blob/master/BestView/BestView.cpp#L64
  
  */
 
@@ -48,6 +49,8 @@ Frac operator / (Frac a, Frac b) { return a * Frac(b.d, b.n); }
 bool operator < (Frac a, Frac b) { return a.n *(long long) b.d < b.n *(long long) a.d; }
 bool operator > (Frac a, Frac b) { return b < a; }
 bool operator == (Frac a, Frac b) { return a.n == b.n && a.d == b.d; }
+bool operator <= (Frac a, Frac b) { return a<b||a==b; }
+bool operator >= (Frac a, Frac b) { return a>b||a==b; }
 
 int main(int argc, char const *argv[]) {
   Frac p(10,20);
