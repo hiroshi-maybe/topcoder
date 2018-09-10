@@ -11,10 +11,21 @@ using namespace std;
  - fixed size
  - elements are in range [lb,ub)
  
+ References:
+  - https://codeforces.com/blog/entry/61587
+   - why rand() is harmful?
+  - https://codeforces.com/blog/entry/61675
+   - hacking poor randomization in codeforces
+ 
  */
+#include <chrono>
+#include <random>
+// mt19937_64 for 64 bit unsigned integer
+//mt19937 rnd(time(nullptr));
+mt19937 rnd(chrono::steady_clock::now().time_since_epoch().count());
 int genRandNum(int lb, int ub) {
   // Helper to generate random integer in range [lb, ub)
-  int x = rand() % (int)(ub - lb);
+  int x = rnd() % (int)(ub - lb);
   return x + lb;
 }
 vector<int> genRandSeq(int size, int lb, int ub) {
