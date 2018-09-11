@@ -210,6 +210,25 @@ bool surrounded(pair<int,int> p, vector<pair<int, int>>& ps) {
 
 /*
  
+ Check if circle 1 is inside circle 2
+
+ Formula:
+ 
+ sqrt(dx*dx+dy*dy)+r1 <= R2
+ 
+   where dx=delta x of cetner of circles, dy=delta y of center of circles
+         r1=radius of circle 1, r2=radius of circle 2
+ 
+ Used problem: https://github.com/k-ori/topcoder/blob/master/CirclesCountry/CirclesCountry.cpp#L76
+ 
+ */
+bool insideCircle(int x1, int y1, int r1, int X2, int Y2, int R2) {
+  double d=hypot(abs(x1-X2),abs(y1-Y2));
+  return d+r1<=R2;
+}
+
+/*
+ 
  Transform degree (0-360º) to radian (0-2𝛑)
  
  radian = degree * 𝛑 / 180
@@ -384,4 +403,8 @@ int main(int argc, char const *argv[]) {
   assert(nearlyEqual(area({-2,0},{0,4},{3,0}),10.0));
   
   assert_vector3D();
+  
+  assert(insideCircle(-4,5,1,1,1,8));
+  assert(!insideCircle(-4,5,1,12,1,2));
+  assert(insideCircle(0,0,1,0,0,1));
 }
