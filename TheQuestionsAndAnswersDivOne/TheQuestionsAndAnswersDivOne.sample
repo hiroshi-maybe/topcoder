@@ -1,0 +1,61 @@
+-- Example 0
+2
+2
+No
+Yes
+
+2
+-- Example 1
+2
+3
+No
+No
+No
+
+6
+-- Example 2
+3
+4
+Yes
+No
+No
+Yes
+
+12
+-- Example 3
+3
+4
+Yes
+Yes
+Yes
+No
+
+18
+-- Example 4
+9
+9
+No
+No
+No
+No
+No
+No
+No
+No
+Yes
+
+362880
+-- Example 5
+9
+9
+No
+No
+No
+No
+No
+No
+No
+No
+No
+
+362880
