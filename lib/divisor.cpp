@@ -173,7 +173,7 @@ vector<LL> distinctPrimeFactors(LL n) {
  Fast prime factorization by precomputing prime numbers by sieve
  
  precomputation:        O(N*ln ln N) time
- query (factorization):      O(lg N) time
+ query (factorization):      O(ln N) time
  space:                         O(N) space
  
  References:
@@ -182,7 +182,7 @@ vector<LL> distinctPrimeFactors(LL n) {
   - http://sucrose.hatenablog.com/entry/2014/10/10/235805
  
  Usage:
-  PrimeFact pf(1e6);
+  PrimeFact pf(2e7);
  
   vector<LL> facts = pf.fact(n);
   facts.erase(unique(facts.begin(),facts.end()), facts.end());
@@ -192,12 +192,12 @@ vector<LL> distinctPrimeFactors(LL n) {
  
  */
 
-const int MAX_N=1e6+10;
+// Using vector instead of native array because program throws segment fault if N>1e6
 struct PrimeFact {
 public:
   PrimeFact(int N): N(N) {
     // make prime table by sieve
-    memset(divp, 0, sizeof divp);
+    divp.resize(N+1,0);
     for(int p=2; p<=this->N; ++p) if(divp[p]==0) {
       P.push_back(p);
       divp[p]=p;
@@ -212,7 +212,8 @@ public:
   }
   vector<int> P; // list of prime numbers
 private:
-  int N,divp[MAX_N];
+  int N;
+  vector<int> divp;
 };
 
 /*
