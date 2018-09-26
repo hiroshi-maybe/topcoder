@@ -251,6 +251,93 @@ private:
   }
 };
 
+/*
+ 
+ Longest palindromic substring (Manacher's algorithm), O(N) time
+ 
+ Usage:
+ ```
+  // "abaaababa" => "^#a#b#a#a#a#b#a#b#a#$"
+  Manacher man("abaaababa");
+  // "^#a#b#a#a#a#b#a#b#a#$"
+  //  112141238321416141211 (abaaaba is the longest)
+  vector<int> P=man.solve();
+  cout<<*max_element(P.begin(),P.end())<<endl; // show length of longest palindrome
+ ```
+ 
+ References:
+  - https://www.hackerrank.com/topics/manachers-algorithm
+  - https://articles.leetcode.com/longest-palindromic-substring-part-ii/
+  - http://snuke.hatenablog.com/entry/2014/12/02/235837
+  - https://en.wikipedia.org/wiki/Longest_palindromic_substring
+ 
+ Used problems(s):
+  - https://github.com/k-ori/leetcode/blob/master/5-longest-palindromic-substring/longest-palindromic-substring.swift#L40
+ 
+ */
+struct Manacher {
+public:
+  string S,T;
+  Manacher(string S) : S(S) {
+    int N=S.size();
+    T="^";
+    for(int i=0; i<N; ++i) T+="#"+S.substr(i,1)+(i==N-1?"#":"");
+    T+="$";
+  }
+  vector<int> solve() {
+    int M=T.size();
+    vector<int> P(M);
+    int C=0, R=-1, rad;
+    for(int i=0; i<M; ++i) {
+      if(i<=R) rad=min(P[2*C-i], R-i);
+      else rad=0;
+
+      // expand rad based on `i`-mirror
+      while (i+rad<M&&i-rad>=0&&T[i-rad]==T[i+rad]) ++rad;
+      P[i]=rad;
+      if(i+rad-1>R) C=i,R=i+rad-1;
+    }
+    return P;
+  }
+  string longestPalindrome() {
+    vector<int> P=solve();
+    int c=-1,M=T.size();
+    for(int i=1; i<M-1; ++i) if(c==-1||P[i]>P[c]) c=i;
+    if(c==-1) return "";
+    int s=c-P[c]+2,ss=s/2-1;
+    int l=P[c]-1;
+    return S.substr(ss,l);
+  }
+};
+void test_manacher() {
+  string S="xabaaababa";
+  vector<int> exp={1,1,2,1,2,1,4,1,2,3,8,3,2,1,4,1,6,1,4,1,2,1,1};
+  Manacher man1(S);
+  vector<int> P=man1.solve();
+  for(int i=0; i<P.size(); ++i) assert(P[i]==exp[i]);
+  assert(man1.longestPalindrome()=="abaaaba");
+  
+  string S2="cdbaabcd";
+  vector<int> exp2={1,1,2,1,2,1,2,1,2,5,2,1,2,1,2,1,2,1,1};
+  Manacher man2(S2);
+  vector<int> P2=man2.solve();
+  for(int i=0; i<P2.size(); ++i) assert(P2[i]==exp2[i]);
+  assert(man2.longestPalindrome()=="baab");
+  
+  string S3="x";
+  vector<int> exp3={1,1,2,1,1};
+  Manacher man3(S3);
+  vector<int> P3=man3.solve();
+  for(int i=0; i<P3.size(); ++i) assert(P3[i]==exp3[i]);
+  assert(man3.longestPalindrome()=="x");
+  
+  Manacher man4("");
+  vector<int> exp4={1,1};
+  vector<int> P4=man4.solve();
+  for(int i=0; i<P4.size(); ++i) assert(P4[i]==exp4[i]);
+  assert(man4.longestPalindrome()=="");
+}
+
 int main(int argc, char const *argv[]) {
   // CLRS Ex 32.4-1
   string P1="ababbabbabbababbabb";
@@ -292,4 +379,6 @@ int main(int argc, char const *argv[]) {
   RollingHash<long long> rh(P2,131,1e9+7);
   int idx2 = rh.doRabbinKarpMatch("asdfghjklqwertyuiop1243567890ZXCVBNMqwertyuiop1234567890ZXCVBNMLKJHGFDSA");
   assert(idx2==36);
+  
+  test_manacher();
 }
