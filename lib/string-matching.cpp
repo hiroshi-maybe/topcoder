@@ -56,45 +56,81 @@ void buildSMT(string P) {
  𝝅[q] = max { k : k<=q AND P[0..<k] ⊐ P[0..<q] }
                    ^ k<q in `computeLongestPrefixSuffix()`
  
+ Example:
+ 
+ S  = aabaabaaa
+ pi = _010123452
+ 
+ References:
+  - COMPUTE-PREFIX-FUNCTION(P) in CLRS 32.4
+  - http://snuke.hatenablog.com/entry/2014/12/01/235807
+  - http://potetisensei.hatenablog.com/entry/2017/07/10/174908
+  - http://www-igm.univ-mlv.fr/~lecroq/string/node8.html
+ 
  Used problems:
   - https://github.com/k-ori/topcoder/blob/master/FoxAndMountain/FoxAndMountain.cpp
  
  */
-vector<int> buildPrefixFunction(const string P) {
-  int L = P.size();
-  vector<int> pi(L+1, 0);
-  
-  if (L==0) return pi;
-  
-  int j=0;
-  for(int i=2; i<L; ++i) {
-    j = pi[i-1];
-    while(true) {
-      if (P[j]==P[i-1]) {
-        // matched
-        pi[i] = j+1; break;
-      }
-      // unmatced below
-      
-      // reached to head
-      if (j==0) {
-        pi[i] = 0; break;
-      }
-      j = pi[j];
-    }
+vector<int> buildPrefixFunction(const string S) {
+  int L=S.size();
+  vector<int> pi(L+1,-1);
+  int j=-1;
+  for(int i=0; i<L; ++i) {
+    while(j>=0&&S[i]!=S[j]) j=pi[j];
+    pi[i+1]=++j;
   }
-  
   return pi;
 }
 
 /*
  
- Compute length of longest prefix of P for suffix of P[0..q], Θ(|P|) time
+ Find minimum cycle in substring S[0..i], O(N) time
  
- input: P
- output: 𝝅[|P|]
+ T = A+A+A+A', |T|=L, |A|=x, A': prefix of A
+
+ A+A+A+A'
+   A+A+A+A' (x-slide)
+ _         : x
+   _____   : L-x
+   _______ : L
  
- 𝝅[q] = max { k : k<q AND P[0..<k] ⊐ P[0..q] }
+     Length of min cycle = x
+ <=> {L-x}-suffix = {L-x}-prefix (S[1..L-x] = S[x+1..L])
+ <=> x = L - MP[L] where MP[L]: longest prefix suffix of S[1..L] computed by MP algorithm
+ 
+ Example:
+
+ abababcaa
+ 122222778
+ 
+ References:
+  - http://snuke.hatenablog.com/entry/2015/04/05/184819
+  - https://github.com/k-ori/topcoder/blob/master/MagicWords/MagicWords.cpp#L65
+ 
+ */
+vector<int> findMinCycles(const string S) {
+  vector<int> mp=buildPrefixFunction(S);
+  int N=S.size();
+  vector<int> res(N);
+  for(int i=0; i<N; ++i) res[i]=i+1-mp[i+1];
+  return res;
+}
+void test_mincycles() {
+  string S="abababcaa";
+  vector<int> exp={1,2,2,2,2,2,7,7,8};
+  vector<int> res=findMinCycles(S);
+  int N=exp.size();
+  for(int i=0; i<N; ++i) assert(exp[i]==res[i]);
+}
+
+/*
+ 
+ Compute length of longest prefix of S for suffix of S[0..q], Θ(|S|) time
+ 
+ input: S
+ output: 𝝅[|S|]
+ 
+ 𝝅[q] = max { k : k<q AND S[0..<k] ⊐ S[0..q] }
                    ^ k<=q in `buildPrefixFunction()`
  
  */
@@ -127,7 +163,13 @@ vector<int> computeLongestPrefixSuffix(const string P) {
  
  KMP string matching algorithm, amortized Θ(M+N) time
  
- Returns index of T where P begins. See CLRS `32.4 The Knuth-Morris-Pratt algorithm`
+ Returns index of T where P begins.
+ 
+ References:
+  - CLRS 32.4 The Knuth-Morris-Pratt algorithm
+  - http://snuke.hatenablog.com/entry/2017/07/18/101026
+  - http://potetisensei.hatenablog.com/entry/2017/07/10/174908
+  - http://www-igm.univ-mlv.fr/~lecroq/string/node8.html
  
  */
 int doKMP(string s, string p) {
@@ -218,11 +260,11 @@ int main(int argc, char const *argv[]) {
     assert(pi1_a[i]==pi1_e[i]);
   }
   auto pi2_a = buildPrefixFunction(P1);
-  vector<int> pi2_e = { 0,0,0,1,2,0,1,2,0,1,2,0,1,2,3,4,5,6,7,0 };
+  vector<int> pi2_e = { -1,0,0,1,2,0,1,2,0,1,2,0,1,2,3,4,5,6,7,8 };
   for(int i=0; i<pi2_e.size(); ++i) {
     assert(pi2_a[i]==pi2_e[i]);
   }
-
+  
   // CLRS Figure 32.7
   string P = "ababaca";
   int idx = doKMP("abababacaba", P);
