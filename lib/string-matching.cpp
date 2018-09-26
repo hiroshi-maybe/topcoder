@@ -343,6 +343,55 @@ void test_manacher() {
   assert(man4.longestPalindrome()=="");
 }
 
+/*
+ 
+ Create an array with common prefix between S and S[i..] with Z-algorithm, O(N) time
+ 
+ Ex.
+ 
+ S = "aaabaaaab"
+ A =  921034210
+ 
+ S(1)=*aa*baaaab
+ S(2)=*a*baaaab
+ S(3)=baaaab
+ S(4)=*aaa*ab
+ S(5)=*aaab*
+ S(6)=*aa*b
+ S(7)=*a*b
+ S(8)=b
+ 
+ References:
+  - http://snuke.hatenablog.com/entry/2014/12/03/214243
+  - https://codeforces.com/blog/entry/3107
+ 
+ */
+vector<int> zalgo(string &S) {
+  int N=S.size();
+  vector<int> Z(N,0);
+  int l=0;
+  for(int i=1; i<N; ++i) {
+    // S[l..r] is current right most prefix-substring
+    int r=l+Z[l],pre=Z[i-l];
+    if (i+pre<r) {
+      Z[i]=pre;
+    } else {
+      int j=max(0, r-i);
+      while(i+j<N&&S[j]==S[i+j]) ++j;
+      Z[i]=j;
+      l=i;
+    }
+  }
+  Z[0]=N;
+  return Z;
+}
+void test_zalgo() {
+  string S="aaabaaaab";
+  vector<int> exp={9,2,1,0,3,4,2,1,0};
+  vector<int> res=zalgo(S);
+  assert(res==exp);
+}
+
 int main(int argc, char const *argv[]) {
   // CLRS Ex 32.4-1
   string P1="ababbabbabbababbabb";
@@ -384,4 +433,5 @@ int main(int argc, char const *argv[]) {
   assert(idx2==36);
   
   test_manacher();
+  test_zalgo();
 }
