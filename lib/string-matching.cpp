@@ -43,6 +43,42 @@ void buildSMT(string P) {
 
 /*
  
+ Compute length of longest prefix of S for suffix of S[0..q], Θ(|S|) time
+ 
+ input: S
+ output: 𝝅[|S|]
+ 
+ 𝝅[q] = max { k : k<q AND S[0..<k] ⊐ S[0..q] }
+ ^ k<=q in `buildPrefixFunction()`
+ 
+ */
+vector<int> computeLongestPrefixSuffix(const string P) {
+  int L = P.size();
+  vector<int> pi(L, 0);
+  
+  if (L==0) return pi;
+  int j=0;
+  for(int i=1; i<L; ++i) {
+    if (P[i]==P[j]) {
+      // matched
+      pi[i] = pi[i-1]+1;
+      j++;
+    } else {
+      // unmatched
+      j = pi[i-1];
+      while(j>0 && P[i]!=P[j]) {
+        j = pi[j-1];
+      }
+      if (P[i]==P[j]) j++;
+      pi[i] = j;
+    }
+  }
+  
+  return pi;
+}
+
+/*
+ 
  Build prefix function for KMP string matching, Θ(|P|) time
  
  input: P
@@ -125,42 +161,6 @@ void test_mincycles() {
 
 /*
  
- Compute length of longest prefix of S for suffix of S[0..q], Θ(|S|) time
- 
- input: S
- output: 𝝅[|S|]
- 
- 𝝅[q] = max { k : k<q AND S[0..<k] ⊐ S[0..q] }
-                   ^ k<=q in `buildPrefixFunction()`
- 
- */
-vector<int> computeLongestPrefixSuffix(const string P) {
-  int L = P.size();
-  vector<int> pi(L, 0);
-  
-  if (L==0) return pi;
-  int j=0;
-  for(int i=1; i<L; ++i) {
-    if (P[i]==P[j]) {
-      // matched
-      pi[i] = pi[i-1]+1;
-      j++;
-    } else {
-      // unmatched
-      j = pi[i-1];
-      while(j>0 && P[i]!=P[j]) {
-        j = pi[j-1];
-      }
-      if (P[i]==P[j]) j++;
-      pi[i] = j;
-    }
-  }
-  
-  return pi;
-}
-
-/*
- 
  KMP string matching algorithm, amortized Θ(M+N) time
  
  Returns index of T where P begins.
@@ -172,22 +172,27 @@ vector<int> computeLongestPrefixSuffix(const string P) {
   - http://www-igm.univ-mlv.fr/~lecroq/string/node8.html
  
  */
-int doKMP(string s, string p) {
-  int i = 0, j = 0, L = s.size(), M = p.size();
+vector<int> doKMP(string s, string p) {
+  vector<int> res;
+  vector<int> pi=buildPrefixFunction(p);
   
-  vector<int> pi = buildPrefixFunction(p);
-  while (i<L) {
-    if (s[i]==p[j]) {
-      i++; j++;
-      if (j==M) return i-M;
-    } else if (j > 0) {
-      j = pi[j];
-    } else {
-      i++;
+  int j=0, L=s.size(), M=p.size();
+  for(int i=0; i<L; ++i) {
+    while(j>=0&&s[i]!=p[j]) j=pi[j];
+    ++j;
+    if(j>=M) { // matched
+      res.push_back(i-j+1);
+      j=pi[j];
     }
   }
-  
-  return -1;
+  return res;
+}
+void test_kmp() {
+  // CLRS Figure 32.7
+  string P="ababaca";
+  vector<int> exp={2};
+  vector<int> res=doKMP("abababacaba", P);
+  assert(res==exp);
 }
 
 // Rabbin Karp algorithm by rolling hash, O(M+N) time
@@ -352,12 +357,10 @@ int main(int argc, char const *argv[]) {
     assert(pi2_a[i]==pi2_e[i]);
   }
   
-  // CLRS Figure 32.7
-  string P = "ababaca";
-  int idx = doKMP("abababacaba", P);
-  assert(idx==2);
+  test_kmp();
   
   // CLRS Figure 32.7
+  string P="ababaca";
   buildSMT(P);
   vector<vector<int>> expected = {
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
