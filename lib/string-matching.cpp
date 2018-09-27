@@ -365,6 +365,9 @@ void test_manacher() {
   - http://snuke.hatenablog.com/entry/2014/12/03/214243
   - https://codeforces.com/blog/entry/3107
  
+ Used problem(s):
+  - https://github.com/k-ori/codeforces/blob/master/solutions/VasyaAndBigIntegers.cpp#L97
+ 
  */
 vector<int> zalgo(string &S) {
   int N=S.size();
