@@ -1,15 +1,19 @@
-# topcoder-offline
-Playground of topcoder SRM powered by [gettc offline arena](https://github.com/seri/gettc)
+# Links
 
-# Tips to use gettc
+- [TopCoder Problem Archive](http://community.topcoder.com/tc?module=ProblemArchive)
+- [TopCoder Patch Archive](https://www.topcoder.com/tc?module=MatchList&sc=&sd=&nr=200&sr=1)
+- [Algorithm Problem Set Analysis (old editorials)](http://apps.topcoder.com/wiki/display/tc/Algorithm+Problem+Set+Analysis)
+- [Editorials in blog (new editorials)](https://www.topcoder.com/blog/tag/srm-editorials/)
 
-## Link
+# Tools
 
-- [Topcoder problem archive](http://community.topcoder.com/tc?module=ProblemArchive)
-- [Algorithm Problem Set Analysis](http://apps.topcoder.com/wiki/display/tc/Algorithm+Problem+Set+Analysis)
-- [Editorials in blog](https://www.topcoder.com/blog/tag/srm-editorials/)
+- [TopCoder Arena Java Applet](http://www.topcoder.com/contest/arena/ContestAppletProd.jnlp)
+- [TopCoder Arena Java Security settings](https://medium.com/@softxide/resolve-topcoder-application-blocked-by-java-security-in-windows-b6ecbdef541d)
+- [Greed Plugin](https://github.com/shivawu/topcoder-greed)
 
-## Command
+# Usage of `gettc` (unofficial offline arena)
+
+[gettc offline arena](https://github.com/seri/gettc)
 
 ```bash
 $ gettc 11127
