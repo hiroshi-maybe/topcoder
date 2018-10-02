@@ -101,7 +101,7 @@ vector< pair < int, int > >  movesd = { {0,1}/*R*/,{1,1}/*RD*/,{1,0}/*D*/,{1,-1}
 // mod
 constexpr long long MOD = 1e9+7;
 
-// $ g++ -std=c++11 -Wall -O2 -D_GLIBCXX_DEBUG *.cpp && ./a.out
+// $ g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG *.cpp && ./a.out
 
 // standard io template
 const int MAX_N=1e5+1;

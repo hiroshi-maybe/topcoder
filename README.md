@@ -1,7 +1,7 @@
 # Links
 
 - [TopCoder Problem Archive](http://community.topcoder.com/tc?module=ProblemArchive)
-- [TopCoder Patch Archive](https://www.topcoder.com/tc?module=MatchList&sc=&sd=&nr=200&sr=1)
+- [TopCoder Match Archive](https://www.topcoder.com/tc?module=MatchList&sc=&sd=&nr=200&sr=1)
 - [Algorithm Problem Set Analysis (old editorials)](http://apps.topcoder.com/wiki/display/tc/Algorithm+Problem+Set+Analysis)
 - [Editorials in blog (new editorials)](https://www.topcoder.com/blog/tag/srm-editorials/)
 
