@@ -1,0 +1,25 @@
+-- Example 0
+WRBRW
+4
+
+0.8
+-- Example 1
+WWB
+2
+
+1.3333333333333333
+-- Example 2
+WW
+1
+
+1.0
+-- Example 3
+BBBBBBBBBB
+4
+
+0.9523809523809523
+-- Example 4
+RRBRRWRRBRRW
+8
+
+0.9696969696969697
