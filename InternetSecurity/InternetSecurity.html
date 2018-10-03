@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>TopCoder SRM 480 - 250: InternetSecurity</title>
+    
+    <link type="image/x-icon" rel="shortcut icon" href="http://www.topcoder.com/i/favicon.ico"/>
+    
+
+    
+    <style type="text/css">
+        /* font */
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
+}
+ul.constraints > li:before, ul.notes > li:before {
+    font-family: monospace;
+    font-weight: normal;
+}
+.heading {
+    font-weight: bold;
+    font-size: 175%;
+    line-height: 1.2em;
+}
+.section .section-title {
+    font-weight: bold;
+    font-size: 125%;
+}
+ol.testcases > li:before {
+    font-family: monospace;
+}
+type {
+    font-weight: bold;
+    font-family: monospace;
+}
+li.testcase .data {
+    font-family: monospace;
+    line-height: 1.5em;
+}
+
+/* layout */
+.heading {
+    margin-top: 0.1em;
+    margin-bottom:0.1em;
+    text-align: center;
+}
+.section .section-title {
+    margin-top : 1em;
+    margin-bottom: 1em;
+}
+.problem-intro, note, user-constraint {
+    padding-left: 1.25em;
+}
+
+/* Lists */
+ul.constraints, ul.notes, ul.variables, ul.problem-definition-lines {
+    list-style-type: none;
+    padding: 0px;
+}
+ul.constraints > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+ul.notes > li:before {
+    content: "-";
+    position:relative;
+    margin-left: 0px; /* optional, for multiline li element */
+    left: 0.625em;
+}
+
+/* Testcases */
+li.testcase {
+    line-height: 1.1em;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    overflow: auto;
+}
+li.testcase > .testcase-content > div { padding-bottom: 0.5em; padding-left: 1em; }
+
+li.testcase .testcase-comment {
+    margin: 0;
+    padding-left: 1em;
+}
+.testcase-comment p:first-child { margin-top: 0; }
+.testcase-comment p:last-child { margin-bottom: 0; }
+
+li.testcase .testcase-content {
+    margin: 0.31em;
+}
+
+/* Data and variables */
+.testcase-output {
+    padding: 0.2em 1em 0.2em 0em;
+}
+.variables, .testcase-output {
+    margin-left: 0.5em;
+    display: table;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.variable {
+    display: table-row;
+}
+.variable .name {
+    padding: 0.2em 0em 0.2em 1em;
+    font-weight: bold;
+    display: table-cell;
+    text-align: right;
+}
+.testcase-output .prefix {
+    padding: 0.2em 0em 0.2em 1em;
+    display: table-cell;
+}
+.testcase-output .prefix:after {
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .name:after {
+    font-weight: bold;
+    content : ":";
+    padding-right: 0.5em;
+}
+.variable .value, .testcase-output .value {
+    padding: 0.2em 1em 0.2em 0em;
+    display: table-cell;
+}
+ol.testcases {
+    padding: 0px;
+    counter-reset: test_number -1;
+}
+ol.testcases > li {
+    list-style:none;
+}
+ol.testcases > li:before {
+    counter-increment:test_number;
+    display: block;
+    clear: both;
+    content:counter(test_number) ")";
+    color: inherit;
+    background: inherit;
+}
+
+/* Problem Definition */
+.problem-definition, .problem-limits {
+    padding-left: 1.25em;
+}
+.problem-definition-lines, .limit-lines {
+    display: table;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+}
+.definition-line, .limit-line {
+    display: table-row;
+    height: 1.5em;
+    overflow: auto;
+}
+.limit-name:after {
+    content: ":";
+    margin-right: 1em;
+}
+.definition-name, .definition-value, .limit-name, .limit-value {
+    display: table-cell;
+}
+.definition-value {
+    padding-left: 0.5em;
+}
+.definition-name:after {
+    content: ":";
+}
+#contest-division:before {
+    content: "Div ";
+}
+#problem-score:before {
+    content: "- Problem ";
+}
+#problem-name {
+    display: block;
+}
+
+/* Tags, hidden default */
+.tag {
+    visibility: hidden;
+    position: absolute;
+}
+
+        body {
+    /* font color */
+    color: #CCCCCC;
+    /* background color */
+    background-color: #333333;
+}
+.section .section-title {
+    /* title color */
+    color: white;
+}
+li.testcase .data {
+    /* highlight color */
+    background: #303030;
+}
+
+    </style>
+    
+    
+    
+
+</head>
+
+<body>
+    <h1 class="heading">
+        <span id='contest-name'>SRM 480</span>
+        <span id='contest-division'>1</span>
+        <span id='problem-score'>250</span>
+        <span id='problem-name'>InternetSecurity</span>
+    </h1>
+
+    <hr />
+
+    <!-- Problem Statement -->
+    <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="problem-intro">
+            <intro escaped="1">TopCoder Security Agency (TSA, established today) is going to search for dangerous content in the internet.
+<br />
+<br />
+There are N candidate websites numbered 0 through N-1. Each website has an address given as <b>address</b>[i]. It also has one or more keywords associated with it. The i-th element of <b>keyword</b> is a <type>String</type> describing all keywords associated with the i-th website. It is formatted as a single space separated list of keywords without leading or trailing spaces, where each keyword consists only of lowercase letters.
+<br />
+<br />
+It is known to TSA that some keywords are dangerous. These keywords are given in <type>String[]</type> <b>dangerous</b>, where each element is a single dangerous keyword. For all other keywords it is not initially known whether they are dangerous or not.
+<br />
+<br />
+TSA uses the following algorithm to identify all dangerous websites:
+<br />
+<pre>
+  Initially, all websites are considered to be safe.
+
+  While there exists a website W such that it's considered safe and
+        at least <b>threshold</b> of its keywords are known to be dangerous
+
+    Website W becomes dangerous
+    All keywords associated with W become dangerous   
+
+  End While
+</pre>
+<br />
+Return a <type>String[]</type> containing the addresses of all dangerous websites found by the algorithm described above sorted in increasing order of website numbers. Return an empty <type>String[]</type> if no dangerous website is found.</intro>
+        </div>
+    </div>
+    
+    <!-- Problem definition -->
+    
+    <div class="section" id="definition">
+        <h2 class="section-title">Definition</h2>
+        <div class="problem-definition">
+            <ul class="problem-definition-lines">
+                <li class="definition-line" id='class-line'>
+                    <span class='definition-name'>Class</span>
+                    <span class='definition-value'>InternetSecurity</span>
+                </li>
+                <li class="definition-line" id='method-line'>
+                    <span class='definition-name'>Method</span>
+                    <span class='definition-value'>determineWebsite</span>
+                </li>
+                <li class="definition-line" id='parameters-line'>
+                    <span class='definition-name'>Parameters</span>
+                    <span class='definition-value'>
+                    
+                        vector&lt;string&gt;
+                    , 
+                        vector&lt;string&gt;
+                    , 
+                        vector&lt;string&gt;
+                    , 
+                        int
+                    
+                    </span>
+                </li>
+                <li class="definition-line" id='returns-line'>
+                    <span class='definition-name'>Returns</span>
+                    <span class='definition-value'>
+                        vector&lt;string&gt;
+                    </span>
+                </li>
+                <li class="definition-line" id='signature-line'>
+                    <span class='definition-name'>Method signature</span>
+                    <span class='definition-value'>
+                        vector&lt;string&gt; determineWebsite(vector&lt;string&gt; address, vector&lt;string&gt; keyword, vector&lt;string&gt; dangerous, int threshold)
+                    </span>
+                </li>
+            </ul>
+            <div class="problem-definition-public-tip">(be sure your method is public)</div>
+        </div>        
+    </div>
+    
+
+    <!-- Limits -->
+    <div class="section">
+        <h2 class="section-title">Limits</h2>
+        <div class='problem-limits'>
+            <ul class="limit-lines">
+                <li class='limit-line'>
+                    <span class='limit-name'>Time limit (s)</span>
+                    <span class='limit-value'>2.000</span>
+                </li>
+                <li class='limit-line'>
+                    <span class='limit-name'>Memory limit (MB)</span>
+                    <span class='limit-value'>64</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <!-- Notes -->
+    <div class="section">
+        <h2 class="section-title">Notes</h2>
+        <ul class="notes">
+        
+            <li><note escaped="1">The address of a website is just a <type>String</type> used to uniquely identify it. It doesn't necessarily adhere to any common format of naming websites.</note></li>
+        
+        </ul>
+    </div>
+    
+    
+    <!-- Constraints -->
+    <div class="section">
+        <h2 class="section-title">Constraints</h2>
+        <ul class="constraints">
+        
+            <li><user-constraint escaped="1"><b>address</b> will contain between 1 and 50 elements, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>address</b> will contain between 1 and 50 characters, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each character in <b>address</b> will be a '.', '_' or a lowercase letter ('a'-'z').</user-constraint></li>
+        
+            <li><user-constraint escaped="1">All elements of <b>address</b> will be distinct.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>keyword</b> will contain the same number of elements as <b>address</b>.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>keyword</b> will contain between 1 and 50 characters, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each character in <b>keyword</b> will be a ' ' or a lowercase letter ('a'-'z').</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element in <b>keyword</b> will be formatted as described in the statement above.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">For each website, the keywords associated with it will be distinct.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>dangerous</b> will contain between 1 and 50 elements, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each element of <b>dangerous</b> will contain between 1 and 50 characters, inclusive.</user-constraint></li>
+        
+            <li><user-constraint escaped="1">Each character in <b>dangerous</b> will be a lowercase letter ('a'-'z').</user-constraint></li>
+        
+            <li><user-constraint escaped="1">All elements of <b>dangerous</b> will be distinct.</user-constraint></li>
+        
+            <li><user-constraint escaped="1"><b>threshold</b> will be between 1 and 25, inclusive.</user-constraint></li>
+        
+        </ul>
+    </div>
+
+    <!-- Test cases -->
+    <div class="section">
+        <h2 class="section-title">Test cases</h2>
+        <ol class="testcases" start='0'>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">address</span>
+                                <span class="value data">
+                                
+                                    { &quot;www.topcoder.com&quot;, &quot;www.sindicate_of_evil.com&quot;, &quot;www.happy_citizens.com&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">keyword</span>
+                                <span class="value data">
+                                
+                                    { &quot;hack encryption decryption internet algorithm&quot;, &quot;signal interference evil snake poison algorithm&quot;, &quot;flower baloon topcoder blue sky sea&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">dangerous</span>
+                                <span class="value data">
+                                
+                                    { &quot;hack&quot;, &quot;encryption&quot;, &quot;decryption&quot;, &quot;interference&quot;, &quot;signal&quot;, &quot;internet&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">threshold</span>
+                                <span class="value data">
+                                
+                                    3
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { &quot;www.topcoder.com&quot;, &quot;www.sindicate_of_evil.com&quot; }
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">&quot;www.topcoder.com&quot; is detected as dangerous since it contains four dangerous keywords: &quot;hack&quot;, &quot;encryption&quot;, &quot;decryption&quot;, and &quot;internet&quot;. Hence, &quot;algorithm&quot; becomes a dangerous keyword. As a result, &quot;www.sindicate_of_evil.com&quot; is detected as dangerous since it contains three dangerous keywords: &quot;interference&quot;, &quot;signal&quot;, and &quot;algorithm&quot;. Hence, the correct return value is {&quot;www.topcoder.com&quot;,&quot;www.sindicate_of_evil.com&quot;} since the answer must be sorted in increasing order of website numbers.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">address</span>
+                                <span class="value data">
+                                
+                                    { &quot;brokenlink&quot;, &quot;flowerpower.net&quot;, &quot;purchasedomain.com&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">keyword</span>
+                                <span class="value data">
+                                
+                                    { &quot;broken&quot;, &quot;rose tulips&quot;, &quot;cheap free domain biggest greatest&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">dangerous</span>
+                                <span class="value data">
+                                
+                                    { &quot;biggest&quot;, &quot;enemy&quot;, &quot;hideout&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">threshold</span>
+                                <span class="value data">
+                                
+                                    2
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            {  }
+                        
+                        </span>
+                    </div>
+                    
+                    <div class="testcase-annotation">
+                        <div class='tag'>note</div>
+                        <div class="testcase-comment">No website is dangerous and an empty <type>String[]</type> should be returned.</div>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">address</span>
+                                <span class="value data">
+                                
+                                    { &quot;a..a.ab.&quot;, &quot;...aa.b&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">keyword</span>
+                                <span class="value data">
+                                
+                                    { &quot;a bc def&quot;, &quot;def ghij klmno&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">dangerous</span>
+                                <span class="value data">
+                                
+                                    {&quot;a&quot;,<br />&nbsp;&quot;b&quot;,<br />&nbsp;&quot;c&quot;,<br />&nbsp;&quot;d&quot;,<br />&nbsp;&quot;e&quot;}
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">threshold</span>
+                                <span class="value data">
+                                
+                                    1
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { &quot;a..a.ab.&quot;, &quot;...aa.b&quot; }
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+            <li class="testcase">
+                <div class="testcase-content">
+                    <div class="testcase-input">
+                        <div class='tag'>input</div>
+                        <ul class="variables">
+                        
+                            <li class="variable data">
+                                <span class="name data">address</span>
+                                <span class="value data">
+                                
+                                    { &quot;www.tsa.gov&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">keyword</span>
+                                <span class="value data">
+                                
+                                    { &quot;information assurance signal intelligence research&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">dangerous</span>
+                                <span class="value data">
+                                
+                                    { &quot;signal&quot;, &quot;assurance&quot;, &quot;penguin&quot; }
+                                
+                                </span>
+                            </li>
+                        
+                            <li class="variable data">
+                                <span class="name data">threshold</span>
+                                <span class="value data">
+                                
+                                    2
+                                
+                                </span>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                    <div class="testcase-output">
+                        <div class='tag'>output</div>
+                        <span class="prefix data">Returns</span>
+                        <span class="value data">
+                        
+                            { &quot;www.tsa.gov&quot; }
+                        
+                        </span>
+                    </div>
+                    
+               
+                </div>
+            </li>
+            
+        </ol>
+    </div>
+    <hr />
+
+    This problem statement is the exclusive and proprietary property of TopCoder, Inc. Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited. (c)2003, TopCoder, Inc. All rights reserved.
+</body>
+</html>
