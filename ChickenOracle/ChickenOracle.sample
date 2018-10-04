@@ -1,0 +1,35 @@
+-- Example 0
+10
+10
+0
+0
+
+The egg
+-- Example 1
+60
+40
+0
+30
+
+The oracle is a lie
+-- Example 2
+60
+20
+5
+25
+
+The chicken
+-- Example 3
+1000
+500
+250
+250
+
+Ambiguous
+-- Example 4
+1
+0
+1
+0
+
+The egg
