@@ -1,0 +1,30 @@
+-- Example 0
+42
+0.141592
+
+1/7 has 3 exact digits
+-- Example 1
+3
+0.133700
+
+0/1 has 1 exact digits
+-- Example 2
+1000
+0.123456
+
+10/81 has 7 exact digits
+-- Example 3
+1000
+0.420000
+
+21/50 has 7 exact digits
+-- Example 4
+100
+0.909999
+
+10/11 has 4 exact digits
+-- Example 5
+115
+0.141592
+
+16/113 has 7 exact digits
