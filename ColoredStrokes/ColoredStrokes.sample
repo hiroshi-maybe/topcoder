@@ -1,0 +1,37 @@
+-- Example 0
+2
+...
+...
+
+0
+-- Example 1
+2
+..B.
+..B.
+
+1
+-- Example 2
+1
+.BB.
+
+2
+-- Example 3
+3
+...B..
+.BRGRR
+.B.B..
+
+3
+-- Example 4
+3
+...B..
+.BRBRR
+.B.B..
+
+4
+-- Example 5
+2
+GR
+BG
+
+4
