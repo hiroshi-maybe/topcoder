@@ -277,6 +277,42 @@ vector<int> findCoprimes(int N) {
   return res;
 }
 
+/*
+ 
+ Find √x, or ∛x of integer `x`, O(1)
+ 
+ If such an integer is not found, -1 is returned
+ 
+ */
+#include <tgmath.h>
+LL isqrt(LL x) {
+  assert(x>0);
+  LL y=(LL)(sqrtl((long double) x)+0.5);
+  while(y*y<x) ++y;
+  while(y*y>x) --y;
+  if(y*y==x) return y;
+  return -1;
+}
+LL icrt(LL x) {
+  assert(x>0);
+  LL y =(LL)(powl((long double)x,1.0/3.0)+0.5);
+  while(y*y*y<x) ++y;
+  while(y*y*y>x) --y;
+  if(y*y*y==x) return y;
+  return -1;
+}
+
+void test_irt() {
+  LL s0=isqrt(441246661696LL);
+  assert(s0==664264LL);
+  LL s1=isqrt(54643564LL);
+  assert(s1==-1LL);
+  LL c0=icrt(293019561288LL);
+  assert(c0==6642LL);
+  LL c1=icrt(5435325290LL);
+  assert(c1==-1LL);
+}
+
 // main and test
 void getMaxFact(int maxn) {
   vector<LL> xs1,xs2;
@@ -326,5 +362,7 @@ int main(int argc, char const *argv[]) {
   
   vector<int> coprimes100 = {1,3,7,9,11,13,17,19,21,23,27,29,31,33,37,39,41,43,47,49,51,53,57,59,61,63,67,69,71,73,77,79,81,83,87,89,91,93,97,99};
   assert(findCoprimes(100)==coprimes100);
+  
+  test_irt();
 }
 
