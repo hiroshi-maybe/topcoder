@@ -26,9 +26,10 @@ constexpr int MOD = 1e9+7;
  
  */
 LL powmod(LL a, LL b) {
-  assert(0<=a && a<MOD);
+  assert(0<=a);
   assert(0<=b);
-
+  a%=MOD;
+  
   LL res=1;
   for(LL mask=1; mask<=b; mask<<=1) {
     if(b&mask) res*=a, res%=MOD;
