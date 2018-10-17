@@ -36,6 +36,11 @@ typedef unordered_map < int, int > MAPII;
 typedef unordered_map < string, int > MAPSI;
 typedef unordered_set < int > SETI;
 typedef unordered_set < string > SETS;
+template<class T> using VV=vector<vector<T>>;
+
+// minmax
+template<class T> inline bool SMIN(T &l,const T &r){return l<r?l=r,1:0;}
+template<class T> inline bool SMAX(T &l,const T &r){return l>r?l=r,1:0;}
 
 // repetition
 #define FORE(i,a,b) for(int i=(a);i<=(b);++i)
@@ -54,10 +59,6 @@ typedef unordered_set < string > SETS;
 typedef pair< int , int > II;
 typedef vector<II> VII;
 typedef tuple< int, int, int > III;
-
-// minmax
-#define SMAX(a,b) a = max(a,b)
-#define SMIN(a,b) a = min(a,b)
 
 // grid move (clock wise order)
 vector< pair < int, int > >  moves = { {0,1}/*R*/,{1,0}/*D*/,{0,-1}/*L*/,{-1,0}/*U*/ };
