@@ -116,9 +116,26 @@ typedef tuple< int, int, int > III;
    - I added two different solutions
    - O(N^2) solution is trivial. Optimizing O(N^2) solution by remembering something is key? 🤔
  
+ 10/17/2018
+ 
+ solved with super simple algorithm
+ 
  */
 
 class LargestSubsequence {
+public:
+  string getLargest(string S) {
+    int N=SZ(S);
+    string res;
+    for(int i=N-1; i>=0; --i) {
+      if(res.empty()) res+=S[i];
+      else if(S[i]>=res[0]) res=string(1,S[i])+res;
+    }
+    return res;
+  }
+};
+
+class LargestSubsequence_jumptable {
 public:
   string getLargest(string S) {
     int N=SZ(S);
