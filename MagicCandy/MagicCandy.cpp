@@ -84,6 +84,38 @@ typedef tuple< int, int, int > III;
   - Analysis to focus on final state and go backward worked
   - Finding value with binary search is cool
  
+ 10/22/2018
+ 
+ Very disappointing that I cannot solve now even though I solved by myself before. Even keeping in mind to solve in backward suggested in "How to solve it" 😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞😡😞
+ 
+ Look at unknown. What is derived if unknown is known? Look at unknown. What is derived if unknown is known? Look at unknown. What is derived if unknown is known? Look at unknown. What is derived if unknown is known? Look at unknown. What is derived if unknown is known? Look at unknown. What is derived if unknown is known? Look at unknown. What is derived if unknown is known? Look at unknown. What is derived if unknown is known? Look at unknown. What is derived if unknown is known? Look at unknown. What is derived if unknown is known? Look at unknown. What is derived if unknown is known? Look at unknown. What is derived if unknown is known? Look at unknown. What is derived if unknown is known? Look at unknown. What is derived if unknown is known? Look at unknown. What is derived if unknown is known? Look at unknown. What is derived if unknown is known?
+ 
+ Data: # of candies
+ Condition: Candy whose label is x^2 is removed and new labels are assigned until only one element remains
+ Unknown: original label
+ 
+ Find the connection between the data and the unknown
+  => We can connect unknown to the data by keep finding original label in the previous state
+ You may be obliged to consider auxiliary problems if an immediate connection cannot be found
+  => Finding previous label before removal happens need to be solved. This is auxiliary problem
+ Have you seen it before?
+  => I have even solved this problem by myself
+ Have you seen the same problem in a slightly diffferent form?
+  => I have solved this problem by myself
+ Do you know a related problem?
+  => I have solved this problem by myself
+ Look at the unknown! And try to think of a familiar problem having the same or a similar unknown
+ Could you restate the problem?
+  => I should have restated to a problem to unwinding labels
+ Go back to definitions
+  => Definition of the operation is suggesting that next position can be found by x-sqrt(x)
+ Could you solve a part of the problem? Keep only a part of the condition, drop the other part
+  => This may not be necessary in this problem
+ Could you derive something useful from the data?
+  => I cannot in this problem
+ Could you change the unknown or the data, or both if necessary, so that the new unknown and the new data are nearer to each other?
+  => If I can find the label of previous state, I can be CLEARLY nearer to unknown
+ 
  */
 class MagicCandy {
   public:
