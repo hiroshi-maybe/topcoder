@@ -123,10 +123,11 @@ private:
 
 /*
  
- Binary Indexed Tree, build: O(N*lg N) time, query: O(lg N) time, N=Upper bound of the range
+ Binary Indexed Tree, build: O(N*lg N) time, query: O(lg N) time, N=Upper bound of the range (exclusive)
  
  - Data structure to query sum in a range
  - Typically used to count frequencies of values
+ - Queries sum in range [0..N)
  - Root of the tree covers the largest range
  - T[i] has sum in [i-2^r+1,i], r=position of least significant 1 bit
  
@@ -148,14 +149,16 @@ private:
   - https://leetcode.com/problems/global-and-local-inversions/
   - https://github.com/k-ori/leetcode/blob/master/307-Range-Sum-Query/RangeSumQuery.cpp
   - https://github.com/k-ori/codeforces/blob/master/solutions/PetrAndPermutations.cpp#L90
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/PetyaAndArray.cpp#L89
+   - sparse frequency query by coordinate compression
  
  */
 struct BIT {
 public:
   int N;
-  vector<int> T; // T[1..N] has values (1-based index)
+  vector<int> T;
   BIT(int N): N(N) {
-    T.resize(N+1,0);
+    T=vector<int>(N+1,0);
   }
   
   // query in [0,r] : ∑ { sum[i] : i=0..r }
@@ -177,7 +180,7 @@ public:
   
   // sum[i]+=x
   void add(int i, int x) {
-    assert(0<=i&&i<=N);
+    assert(0<=i&&i<N);
     ++i; // 0-based index to 1-based index
     while(i<=N) {
       T[i]+=x;
@@ -204,6 +207,25 @@ public:
 private:
   int lsone(int i) { return i&-i; }
 };
+
+void test_bit() {
+  vector<int> ns={2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
+  
+  // Range sum query
+  int N=ns.size();
+  BIT f(N);
+  for(int i=0; i<N; ++i) f.add(i,ns[i]);
+  assert(f.query(2)==4); // ∑{ns[0..2]}
+  assert(f.query(3)==7); // ∑{ns[0..3]}
+  f.add(3,6);
+  assert(f.query(2)==4);
+  assert(f.query(3)==13);
+  
+  // Inversion
+  int V=*max_element(ns.begin(),ns.end());
+  f=BIT(V+1);
+  assert(f.inversions(ns)==3);
+}
 
 /*
  
@@ -243,22 +265,10 @@ private:
 };
 
 int main(int argc, char const *argv[]) {
+  test_bit();
+  
   vector<int> ns={2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
-  
-  // Range sum query
   int N=ns.size();
-  BIT f(N);
-  for(int i=0; i<N; ++i) f.add(i,ns[i]);
-  assert(f.query(2)==4);
-  assert(f.query(3)==7);
-  f.add(3,6);
-  assert(f.query(2)==4);
-  assert(f.query(3)==13);
-  
-  // Inversion
-  int V=*max_element(ns.begin(),ns.end());
-  f=BIT(V);
-  assert(f.inversions(ns)==3);
   
   // Range minimum query
   SegmentTree T(N);
