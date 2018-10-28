@@ -25,22 +25,18 @@
 using namespace std;
 
 // type alias
-const int Inf = 1e9;
 typedef long long LL;
 
-typedef vector < bool > VB;
-typedef vector < int > VI;
-typedef vector < string > VS;
-typedef vector < vector < int > > VVI;
-typedef unordered_map < int, int > MAPII;
-typedef unordered_map < string, int > MAPSI;
-typedef unordered_set < int > SETI;
-typedef unordered_set < string > SETS;
+typedef vector<int> VI;
+typedef vector<string> VS;
+typedef vector<vector<int>> VVI;
+typedef unordered_map<int,int> MAPII;
+typedef unordered_set<int> SETI;
 template<class T> using VV=vector<vector<T>>;
 
 // minmax
-template<class T> inline bool SMIN(T &l,const T &r){return l<r?l=r,1:0;}
-template<class T> inline bool SMAX(T &l,const T &r){return l>r?l=r,1:0;}
+template<class T> inline T SMIN(T& a, const T b) { return a=(a>b)?b:a; }
+template<class T> inline T SMAX(T& a, const T b) { return a=(a<b)?b:a; }
 
 // repetition
 #define FORE(i,a,b) for(int i=(a);i<=(b);++i)
@@ -50,29 +46,23 @@ template<class T> inline bool SMAX(T &l,const T &r){return l>r?l=r,1:0;}
 #define FORR(x,arr) for(auto& x:arr)
 #define SZ(a) int((a).size())
 
-// vector
-#define REVERSE(c) reverse((c).begin(),(c).end())
-#define SORT(c) sort((c).begin(),(c).end())
-#define CONCAT(a,b) (a).insert((a).begin(), (b).begin(),(b).end())
+// collection
+#define ALL(c) (c).begin(),(c).end()
 
 // pair/tuple
-typedef pair< int , int > II;
+typedef pair<int,int> II;
 typedef vector<II> VII;
-typedef tuple< int, int, int > III;
+typedef tuple<int,int,int> III;
 
 // grid move (clock wise order)
-vector< pair < int, int > >  moves = { {0,1}/*R*/,{1,0}/*D*/,{0,-1}/*L*/,{-1,0}/*U*/ };
+vector<pair<int,int>> moves = { {0,1}/*R*/,{1,0}/*D*/,{0,-1}/*L*/,{-1,0}/*U*/ };
 // grid moves with diagonal direction
-vector< pair < int, int > >  movesd = { {0,1}/*R*/,{1,1}/*RD*/,{1,0}/*D*/,{1,-1}/*DL*/,{0,-1}/*L*/,{-1,-1}/*UL*/,{-1,0}/*U*/,{-1,1}/*UR*/ };
+vector<pair<int,int>> movesd = { {0,1}/*R*/,{1,1}/*RD*/,{1,0}/*D*/,{1,-1}/*DL*/,{0,-1}/*L*/,{-1,-1}/*UL*/,{-1,0}/*U*/,{-1,1}/*UR*/ };
 
 // priority queue
 #define MAX_PQ(T) priority_queue<T>
 #define MIN_PQ(T) priority_queue<T,vector<T>,greater<T>>
 #define PQ(T, comp, Q) priority_queue<T,vector<T>,decltype(&comp)> Q(&comp);
-
-// binary search
-#define LB(a,n,k) lower_bound(a,a+(n),(k))
-#define UB(a,n,k) upper_bound(a,a+(n),(k))
 
 // dp
 #define MINUS(dp) memset(dp, -1, sizeof(dp))
@@ -85,16 +75,23 @@ vector< pair < int, int > >  movesd = { {0,1}/*R*/,{1,1}/*RD*/,{1,0}/*D*/,{1,-1}
 #define dump2(x,y) if(TRACE) { cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << endl; }
 #define dump3(x,y,z) if(TRACE) { cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << endl; }
 #define dump4(x,y,z,a) if(TRACE) { cerr << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl; }
+ #define dumpf(args...) if(TRACE) { fprintf(stderr, ##args); putc('\n',stderr); }
 #define dumpAR(ar) if(TRACE) { FORR(x,(ar)) { cerr << x << ','; } cerr << endl; }
+template<class Iter> void dumpc(Iter begin, Iter end) { if (TRACE) { for(; begin!=end; ++begin) { cerr<<*begin<<','; } cerr<<endl; } }
 */
 
+// stdout
+#define println(args...) fprintf(stdout, ##args),putchar('\n');
+
 // debug cout
-//#define TRACE true
+#define TRACE true
 #define dump(x) if(TRACE) { cout << #x << " = " << (x) << endl; }
 #define dump2(x,y) if(TRACE) { cout << #x << " = " << (x) << ", " << #y << " = " << (y) << endl; }
 #define dump3(x,y,z) if(TRACE) { cout << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << endl; }
 #define dump4(x,y,z,a) if(TRACE) { cout << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl; }
-#define dumpAR(ar) if(TRACE) { FORR(x,(ar)) { cout << x << ','; } cout << endl; }
+#define dumpf(args...) if(TRACE) { fprintf(stdout, ##args); putc('\n',stdout); }
+#define dumpAR(ar) if(TRACE) { FORR(x,(ar)) { cout << x << ','; } cerr << endl; }
+template<class Iter> void dumpc(Iter begin, Iter end) { if (TRACE) { for(; begin!=end; ++begin) { cout<<*begin<<','; } cout<<endl; } }
 
 // main
 #define MAIN int main(int argc, char const *argv[])
@@ -108,14 +105,19 @@ constexpr long long MOD = 1e9+7;
 const int MAX_N=1e5+1;
 int A[MAX_N];
 int N;
-int main() {
+int main(int argc, char const *argv[]) {
   ios_base::sync_with_stdio(false);
   cin.tie(0);
+
+  dumpf("ln1");
+  println("ln");
+  
   cin>>N;
   REP(i,N) cin>>A[i];
   
   int res=0;
   cout<<res<<endl;
+  
   // more precision in double in iostream
   // cout<<setprecision(12)<<fixed<<res<<endl;
   
