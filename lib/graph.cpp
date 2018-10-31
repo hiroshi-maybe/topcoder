@@ -498,89 +498,6 @@ private:
   }
 };
 
-/*
- 
- Binary lifting in tree, O(N*lg N) for preprocessing, O(lg N) for querying
- 
- If efficient query about tree path leveraging monotinicity, this works like a charm.
- 
- References:
-  - https://cp-algorithms.com/graph/lca_binary_lifting.html
-  - https://yukicoder.me/wiki/lowest_common_ancestor
-  - https://www.slideshare.net/satanic2/ss-72500089
-  - https://www.npca.jp/works/magazine/2015_5/
- 
- Usage:
- 
-  BinaryLifting bf(0,11);
-  bf.addEdge(0,1),bf.addEdge(0,2),...
- 
- Used problem(s):
-  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/SplitTheTree.cpp#L117
- 
- */
-struct BinaryLifting {
-public:
-  vector<vector<int>> G;
-  int V,root;
-  int H;
-  vector<vector<int>> P;
-  BinaryLifting(int root, int V) : V(V), root(root) {
-    G=vector<vector<int>>(V);
-  }
-  void addEdge(int u, int v) {
-    G[u].push_back(v);
-    G[v].push_back(u);
-  }
-  void buildLiftingTable() {
-    H=1;
-    while((1<<H)<=V) ++H;
-    P=vector<vector<int>>(H,vector<int>(V,-1));
-    
-    dfs(root,-1);
-    for(int i=0; i<H; ++i) {
-      for(int j=0; j<V; ++j) {
-        if(P[i][j]!=-1) P[i+1][j]=P[i][P[i][j]];
-      }
-    }
-  }
-private:
-  void dfs(int u, int par) {
-    P[0][u]=par;
-    for(int v : G[u]) if(v!=par) {
-      dfs(v,u);
-    }
-  }
-};
-
-void test_binarylifting() {
-  // https://www.slideshare.net/satanic2/ss-72500089
-  BinaryLifting bf(0,11);
-  bf.addEdge(0,1);
-  bf.addEdge(1,2);
-  bf.addEdge(2,3),bf.addEdge(2,4);
-  bf.addEdge(3,5);
-  bf.addEdge(2,4);
-  bf.addEdge(4,6);
-  bf.addEdge(6,7);
-  bf.addEdge(7,8),bf.addEdge(7,9);
-  bf.addEdge(9,10);
-  
-  bf.buildLiftingTable();
-  vector<vector<int>> exp={
-    {-1,0,1,2,2,3,4,6,7,7,9},
-    {-1,-1,0,1,1,2,2,4,6,6,7},
-    {-1,-1,-1,-1,-1,0,0,1,2,2,4},
-    {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}
-  };
-  /*
-  for(int i=0; i<bf.H; ++i) {
-    for(int j=0; j<bf.V; ++j) cout<<bf.P[i][j]<<",";
-    cout<<endl;
-  }*/
-  assert(bf.P==exp);
-}
-
 /***********************   test code below   ***********************/
 
 // helper
@@ -761,7 +678,7 @@ int main(int argc, char const *argv[]) {
   GraphCycle gc(G_cycle.size());
   for(int u=0; u<G_cycle.size(); ++u) for(int v : G_cycle[u]) gc.edge(u,v);
   vector<int> cycleFreeNodes={2,4,5,6};
-  assertVec(gc.findCycleFreeNodes(), cycleFreeNodes);
-  
-  test_binarylifting();
+  assertVec(gc.findCycleFreeNodes(), cycleFreeNodes);  
 }
+
+//  g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG graph.cpp && ./a.out

@@ -36,6 +36,18 @@ vector<int> genRandSeq(int size, int lb, int ub) {
   });
   return res;
 }
+// tested at https://github.com/hiroshi-maybe/leetcode/blob/master/384-Shuffle-an-Array/ShuffleArray.cpp
+vector<int> shuffle(vector<int> &A) {
+  int N = A.size();
+  vector<int> res(N);
+  for(int i=0; i<N; ++i) {
+    // res[0..i-1] has org[0..i-1]
+    res[i] = A[i];
+    int r = rnd() % (i+1);
+    swap(res[i],res[r]);
+  }
+  return res;
+}
 
 /*
  
