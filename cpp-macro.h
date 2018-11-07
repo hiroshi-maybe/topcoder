@@ -56,6 +56,17 @@ typedef tuple<int,int,int> III;
 
 // grid move (clock wise order)
 vector<pair<int,int>> moves = { {0,1}/*R*/,{1,0}/*D*/,{0,-1}/*L*/,{-1,0}/*U*/ };
+void move(int i, int j) {
+  int N=0,M=0;
+  // snippet of board move
+  for(auto m : moves) {
+    int ii=i+m.first,jj=j+m.second;
+    if(ii<0||ii>=N||jj<0||jj>=M) continue;
+  }
+}
+// knight walk
+// http://gaebler.us/share/Knight_tour.html
+vector<pair<int,int>> movesk = { {-2,1},{-1,2},{1,2},{2,1},{2,-1},{1,-2},{-1,-2},{-2,-1} };
 // grid moves with diagonal direction
 vector<pair<int,int>> movesd = { {0,1}/*R*/,{1,1}/*RD*/,{1,0}/*D*/,{1,-1}/*DL*/,{0,-1}/*L*/,{-1,-1}/*UL*/,{-1,0}/*U*/,{-1,1}/*UR*/ };
 
@@ -109,9 +120,6 @@ int main(int argc, char const *argv[]) {
   ios_base::sync_with_stdio(false);
   cin.tie(0);
 
-  dumpf("ln1");
-  println("ln");
-  
   cin>>N;
   REP(i,N) cin>>A[i];
   
