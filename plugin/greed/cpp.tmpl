@@ -53,7 +53,7 @@ template<class T> inline T SMAX(T& a, const T b) { return a=(a<b)?b:a; }
 #define dump2(x,y) if(TRACE) { cout << #x << " = " << (x) << ", " << #y << " = " << (y) << endl; }
 #define dump3(x,y,z) if(TRACE) { cout << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << endl; }
 #define dump4(x,y,z,a) if(TRACE) { cout << #x << " = " << (x) << ", " << #y << " = " << (y) << ", " << #z << " = " << (z) << ", " << #a << " = " << (a) << endl; }
-#define dumpf(args...) if(TRACE) { fprintf(stdout, ##args); putc('\n',stdout); }
+#define dumpf(args...) if(TRACE) { fprintf(stdout, ##args); putc('\\n',stdout); }
 #define dumpAR(ar) if(TRACE) { FORR(x,(ar)) { cout << x << ','; } cerr << endl; }
 template<class Iter> void dumpc(Iter begin, Iter end) { if (TRACE) { for(; begin!=end; ++begin) { cout<<*begin<<','; } cout<<endl; } }
 
