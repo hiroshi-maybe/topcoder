@@ -1,0 +1,85 @@
+-- Example 0
+4
+0
+4
+UU
+
+YES
+-- Example 1
+4
+0
+4
+D
+
+NO
+-- Example 2
+4
+100000
+100000
+DDU
+
+YES
+-- Example 3
+4
+0
+0
+DDU
+
+NO
+-- Example 4
+20
+20
+20
+UDUDUDUDUD
+
+YES
+-- Example 5
+20
+0
+0
+UUUUUUUUUU
+
+YES
+-- Example 6
+20
+0
+0
+UUUUUUUUUUU
+
+NO
+-- Example 7
+5
+5
+4
+U
+
+YES
+-- Example 8
+2198
+0
+2
+DDUUUUUD
+
+YES
+-- Example 9
+37
+33
+0
+UUUUDUU
+
+NO
+-- Example 10
+8
+0
+0
+DDDD
+
+YES
+-- Example 11
+8
+0
+0
+DDUUUU
+
+NO
+
