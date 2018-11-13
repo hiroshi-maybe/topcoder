@@ -171,6 +171,9 @@ void test_mincycles() {
   - http://potetisensei.hatenablog.com/entry/2017/07/10/174908
   - http://www-igm.univ-mlv.fr/~lecroq/string/node8.html
  
+ Used problems:
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Refactoring.cpp#L193
+ 
  */
 vector<int> doKMP(string s, string p) {
   vector<int> res;
@@ -195,13 +198,20 @@ void test_kmp() {
   assert(res==exp);
 }
 
-// Rabbin Karp algorithm by rolling hash, O(M+N) time
-//
-// Note that this implementation uses implicit `int` representation of `char`.
-//
-// Usage:
-//    RollingHash rh("abcabc",131,qe9+7);
-//    int idx = rh.doRabbinKarpMatch("ca");
+/*
+ Rabbin Karp algorithm by rolling hash, O(M+N) time
+
+ Note that this implementation uses implicit `int` representation of `char`.
+
+ ⚠️ I got TLE with this library in codeforces. Looks like this is not working as expected
+  - https://codeforces.com/contest/1055/problem/D
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Refactoring.cpp#L97
+ 
+ Usage:
+   RollingHash rh("ca",131,qe9+7);
+   int idx = rh.doRabbinKarpMatch("abcabc"); // idx==2
+ 
+ */
 template<class T> struct RollingHash {
 public:
   int M;
@@ -237,7 +247,7 @@ public:
     // preprocessing
     T s=calcRollingHash(S);
     
-    for(int i=0; i<N-M; ++i) {
+    for(int i=0; i<=N-M; ++i) {
       if(s==p && S.substr(i,M)==P) return i;
       // incremental update of hash code
       // s=d(t-S[i]h)+S[i+M]
@@ -255,6 +265,29 @@ private:
     return res;
   }
 };
+
+void test_rollinghash() {
+  string P2 = "qwertyuiop1234567890ZXCVBNM";
+  RollingHash<long long> rh(P2,131,1e9+7);
+  int idx2 = rh.doRabbinKarpMatch("asdfghjklqwertyuiop1243567890ZXCVBNMqwertyuiop1234567890ZXCVBNMLKJHGFDSA");
+  assert(idx2==36);
+  
+  string P3 = "abcd";
+  RollingHash<long long> rh3(P3);
+  int idx3 = rh3.doRabbinKarpMatch("aabcd");
+  assert(idx3==1);
+  
+  string P1 = "abcd";
+  RollingHash<long long> rh1(P1);
+  int idx1 = rh1.doRabbinKarpMatch("abcd");
+  assert(idx1==0);
+  
+  string P0 = "abc";
+  RollingHash<long long> rh0(P0);
+  int idx0 = rh0.doRabbinKarpMatch("dcba");
+  assert(idx0==-1);
+
+}
 
 /*
  
@@ -429,12 +462,8 @@ int main(int argc, char const *argv[]) {
       assert(SMT[i][j]==expected[i][j]);
     }
   }
-  
-  string P2 = "qwertyuiop1234567890ZXCVBNM";
-  RollingHash<long long> rh(P2,131,1e9+7);
-  int idx2 = rh.doRabbinKarpMatch("asdfghjklqwertyuiop1243567890ZXCVBNMqwertyuiop1234567890ZXCVBNMLKJHGFDSA");
-  assert(idx2==36);
-  
+
+  test_rollinghash();
   test_manacher();
   test_zalgo();
 }
