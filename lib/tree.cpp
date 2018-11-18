@@ -23,6 +23,7 @@ using namespace std;
  
  Used problem(s):
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/SplitTheTree.cpp#L117
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L219 (LCA)
  
  */
 struct BinaryLifting {
