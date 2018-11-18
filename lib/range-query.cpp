@@ -139,6 +139,9 @@ void test_segmenttree() {
  
  Simplified RMQ (segment tree), O(lg N) query, O(lg N) update
  
+ References:
+  - https://www.npca.jp/works/magazine/2015_5/
+ 
  Used problem:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L174
  
