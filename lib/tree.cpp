@@ -6,7 +6,7 @@ using namespace std;
 
 /*
  
- Binary lifting in tree, O(N*lg N) for preprocessing, O(lg N) for querying
+ Binary lifting in tree, O(N*lg N) for preprocessing, O(lg N) to query ancestor and LCA
  
  If efficient query about tree path leveraging monotinicity, this works like a charm.
  
@@ -30,31 +30,55 @@ public:
   vector<vector<int>> G;
   int V,root;
   int H;
-  vector<vector<int>> P;
+  vector<vector<int>> P; // parent P[bits][vertices], bits=floor(lg N)+1
+  vector<int> D; // depth for LCA query D[vertices]
+  
   BinaryLifting(int root, int V) : V(V), root(root) {
     G=vector<vector<int>>(V);
+    D=vector<int>(V,0);
   }
   void addEdge(int u, int v) {
     G[u].push_back(v);
     G[v].push_back(u);
   }
+  BinaryLifting(int root, vector<vector<int>> &G) : G(G), root(root) {
+    V=G.size();
+    D=vector<int>(V,0);
+  }
   void buildLiftingTable() {
     H=1;
     while((1<<H)<=V) ++H;
     P=vector<vector<int>>(H,vector<int>(V,-1));
-    
-    dfs(root,-1);
-    for(int i=0; i<H; ++i) {
+    dfs(root,-1,0);
+    for(int i=0; i<H-1; ++i) {
       for(int j=0; j<V; ++j) {
         if(P[i][j]!=-1) P[i+1][j]=P[i][P[i][j]];
       }
     }
   }
+  // query to find an ancestor with `d` distance
+  int ancestor(int u, int d) {
+    int cur=u;
+    for(int i=H-1; i>=0; --i) if(cur>=0&&(d>>i)&1) cur=P[i][cur];
+    return cur;
+  }
+  // query to find lca(u,v)
+  int lca(int u, int v) {
+    assert(u<V&&v<V);
+    if(D[u]>D[v]) swap(u,v);
+    v=ancestor(v,D[v]-D[u]);
+    if(u==v) return u;
+    for(int i=H-1; i>=0; --i) {
+      if(P[i][u]!=P[i][v]) u=P[i][u],v=P[i][v];
+    }
+    return P[0][u];
+  }
 private:
-  void dfs(int u, int par) {
+  void dfs(int u, int par, int d) {
     P[0][u]=par;
+    D[u]=d;
     for(int v : G[u]) if(v!=par) {
-      dfs(v,u);
+      dfs(v,u,d+1);
     }
   }
 };
@@ -66,7 +90,6 @@ void test_binarylifting() {
   bf.addEdge(1,2);
   bf.addEdge(2,3),bf.addEdge(2,4);
   bf.addEdge(3,5);
-  bf.addEdge(2,4);
   bf.addEdge(4,6);
   bf.addEdge(6,7);
   bf.addEdge(7,8),bf.addEdge(7,9);
@@ -74,9 +97,9 @@ void test_binarylifting() {
   
   bf.buildLiftingTable();
   vector<vector<int>> exp={
-    {-1,0,1,2,2,3,4,6,7,7,9},
-    {-1,-1,0,1,1,2,2,4,6,6,7},
-    {-1,-1,-1,-1,-1,0,0,1,2,2,4},
+    {-1, 0, 1, 2, 2, 3, 4, 6, 7, 7, 9},
+    {-1,-1, 0, 1, 1, 2, 2, 4, 6, 6, 7},
+    {-1,-1,-1,-1,-1, 0, 0, 1, 2, 2, 4},
     {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}
   };
   /*
@@ -85,6 +108,27 @@ void test_binarylifting() {
    cout<<endl;
    }*/
   assert(bf.P==exp);
+
+  ///////////////////////////
+  // Ancestor
+  
+  // not found
+  assert(bf.ancestor(0,1)==-1);
+  assert(bf.ancestor(7,6)==-1);
+  // found
+  assert(bf.ancestor(9,3)==4);
+  assert(bf.ancestor(10,7)==0);
+  assert(bf.ancestor(5,1)==3);
+  assert(bf.ancestor(0,0)==0);
+  
+  ///////////////////////////
+  // LCA
+
+  assert(bf.lca(0,0)==0);
+  assert(bf.lca(0,1)==0);
+  assert(bf.lca(5,7)==2);
+  assert(bf.lca(10,5)==2);
+  assert(bf.lca(10,8)==7);
 }
 
 /*
