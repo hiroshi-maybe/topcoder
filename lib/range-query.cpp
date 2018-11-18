@@ -37,10 +37,10 @@ using namespace std;
    - https://github.com/k-ori/leetcode/blob/master/307-Range-Sum-Query/RangeSumQuery.cpp (RSQ)
    - https://github.com/k-ori/csacademy/blob/master/solutions/R78-StrangeMatrix.cpp#L88
    - https://github.com/k-ori/codeforces/blob/master/solutions/ArrayRestoration.cpp#L164 (RMQ)
+   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L90 (RMQ)
  
  */
 // 🛠 Customize node of segment tree
-const int MAX_N=1e5;
 struct Node {
   static const int Inf=1e9;
   int val;
@@ -57,13 +57,12 @@ Node merge(const Node &a, const Node &b) {
 struct SegmentTree {
 public:
   int N__;
-  // Put tree array outside the struct to avoid seg fault due to memory allocation of large size array
-  Node Tree[4*MAX_N]; // Tree[0..2*N__-1] has values (Tree[0]: all, Tree[1]: left half, Tree[2]: right half, ..)
+  vector<Node> Tree;
   SegmentTree(int N) {
     int n=1;
     // Init by power of 2
     while(n<N) n<<=1;
-    for(int i=0; i<2*n-1; ++i) Tree[i]=Node::IDE;
+    this->Tree=vector<Node>(2*n,Node::IDE);
     this->N__=n;
   }
   
@@ -120,6 +119,93 @@ private:
     return res;
   }
 };
+void test_segmenttree() {
+  vector<int> ns={2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
+  int N=ns.size();
+  
+  // Range minimum query
+  SegmentTree T(N);
+  vector<Node> X;
+  for(int i=0; i<N; ++i) X.push_back(ns[i]);
+  T.build(X);
+  
+  assert(T.query(2,8).val==1);
+  assert(T.query(3,8).val==2);
+  T.update(5,-1);
+  assert(T.query(2,8).val==-1);
+}
+
+/*
+ 
+ Simplified RMQ (segment tree), O(lg N) query, O(lg N) update
+ 
+ Used problem:
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L174
+ 
+ */
+template <class T> struct RMQ {
+public:
+  T Inf;
+  vector<T> A;
+  int SIZE; // normalized size of original array
+  RMQ(int N, T Inf) : Inf(Inf) {
+    this->SIZE=calcsize(N);
+    this->A=vector<T>(2*SIZE,Inf);
+  }
+  // O(N) initialization
+  RMQ(vector<T> &X, T Inf) : Inf(Inf) {
+    this->SIZE=calcsize(X.size());
+    this->A=vector<T>(2*SIZE,Inf);
+    for(int i=0; i<X.size(); ++i) A[i+SIZE-1]=X[i];
+    for(int i=SIZE-2; i>=0; --i) {
+      A[i]=min(A[2*i+1],A[2*i+2]);
+    }
+  }
+  void update(int i, T v) {
+    i+=SIZE-1;
+    A[i]=v;
+    while(i>0) {
+      i=(i-1)/2;
+      A[i]=min(A[2*i+1],A[2*i+2]);
+    }
+  }
+  // half-open range [ql,qr)
+  T query(int ql, int qr) {
+    return qu(ql,qr,0,0,SIZE);
+  }
+private:
+  // i: node index (<SIZE if not leaf)
+  T qu(int ql, int qr, int i, int l, int r) {
+    if(qr<=l||r<=ql) return Inf;
+    if(ql<=l&&r<=qr) return A[i];
+    int m=(l+r)/2;
+    
+    return min(qu(ql,qr,2*i+1,l,m),qu(ql,qr,2*i+2,m,r));
+  }
+  int calcsize(int N) {
+    int n=1; while(n<N) n<<=1;
+    return n;
+  }
+};
+void test_rmq() {
+  vector<int> ns={2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
+  
+  // Range minimum query
+  RMQ<int> rmq(ns,1e9);
+
+  assert(rmq.query(2,8)==1);
+  assert(rmq.query(3,8)==2);
+  rmq.update(5,-1);
+  assert(rmq.query(2,8)==-1);
+  
+  RMQ<pair<int,int>> rmq2(ns.size(),{1e9,-1});
+  for(int i=0; i<ns.size(); ++i) rmq2.update(i,{ns[i],i});
+  
+  assert(rmq2.query(2,8)==make_pair(1,2));
+  assert(rmq2.query(3,8)==make_pair(2,4));
+  rmq2.update(5,{-1,5});
+  assert(rmq2.query(2,8)==make_pair(-1,5));
+}
 
 /*
  
@@ -264,22 +350,12 @@ private:
   vector<vector<int>> cum;
 };
 
+// $ g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address range-query.cpp && ./a.out
+
 int main(int argc, char const *argv[]) {
+  test_segmenttree();
+  test_rmq();
   test_bit();
-  
-  vector<int> ns={2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
-  int N=ns.size();
-  
-  // Range minimum query
-  SegmentTree T(N);
-  vector<Node> X;
-  for(int i=0; i<N; ++i) X.push_back(ns[i]);
-  T.build(X);
-  
-  assert(T.query(2,8).val==1);
-  assert(T.query(3,8).val==2);
-  T.update(5,-1);
-  assert(T.query(2,8).val==-1);
   
   // 2D cumulative sum query
   vector<vector<int>> mx={
