@@ -252,8 +252,8 @@ private:
  
  ## Undirected graph
  
- - There is Eulerian CYCLE when ALL the vertices have odd degree
- - There is Eulerian PATH when ONLY 2 vertices have odd degree
+ - An undirected graph has an Eulerian cycle if and only if every vertex has "even" degree, and all of its vertices with nonzero degree belong to a single connected component.
+ - An undirected graph has an Eulerian path if and only if exactly zero or two vertices have odd degree, and all of its vertices with nonzero degree belong to a single connected component.
  
  ## Directed graph
  
