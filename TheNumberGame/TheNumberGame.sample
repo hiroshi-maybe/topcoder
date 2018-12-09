@@ -1,0 +1,20 @@
+-- Example 0
+45
+4
+
+Manao wins
+-- Example 1
+45
+5
+
+Manao wins
+-- Example 2
+99
+123
+
+Manao loses
+-- Example 3
+2356236
+5666
+
+Manao loses
