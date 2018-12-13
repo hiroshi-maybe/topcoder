@@ -199,94 +199,151 @@ void test_kmp() {
 }
 
 /*
- Rabbin Karp algorithm by rolling hash, O(M+N) time
-
- Note that this implementation uses implicit `int` representation of `char`.
-
- ⚠️ I got TLE with this library in codeforces. Looks like this is not working as expected
-  - https://codeforces.com/contest/1055/problem/D
-  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Refactoring.cpp#L97
  
+ String hash library to match substrings in O(1) time (preprocessing O(N) time)
+ 
+ References:
+  - https://cp-algorithms.com/string/string-hashing.html
+  - CLRS 32-2
+  - https://github.com/hiroshi-maybe/topcoder/blob/master/lib/modint.cpp
+ 
+ Used problems:
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Refactoring.cpp#L97
+  -
+ 
+ ```
  Usage:
-   RollingHash rh("ca",131,qe9+7);
-   int idx = rh.doRabbinKarpMatch("abcabc"); // idx==2
+   RollingHash::H s("abcabcabcabc"),p("bca");
+   assert(s.hash(4,7)==p.hash(3));
+ 
+   RollingHash::H s("abcabcabcabc"),p("bca");
+   vector<int> mathces=match(s,p);
+ ```
  
  */
-template<class T> struct RollingHash {
-public:
-  int M;
-  string P;
-  T d; // radix
-  T MOD; // MOD
-  T h; // d^(M-1) % MOD, helper to adjust rolling hash
-  T p; // hash code of P
-  RollingHash(string P, T d=131, T MOD=1e9+7): M(P.size()), P(P), d(d), MOD(MOD) {
-    this->h=powmod(d,M-1,MOD);
-    this->p=calcRollingHash(P);
+namespace RollingHash {
+template<int MOD> struct ModInt {
+  unsigned int val;
+  ModInt(): val(0) {}
+  ModInt(int v) { norm(v%MOD); }
+  ModInt(long long v) { norm(v%MOD); }
+  ModInt& norm(long long v) {
+    v=v<0?v%MOD+MOD:v; // negative
+    v=v>=MOD?v-MOD:v; // mod
+    val=(unsigned int)v;
+    return *this;
   }
-  
-  // Rolling hash x for X[i..<M]
-  // x=d^(M-1)*X[i]+d^(M-2)*X[i+1]+..+d^0*X[i+M-1]
-  T calcRollingHash(string X) {
-    T res=0;
-    for(int i=0; i<min((int)X.size(), M); ++i) {
-      res=(d*res)%MOD+X[i],res%=MOD;
+  explicit operator bool() const { return val!=0; }
+  ModInt operator-() const { return ModInt(0)-*this; }
+  ModInt &operator+=(ModInt that) { return norm((long long)val+that.val); }
+  ModInt &operator-=(ModInt that) { return norm((long long)val-that.val); }
+  ModInt &operator*=(ModInt that) { val=(unsigned long long)val*that.val%MOD; return *this; }
+  ModInt &operator/=(ModInt that) { return *this*=that.inv(); }
+  ModInt operator+(ModInt that) const { return ModInt(*this)+=that; }
+  ModInt operator-(ModInt that) const { return ModInt(*this)-=that; }
+  ModInt operator*(ModInt that) const { return ModInt(*this)*=that; }
+  ModInt operator/(ModInt that) const { return ModInt(*this)/=that; }
+  ModInt pow(long long n) const {
+    ModInt x=*this, res=1;
+    while(n>0) {
+      if(n&1) res*=x;
+      x*=x,n>>=1;
     }
     return res;
   }
-  // incremental update of hash code
-  T updateRollingHash(T base, string S, int i) {
-    T res=d*(base+MOD-((T)S[i]*h)%MOD)%MOD+S[i+M];
-    res%=MOD;
-    return res;
-  }
-  
-  int doRabbinKarpMatch(string S) {
-    int N=S.size();
-    
-    // preprocessing
-    T s=calcRollingHash(S);
-    
-    for(int i=0; i<=N-M; ++i) {
-      if(s==p && S.substr(i,M)==P) return i;
-      // incremental update of hash code
-      // s=d(t-S[i]h)+S[i+M]
-      s=updateRollingHash(s,S,i);
+  ModInt inv() const { return (*this).pow(MOD-2); }
+  bool operator==(ModInt that) const { return val==that.val; }
+  bool operator!=(ModInt that) const { return val!=that.val; }
+};
+const int MOD0=1e9+7,MOD1=1e9+9;
+using M0=ModInt<MOD0>;
+using M1=ModInt<MOD1>;
+M0 p0=rand()%MOD0,pinv0=p0.inv();
+M1 p1=rand()%MOD1,pinv1=p1.inv();
+vector<M0> P0{1}, PINV0{1};
+vector<M1> P1{1}, PINV1{1};
+struct H {
+  vector<pair<M0,M1>> hcum;
+  string str;
+  H(string s) : str(s) {
+    int N=(int)s.size();
+    while ((int)P0.size()<=N) {
+      P0.push_back(P0.back()*p0);
+      PINV0.push_back(PINV0.back()*pinv0);
+      P1.push_back(P1.back()*p1);
+      PINV1.push_back(PINV1.back()*pinv1);
     }
-    return -1;
-  }
-private:
-  T powmod(T a, T b, T MOD) {
-    T res=1;
-    for(T mask=1; mask<=b; mask<<=1) {
-      if(b&mask) res*=a, res%=MOD;
-      a*=a; a%=MOD;
+    hcum.resize(N+1);
+    hcum[0]={M0(0),M1(0)};
+    for(int i=0; i<N; ++i) {
+      hcum[i+1]={hcum[i].first+M0(s[i])*P0[i],hcum[i].second+M1(s[i])*P1[i]};
     }
-    return res;
+  }
+  // half-open range [l,r)
+  pair<M0,M1> hash(int r) { return { hcum[r].first, hcum[r].second }; }
+  pair<M0,M1> hash(int l, int r) {
+    return {
+      (hcum[r].first-hcum[l].first)*PINV0[l],
+      (hcum[r].second-hcum[l].second)*PINV1[l]
+    };
   }
 };
-
+// Rabin-Karp algorithm
+vector<int> match(H &s, H &p) {
+  int N=s.str.size(),M=p.str.size();
+  auto pp=p.hash(0,M);
+  vector<int> res;
+  for(int i=0; i<=N-M; ++i) if(s.hash(i,i+M)==pp) res.push_back(i);
+  return res;
+}
+};
 void test_rollinghash() {
-  string P2 = "qwertyuiop1234567890ZXCVBNM";
-  RollingHash<long long> rh(P2,131,1e9+7);
-  int idx2 = rh.doRabbinKarpMatch("asdfghjklqwertyuiop1243567890ZXCVBNMqwertyuiop1234567890ZXCVBNMLKJHGFDSA");
-  assert(idx2==36);
+  // test hash of substring
+  {
+    RollingHash::H h("abcabcabcabc");
+    assert(h.hash(3)==h.hash(0,3));
+    assert(h.hash(3)==h.hash(3,6));
+    assert(h.hash(3,6)==h.hash(6,9));
+    assert(h.hash(3,5)!=h.hash(6,9));
+    assert(h.hash(3,7)!=h.hash(6,9));
+  }
   
-  string P3 = "abcd";
-  RollingHash<long long> rh3(P3);
-  int idx3 = rh3.doRabbinKarpMatch("aabcd");
-  assert(idx3==1);
+  // test rabin karp
+  {
+    RollingHash::H P("a");
+    RollingHash::H S("aaaaaaaa");
+    vector<int> ms=match(S,P);
+    vector<int> exp={0,1,2,3,4,5,6,7};
+    assert(ms==exp);
+  }
   
-  string P1 = "abcd";
-  RollingHash<long long> rh1(P1);
-  int idx1 = rh1.doRabbinKarpMatch("abcd");
-  assert(idx1==0);
+  {
+    RollingHash::H P("qwertyuiop1234567890ZXCVBNM");
+    RollingHash::H S("asdfghjklqwertyuiop1243567890ZXCVBNMqwertyuiop1234567890ZXCVBNMLKJHGFDSA");
+    vector<int> ms=match(S,P);
+    assert(ms==vector<int>{36});
+  }
   
-  string P0 = "abc";
-  RollingHash<long long> rh0(P0);
-  int idx0 = rh0.doRabbinKarpMatch("dcba");
-  assert(idx0==-1);
-
+  {
+    RollingHash::H P("abcd");
+    RollingHash::H S("aabcd");
+    vector<int> ms=match(S,P);
+    assert(ms==vector<int>{1});
+  }
+  
+  {
+    RollingHash::H P("abcd");
+    RollingHash::H S("abcd");
+    vector<int> ms=match(S,P);
+    assert(ms==vector<int>{0});
+  }
+  
+  {
+    RollingHash::H P("abc");
+    RollingHash::H S("dcba");
+    vector<int> ms=match(S,P);
+    assert(ms==vector<int>{});
+  }
 }
 
 /*
