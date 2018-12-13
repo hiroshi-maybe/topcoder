@@ -107,31 +107,22 @@ template<class Iter> void dumpc(Iter begin, Iter end) { if (TRACE) { for(; begin
 // main
 #define MAIN int main(int argc, char const *argv[])
 
-// mod
-constexpr long long MOD = 1e9+7;
-
-// $ g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG *.cpp && ./a.out
-
 // standard io template
-const int MAX_N=1e5+1;
+const int MAX_N=1e6+1;
 int A[MAX_N];
 int N;
 int main(int argc, char const *argv[]) {
   ios_base::sync_with_stdio(false);
   cin.tie(0);
+  cout<<setprecision(12)<<fixed;
 
   cin>>N;
   REP(i,N) cin>>A[i];
   
-  int res=0;
-  cout<<res<<endl;
-  
-  // more precision in double in iostream
-  // cout<<setprecision(12)<<fixed<<res<<endl;
-  
   return 0;
 }
 
+// $ g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address *.cpp && ./a.out
 // highly composit number: http://wwwhomes.uni-bielefeld.de/achim/highly.txt
 // math helper: http://www.wolframalpha.com/input/?i=sqrt(x*x+%2B+42)
 // graph generator: http://emkjp.github.io/WebTools/dot.html
