@@ -209,7 +209,7 @@ void test_kmp() {
  
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Refactoring.cpp#L97
-  -
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/CheckTranscription.cpp#L131
  
  ```
  Usage:
@@ -280,8 +280,12 @@ struct H {
     }
   }
   // half-open range [l,r)
-  pair<M0,M1> hash(int r) { return { hcum[r].first, hcum[r].second }; }
+  pair<M0,M1> hash(int r) {
+    assert(0<=r&&r<hcum.size());
+    return { hcum[r].first, hcum[r].second };
+  }
   pair<M0,M1> hash(int l, int r) {
+    assert(0<=l&&l<hcum.size()),assert(0<=r&&r<hcum.size());
     return {
       (hcum[r].first-hcum[l].first)*PINV0[l],
       (hcum[r].second-hcum[l].second)*PINV1[l]
