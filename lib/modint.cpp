@@ -5,14 +5,14 @@ using namespace std;
 
 const int MOD=1e9+7;
 struct ModInt {
-  uint val;
+  unsigned int val;
   ModInt(): val(0) {}
   ModInt(int v) { norm(v%MOD); }
   ModInt(long long v) { norm(v%MOD); }
   ModInt& norm(long long v) {
     v=v<0?v%MOD+MOD:v; // negative
     v=v>=MOD?v-MOD:v; // mod
-    val=(uint)v;
+    val=(unsigned int)v;
     return *this;
   }
   explicit operator bool() const { return val!=0; }
@@ -40,7 +40,7 @@ struct ModInt {
 };
 
 void test_modint() {
-  map<long long, uint> inittests{
+  map<long long, unsigned int> inittests{
     {10ll,10},{(long long)MOD,0},{10ll*MOD,0},{-1ll,1000000006},{0ll,0}
   };
   for(auto it : inittests) {
