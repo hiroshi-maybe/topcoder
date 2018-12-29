@@ -6,26 +6,32 @@
 
 using namespace std;
 
-struct Vector {
+struct Point {
 public:
   int x, y;
-  Vector(pair<int,int> p1, pair<int,int> p2): Vector(p1.first-p2.first, p1.second-p2.second) {}
-  Vector(int x, int y): x(x), y(y) {}
-    
+  Point(): x(0), y(0) {}
+  Point(int x, int y): x(x), y(y) {}
+  Point(pair<int,int> p): x(p.first), y(p.second) {}
+  Point(pair<int,int> p, pair<int,int> org): Point(p.first-org.first, p.second-org.second) {}
+  Point(Point p, Point org): Point(p.x-org.x, p.y-org.y) {}
+  
+  explicit operator bool() const { return x!=0||y!=0; }
+  Point operator-() const { return Point(0,0)-*this; }
+  Point &operator+=(Point that) { x+=that.x,y+=that.y; return *this; }
+  Point &operator-=(Point that) { x-=that.x,y-=that.y; return *this; }
+  Point operator+(Point that) const { return Point(*this)+=that; }
+  Point operator-(Point that) const { return Point(*this)-=that; }
+  bool operator==(Point that) const { return x==that.x&&y==that.y; }
+  bool operator!=(Point that) const { return !(Point(*this)==that); }
+  bool operator<(Point that) const { return pair<int,int>(x,y)<pair<int,int>(that.x,that.y); }
+  bool operator>(Point that) const { return pair<int,int>(x,y)>pair<int,int>(that.x,that.y); }
+  bool operator<=(Point that) const { return Point(*this)==that||Point(*this)<that; }
+  bool operator>=(Point that) const { return Point(*this)==that||Point(*this)>that; }
+  
   long long distance() {
-      return x*x + y*y;
+    return x*x + y*y;
   }
 };
-
-pair<Vector, Vector> makeVectors(pair<int,int> p1, pair<int,int> p2, pair<int,int> origin) {
-  Vector v1 = Vector(p1,origin), v2 = Vector(p2,origin);
-  return make_pair(v1,v2);
-}
-pair<int,int> makePair(vector<int> v) {
-  assert(v.size()==2);
-  return {v[0],v[1]};
-}
-
 /*
  
  cross product u×v
@@ -43,12 +49,12 @@ pair<int,int> makePair(vector<int> v) {
    u is counter-clockwise from v
 
  */
-long long det(Vector u, Vector v) {
+long long det(Point u, Point v) {
   return u.x*v.y - u.y*v.x;
 }
 /*
  
- cross product det(o->p1, o->p2)
+ cross product det (o->p1, o->p2)
  
  1) det(p1,p2,o) = 0
   o, p1 and p2 are co-linear (o->p1 is colinear with o->p2)
@@ -60,54 +66,55 @@ long long det(Vector u, Vector v) {
   (o->p1 is counter clockwise from o->p2)
  
  */
-long long det(pair<int,int> p1, pair<int,int> p2, pair<int,int> origin) {
-  auto vs = makeVectors(p1,p2,origin);
-  return det(vs.first,vs.second);
+long long det(Point p1, Point p2, Point origin) {
+  return det(p1-origin, p2-origin);
 }
-long long dot(Vector u, Vector v) {
+long long dot(Point u, Point v) {
   return u.x*v.x + u.y*v.y;
 }
-
-/*
- 
- Compute area of triangle formed by p1, p2 and p3
- 
- A = det(p1,p2,p3) / 2
- 
- */
-double area(pair<double,double> p1, pair<double,double> p2, pair<double,double> p3) {
-  pair<double,double> v1={ p2.first-p1.first,p2.second-p1.second };
-  pair<double,double> v2={ p3.first-p1.first,p3.second-p1.second };
-  
-  return abs(v1.first*v2.second-v1.second*v2.first)*0.5;
+// CLRS 33.1
+// true: org->p1 is clockwise against org->p2
+bool isClockwise(Point p1, Point p2, Point origin) {
+  return det(p1, p2, origin)>0;
 }
-
+bool isCounterClockwise(Point p1, Point p2, Point origin) {
+  return det(p1, p2, origin)<0;
+}
+// CLRS 33.1
+// org->p1 and org->p2 form same direction or opposite direction
+bool isColinear(Point p1, Point p2, Point origin) {
+  return det(p1, p2, origin)==0;
+}
+// CLRS 33.1
+// true: p1->p2 is left turn for origin
+bool isLeftTurn(Point p1, Point p2, Point origin) {
+  return isClockwise(p1,p2,origin);
+}
+// CLRS 33.1
+// true: p1->p2 is right turn for origin
+bool isRightTurn(Point p1, Point p2, Point origin) {
+  return isCounterClockwise(p1,p2,origin);
+}
 // 90 degree
-bool isVertical(Vector u, Vector v) {
+bool isVertical(Point u, Point v) {
   return dot(u,v)==0;
 }
-
-long long distance(pair<int,int> p1, pair<int,int> p2) {
-  int dx = p1.first-p2.first, dy = p1.second-p2.second;
-  return dx*dx + dy*dy;
-}
-
 // CLRS 33.1 ON-SEGMENT(pi,pj,pk)
-bool onSegment(pair<int,int> p1, pair<int,int> p2, pair<int,int> pi) {
-  int xmin=min(p1.first, p2.first),
-      xmax=max(p1.second, p2.second),
-      ymin=min(p1.second, p2.second),
-      ymax=max(p1.second,p2.second);
-  return xmin<=pi.first && pi.first<=xmax && ymin<=pi.second && pi.second<=ymax;
+bool onSegment(Point p1, Point p2, Point q) {
+  int xmin=min(p1.x, p2.x),
+  xmax=max(p1.x, p2.x),
+  ymin=min(p1.y, p2.y),
+  ymax=max(p1.y, p2.y);
+  return xmin<=q.x&&q.x<=xmax&&ymin<=q.y&&q.y<=ymax;
 }
 // CLRS 33.1 SEGMENTS-INTERSECT(p1,p2,p3,p4)
 // p1->p2 intersects p3->p4
-bool intersect(pair<int,int> p1, pair<int,int> p2, pair<int,int> p3, pair<int,int> p4) {
+bool intersect(Point p1, Point p2, Point p3, Point p4) {
   long long d1 = det(p3,p4,p1),
-            d2 = det(p3,p4,p2),
-            d3 = det(p1,p2,p3),
-            d4 = det(p1,p2,p4);
-
+  d2 = det(p3,p4,p2),
+  d3 = det(p1,p2,p3),
+  d4 = det(p1,p2,p4);
+  
   if (((d1>0&&d2<0)||(d1<0&&d2>0)) && ((d3>0&&d4<0)||(d3<0&&d4>0))) return true;
   if (d1==0 && onSegment(p3,p4,p1)) return true;
   if (d2==0 && onSegment(p3,p4,p2)) return true;
@@ -116,54 +123,75 @@ bool intersect(pair<int,int> p1, pair<int,int> p2, pair<int,int> p3, pair<int,in
   return false;
 }
 
-// CLRS 33.1
-// true: org->p1 is clockwise against org->p2
-bool isClockwise(pair<int,int> p1, pair<int,int> p2, pair<int,int> origin) {
-  auto vpair = makeVectors(p1,p2,origin);
-  return det(vpair.first, vpair.second)>0;
+void test_point() {
+  {
+    Point p;
+    assert(p.x==0&&p.y==0);
+  }
+  {
+    Point p1(0,0),p2(0,1);
+    assert(!p1);
+    assert(p2);
+  }
+  {
+    Point p1(1,2),p2(3,4);
+    p1+=p2;
+    assert(p1.x==4&&p1.y==6);
+  }
+  {
+    Point p1(1,2),p2(3,4);
+    p1-=p2;
+    assert(p1.x==-2&&p1.y==-2);
+  }
+  {
+    Point p1(1,1),p2(1,1),p3(1,2);
+    assert(p1==p2);
+    assert(p1!=p3);
+  }
+  
+  Point origin(0,0), p1(1,0), p2(0,1), p3(-1,0), p4(0,-1);
+  
+  assert(isVertical(Point(p1,origin),Point(p2,origin)));
+  assert(isClockwise(p1, p2, origin));
+  assert(isCounterClockwise(p2, p1, origin));
+  assert(isColinear(p1, p3, origin));
+  assert(isLeftTurn(p1, p2, origin));
+  assert(isRightTurn(p2, p1, origin));
+  assert(intersect(p1, p4, p2, p4));
 }
-bool isCounterClockwise(pair<int,int> p1, pair<int,int> p2, pair<int,int> origin) {
-  auto vpair = makeVectors(p1,p2,origin);
-  return det(vpair.first, vpair.second)<0;
-}
-// CLRS 33.1
-// org->p1 and org->p2 form same direction or opposite direction
-bool isColinear(pair<int,int> p1, pair<int,int> p2, pair<int,int> origin) {
-  auto vpair = makeVectors(p1,p2,origin);
-  return det(vpair.first, vpair.second)==0;
-}
-// CLRS 33.1
-// true: p1->p2 is left turn for origin
-bool isLeftTurn(pair<int,int> p1, pair<int,int> p2, pair<int,int> origin) {
-  return isClockwise(p1,p2,origin);
-}
-// CLRS 33.1
-// true: p1->p2 is right turn for origin
-bool isRightTurn(pair<int,int> p1, pair<int,int> p2, pair<int,int> origin) {
-  return isCounterClockwise(p1,p2,origin);
+
+/*
+ 
+ Compute area of parallelogram formed by p1, p2 and origin
+ 
+ A = det(p1,p2,origin)
+ 
+ */
+long long area(Point p1, Point p2, Point origin) {
+  return abs(det(p1,p2,origin));
 }
 
 // CLRS 33.3 GRAHAM-SCAN(Q)
 
 // sort points by plar angle
 // smaller scalar comes first for tie
-void sortByPolarAngle(vector<pair<int, int>>& ps, pair<int, int> origin) {
-  sort(ps.begin(), ps.end(), [&](const pair<int,int> a, const pair<int,int> b) {
+void sortByPolarAngle(vector<Point>& ps, Point origin) {
+  sort(ps.begin(), ps.end(), [&](const Point &a, const Point &b) {
     int d = det(a,b,origin);
     if(d!=0) return d > 0;
-    return distance(a, origin) < distance(b, origin);
+    return Point(a,origin).distance() < Point(b,origin).distance();
   });
 }
-vector<pair<int,int>> findConvexHull(vector<pair<int,int>> ps) {
+vector<Point> findConvexHull(vector<Point> ps) {
   if (ps.size()<3) return {};
 
   // find p0 (bottom left point)
   int p0_i = 0;
   for(int i=1; i<ps.size(); ++i) {
-    if (ps[i].second <= ps[p0_i].second && ps[i].first <= ps[p0_i].first) p0_i = i;
+    if (ps[i].y <= ps[p0_i].y && ps[i].x <= ps[p0_i].x) p0_i = i;
   }
   swap(ps[0], ps[p0_i]);
-  pair<int, int> p0=ps[0];
+  Point p0=ps[0];
 
   // sort by polar angle
   sortByPolarAngle(ps, p0);
@@ -178,7 +206,7 @@ vector<pair<int,int>> findConvexHull(vector<pair<int,int>> ps) {
   if (N<3) return {};
 
   int si=0;
-  vector<pair<int,int>> S(N);
+  vector<Point> S(N);
   S[si++] = ps[0];
   S[si++] = ps[1];
   S[si] = ps[2];
@@ -194,7 +222,7 @@ vector<pair<int,int>> findConvexHull(vector<pair<int,int>> ps) {
 // check if point is surrounded by given points
 // if p is on segment, return true
 // O(N*lg N) time
-bool surrounded(pair<int,int> p, vector<pair<int, int>>& ps) {
+bool surrounded(Point p, vector<Point>& ps) {
   sortByPolarAngle(ps, p);
   vector<int> ds;
   int N=ps.size();
@@ -280,35 +308,35 @@ pair<double,double> rotate(pair<double,double> p, double deg) {
   - Rotation is counter-clockwise for positive degree from top of rotation axis
  
  */
-struct Vector3D {
+struct Point3D {
 public:
   double x, y, z;
-  Vector3D(vector<double> vec) {
+  Point3D(vector<double> vec) {
     assert(vec.size()==3);
     this->x=vec[0],this->y=vec[1],this->z=vec[2];
   }
-  Vector3D(double x, double y, double z): x(x), y(y), z(z) {}
+  Point3D(double x, double y, double z): x(x), y(y), z(z) {}
   
-  Vector3D rotateX(double rad) {
+  Point3D rotateX(double rad) {
     double s=sin(rad),c=cos(rad);
     double xx=x;
     double yy=c*y-s*z;
     double zz=s*y+c*z;
-    return Vector3D(xx,yy,zz);
+    return Point3D(xx,yy,zz);
   }
-  Vector3D rotateY(double rad) {
+  Point3D rotateY(double rad) {
     double s=sin(rad),c=cos(rad);
     double xx=c*x+s*z;
     double yy=y;
     double zz=-s*x+c*z;
-    return Vector3D(xx,yy,zz);
+    return Point3D(xx,yy,zz);
   }
-  Vector3D rotateZ(double rad) {
+  Point3D rotateZ(double rad) {
     double s=sin(rad),c=cos(rad);
     double xx=c*x-s*y;
     double yy=s*x+c*y;
     double zz=z;
-    return Vector3D(xx,yy,zz);
+    return Point3D(xx,yy,zz);
   }
 };
 
@@ -357,39 +385,34 @@ bool nearlyEqual(double x, double y) {
 }
 
 void assert_vector3D() {
-  auto v1 = Vector3D(1,2,3).rotateX(M_PI/2.0);
+  auto v1 = Point3D(1,2,3).rotateX(M_PI/2.0);
   assert(nearlyEqual(v1.x,1)&&nearlyEqual(v1.y,-3)&&nearlyEqual(v1.z,2));
-  auto v2 = Vector3D(1,2,3).rotateY(M_PI/2.0);
+  auto v2 = Point3D(1,2,3).rotateY(M_PI/2.0);
 //  printf("%f,%f,%f\n",v2.x,v2.y,v2.z);
   assert(nearlyEqual(v2.x,3)&&nearlyEqual(v2.y,2)&&nearlyEqual(v2.z,-1));
-  auto v3 = Vector3D(1,2,3).rotateZ(M_PI/2.0);
+  auto v3 = Point3D(1,2,3).rotateZ(M_PI/2.0);
   assert(nearlyEqual(v3.x,-2)&&nearlyEqual(v3.y,1)&&nearlyEqual(v3.z,3));
 }
 
 int main(int argc, char const *argv[]) {
-  pair<int,int> origin={0,0}, p1={1,0}, p2={0,1}, p3={-1,0}, p4={0,-1};
-
-  assert(isVertical(Vector(p1, origin), Vector(p2, origin)));
-  assert(isClockwise(p1, p2, origin));
-  assert(isCounterClockwise(p2, p1, origin));
-  assert(isColinear(p1, p3, origin));
-  assert(isLeftTurn(p1, p2, origin));
-  assert(isRightTurn(p2, p1, origin));
-  assert(intersect(p1, p4, p2, p4));
+  test_point();
 
   // http://www.geeksforgeeks.org/convex-hull-set-2-graham-scan/
-  vector<pair<int,int>> ps = findConvexHull({{0,3},{1,1},{2,2},{4,4},{0,0},{1,2},{3,1},{3,3}});
-  vector<pair<int,int>> exp = {{0,0},{3,1},{4,4},{0,3}};
-  assert(ps.size()==exp.size());
-  for(int i=0; i<ps.size(); ++i) {
-    assert(ps[i].first==exp[i].first&&ps[i].second==exp[i].second);
-  }
+  vector<Point> ps = findConvexHull({{0,3},{1,1},{2,2},{4,4},{0,0},{1,2},{3,1},{3,3}});
+  vector<Point> exp = {{0,0},{3,1},{4,4},{0,3}};
+  assert(ps==exp);
+//  assert(ps.size()==exp.size());
+//  for(int i=0; i<ps.size(); ++i) {
+//    assert(ps[i].first==exp[i].first&&ps[i].second==exp[i].second);
+//  }
   
-  vector<pair<int,int>> surrounding = {{1,1},{-1,1},{1,-1},{-1,-1}};
+  Point origin(0,0);
+  
+  vector<Point> surrounding = {{1,1},{-1,1},{1,-1},{-1,-1}};
   assert(surrounded(origin, surrounding));
-  vector<pair<int,int>> onsegment = {{1,0},{0,1},{-1,0}};
+  vector<Point> onsegment = {{1,0},{0,1},{-1,0}};
   assert(surrounded(origin, onsegment));
-  vector<pair<int,int>> notsurrounding = {{1,1},{2,1},{1,2},{2,2}};
+  vector<Point> notsurrounding = {{1,1},{2,1},{1,2},{2,2}};
   assert(!surrounded(origin, notsurrounding));
   
   assert(nearlyEqual(deg2rad(60),M_PI/3.0));
@@ -400,7 +423,7 @@ int main(int argc, char const *argv[]) {
   pair<double,double> pp2=rotate(pp1,60);
   assert(nearlyEqual(pp2.first+pp1.first,0.0));
   assert(nearlyEqual(pp2.second,pp1.second));
-  assert(nearlyEqual(area({-2,0},{0,4},{3,0}),10.0));
+  assert(nearlyEqual(area({-2,0},{0,4},{3,0}),20.0));
   
   assert_vector3D();
   
