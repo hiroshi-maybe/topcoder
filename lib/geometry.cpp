@@ -6,6 +6,8 @@
 
 using namespace std;
 
+const double PI = acos(-1);
+
 struct Point {
 public:
   int x, y;
@@ -431,3 +433,5 @@ int main(int argc, char const *argv[]) {
   assert(!insideCircle(-4,5,1,12,1,2));
   assert(insideCircle(0,0,1,0,0,1));
 }
+
+// g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address geometry.cpp && ./a.out
