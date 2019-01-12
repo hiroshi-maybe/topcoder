@@ -14,6 +14,7 @@ using namespace std;
  Used problems:
   - https://github.com/k-ori/topcoder/blob/master/MinimizeAbsoluteDifferenceDiv1/MinimizeAbsoluteDifferenceDiv1.cpp#L119
   - https://github.com/k-ori/topcoder/blob/master/BestView/BestView.cpp#L64
+  - https://github.com/hiroshi-maybe/leetcode/blob/master/972-equal-rational-numbers/equal-rational-numbers.cpp#L37
  
  */
 
