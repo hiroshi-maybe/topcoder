@@ -149,6 +149,7 @@ private:
    - https://www.cs.umd.edu/~gasarch/TOPICS/factoring/fastgauss.pdf
    - http://personals.ac.upc.edu/enricm/Pubs/pdp2015_slides.pdf
      - great overview of Gaussian elimination in GF(2) ✅
+   - https://en.wikipedia.org/wiki/Finite_field#Field_with_four_elements
  
  Usage:
    int rank = gf2_rank<int>(V);
@@ -157,7 +158,7 @@ private:
  
  Gaussian Elimination is defined over an algebraic field
    - Infinite fields: 𝐐, 𝐑
-   - Finite fields: Galoius field with 2 elements a.k.a. GF(2)
+   - Finite fields: Galois field with 2 elements a.k.a. GF(2)
  
  In GF(2)={0,1}, algebraic operations are represented as below:
    - addition ≡ XOR ≡ subtraction (+1=-1)
@@ -186,6 +187,10 @@ private:
  Expected result is number of those vectors (= rank of original matrix)
  
  We can do LU-decomposition in GF(2) by reducing MSB.
+ 
+ Used problems:
+  - https://github.com/hiroshi-maybe/topcoder/blob/bc4fd010dc1100360b7462bf38a190426084490c/solutions/MixingColors/MixingColors.cpp#L123
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/ZeroXORSubsetLess.cpp#L110
  
  */
 template<class T> void gf2_GE(vector<T>& V) {
