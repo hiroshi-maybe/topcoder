@@ -5,6 +5,7 @@
 #include <cassert>
 #include <set>
 #include <tuple>
+#include <queue>
 using namespace std;
 
 #define dumpAR(ar) for(auto &x : (ar)) { cout << x << ','; } cout << endl;
@@ -448,6 +449,40 @@ private:
 
 /*
  
+ Topological sort, O(N) time
+ 
+ Return topological order of directed graph.
+ If graph is DAG, returned list should have all the vertices.
+ 
+ Usage:
+   auto vs=tsort(G);
+   if(SZ(vs)==N) cout<<"DAG"<<endl;
+ 
+ Used problems:
+  - https://github.com/hiroshi-maybe/leetcode/blob/master/802-find-eventual-safe-states/find-eventual-safe-states.cpp#L224
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/AndrewAndTaxi.cpp#L98
+ 
+ */
+vector<int> tsort(vector<vector<int>> &G) {
+  int N=G.size();
+  vector<int> D(N,0);
+  for(int u=0; u<N; ++u) for(auto v : G[u]) D[v]++;
+  vector<int> res;
+  queue<int> Q;
+  for(int u=0; u<N; ++u) if(D[u]==0) Q.emplace(u);
+  while(Q.size()) {
+    int u=Q.front(); Q.pop();
+    res.push_back(u);
+    for(auto v : G[u]) {
+      D[v]--;
+      if(D[v]==0) Q.emplace(v);
+    }
+  }
+  return res;
+}
+
+/*
+ 
  Cycle detection in linear runtime, O(V+E) time
  
  - Returns list of nodes whose descendent has NO cycle
@@ -458,7 +493,7 @@ private:
   - black: processing completed
  
  Used problems:
-  - https://leetcode.com/contest/weekly-contest-76/problems/find-eventual-safe-states/
+  - https://github.com/hiroshi-maybe/leetcode/blob/master/802-find-eventual-safe-states/find-eventual-safe-states.cpp#L149
  
  */
 
