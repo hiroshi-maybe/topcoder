@@ -121,13 +121,14 @@ LL choose_factmod(LL n, LL k) {
 
 /*
  
- n chooses k (% MOD) (binomial coefficient), O(k) in cache warmup
+ n chooses k (% MOD) (binomial coefficient), O(k) in cache warmup, O(1) per query on average
  
    C(n,k)
  = ∏ {(n-i): i=0..k } * 1/k!
  = ∏ {(n-i): i=0..k } * ∏ { modinv(i): i=1..k }
  
- - Pre-compute factorial of mod inverse of k (<=MAXK) first in O(k)
+  - Pre-compute factorial of mod inverse of k (<=MAXK) first in O(k)
+  - N<=1e7
  
  Mod inverse is pre-computed based on below formula:
 
@@ -139,30 +140,35 @@ LL choose_factmod(LL n, LL k) {
   - https://discuss.codechef.com/questions/3869/best-known-algos-for-calculating-ncr-m
   - https://comeoncodeon.wordpress.com/2011/10/09/modular-multiplicative-inverse/
    - compute mod multiplicative inverse in linear time used in this function
+  - https://twitter.com/meguru_comp/status/694547019885449216
+ 
+ Used problems:
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/NewYearAndThePermutationConcatenation.cpp#L144
+  - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/Factorization.cpp#L121
  
  */
 LL choose(LL n, LL k) {
   if(n<k) return 0;
-  k = min(n-k,k);
   
-  const int MAXK = 200;
-  assert(k<=MAXK);
-  static LL inv[MAXK+1],invfact[MAXK+1];
+  const int MAX_N = 1e6+1;
+  assert(k<=MAX_N);
+  static LL fact[MAX_N+1],revfact[MAX_N+1],rev[MAX_N+1];
   
-  if(inv[1]==0) {
-    inv[1]=1;
-    for(int i=2;i<=MAXK;i++) inv[i]=inv[MOD%i]*(MOD-MOD/i)%MOD;
-    invfact[0]=1;
-    for(int i=1;i<=MAXK;i++) invfact[i]=invfact[i-1]*inv[i]%MOD;
+  if(rev[1]==0) {
+    rev[1]=1;
+    for(int i=2;i<=MAX_N;i++) rev[i]=rev[MOD%i]*(MOD-MOD/i)%MOD;
+    fact[0]=1,revfact[0]=1;
+    for(int i=1;i<=MAX_N;i++) {
+      fact[i]=fact[i-1]*i%MOD;
+      revfact[i]=revfact[i-1]*rev[i]%MOD;
+    }
   }
-  LL res=invfact[k];
-  for(int i=0;i<k;++i) res*=(n-i)%MOD,res%=MOD;
-  return res;
+  return fact[n]*revfact[n-k]%MOD*revfact[k]%MOD;
 }
 
 /*
  
- Create n chooses k (% MOD) table (k=0..n), O(N^2) time
+ Create n chooses k (% MOD) table (k=0..n), O(N^2) time (N<=3000)
  
  C(n,k) = C(n-1,k)+C(n-1,k-1)
  
