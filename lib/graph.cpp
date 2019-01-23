@@ -485,6 +485,7 @@ vector<int> tsort(vector<vector<int>> &G) {
  
  Cycle detection in linear runtime, O(V+E) time
  
+ - Topological sort works too
  - Returns list of nodes whose descendent has NO cycle
  - Variant of SCC library. This is even simpler because we don't need to group and contract cycles.
  - This is equivalent to classic white, gray, black coloring dfs in CLRS 22.3 Depth-first search
@@ -532,6 +533,190 @@ private:
     return done[u]=res;
   }
 };
+
+/*
+ 
+ Graph optimization problems
+ 
+ https://qiita.com/drken/items/7f98315b56c95a6181a4
+ 
+          Covering problems               |  Packing problems
+          =====================================================================================
+ vertex : 1. Minimum vertex cover         |  2. Maximum (vertex) independent set
+            => Covers edges with vertices      => Packs vertices without adjacent vertices
+ edge   : 3. Minimum edge cover           |  4. Maximum matching (Maximum "edge" independent set)
+            => Covers vertices with edges      => Packs edges without adjacent edges
+ 
+ # General graph
+ 
+ ## Vertex optimization problem
+ 
+ 1. Minimum vertex cover
+ 
+ ✅-❌ or ✅-✅, any EDGE is covered by selected vertices
+ 
+ - NP-hard
+ - V1 = U - V2
+ 
+ https://en.wikipedia.org/wiki/Vertex_cover
+ 
+ Solve maximum independent set in O(1.381^V) time and compute complement set.
+ 
+ 2. Maximum (vertex) independent set
+ 
+ ✅-❌ or ❌-❌, packing VERTICEs without being adjacent
+
+ - NP-hard
+ - V1 = U - V2 (Complement of minimum vertex cover)
+ - Independent set is clique in complement graph
+ - O(1.381^V) time algorithm exists
+ 
+ https://en.wikipedia.org/wiki/Independent_set_(graph_theory)
+ https://www.slideshare.net/wata_orz/ss-12131479/33
+
+ ## Edge optimization problem
+ 
+ 3. Minimum edge cover
+ 
+ v-✅-v-❌-v-✅-v, v-✅-v-✅-v, Any VERTEX is covered by at least one selected edge
+ 
+ - If maximum matching is M, minimum edge cover is V-M
+ - O(N*M*log N) time by Edmonds blossom algorithm + geedy (add missing vertices greedily)
+ - Minimum edge cover >= maximum matching (`=` holds when matching is perfect matching)
+ 
+ If M = maximum matching of `G`, then 2*M vertices are already covered.
+ We are going to cover V-2*M vertices. Thus total # of edge cover is M + (V-2*M) = V-M
+ 
+ 4. Maximum matching (Maximum "edge" independent set)
+ 
+ v-❌-v-✅-v-❌-v, Packing EDGEs without being adjacent
+ 
+ - O(N*M*log N) time by Edmonds blossom algorithm
+ - Matching `M` = minimum edge cover if it is "perfect matching"
+ 
+ Perfect matching: Every vertex is incident to exactly one edge of matching (Thus it's equal to min edge cover)
+  ex) v-✅-v---v-✅-v
+ 
+ https://www.dropbox.com/sh/7uhazzp6wvx9mi7/AACpEgmn--Grp9nVD3NOD9Hia?dl=0
+ https://github.com/spaghetti-source/algorithm/blob/master/graph/gabow_edmonds.cc
+ 
+ # Bipartite graph
+ 
+ 4. Maximum matching => 1. Minimum vertex cover, 2. Maximum independent set, 3. Minimum edge cover
+ 
+ Suppose maximum matching is `M`
+ 
+ 1. Minimum vertex cover
+ 
+ Minimum vertex cover = `M`
+ 
+ Construction: https://www.slideshare.net/drken1215/ss-86894312
+ Proof: https://qiita.com/drken/items/7f98315b56c95a6181a4#%E3%81%93%E3%82%8C%E3%81%A7%E6%B1%82%E3%82%81%E3%82%89%E3%82%8C%E3%82%8B%E7%90%86%E7%94%B1
+ 
+ 2. Maximum independent set
+ 
+ Maximum independent set = V-M
+ 
+ Generally independent set is complement of vertex cover
+ 
+ 3. Minimum edge cover
+ 
+ Minimum edge cover = V-M
+ 
+ Generally # of minimum edge cover is V-M by greedily adding V-2*M edges (for unselected vertices) to maximum matching
+ 
+ */
+
+/*
+ 
+ solver of maximum independent set (maxclique), O(V*2^(V/2) time
+ 
+ - V<=40 is preferred
+ - Meet in the middle & bit dp
+ - Maxclique can be solved by complement graph as well
+ 
+ https://img.atcoder.jp/code-thanks-festival-2017-open/editorial.pdf
+  - G - Mixture Drug
+ 
+ Used problems:
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/HelpingHiasat.cpp#L94
+ 
+ */
+
+int maxIndependentSet(vector<vector<int>> &G) {
+  auto ztrans=[&](vector<int> &dp, int N) {
+    for(int mask=0; mask<(1<<N); ++mask) for(int i=0; i<N; ++i) {
+      if((mask&(1<<i))==0) dp[mask|(1<<i)]&=dp[mask]&dp[1<<i];
+    }
+  };
+  auto independentset=[&](int l, int r)->vector<int> {
+    vector<int> dp(1<<(r-l),1);
+    for(int u=l; u<r; ++u) for(auto v : G[u]) if(l<=v&&v<r) {
+      dp[(1<<(u-l))|(1<<(v-l))]=false;
+    }
+    ztrans(dp,r-l);
+    for(int mask=0; mask<(1<<(r-l)); ++mask) dp[mask]=dp[mask]?__builtin_popcount(mask):0;
+    return dp;
+  };
+  
+  int V=G.size();
+  int V1=V/2,V2=V-V1;
+  vector<int> fr(1<<V1,(1<<V2)-1);
+  vector<int> dp1=independentset(0,V1);
+  vector<int> dp2=independentset(V1,V);
+  
+  for(int u=0; u<V1; ++u) for(auto v : G[u]) if(v>=V1) {
+    fr[1<<u]&=((1<<V2)-1)^(1<<(v-V1));
+  }
+  ztrans(fr,V1);
+
+  for(int mask=0; mask<(1<<V2); ++mask) for(int i=0; i<V2; ++i) {
+    if((mask&(1<<i))==0) dp2[mask|(1<<i)]=max(dp2[mask|(1<<i)],dp2[mask]);
+  }
+  int res=0;
+  for(int mask=0; mask<(1<<V1); ++mask) {
+    res=max(res,dp1[mask]+dp2[fr[mask]]);
+  }
+  return res;
+}
+
+void test_maxindependentset() {
+  {
+    vector<vector<int>> G={
+      {1,3,8},
+      {0},
+      {6},
+      {0},
+      {},
+      {7},
+      {2},
+      {5},
+      {0}
+    };
+    assert(maxIndependentSet(G)==6);
+  }
+  {
+    vector<vector<int>> G={
+      {1,2,4,5},
+      {0,2,4},
+      {0,1,3,4,5},
+      {2,4},
+      {0,1,2,3,5},
+      {0,2,4}
+    };
+    assert(maxIndependentSet(G)==3);
+  }
+  {
+    vector<vector<int>> G={
+      {1,2,4},
+      {0,2},
+      {0,1,3,4},
+      {2},
+      {0,2}
+    };
+    assert(maxIndependentSet(G)==3);
+  }
+}
 
 /***********************   test code below   ***********************/
 
@@ -713,7 +898,9 @@ int main(int argc, char const *argv[]) {
   GraphCycle gc(G_cycle.size());
   for(int u=0; u<G_cycle.size(); ++u) for(int v : G_cycle[u]) gc.edge(u,v);
   vector<int> cycleFreeNodes={2,4,5,6};
-  assertVec(gc.findCycleFreeNodes(), cycleFreeNodes);  
+  assertVec(gc.findCycleFreeNodes(), cycleFreeNodes);
+  
+  test_maxindependentset();
 }
 
 //  g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG graph.cpp && ./a.out
