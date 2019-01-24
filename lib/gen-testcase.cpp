@@ -24,6 +24,7 @@ using namespace std;
 //mt19937 rnd(time(nullptr));
 mt19937 rnd(chrono::steady_clock::now().time_since_epoch().count());
 int genRandNum(int lb, int ub) {
+  assert(lb<ub);
   // Helper to generate random integer in range [lb, ub)
   int x = rnd() % (int)(ub - lb);
   return x + lb;
