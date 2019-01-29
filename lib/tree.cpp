@@ -2,6 +2,7 @@
 #include <vector>
 #include <queue>
 #include <cassert>
+#include <functional>
 using namespace std;
 
 /*
@@ -240,8 +241,7 @@ int compDiameter(vector<vector<int>> &G) {
   int N=G.size();
   vector<int> D(N,0);
   
-  function<void(int,int,int)> dfs;
-  dfs=[&](int u, int pre, int d) -> void {
+  function<void(int,int,int)> dfs=[&](int u, int pre, int d) -> void {
     D[u]=d;
     for(auto v: G[u]) if(v!=pre) dfs(v,u,d+1);
   };
