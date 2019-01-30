@@ -146,6 +146,7 @@ void test_binarylifting() {
  
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Multihedgehog.cpp#L146
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/MinimalDiameterForest.cpp#L91
  
  */
 vector<int> findCenter(vector<vector<int>> &G) {
@@ -162,7 +163,7 @@ vector<int> findCenter(vector<vector<int>> &G) {
   while(Q.size()) {
     int L=Q.size();
     res=vector<int>();
-    for(int _=0; _<L; ++_) {
+    while(L--) {
       int u=Q.front(); Q.pop();
       res.emplace_back(u);
       --deg[u];
@@ -173,8 +174,6 @@ vector<int> findCenter(vector<vector<int>> &G) {
     }
     ++d;
   }
-  sort(res.begin(),res.end());
-  res.erase(unique(res.begin(),res.end()),res.end());
   assert(1<=res.size()&&res.size()<=2);
   return res;
 }
@@ -203,7 +202,8 @@ void test_findCenter() {
   };
   vector<int> exp_even={0,2};
   vector<int> ac_even=findCenter(G_even);
-  assert(ac_even==exp_even);
+  sort(ac_even.begin(),ac_even.end());
+  assert(exp_even==ac_even);
 
   vector<vector<int>> G_odd={
     {1},
@@ -236,8 +236,11 @@ void test_findCenter() {
   - https://cs.stackexchange.com/questions/22855/algorithm-to-find-diameter-of-a-tree-using-bfs-dfs-why-does-it-work
   - https://www.slideshare.net/chokudai/arc022
  
+ Used problems:
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/MinimalDiameterForest.cpp#L71
+ 
  */
-int compDiameter(vector<vector<int>> &G) {
+int compDiameter(vector<vector<int>> &G, int u=0) {
   int N=G.size();
   vector<int> D(N,0);
   
@@ -245,17 +248,15 @@ int compDiameter(vector<vector<int>> &G) {
     D[u]=d;
     for(auto v: G[u]) if(v!=pre) dfs(v,u,d+1);
   };
-  dfs(0,-1,0);
-  int a=0;
-  for(int u=0; u<N; ++u) if(D[u]>D[a]) a=u;
+  dfs(u,-1,0);
+  int a=max_element(D.begin(),D.end())-D.begin();
   
   D=vector<int>(N,0);
   dfs(a,-1,0);
-  int b=a;
-  for(int u=0; u<N; ++u) if(D[u]>D[b]) b=u;
+  int b=max_element(D.begin(),D.end())-D.begin();;
   
   // (a,b) is pair of vertices which form diameter
-//  printf("%d-%d: %d\n",a,b,D[b]);
+  //  printf("%d-%d: %d\n",a,b,D[b]);
   return D[b];
 }
 
