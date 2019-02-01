@@ -24,6 +24,7 @@ using namespace std;
    - https://www.slideshare.net/iwiwi/ss-3578491?next_slideshow=1
    - https://en.wikipedia.org/wiki/Segment_tree
    - https://www.topcoder.com/community/data-science/data-science-tutorials/range-minimum-query-and-lowest-common-ancestor/
+   - https://cp-algorithms.com/data_structures/segment_tree.html
  
   Usage:
  
@@ -38,13 +39,14 @@ using namespace std;
    - https://github.com/k-ori/csacademy/blob/master/solutions/R78-StrangeMatrix.cpp#L88
    - https://github.com/k-ori/codeforces/blob/master/solutions/ArrayRestoration.cpp#L164 (RMQ)
    - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L90 (RMQ)
+   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/VasyaAndMaximumProfit.cpp#L78 (Max subsegment sum query)
  
  */
 // 🛠 Customize node of segment tree
 struct Node {
-  static const int Inf=1e9;
+  static const int Id=1e9;
   int val;
-  Node(int val=Inf): val(val) {}
+  Node(int val=Id): val(val) {}
   static Node IDE; // Identity element in monoid
 };
 // Merge operation should be associative A`op`(B`op`C) == (A`op`B)`op`C
