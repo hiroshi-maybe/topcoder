@@ -69,6 +69,14 @@ void test_ztransform() {
     vector<int> exp2 = {0,1,2,6,4,10,12,28};
     for(int i=0; i<(1<<N); ++i) assert(f[i]==exp2[i]);
   }
+  {
+    int N=3;
+    for(int i=0; i<(1<<N); ++i) f[i]=0;
+    f[0]=f[1]=f[2]=f[3]=1;
+    ztransform_subset(N);
+    vector<int> exp2 = {1,2,2,4,1,2,2,4};
+    for(int i=0; i<(1<<N); ++i) assert(f[i]==exp2[i]);
+  }
 }
 
 // Returns all the submasks of given mask
