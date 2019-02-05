@@ -73,9 +73,9 @@ void dijkstra(int V, int st) {
   for(int i=0; i<V; ++i) D[i]=Inf;
   set<pair<long long,int>> Q; Q.emplace(0,st); D[st]=0;
   while(Q.size()>0) {
-    auto it=Q.begin(); Q.erase(it);
+    auto it=Q.begin();
     int u; long long d;
-    tie(d,u)=*it;
+    tie(d,u)=*it; Q.erase(it);
     for(auto p : G[u]) {
       int v; long long w; tie(v,w)=p;
       if(d+w<D[v]) {
@@ -85,6 +85,24 @@ void dijkstra(int V, int st) {
       }
     }
   }
+}
+
+void test_dijkstra() {
+  // Dijkstra's algorithm test
+  // CLRS Figure 24.6
+  vector<unordered_map<int, int>> E2 = {
+    { {1,10}, {3,5} },
+    { {2,1}, {3,2} },
+    { {4,4} },
+    { {1,3}, {2,9}, {4,2} },
+    { {0,7}, {2,6} }
+  };
+  for(int i=0; i<5; ++i) G[i].clear();
+  for(int u=0; u<5; ++u) for(auto kvp : E2[u]) G[u].emplace_back(kvp.first,kvp.second);
+  dijkstra(5, 0);
+  
+  vector<int> dresExpected = { 0,8,9,5,7 };
+  for(int u=0; u<5; ++u) assert(dresExpected[u]==D[u]);
 }
 
 /*
@@ -158,6 +176,31 @@ vector<vector<int>> johnson(vector<unordered_map<int, int>> E, int V) {
   }
   
   return mx;
+}
+
+void test_johnson() {
+  const int Inf = INT_MAX;
+  
+  // CLRS Figure 25.2
+  vector<vector<int>> W = {
+    {   0, Inf, Inf, Inf,  -1, Inf },
+    {   1,   0, Inf,   2, Inf, Inf },
+    { Inf,   2,   0, Inf, Inf,  -8 },
+    {  -4, Inf, Inf,   0,   3, Inf },
+    { Inf,   7, Inf, Inf,   0, Inf },
+    { Inf,   5,  10, Inf, Inf,   0 }
+  };
+  
+  int V=(int)W.size();
+  vector<unordered_map<int, int>> E0(V);
+  for(int u=0; u<V; ++u) {
+    for(int v=0; v<V; ++v) {
+      if (W[u][v]!=INT_MAX) E0[u][v] = W[u][v];
+    }
+  }
+  vector<vector<int>> jhres = johnson(E0, V);
+  // comment out due to change of Dijkstra's algorithm
+  //assertVVec(jhres, fwresExpected);
 }
  
 /**
@@ -645,8 +688,8 @@ private:
 
 int maxIndependentSet(vector<vector<int>> &G) {
   auto ztrans=[&](vector<int> &dp, int N) {
-    for(int mask=0; mask<(1<<N); ++mask) for(int i=0; i<N; ++i) {
-      if((mask&(1<<i))==0) dp[mask|(1<<i)]&=dp[mask]&dp[1<<i];
+    for(int i=0; i<N; ++i) for(int mask=0; mask<(1<<N); ++mask) {
+      if(mask&(1<<i)) dp[mask]&=dp[mask^(1<<i)];
     }
   };
   auto independentset=[&](int l, int r)->vector<int> {
@@ -669,7 +712,7 @@ int maxIndependentSet(vector<vector<int>> &G) {
     fr[1<<u]&=((1<<V2)-1)^(1<<(v-V1));
   }
   ztrans(fr,V1);
-
+  
   for(int mask=0; mask<(1<<V2); ++mask) for(int i=0; i<V2; ++i) {
     if((mask&(1<<i))==0) dp2[mask|(1<<i)]=max(dp2[mask|(1<<i)],dp2[mask]);
   }
@@ -751,7 +794,7 @@ void assertComponents(unordered_set<char> c, SCC &scc) {
 // main
 
 int main(int argc, char const *argv[]) {
-  int Inf = INT_MAX;
+  const int Inf = INT_MAX;
   // floyd-warshall test
   // CLRS Figure 25.2
   vector<vector<int>> W = {
@@ -773,18 +816,6 @@ int main(int argc, char const *argv[]) {
     {  3,  5,  10,  7,  2,   0},
   };
   assertVVec(fwres, fwresExpected);
-
-  // Johnson test
-  int V=(int)W.size();
-  vector<unordered_map<int, int>> E0(V);
-  for(int u=0; u<V; ++u) {
-    for(int v=0; v<V; ++v) {
-      if (W[u][v]!=INT_MAX) E0[u][v] = W[u][v];
-    }
-  }
-  vector<vector<int>> jhres = johnson(E0, V);
-  // comment out due to change of Dijkstra's algorithm
-  //assertVVec(jhres, fwresExpected);
   
   // bellmanford test
   // CLRS Figure 24.4
@@ -800,22 +831,6 @@ int main(int argc, char const *argv[]) {
   
   vector<int> bresExpected = { 0,2,4,7,-2 };
   assertVec(bres, bresExpected);
-  
-  // Dijkstra's algorithm test
-  // CLRS Figure 24.6
-  vector<unordered_map<int, int>> E2 = {
-    { {1,10}, {3,5} },
-    { {2,1}, {3,2} },
-    { {4,4} },
-    { {1,3}, {2,9}, {4,2} },
-    { {0,7}, {2,6} }
-  };
-  for(int i=0; i<5; ++i) G[i].clear();
-  for(int u=0; u<5; ++u) for(auto kvp : E2[u]) G[u].emplace_back(kvp.first,kvp.second);
-  dijkstra(5, 0);
-  
-  vector<int> dresExpected = { 0,8,9,5,7 };
-  for(int u=0; u<5; ++u) assert(dresExpected[u]==D[u]);
   
   // Strongly connected component test
   // CLRS Figure 22.9
@@ -900,6 +915,7 @@ int main(int argc, char const *argv[]) {
   vector<int> cycleFreeNodes={2,4,5,6};
   assertVec(gc.findCycleFreeNodes(), cycleFreeNodes);
   
+  test_dijkstra();
   test_maxindependentset();
 }
 
