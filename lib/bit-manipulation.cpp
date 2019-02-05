@@ -3,6 +3,8 @@
 #include <cassert>
 using namespace std;
 
+// $ g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address bit-manipulation.cpp && ./a.out
+
 int f[1<<20];
 
 /*
@@ -32,8 +34,10 @@ int f[1<<20];
  
  Used problems:
   - https://github.com/k-ori/atcoder/blob/master/solutions/OrPlusMax.cpp#L115
+  - https://github.com/hiroshi-maybe/leetcode/blob/master/982-triples-with-bitwise-and-equal-to-zero/triples-with-bitwise-and-equal-to-zero.cpp#L62
  
  */
+// g(S)=∑f(T):S⊆T
 void ztransform_superset(int N) {
   for(int i=0; i<N; ++i) {
     for(int T=0; T<(1<<N); ++T) {
@@ -41,11 +45,29 @@ void ztransform_superset(int N) {
     }
   }
 }
+// g(S)=∑f(T):T⊆S
 void ztransform_subset(int N) {
   for(int i=0; i<N; ++i) {
     for(int T=0; T<(1<<N); ++T) {
       if ((T>>i)&1) f[T]+=f[T^(1<<i)];
     }
+  }
+}
+
+void test_ztransform() {
+  {
+    int N=3;
+    for(int i=0; i<(1<<N); ++i) f[i]=i;
+    ztransform_superset(N);
+    vector<int> exp1 = {28,16,18,10,22,12,13,7};
+    for(int i=0; i<(1<<N); ++i) assert(f[i]==exp1[i]);
+  }
+  {
+    int N=3;
+    for(int i=0; i<(1<<N); ++i) f[i]=i;
+    ztransform_subset(N);
+    vector<int> exp2 = {0,1,2,6,4,10,12,28};
+    for(int i=0; i<(1<<N); ++i) assert(f[i]==exp2[i]);
   }
 }
 
@@ -131,17 +153,8 @@ long long bin2n(string s) {
 /***********************   test code below   ***********************/
 
 int main(int argc, char const *argv[]) {
-  int N=3;
-  for(int i=0; i<(1<<N); ++i) f[i]=i;
-  ztransform_superset(N);
-  vector<int> exp1 = {28,16,18,10,22,12,13,7};
-  for(int i=0; i<(1<<N); ++i) assert(f[i]==exp1[i]);
+  test_ztransform();
   
-  for(int i=0; i<(1<<N); ++i) f[i]=i;
-  ztransform_subset(N);
-  vector<int> exp2 = {0,1,2,6,4,10,12,28};
-  for(int i=0; i<(1<<N); ++i) assert(f[i]==exp2[i]);
-
   vector<int> exp3 = {26, 24, 18, 16, 10, 8, 2};
   vector<int> S = submasks(26);
   assert(S.size()==exp3.size());
