@@ -25,19 +25,20 @@ using namespace std;
  Used problem(s):
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/SplitTheTree.cpp#L117
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L219 (LCA)
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Tree.cpp#L165 (LCA)
  
  */
 struct BinaryLifting {
 public:
   vector<vector<int>> G;
   int V,root;
-  int H;
+  int H,t=0;
   vector<vector<int>> P; // parent P[bits][vertices], bits=floor(lg N)+1
   vector<int> D; // depth for LCA query D[vertices]
-  
+  vector<int> L,R; // timestamp of Euler tree
+  BinaryLifting() {}
   BinaryLifting(int root, int V) : V(V), root(root) {
     G=vector<vector<int>>(V);
-    D=vector<int>(V,0);
   }
   void addEdge(int u, int v) {
     G[u].push_back(v);
@@ -45,9 +46,9 @@ public:
   }
   BinaryLifting(int root, vector<vector<int>> &G) : G(G), root(root) {
     V=G.size();
-    D=vector<int>(V,0);
   }
   void buildLiftingTable() {
+    D=vector<int>(V,0),L=vector<int>(V,0),R=vector<int>(V,0);
     H=1;
     while((1<<H)<=V) ++H;
     P=vector<vector<int>>(H,vector<int>(V,-1));
@@ -78,10 +79,9 @@ public:
 private:
   void dfs(int u, int par, int d) {
     P[0][u]=par;
-    D[u]=d;
-    for(int v : G[u]) if(v!=par) {
-      dfs(v,u,d+1);
-    }
+    D[u]=d,L[u]=t++;
+    for(int v : G[u]) if(v!=par) dfs(v,u,d+1);
+    R[u]=t++;
   }
 };
 

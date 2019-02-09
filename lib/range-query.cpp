@@ -67,17 +67,14 @@ public:
     this->Tree=vector<Node>(2*n,Node::IDE);
     this->N__=n;
   }
-  
   // Initialize tree with `ns`
   void build(const vector<Node> &ns) {
     buildTree(ns,0,0,N__);
   }
-  
   // Update k-th (0-indexed) value
   void update(int i, const Node &x) {
     updateTree(i,x,0,0,N__);
   }
-  
   // query in range [L,R)
   Node query(int L, int R) {
     return queryTree(L,R,0,0,N__);
@@ -88,31 +85,24 @@ private:
       if(l<ns.size()) Tree[i]=ns[l];
       return;
     }
-    
     int mid=l+(r-l)/2;
     buildTree(ns,2*i+1,  l,mid); // left child
     buildTree(ns,2*i+2,mid,  r); // right child
-    
     Tree[i]=merge(Tree[2*i+1],Tree[2*i+2]);
   }
-  
   void updateTree(int p, const Node &x, int i, int l, int r) {
     if (l==r-1) { Tree[i]=x; return; }
-    
     int mid=l+(r-l)/2;
     if(p<mid) updateTree(p,x,2*i+1,  l,mid);
     else      updateTree(p,x,2*i+2,mid,  r);
-    
     Tree[i]=merge(Tree[2*i+1],Tree[2*i+2]);
   }
   
   Node queryTree(int L, int R, int i, int l, int r) {
     // out of range
     if (r<=L||R<=l) return Node::IDE;
-    
     // all covered
     if (L<=l&&r<=R) return Tree[i];
-    
     // partially covered
     int mid=l+(r-l)/2;
     Node a=queryTree(L,R,2*i+1,  l,mid);
@@ -242,49 +232,39 @@ void test_rmq() {
   - https://github.com/k-ori/codeforces/blob/master/solutions/PetrAndPermutations.cpp#L90
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/PetyaAndArray.cpp#L89
    - sparse frequency query by coordinate compression
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Tree.cpp#L222
+   - prefix sum in Eler tour tree
  
  */
 struct BIT {
 public:
   int N;
   vector<int> T;
-  BIT(int N): N(N) {
-    T=vector<int>(N+1,0);
-  }
-  
+  BIT() {}
+  BIT(int N): N(N) { T=vector<int>(N+1,0); }
   // query in [0,r] : ∑ { sum[i] : i=0..r }
   int query(int r) {
     ++r; // 0-based index to 1-based index
     int res=0;
-    while(r>0) {
-      res+=T[r];
-      r-=lsone(r);
-    }
+    while(r>0) res+=T[r],r-=lsone(r);
     return res;
   }
-  
   // query ∑ { sum[i] : i=l..r }
   int query(int l, int r) {
     assert(l<=r&&0<=l&&r<N);
     return query(r)-query(l-1);
   }
-  
   // sum[i]+=x
   void add(int i, int x) {
     assert(0<=i&&i<N);
     ++i; // 0-based index to 1-based index
-    while(i<=N) {
-      T[i]+=x;
-      i+=lsone(i);
-    }
+    while(i<=N) T[i]+=x,i+=lsone(i);
   }
-  
   // sum[i]=x
   void update(int i, int x) {
     int v1=query(i)-query(i-1);
     add(i,x-v1);
   }
-  
   // compute total inversions
   int inversions(vector<int> ns) {
     int N=ns.size(),res=0;
