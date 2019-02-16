@@ -234,68 +234,95 @@ void test_rmq() {
    - sparse frequency query by coordinate compression
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Tree.cpp#L222
    - prefix sum in Eler tour tree
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/LunarNewYearAndFoodOrdering.cpp#L48
  
  */
-struct BIT {
+template <typename T> struct BIT {
 public:
   int N;
-  vector<int> T;
+  vector<T> A;
   BIT() {}
-  BIT(int N): N(N) { T=vector<int>(N+1,0); }
-  // query in [0,r] : ∑ { sum[i] : i=0..r }
-  int query(int r) {
-    ++r; // 0-based index to 1-based index
-    int res=0;
-    while(r>0) res+=T[r],r-=lsone(r);
-    return res;
+  BIT(int N) { init(N); }
+  void init(int N) {
+    this->N=N;
+    A=vector<T>(N+1,0);
   }
-  // query ∑ { sum[i] : i=l..r }
-  int query(int l, int r) {
-    assert(l<=r&&0<=l&&r<N);
-    return query(r)-query(l-1);
+  // query ∑ { sum[i] : i=l..<r }
+  T query(int l, int r) {
+    assert(l<=r&&0<=l&&r<=N);
+    return query(r)-query(l);
+  }
+  // min index s.t. dat[0..i]>x
+  int upperbound(T x) {
+    int good=N+1,bad=0;
+    while(abs(good-bad)>1) {
+      int m=(good+bad)/2;
+      (query(m)>x?good:bad)=m;
+    }
+    return good-1;
   }
   // sum[i]+=x
-  void add(int i, int x) {
+  void add(int i, T x) {
     assert(0<=i&&i<N);
-    ++i; // 0-based index to 1-based index
-    while(i<=N) T[i]+=x,i+=lsone(i);
+    ++i;
+    while(i<=N) A[i]+=x,i+=lsone(i);
   }
   // sum[i]=x
-  void update(int i, int x) {
-    int v1=query(i)-query(i-1);
-    add(i,x-v1);
-  }
-  // compute total inversions
-  int inversions(vector<int> ns) {
-    int N=ns.size(),res=0;
-    for(int i=N-1; i>=0; --i) {
-      // Count elements which stays in right side and smaller
-      res+=query(ns[i]-1);
-      add(ns[i],1);
-    }
-    return res;
+  void update(int i, T v) {
+    T pre=query(i+1)-query(i);
+    add(i,v-pre);
   }
 private:
   int lsone(int i) { return i&-i; }
+  // query in [0,r) : ∑ { sum[i] : i=0..r-1 }
+  T query(int r) {
+    assert(0<=r&&r<=N);
+    T res=0;
+    while(r>0) res+=A[r],r-=lsone(r);
+    return res;
+  }
 };
+
+// compute inversions
+vector<int> inversions(vector<int> ns) {
+  int maxv=*max_element(ns.begin(),ns.end());
+  BIT<int> bit(maxv+1);
+  int N=ns.size();
+  vector<int> res(N);
+  for(int i=N-1; i>=0; --i) {
+    // Count elements which stays in right side and smaller
+    res[i]=bit.query(0,ns[i]);
+    bit.add(ns[i],1);
+  }
+  return res;
+}
 
 void test_bit() {
   vector<int> ns={2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
   
   // Range sum query
-  int N=ns.size();
-  BIT f(N);
-  for(int i=0; i<N; ++i) f.add(i,ns[i]);
-  assert(f.query(2)==4); // ∑{ns[0..2]}
-  assert(f.query(3)==7); // ∑{ns[0..3]}
-  f.add(3,6);
-  assert(f.query(2)==4);
-  assert(f.query(3)==13);
+  {
+    int N=ns.size();
+    BIT<int> f(N);
+    for(int i=0; i<N; ++i) f.add(i,ns[i]);
+    assert(f.query(0,3)==4); // ∑{ns[0..2]}
+    assert(f.query(0,4)==7); // ∑{ns[0..3]}
+    
+    assert(f.upperbound(0)==0);
+    assert(f.upperbound(2)==1);
+    assert(f.upperbound(51)==12);
+    assert(f.upperbound(50)==11);
+
+    f.add(3,6);
+    assert(f.query(2,3)==1);
+    assert(f.query(0,4)==13);
+  }
   
   // Inversion
-  int V=*max_element(ns.begin(),ns.end());
-  f=BIT(V+1);
-  assert(f.inversions(ns)==3);
+  {
+    vector<int> exp={2,0,0,1,0,0,0,0,0,0,0,0};
+    assert(inversions(ns)==exp);
+  }
 }
 
 /*
