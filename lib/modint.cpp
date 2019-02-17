@@ -1,6 +1,8 @@
 #include <iostream>
 #include <map>
 #include <cassert>
+#include <unordered_map>
+#include <math.h>
 using namespace std;
 
 const int MOD=1e9+7;
@@ -38,6 +40,46 @@ struct ModInt {
   bool operator!=(ModInt that) const { return val!=that.val; }
   friend ostream& operator<<(ostream& os, const ModInt& that) { return os<<that.val; }
 };
+
+/*
+ 
+ Compute minimum log_{a}(b) (mod M) in O(sqrt(M)) time, O(√M*lg M) time
+ 
+  - result is `0` if b=1
+  - Baby-step, Giant-step and meet-in-the-middle
+  - a^x≡b (mod M), x=√M*p-q
+   - `p` is giant-step, `q` is baby-step
+ 
+     a^x≡b (mod M)
+ <=> a^(√M*p-q)≡b (mod M)
+ <=> a^(√M*p)≡b*a^q (mod M)
+ <=> f1(p)≡f2(q) (mod M) where f1(p)=a^(√M*p), f2(q)=b*a^q
+ 
+ Find (p,q) which satisfies f1(p)≡f2(q) (mod M)
+ 
+ References:
+  - https://cp-algorithms.com/algebra/discrete-log.html
+  - https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a#6-%E9%9B%A2%E6%95%A3%E5%AF%BE%E6%95%B0-log_a-b
+  - https://en.wikipedia.org/wiki/Baby-step_giant-step
+ 
+ */
+int modlog(int a, int b) {
+  int sqrtM=(int)sqrt(MOD+.0)+1;
+  ModInt ga=ModInt(a).pow(sqrtM);
+  unordered_map<int, int> G;
+  ModInt cur=ModInt(ga);
+  for(int p=1; p<=sqrtM; ++p) {
+    if(!G.count(cur.val)) G[cur.val]=p;
+    cur*=ga;
+  }
+  int res=MOD+10;
+  cur=ModInt(b);
+  for(int q=0; q<=sqrtM; ++q) {
+    if(G.count(cur.val)) res=min(res,G[cur.val]*sqrtM-q);
+    cur*=ModInt(a);
+  }
+  return res>MOD?-1:res;
+}
 
 void test_modint() {
   map<long long, unsigned int> inittests{
@@ -91,7 +133,29 @@ void test_modint() {
   assert(ModInt(0)!=ModInt(1000000008));
 }
 
+void test_modlog() {
+  // from https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a#6-%E9%9B%A2%E6%95%A3%E5%AF%BE%E6%95%B0-log_a-b
+  int log_[9][10]={
+    {0,1,385273928,2,-1,385273929,384931854,3,270547853,-1 },
+    {0,316884446,1,133768889,-1,316884447,70669385,450653335,2,-1 },
+    {0,250000002,192636964,1,-1,442636966,192465927,250000003,385273928,-1 },
+    {0,381838282,884237698,763676564,1,266075974,936544532,145514840,768475390,381838283 },
+    {0,367158949,132841055,234317895,-1,1,103274402,101476841,265682110,-1 },
+    {0,91517237,167141706,183034474,-1,258658943,1,274551711,334283412,-1 },
+    {0,166666668,461757978,333333336,-1,128424643,128310618,1,423515953,-1 },
+    {0,158442223,250000002,316884446,-1,408442225,285334694,475326669,1,-1 },
+    {0,323655130,504275348,647310260,676344877,827930478,500000012,970965390,8550690,1 },
+  };
+
+  for (long long a = 2; a <= 10; ++a) {
+    for (long long b = 1; b <= 10; ++b) {
+      assert(modlog(a,b)==log_[a-2][b-1]);
+    }
+  }
+}
+
 int main(int argc, char const *argv[]) {
   test_modint();
+  test_modlog();
 }
 // $ g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address modint.cpp && ./a.out
