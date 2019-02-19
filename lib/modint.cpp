@@ -1,4 +1,7 @@
 #include <iostream>
+#include <iterator>
+#include <sstream>
+#include <functional>
 #include <vector>
 #include <map>
 #include <cassert>
@@ -6,7 +9,24 @@
 #include <math.h>
 using namespace std;
 
-const int MOD=1e9+7;
+// debug cerr
+template<class Iter> void __kumaerrc(Iter begin, Iter end) { for(; begin!=end; ++begin) { cerr<<*begin<<','; } cerr<<endl; }
+void __kumaerr(istream_iterator<string> it) { (void)it; cerr<<endl; }
+template<typename T, typename... Args> void __kumaerr(istream_iterator<string> it, T a, Args... args) { cerr<<*it<<"="<<a<<", ",__kumaerr(++it, args...); }
+template<typename S, typename T> std::ostream& operator<<(std::ostream& _os, const std::pair<S,T>& _p) { return _os<<"{"<<_p.first<<','<<_p.second<<"}"; }
+#define __KUMATRACE__ true
+#ifdef __KUMATRACE__
+#define dump(args...) { string _s = #args; replace(_s.begin(), _s.end(), ',', ' '); stringstream _ss(_s); istream_iterator<string> _it(_ss); __kumaerr(_it, args); }
+#define dumpc(ar) { cerr<<#ar<<": "; FORR(x,(ar)) { cerr << x << ','; } cerr << endl; }
+#define dumpC(beg,end) { cerr<<"~"<<#end<<": "; __kumaerrc(beg,end); }
+#else
+#define dump(args...)
+#define dumpc(ar)
+#define dumpC(beg,end)
+#endif
+
+const int MOD=1000000007;
+//const int MOD=998244353;
 struct ModInt {
   unsigned int val;
   ModInt(): val(0) {}
@@ -116,22 +136,35 @@ void test_modint() {
   - https://en.wikipedia.org/wiki/Baby-step_giant-step
  
  */
-int modlog(int a, int b) {
+int powmod(int _a, int b, int MOD) {
+  long long a=_a;
+  long long res=1;
+  for(int mask=1; mask<=b; mask<<=1) {
+    if(b&mask) res*=a,res%=MOD;
+    a*=a,a%=MOD;
+  }
+  return (int)res;
+}
+int modlog(int a, int b, int MOD) {
   int sqrtM=(int)sqrt(MOD+.0)+1;
-  ModInt ga=ModInt(a).pow(sqrtM);
+  long long ga=powmod(a,sqrtM,MOD);
   unordered_map<int, int> G;
-  ModInt cur=ModInt(ga);
+  long long cur=ga;
   for(int p=1; p<=sqrtM; ++p) {
-    if(!G.count(cur.val)) G[cur.val]=p;
-    cur*=ga;
+    if(!G.count(cur)) G[cur]=p;
+    cur=cur*ga%MOD;
   }
   int res=MOD+10;
-  cur=ModInt(b);
+  cur=b;
   for(int q=0; q<=sqrtM; ++q) {
-    if(G.count(cur.val)) res=min(res,G[cur.val]*sqrtM-q);
-    cur*=ModInt(a);
+    if(G.count(cur)) {
+      res=min(res,G[cur]*sqrtM-q);
+    }
+    cur=cur*a%MOD;
   }
-  return res>MOD?-1:res;
+  if(res>MOD) res=-1;
+  if(res>=0) assert(powmod(a,res,MOD)==b);
+  return res;
 }
 
 void test_modlog() {
@@ -150,14 +183,16 @@ void test_modlog() {
   
   for (long long a = 2; a <= 10; ++a) {
     for (long long b = 1; b <= 10; ++b) {
-      assert(modlog(a,b)==log_[a-2][b-1]);
+      assert(modlog(a,b,1000000007)==log_[a-2][b-1]);
     }
   }
+  // no `x` s.t. a^x=0
+  assert(modlog(123,0,MOD)==-1);
 }
 
 /*
  
- Compute minimum discrete root √_{k}(a) (mod M) in O(res*log^2(n)+√M*lg M) time
+ Compute one of minimum discrete root √_{k}(a) (mod M) in O(res*log^2(n)+√M*lg M) time
  
  - Reduce to discrete logarithm problem
  - x^k≡a (mod M)
@@ -180,6 +215,7 @@ void test_modlog() {
  
  References:
   - https://cp-algorithms.com/algebra/discrete-root.html
+   - code is broken
   - http://kmjp.hatenablog.jp/entry/2019/02/01/0930
   - https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a#7-%E5%B9%B3%E6%96%B9%E5%89%B0%E4%BD%99-a
   - http://kirika-comp.hatenablog.com/entry/2018/03/12/210446
@@ -195,15 +231,7 @@ int primitiveroot(int M) {
     if(n!=1) res=res/n*(n-1);
     return res;
   };
-  auto powmod=[&](int a, int b, int MOD)->int {
-    int res=1;
-    for(int mask=1; mask<=b; mask<<=1) {
-      if(b&mask) res*=a,res%=MOD;
-      a*=a,a%=MOD;
-    }
-    return res;
-  };
-  
+
   vector<int> P;
   int phi=totient(M),n=phi;
   for(int i=2; i*i<=n; ++i) if(n%i==0) {
@@ -218,14 +246,45 @@ int primitiveroot(int M) {
   }
   return -1;
 }
-int modroot(int a, int b) {
-  return -1;
+int modroot(int k, int a, int MOD) {
+  if(a==0) return 0;
+  function<int(int,int)> gcd=[&](int a, int b)->int { return b==0?a:gcd(b,a%b); };
+  int g=primitiveroot(MOD);
+  int y=modlog(powmod(g,k,MOD),a,MOD);
+  if(y==-1) return -1;
+
+  assert(powmod(powmod(g,y,MOD),k,MOD)==a);
+  int x=powmod(g,y,MOD);
+  assert(powmod(x,k,MOD)==a);
+  
+  return x;
+  /*
+  cout<<x<<endl;
+  int delta=(MOD-1)/gcd(k,MOD-1);
+  vector<int> res;
+  for(int cur=x%delta; cur<MOD-1; cur+=delta) res.push_back(powmod(g,cur,MOD));
+  sort(res.begin(),res.end());
+  return res;*/
 }
 
 void test_modroot() {
-  cout<<primitiveroot(1000000007)<<endl;
-  assert(primitiveroot(1000000007)==5);
-  assert(primitiveroot(998244353)==3);
+  {
+    // primitive root
+    assert(primitiveroot(1000000007)==5);
+    assert(primitiveroot(998244353)==3);
+  }
+  
+  {
+    assert(modroot(123456,0,998244353)==0);
+    assert(modroot(123456,789,998244353)==-1);
+    assert(modroot(123,456,998244353)==816683442);
+    assert(modroot(12345,6789,998244353)==150873265);
+
+    assert(modroot(123456,0,1000000007)==0);
+    assert(modroot(123456,789,1000000007)==-1);
+    assert(modroot(123,456,1000000007)==169072236);
+    assert(modroot(12345,6789,1000000007)==540590301);
+  }
 }
 
 int main(int argc, char const *argv[]) {
