@@ -201,7 +201,7 @@ void test_modlog() {
  
  https://cp-algorithms.com/algebra/primitive-root.html
  
- find `g`∈{1,..,M} s.t. f[i] is distinct where f[i] = g^(𝜙(n)/p_i)
+ find `g`∈{1,..,M} s.t. f[i] is distinct where f[i] = g^(𝜑(n)/p_i)
  
  2. compute discrete logarithm of (g^k)^y ≡ a (mod M)
  
@@ -219,6 +219,9 @@ void test_modlog() {
   - http://kmjp.hatenablog.jp/entry/2019/02/01/0930
   - https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a#7-%E5%B9%B3%E6%96%B9%E5%89%B0%E4%BD%99-a
   - http://kirika-comp.hatenablog.com/entry/2018/03/12/210446
+ 
+ Used problem:
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/LunarNewYearAndARecursiveSequence.cpp#L260
  
  */
 int primitiveroot(int M) {
