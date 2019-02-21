@@ -78,7 +78,11 @@ vector<int> sieve(int N) {
    - highly composite number: http://wwwhomes.uni-bielefeld.de/achim/highly.txt
    - HCN(10^9)≈1440, HCN(10^6)≈256
   - result is sorted
- 
+
+ HCN(10^1) = 4 (6)
+ HCN(10^2) = 12 (60)
+ HCN(10^3) = 32 (840)
+ HCN(10^4) = 64 (7560)
  HCN(10^5) = 128 (83160)
  HCN(10^6) = 240 (720720)
  HCN(10^7) = 448 (8648640)
@@ -131,6 +135,11 @@ vector<LL> divisors(LL N) {
    - https://oeis.org/A001221
 
  𝜔'(n) = max { 𝜔(x) : 1<=x<=n }
+ 𝜔'(10^1) = 2, n=        6, prime factors = {2,3}
+ 𝜔'(10^2) = 3, n=       30, prime factors = {2,3,5}
+ 𝜔'(10^3) = 4, n=      210, prime factors = {2,3,5,7}
+ 𝜔'(10^4) = 5, n=     2310, prime factors = {2,3,5,7,11}
+ 𝜔'(10^5) = 6, n=    30030, prime factors = {2,3,5,7,11,13}
  𝜔'(10^6) = 7, n=   510510, prime factors = {2,3,5,7,11,13,17}
  𝜔'(10^7) = 8, n=  9699690, prime factors = {2,3,5,7,11,13,17,19}
  𝜔'(10^9) = 9, n=223092870, prime factors = {2,3,5,7,11,13,17,19,23}
