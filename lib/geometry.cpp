@@ -29,7 +29,8 @@ public:
   bool operator>(Point that) const { return pair<int,int>(x,y)>pair<int,int>(that.x,that.y); }
   bool operator<=(Point that) const { return Point(*this)==that||Point(*this)<that; }
   bool operator>=(Point that) const { return Point(*this)==that||Point(*this)>that; }
-  
+  friend std::ostream& operator<<(std::ostream& _os, const Point& _p) { return _os<<"{"<<_p.x<<','<<_p.y<<"}"; }
+  // sqrt(distance()) is definition
   long long distance() {
     return x*x + y*y;
   }
@@ -52,50 +53,50 @@ public:
 
  */
 long long det(Point u, Point v) {
-  return u.x*v.y - u.y*v.x;
+  return (long long)u.x*v.y - (long long)u.y*v.x;
 }
 /*
  
  cross product det (o->p1, o->p2)
  
- 1) det(p1,p2,o) = 0
+ 1) det(o,p1,p2) = 0
   o, p1 and p2 are co-linear (o->p1 is colinear with o->p2)
- 2) det(p1,p2,o) > 0
-  p1->p2->o is counter-clockwise order
-  (o->p1 is clockwise from o->p2)
- 3) det(p1,p2,o) < 0
-  p1->p2->o is clockwise order
-  (o->p1 is counter clockwise from o->p2)
+ 2) det(o,p1,p2) > 0
+  o->p2 is counter-clockwise from o->p1
+  (p1->p2->o is counter-clockwise order)
+ 3) det(o,p1,p2) < 0
+  o->p2 is clockwise from o->p1
+  (p1->p2->o is clockwise order)
  
  */
-long long det(Point p1, Point p2, Point origin) {
+long long det(Point origin, Point p1, Point p2) {
   return det(p1-origin, p2-origin);
 }
 long long dot(Point u, Point v) {
-  return u.x*v.x + u.y*v.y;
+  return (long long)u.x*v.x + (long long)u.y*v.y;
 }
 // CLRS 33.1
-// true: org->p1 is clockwise against org->p2
-bool isClockwise(Point p1, Point p2, Point origin) {
-  return det(p1, p2, origin)>0;
+// true: org->p2 is clockwise from org->p1
+bool isClockwise(Point origin, Point p1, Point p2) {
+  return det(origin, p1, p2)<0;
 }
-bool isCounterClockwise(Point p1, Point p2, Point origin) {
-  return det(p1, p2, origin)<0;
+bool isCounterClockwise(Point origin, Point p1, Point p2) {
+  return det(origin, p1, p2)>0;
 }
 // CLRS 33.1
 // org->p1 and org->p2 form same direction or opposite direction
-bool isColinear(Point p1, Point p2, Point origin) {
-  return det(p1, p2, origin)==0;
+bool isColinear(Point origin, Point p1, Point p2) {
+  return det(origin, p1, p2)==0;
 }
 // CLRS 33.1
 // true: p1->p2 is left turn for origin
-bool isLeftTurn(Point p1, Point p2, Point origin) {
-  return isClockwise(p1,p2,origin);
+bool isLeftTurn(Point origin, Point p1, Point p2) {
+  return isCounterClockwise(origin,p1,p2);
 }
 // CLRS 33.1
 // true: p1->p2 is right turn for origin
-bool isRightTurn(Point p1, Point p2, Point origin) {
-  return isCounterClockwise(p1,p2,origin);
+bool isRightTurn(Point origin, Point p1, Point p2) {
+  return isClockwise(origin,p1,p2);
 }
 // 90 degree
 bool isVertical(Point u, Point v) {
@@ -112,10 +113,10 @@ bool onSegment(Point p1, Point p2, Point q) {
 // CLRS 33.1 SEGMENTS-INTERSECT(p1,p2,p3,p4)
 // p1->p2 intersects p3->p4
 bool intersect(Point p1, Point p2, Point p3, Point p4) {
-  long long d1 = det(p3,p4,p1),
-  d2 = det(p3,p4,p2),
-  d3 = det(p1,p2,p3),
-  d4 = det(p1,p2,p4);
+  long long d1 = det(p1,p3,p4),
+  d2 = det(p2,p3,p4),
+  d3 = det(p3,p1,p2),
+  d4 = det(p4,p1,p2);
   
   if (((d1>0&&d2<0)||(d1<0&&d2>0)) && ((d3>0&&d4<0)||(d3<0&&d4>0))) return true;
   if (d1==0 && onSegment(p3,p4,p1)) return true;
@@ -154,11 +155,11 @@ void test_point() {
   Point origin(0,0), p1(1,0), p2(0,1), p3(-1,0), p4(0,-1);
   
   assert(isVertical(Point(p1,origin),Point(p2,origin)));
-  assert(isClockwise(p1, p2, origin));
-  assert(isCounterClockwise(p2, p1, origin));
-  assert(isColinear(p1, p3, origin));
-  assert(isLeftTurn(p1, p2, origin));
-  assert(isRightTurn(p2, p1, origin));
+  assert(isClockwise(origin, p2, p1));
+  assert(isCounterClockwise(origin, p1, p2));
+  assert(isColinear(origin, p1, p3));
+  assert(isLeftTurn(origin, p1, p2));
+  assert(isRightTurn(origin, p2, p1));
   assert(intersect(p1, p4, p2, p4));
 }
 
@@ -166,11 +167,13 @@ void test_point() {
  
  Compute area of parallelogram formed by p1, p2 and origin
  
- A = det(p1,p2,origin)
+ A = det(o,p1,p2)
+ 
+ 0.5*area() is an area of (o,p1,p2) triangle
  
  */
 long long area(Point p1, Point p2, Point origin) {
-  return abs(det(p1,p2,origin));
+  return abs(det(origin,p1,p2));
 }
 
 // CLRS 33.3 GRAHAM-SCAN(Q)
@@ -179,7 +182,7 @@ long long area(Point p1, Point p2, Point origin) {
 // smaller scalar comes first for tie
 void sortByPolarAngle(vector<Point>& ps, Point origin) {
   sort(ps.begin(), ps.end(), [&](const Point &a, const Point &b) {
-    int d = det(a,b,origin);
+    int d = det(origin,a,b);
     if(d!=0) return d > 0;
     return Point(a,origin).distance() < Point(b,origin).distance();
   });
@@ -201,7 +204,7 @@ vector<Point> findConvexHull(vector<Point> ps) {
   // remove all but furthest point if points have same angle
   int N=1;
   for (int i=1; i<ps.size(); ++i) {
-    while(i<ps.size()-1&&isColinear(ps[i],ps[i+1],p0)) ++i;
+    while(i<ps.size()-1&&isColinear(p0, ps[i],ps[i+1])) ++i;
     ps[N++] = ps[i];
   }
 
@@ -214,7 +217,7 @@ vector<Point> findConvexHull(vector<Point> ps) {
   S[si] = ps[2];
 
   for(int i=3; i<N; ++i) {
-    while(!isLeftTurn(S[si],ps[i],S[si-1])) --si;
+    while(!isLeftTurn(S[si-1],S[si],ps[i])) --si;
     S[++si] = ps[i];
   }
   S.erase(S.begin()+si+1, S.end());
@@ -229,7 +232,7 @@ bool surrounded(Point p, vector<Point>& ps) {
   vector<int> ds;
   int N=ps.size();
   for(int i=0; i<N; ++i) {
-    int d = det(ps[i], ps[(i+1)%N], p);
+    int d = det(p, ps[i], ps[(i+1)%N]);
     if(d==0) continue; // ignore colinear points or p is on segment
     d = d<0;
     if(ds.size() && ds.back()!=d) return false;
