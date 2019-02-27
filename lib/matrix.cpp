@@ -33,6 +33,9 @@ template<typename S, typename T> std::ostream& operator<<(std::ostream& _os, con
  
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/LunarNewYearAndARecursiveSequence.cpp#L123
+   - matrix power
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/MagicGems.cpp#L73
+   - matrix power
  
  */
 template <typename T> struct MX {
@@ -56,7 +59,6 @@ template <typename T> struct MX {
   MX<T> operator * (const T &k) const { return MX<T>(*this)*=k; }
   bool operator==(MX<T> that) const { return dat==that.dat; }
   bool operator!=(MX<T> that) const { return dat!=that.dat; }
-
   // res = A^n, O(N^3*lg n) time
   MX<T> pow (long long n) const {
     assert(N==M);
@@ -70,12 +72,7 @@ template <typename T> struct MX {
   }
   void debug() {
     cerr<<N<<"x"<<M<<endl;
-    for(int i=0; i<N; ++i) {
-      for(int j=0; j<M; ++j) {
-        cerr<<dat[i][j]<<",";
-      }
-      cerr<<endl;
-    }
+    for(int i=0; i<N; ++i) for(int j=0; j<M; ++j) cerr<<dat[i][j]<<",\n"[j==M-1];
   }
 private:
   // O(N^2) time
@@ -83,11 +80,7 @@ private:
     assert(A.size()==B.size()&&A[0].size()==B[0].size());
     int N=A.size(),M=A[0].size();
     vector<vector<T>> res=vector<vector<T>>(N,vector<T>(M));
-    for(int i=0; i<N; ++i) {
-      for(int j=0; j<M; ++j) {
-        res[i][j]=A[i][j]+B[i][j];
-      }
-    }
+    for(int i=0; i<N; ++i) for(int j=0; j<M; ++j) res[i][j]=A[i][j]+B[i][j];
     return res;
   }
   // O(N^3) time
@@ -95,23 +88,13 @@ private:
     assert(A[0].size()==B.size());
     int NN=A.size(),MM=B[0].size(),L=A[0].size();
     vector<vector<T>> res=vector<vector<T>>(NN,vector<T>(MM));
-    for(int i=0; i<NN; ++i) {
-      for(int j=0; j<MM; ++j) {
-        for(int k=0; k<L; ++k) {
-          res[i][j]+=A[i][k]*B[k][j];
-        }
-      }
-    }
+    for(int i=0; i<NN; ++i) for(int j=0; j<MM; ++j) for(int k=0; k<L; ++k) res[i][j]+=A[i][k]*B[k][j];
     return res;
   }
   vector<vector<T>> mult(vector<vector<T>> &A, T k) {
     int N=A.size(),M=A[0].size();
     vector<vector<T>> res=vector<vector<T>>(N,vector<T>(M));
-    for(int i=0; i<N; ++i) {
-      for(int j=0; j<M; ++j) {
-        res[i][j]=k*A[i][j];
-      }
-    }
+    for(int i=0; i<N; ++i) for(int j=0; j<M; ++j) res[i][j]=k*A[i][j];
     return res;
   }
 };
@@ -209,3 +192,5 @@ int main(int argc, char const *argv[]) {
   test_mx();
   test_modmx();
 }
+
+// g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address matrix.cpp && ./a.out
