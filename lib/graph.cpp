@@ -335,29 +335,33 @@ private:
 
 /**
  
- Find Eulerian cycle, O(V+E) time
+ Find Eulerian path (cycle), O(V+E) time
  
- Hierholzer's algorithm
+  - Hierholzer's algorithm for directed/undirected graph
+  - Pre-check degree of graph so that we can really make Eulerian path (cycle)
+ 
+ Used problems:
+  - https://github.com/hiroshi-maybe/topcoder/blob/master/solutions/HalfGraph/HalfGraph.cpp#L93
  
  Usage:
  
  ```
- EC ec(V);
+ DirectedEulereanPath ec(V);
  ec.edge(u1,v1); ec.edge(u2,v2); ...
- vector<int> p = ec.solve()
+ vector<int> p = ec.solve(0);
  ```
  
  */
-struct EC {
+struct DirectedEulereanPath {
 public:
   // input
   int V;
-  vector<vector<int>> G;
-  vector<int> viz; // pointer to next edge to be visited
-  EC(int V): V(V), G(V), viz(V) {}
+  vector<multiset<int>> G;
+  DirectedEulereanPath() {}
+  DirectedEulereanPath(int V): V(V), G(V) {}
   void edge(int u, int v) {
     assert(u<V&&v<V);
-    G[u].push_back(v);
+    G[u].emplace(v);
   }
   vector<int> solve(int u) {
     vector<int> res;
@@ -366,13 +370,69 @@ public:
   }
 private:
   void dfs(int u, vector<int> &res) {
-    while(viz[u]<G[u].size()) {
-      int v=G[u][viz[u]++];
+    while(G[u].size()>0) {
+      auto it=G[u].begin();
+      int v=*it;
+      G[u].erase(it);
       dfs(v,res);
     }
     res.push_back(u);
   }
 };
+struct UndirectedEulereanPath {
+public:
+  // input
+  int V;
+  vector<multiset<int>> G;
+  UndirectedEulereanPath() {}
+  UndirectedEulereanPath(int V): V(V), G(V) {}
+  void edge(int u, int v) {
+    assert(u<V&&v<V);
+    G[u].emplace(v),G[v].emplace(u);
+  }
+  vector<int> solve(int u) {
+    vector<int> res;
+    dfs(u,res);
+    return vector<int>(res.rbegin(),res.rend());
+  }
+private:
+  void dfs(int u, vector<int> &res) {
+    while(G[u].size()) {
+      auto it=G[u].begin();
+      int v=*it;
+      G[u].erase(it),G[v].erase(G[v].find(u));
+      dfs(v,res);
+    }
+    res.push_back(u);
+  }
+};
+
+void test_eulerianpath() {
+  {
+    DirectedEulereanPath ec(7);
+    ec.edge(0,1),ec.edge(0,6);
+    ec.edge(1,2);
+    ec.edge(2,0),ec.edge(2,3);
+    ec.edge(3,4);
+    ec.edge(4,2),ec.edge(4,5);
+    ec.edge(5,0);
+    ec.edge(6,4);
+    vector<int> cycle=ec.solve(0);
+    vector<int> cycleExpected={0,1,2,0,6,4,2,3,4,5,0};
+    assert(cycle==cycleExpected);
+  }
+  
+  {
+    UndirectedEulereanPath p(7);
+    p.edge(0,1),p.edge(0,2);
+    p.edge(1,2);
+    p.edge(2,3);
+    vector<int> path=p.solve(3);
+    vector<int> exp={3,2,0,1,2};
+    assert(path==exp);
+  }
+  
+}
 
 /*
  
@@ -874,17 +934,7 @@ int main(int argc, char const *argv[]) {
   vector<int> cid4Expected = {  };
   assertVec(scc.G_SCC[cid4], cid4Expected);
   
-  EC ec(7);
-  ec.edge(0,1),ec.edge(0,6);
-  ec.edge(1,2);
-  ec.edge(2,0),ec.edge(2,3);
-  ec.edge(3,4);
-  ec.edge(4,2),ec.edge(4,5);
-  ec.edge(5,0);
-  ec.edge(6,4);
-  vector<int> cycle=ec.solve(0);
-  vector<int> cycleExpected={0,1,2,0,6,4,2,3,4,5,0};
-  assertVec(cycle, cycleExpected);
+  test_eulerianpath();
   
   // Minimum spanning tree
   // CLRS 23.1 Growing a minimum spanning tree, Figure 23.1
@@ -919,4 +969,4 @@ int main(int argc, char const *argv[]) {
   test_maxindependentset();
 }
 
-//  g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG graph.cpp && ./a.out
+// g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address graph.cpp && ./a.out
