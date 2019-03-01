@@ -238,9 +238,10 @@ void test_findCenter() {
  
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/MinimalDiameterForest.cpp#L71
+  - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/BonsaiGrafting.cpp#L97
  
  */
-int compDiameter(vector<vector<int>> &G, int u=0) {
+int treeDiameter(vector<vector<int>> &G, int u=0) {
   int N=G.size();
   vector<int> D(N,0);
   
@@ -263,11 +264,11 @@ int compDiameter(vector<vector<int>> &G, int u=0) {
 void test_diameter() {
   // 0
   vector<vector<int>> G1={{}};
-  assert(compDiameter(G1)==0);
+  assert(treeDiameter(G1)==0);
   
   // 0-1
   vector<vector<int>> G2={{1},{0}};
-  assert(compDiameter(G2)==1);
+  assert(treeDiameter(G2)==1);
   
   vector<vector<int>> G_even={
     {1,2},
@@ -280,7 +281,7 @@ void test_diameter() {
     {5},
     {1}
   };
-  assert(compDiameter(G_even)==5);
+  assert(treeDiameter(G_even)==5);
   
   vector<vector<int>> G_odd={
     {1},
@@ -295,7 +296,7 @@ void test_diameter() {
     {4}
   };
   vector<int> exp_odd={1};
-  assert(compDiameter(G_odd)==6);
+  assert(treeDiameter(G_odd)==6);
 }
 
 /*
@@ -315,10 +316,10 @@ int genRandNum(int lb, int ub) {
 }
 vector<int> gen_tree(int N) {
   vector<int> P(N-1,0);
-  printf("%d\n",N-1);
+  printf("%d\n",N);
   for(int u=1; u<=N-1; ++u) {
     P[u-1]=genRandNum(0,u);
-    printf("%d %d\n",u,P[u-1]);
+    printf("%d %d\n",u+1,P[u-1]+1);
   }
   // parent of u+1 = P[u] (P[u]<u+1)
   return P;
@@ -342,5 +343,7 @@ int main(int argc, char const *argv[]) {
   test_findCenter();
   test_diameter();
   
-//  gen_tree(10);
+  gen_tree(100000);
 }
+
+// g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address tree.cpp && ./a.out
