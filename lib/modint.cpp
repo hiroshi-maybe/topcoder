@@ -290,9 +290,163 @@ void test_modroot() {
   }
 }
 
+/*
+ 
+ Solver of system of modular linear equations,
+ 
+  - compute (b,m) s.t. x≡b(mod m), ∀i A[i]*x ≡ B[i] (mod M[i])
+  - (0,-1) => no solution (∃i s.t. gcd(A[i],M[i]) ⧷ B[i])
+   - There is a solution of a*x≡b(mod m) only when gcd(a,m) divides b
+  - Implementtion coming from Ant book 4.1 complex math problems
+ 
+ # Proof of correctness
+ 
+ Suppose we have x[i] ≡ b[i] (mod m[i]) after solving A[i]*x[i]≡B[i](mod M[i]).
+ 
+ Thus x[i]=b[i]+m[i]*t[i]
+ 
+ We have A[i+1]*x[i]≡B[i+1](mod M[i+1]).
+ If d=gcd(A[i+1],M[i+1]), A[i+1]'*x[i]≡B[i+1]' (mod M[i+1]')
+ where A[i+1]'=A[i+1]/d, B[i+1]'=B[i+1]/d, M[i+1]'=M[i+1]/d
+ x[i] in this formula can be substituted by b[i]+m[i]*t[i]
+ 
+   A[i+1]'*x[i]≡B[i+1]' (mod M[i+1]')
+   A[i+1]'*(b[i]+m[i]*t[i])≡B[i+1]' (mod M[i+1]')
+   A[i+1]'*m[i]*t[i] ≡ B[i+1]' - A[i+1]'*b[i] (mod M[i+1]')
+   p * t[i] ≡ q (mod M[i+1]') where p=A[i+1]'*m[i], q=B[i+1]'-A[i+1]'*b[i]
+ 
+ This can be solved by mod inverse p^-1
+ t[i] ≡ p^-1*q (mod M[i+1]')
+ Now we get t[i] = M[i+1]' * t[i+1] + p^-1*q
+ 
+   x[i+1]
+   = x[i]
+   = b[i]+m[i]*t[i]
+   = b[i]+m[i]*(M[i+1]' * t[i+1] + p^-1*q)
+   = (b[i]+m[i]*p^-1*q) + (m[i]*M[i+1]')*t[i+1]
+   = b[i+1] + m[i+1] * t[i+1]
+ 
+ Thus we have recurrence relations:
+ 
+   b[i+1] = b[i] + m[i] * p^-1*q
+   m[i+1] = m[i] * M[i+1]'
+ 
+ We can recursively calculate b[i] and m[i] (base case: x[0]=0, t[0]=1) by DP.
+ 
+ Result of system of modular linear equations is (b[N], m[N]), x ≡ b[N] (mod m[N])
+ 
+ If { m[i] } is relatively prime AND ∀i a[i]==1, m[N] = ∏ M[i] by Chinese Remainder Theorem.
+ 
+ Reference:
+  - Ant book 4.1 complex math problems
+  - https://en.wikipedia.org/wiki/Chinese_remainder_theorem
+  - "CLRS 31.4 Solving modular linear equations" shows solver of single equation
+   - this solver is generalized to solve system of equations
+ 
+ # Usage
+ 
+ // x≡2(mod 3), x≡3(mod 5), x≡2(mod 7)
+ vector<int> A={1,1,1};
+ vector<int> B={2,3,2};
+ vector<int> M={3,5,7};
+ auto p = MLE.solve(A,B,M); // p.first==23, p.second==105
+ 
+ Used problems:
+  - https://github.com/k-ori/topcoder/blob/646f1e95c346aaaef68428e5825027350d4bf707/QuadraticIdentity/QuadraticIdentity.cpp#L122
+ 
+ */
+struct ModularLinearEquations {
+public:
+  ModularLinearEquations() {}
+  
+  pair<int, int> solve(const vector<int>& A, const vector<int>& B,
+                       const vector<int>& M) {
+    int b=0,m=1;
+    for(int i=0; i<A.size(); i++) {
+      int p=A[i]*m,q=B[i]-A[i]*b,d=gcd(M[i],p),mi=M[i]/d;
+      if (q%d!=0) return make_pair(0,-1); // solution not found
+      int t=(_modinv(p/d,mi)*q/d)%(mi);
+      b=b+m*t;
+      m*=mi;
+    }
+    b=(b+m)%m; // ensure that x is non-negative
+    return make_pair(b%m,m);
+  }
+  
+  /*
+   
+   compute mod inverse of n, O(lg max(a,m)) time
+   
+    - compute x s.t. a*x≡1(mod m)
+    - a and m should be co-prime (gcd(a,m)==1)
+    - from Ant book 4.1 complex math problems
+    - CLRS 31.4 Solving modular linear equations
+   
+     a*x≡1(mod m)
+     <=> ∃k, a*x=k*m+1
+     <=> a*x-k*m=1 // x can be computed by extgcd(a,m)
+   
+   Usage:
+   
+   int d = modinv(5,11) // d=9
+   
+   */
+  int _modinv(int a, int m) {
+    assert(gcd(a,m)==1);
+    int x,y;
+    _extgcd(a,m,x,y);
+    return (m+x%m)%m; // ensure mod inverse is non-negative
+  }
+  
+  /*
+   
+   extended GCD, O(lg max(a,b)) time
+   
+    - compute (x,y,z) s.t. a*x+b*y=z, z=gcd(a,b)
+    - from Ant book 2.6 elementary math techniques
+    - CLRS "31.3 Modular arithmetic" and "31.4 Solving modular linear equations"
+   
+   Usage:
+   
+   int x, y;
+   int z = extgcd(99,78,x,y); // (x,y)=(-11,14), z=gcd(99,78)=3
+   
+   */
+  int _extgcd(int a, int b, int& x, int& y) {
+    if(b==0) {
+      x=1,y=0;
+      return a;
+    }
+    int d=_extgcd(b, a%b, y, x);
+    y-=(a/b)*x;
+    return d;
+  }
+private:
+  int gcd(int a, int b) {
+    return b==0?a:gcd(b,a%b);
+  }
+} MLE;
+
+void test_mle() {
+  assert(MLE._modinv(5,11)==9);
+  int x,y;
+  int d=MLE._extgcd(99,78,x,y);
+  assert(d==3);
+  assert(x==-11);
+  assert(y==14);
+  
+  vector<int> A={1,1,1};
+  vector<int> B={2,3,2};
+  vector<int> M={3,5,7};
+  auto p = MLE.solve(A,B,M);
+  assert(p.first==23);
+  assert(p.second==105);
+}
+
 int main(int argc, char const *argv[]) {
   test_modint();
   test_modlog();
   test_modroot();
+  test_mle();
 }
 // $ g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address modint.cpp && ./a.out
