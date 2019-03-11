@@ -461,6 +461,7 @@ void test_manacher() {
  
  Used problem(s):
   - https://github.com/k-ori/codeforces/blob/master/solutions/VasyaAndBigIntegers.cpp#L97
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/CompressString.cpp#L67
  
  */
 vector<int> zalgo(string &S) {
