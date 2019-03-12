@@ -25,6 +25,7 @@ template<class T> inline T SMAX(T& a, const T b) { return a=(a<b)?b:a; }
 
 // collection
 #define ALL(c) (c).begin(),(c).end()
+#define UNIQUE(A) sort((A).begin(),(A).end()),(A).erase(std::unique((A).begin(), (A).end()), (A).end());
 
 // grid move (clock wise order)
 vector<pair<int,int>> moves = { {0,1}/*R*/,{1,0}/*D*/,{0,-1}/*L*/,{-1,0}/*U*/ };
