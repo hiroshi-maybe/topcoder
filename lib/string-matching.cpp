@@ -105,6 +105,7 @@ vector<int> computeLongestPrefixSuffix(const string P) {
  
  Used problems:
   - https://github.com/k-ori/topcoder/blob/master/FoxAndMountain/FoxAndMountain.cpp
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/CampSchedule.cpp#L58
  
  */
 vector<int> buildPrefixFunction(const string S) {
