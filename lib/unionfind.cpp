@@ -29,25 +29,24 @@ public:
   int N,G/* # of disjoint sets */;
   UF(int N): N(N) { init(N); }
   void init(int N) {
-    par=vector<int>(N),rank=vector<int>(N),cnt=vector<int>(N,1);
-    for(int i=0; i<N; ++i) par[i]=i,rank[i]=0,cnt[i]=1;
+    par=vector<int>(N),sz=vector<int>(N,1);
+    for(int i=0; i<N; ++i) par[i]=i,sz[i]=1;
     G=N;
   }
   int find(int x) { return par[x]==x?x:par[x]=find(par[x]); }
-  int count(int x) { return cnt[find(x)]; }
+  int size(int x) { return sz[find(x)]; }
   bool sameset(int x, int y) { return find(x)==find(y); }
   int unite(int x, int y) {
     x=find(x),y=find(y);
     if(x==y) return x;
-    G--,cnt[x]=cnt[y]=cnt[x]+cnt[y];
     int p=x,c=y;
-    if(rank[p]>rank[c]) swap(p,c);
-    else rank[p]+=rank[p]==rank[c];
+    if(sz[p]<sz[c]) swap(p,c);
+    G--,sz[p]=sz[c]=sz[p]+sz[c];
     par[c]=p;
     return p;
   }
 private:
-  vector<int> par,rank,cnt;
+  vector<int> par,sz;
 };
 
 int main(int argc, char const *argv[]) {
