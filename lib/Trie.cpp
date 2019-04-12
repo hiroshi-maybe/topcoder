@@ -69,3 +69,102 @@ private:
         delete n;
     }
 };
+
+/*
+ 
+ Binary Trie tree specialized to process binary number
+ 
+ Used problem(s):
+  - https://github.com/hiroshi-maybe/topcoder/blob/master/solutions/MojisBag/MojisBag.cpp#L59
+ 
+ */
+class BinaryTrieNode {
+public:
+  int cnt=0;
+  set<int> ids;
+  LL val=-1;
+  BinaryTrieNode* children[2];
+  // Initialize your data structure here.
+  BinaryTrieNode() {
+    children[0]=children[1]=nullptr;
+  }
+};
+
+class BinaryTrie {
+public:
+  const int MAX_D=30;
+  BinaryTrie() {
+    root=new BinaryTrieNode();
+  }
+  void insert(LL X, int id) {
+    dump("add",X,id);
+    BinaryTrieNode *n=root; n->cnt++;
+    for(int i=MAX_D; i>=0; --i) {
+      int b=(X>>i)&1;
+      assert(n!=nullptr);
+      assert(0<=b&&b<2);
+      BinaryTrieNode *next=n->children[b];
+      if(next==nullptr) {
+        next=new BinaryTrieNode();
+        n->children[b]=next;
+      }
+      assert(next!=nullptr);
+      next->cnt++;
+      n=next;
+    }
+    n->val=X;
+    n->ids.emplace(id);
+  }
+  void erase(LL X, int id) {
+    dump("rem",X,id);
+    BinaryTrieNode *n=root; n->cnt--;
+    for(int i=MAX_D; i>=0; --i) {
+      int b=(X>>i)&1;
+      BinaryTrieNode *next=n->children[b];
+      if(next==nullptr) return;
+      next->cnt--;
+      n=next;
+    }
+    assert(n!=nullptr);
+    n->ids.erase(id);
+  }
+  // id, value
+  pair<int,LL> xorcp(LL X) {
+    BinaryTrieNode *n=root;
+    for(int i=MAX_D; i>=0; --i) {
+      int b=(X>>i)&1;
+      BinaryTrieNode *next=n->children[b^1];
+      if(next==nullptr||next->cnt==0) next=n->children[b];
+      assert(next!=nullptr);
+      n=next;
+    }
+    assert(n!=nullptr);
+    return {*(n->ids.begin()), n->val};
+  }
+  set<int> search(LL q) {
+    BinaryTrieNode *n=find(q);
+    return n!=nullptr?n->ids:set<int>();
+  }
+  
+  BinaryTrieNode* find(LL q) {
+    BinaryTrieNode *n=root;
+    for(int i=MAX_D; i>=0; --i) {
+      int b=(q>>i)&1;
+      BinaryTrieNode *next=n->children[b];
+      if(next==nullptr) return nullptr;
+      n=next;
+    }
+    return n;
+  }
+  
+  void release() {
+    releaseNode(root);
+  }
+private:
+  BinaryTrieNode* root;
+  void releaseNode(BinaryTrieNode* n) {
+    if (!n) return;
+    REP(i,2) releaseNode(n->children[i]);
+    delete n;
+  }
+};
