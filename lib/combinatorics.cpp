@@ -151,7 +151,7 @@ LL choose(LL n, LL k) {
   if(n<k) return 0;
   
   const int MAX_N = 1e6+1;
-  assert(k<=MAX_N);
+  assert(0<=k&&k<=MAX_N);
   static LL fact[MAX_N+1],revfact[MAX_N+1],rev[MAX_N+1];
   
   if(rev[1]==0) {
