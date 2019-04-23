@@ -56,6 +56,7 @@ bool isPrime(LL N) {
  
  */
 vector<int> sieve(int N) {
+  assert(N>=1);
   vector<int> fs(N+1, true);
   fs[0]=fs[1]=false;
   for(int p=2; p*p<=N; ++p) if(fs[p]) {
