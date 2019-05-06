@@ -40,6 +40,7 @@ using namespace std;
    - https://github.com/k-ori/codeforces/blob/master/solutions/ArrayRestoration.cpp#L164 (RMQ)
    - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L90 (RMQ)
    - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/VasyaAndMaximumProfit.cpp#L78 (Max subsegment sum query)
+   - https://github.com/hiroshi-maybe/GCJ/blob/master/kickstart/2019-RB/DiverseSubarray.cpp#L70 (Max subsegment sum query)
  
  */
 // 🛠 Customize node of segment tree
