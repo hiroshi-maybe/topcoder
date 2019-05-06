@@ -20,6 +20,8 @@ using namespace std;
   - https://github.com/hiroshi-maybe/GCJ/blob/master/2019-R1A/AlienRhyme.cpp#L40
   - https://github.com/hiroshi-maybe/topcoder/blob/master/solutions/MojisBag/MojisBag.cpp#L59
    - binary trie tree (maximize XOR pair query)
+  - https://github.com/hiroshi-maybe/leetcode/blob/master/1032-stream-of-characters/stream-of-characters.cpp#L43
+   - search by reversed order
  
  */
 
