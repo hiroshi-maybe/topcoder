@@ -37,6 +37,8 @@ template<typename S, typename T> std::ostream& operator<<(std::ostream& _os, con
    - matrix power
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/MagicGems.cpp#L73
    - matrix power
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/GuessTheRoot.cpp#L75
+   - rank of matrix
  
  */
 template <typename T> struct MX {
@@ -69,6 +71,43 @@ template <typename T> struct MX {
       if(n%2) res*=a;
       a*=a,n>>=1;
     }
+    return res;
+  }
+  T det() {
+    assert(N==M);
+    T res=1;
+    MX B(N,N);
+    for(int i=0; i<N; ++i) for(int j=0; j<N; ++j) B[i][j] = (*this)[i][j];
+    for(int i=0; i<N; ++i) for(int j=i+1; j<N; ++j) {
+      for (; B[j][i]!=0; res=-res) {
+        T tm=B[i][i]/B[j][i];
+        for(int k=i; k<N; ++k) {
+          T t = B[i][k]-tm*B[j][k];
+          B[i][k]=B[j][k];
+          B[j][k]=t;
+        }
+      }
+      res*=B[i][i];
+    }
+    return res;
+  }
+  MX inverse() {
+    assert(N==N);
+    MX B(N,2*N);
+    for(int i=0; i<N; ++i) for(int j=0; j<N; ++j) B[i][j] = (*this)[i][j];
+    for(int i=0; i<N; ++i) B[i][N+i]=1;
+    for(int i=0; i<N; ++i) {
+      int pivot = i;
+      for(int j=i; j<N; ++j) if(B[j][i]!=B[pivot][i]) pivot=j;
+      assert(B[pivot][i]!=0); // regular?
+      swap(B[i],B[pivot]);
+      for(int j=i+1; j<=2*N; ++j) B[i][j]/=B[i][i];
+      for(int j=0; j<N; ++j) if(i!=j) for(int k=i+1; k<=2*N; ++k) {
+        B[j][k] -= B[j][i] * B[i][k];
+      }
+    }
+    MX res(N,N);
+    for(int i=0; i<N; ++i) for(int j=0; j<N; ++j) res[i][j]=B[i][N+j];
     return res;
   }
   friend ostream& operator<<(ostream& os, const MX<T>& that) {
@@ -314,15 +353,20 @@ void test_gf2() {
   - CLRS 28.1 Solving systems of linear equations
   - http://kmjp.hatenablog.jp/entry/2014/04/01/0930
  
+ Used problems:
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/GuessTheRoot.cpp#L209
+   - T=ModInt
+ 
  */
+// for double
 struct GaussJordanElimination {
   const double eps=1e-8;
   vector<double> solve(vector<vector<double>> A, vector<double> b) {
     const int N=A.size();
     vector<vector<double>> X(N, vector<double>(N+1)); // Augmented matrix which merges A with b
     for(int i=0; i<N; ++i) {
-      for(int j=0; j<N; ++j) X[i][j] = A[i][j];
-      X[i][N] = b[i];
+      for(int j=0; j<N; ++j) X[i][j]=A[i][j];
+      X[i][N]=b[i];
     }
     
     for(int i=0; i<N; ++i) {
@@ -332,13 +376,13 @@ struct GaussJordanElimination {
         // find maximum coefficient to minimize precision error
         if (fabs(X[j][i])>fabs(X[pivot][i])) pivot=j;
       }
-      swap(X[i], X[pivot]);
+      swap(X[i],X[pivot]);
       // solution is undeterministic, or no solution exists
       if (fabs(X[i][i])<eps) return vector<double>();
       
       // X[i][i]=1
       for(int j=i+1; j<=N; ++j) X[i][j]/=X[i][i];
-      for(int j=0; j<N; ++j) if (i != j) {
+      for(int j=0; j<N; ++j) if (i!=j) {
         // row reduction
         for(int k=i+1; k<=N; ++k) X[j][k]-=X[j][i]*X[i][k];
       }
@@ -349,6 +393,38 @@ struct GaussJordanElimination {
     return xs;
   }
 } GJE;
+// template T
+template <typename T> struct GaussJordanElimination2 {
+  vector<T> solve(MX<T> A, vector<T> b) {
+    const int N=A.N;
+    MX<T> X(N,N+1); // Augmented matrix which merges A with b
+    for(int i=0; i<N; ++i) {
+      for(int j=0; j<N; ++j) X[i][j]=A[i][j];
+      X[i][N]=b[i];
+    }
+    
+    for(int i=0; i<N; ++i) {
+      // invariant: X[p][p]=1 for p=0..i-1
+      int pivot=i;
+      for(int j=i; j<N; ++j) {
+        // find maximum coefficient to minimize precision error
+        if (X[j][i]!=X[pivot][i]) pivot=j;
+      }
+      // solution is undeterministic, or no solution exists
+      if(X[pivot][i]==0) return vector<T>();
+      swap(X[i],X[pivot]);
+      // X[i][i]=1
+      for(int j=i+1; j<=N; ++j) X[i][j]/=X[i][i];
+      for(int j=0; j<N; ++j) if(i!=j) {
+        // row reduction
+        for(int k=i+1; k<=N; ++k) X[j][k]-=X[j][i]*X[i][k];
+      }
+    }
+    vector<T> xs(N);
+    for(int i=0; i<N; ++i) xs[i]=X[i][N];
+    return xs;
+  }
+};
 
 void test_gje() {
   // test case from https://en.wikipedia.org/wiki/Gaussian_elimination
