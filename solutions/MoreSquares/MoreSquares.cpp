@@ -66,6 +66,9 @@ public:
   long long distance() {
     return x*x + y*y;
   }
+  Point rotate90() {
+    return Point{-y, x};
+  }
 };
 double deg2rad(double deg) {
   return deg*M_PI/180.0;
@@ -77,9 +80,6 @@ pair<double,double> rotate(pair<double,double> p, double deg) {
   double S = sin(rad);
   return { x*C-y*S, x*S+y*C };
 }
-Point rotate90(Point vec) {
-  return Point{-vec.y, vec.x};
-}
 
 /*
  
@@ -88,24 +88,9 @@ Point rotate90(Point vec) {
  16:56-17:53 AC
  
  http://kmjp.hatenablog.jp/entry/2019/04/09/0900
+ https://www.topcoder.com/blog/single-round-match-754-editorials/
  
  */
-Point f(Point p1, Point p2, int deg) {
-//  pair<double,double> p3=rotate({(p2-p1).x,(p2-p1).y},90);
-//  p3.first+=p1.x,p3.second+=p1.y;
-//  Point res((int)p3.first,(int)p3.second);
-  Point d=p2-p1;
-  swap(d.x,d.y);
-  d.x*=-1;
-  Point res=p1;
-  if(deg>0) {
-    res+=d;
-  } else {
-    d.x*=-1,d.y*=-1;
-    res+=d;
-  }
-  return res;
-}
 long long dot(Point u, Point v) {
   return (long long)u.x*v.x + (long long)u.y*v.y;
 }
@@ -130,36 +115,19 @@ class MoreSquares {
     FORR(p,S) ps.push_back(Point(p));
     N=SZ(ps);
     set<II> res;
-    REP(j,N)REP(i,j) {
+    REP(i,N)REP(j,N) {
       Point p1=ps[i],p2=ps[j];
-      Point A=f(p1,p2,90),B=f(p2,p1,-90);
-      if(isVertical(A-p1,p2-p1)&&isVertical(B-p2,p1-p2)&&(A-p1).distance()==(p1-p2).distance()&&(B-p2).distance()==(p1-p2).distance()) {
-        if(S.count({A.x,A.y})&&S.count({B.x,B.y})==0) {
-          if(B.x==-8&&B.y==3) dump(p1,p2,A);
-          res.emplace(B.x,B.y);
-        }
-        if(S.count({B.x,B.y})&&S.count({A.x,A.y})==0) {
-          if(A.x==-8&&A.y==3) dump(p1,p2,B);
-          res.emplace(A.x,A.y);
-        }
-      }
+      Point A=p1+(p2-p1).rotate90(),B=p2-(p1-p2).rotate90();
 
-      A=f(p1,p2,-90),B=f(p2,p1,90);
-//      dump(p1,p2,A,B);
-      if(isVertical(A-p1,p2-p1)&&isVertical(B-p2,p1-p2)&&(A-p1).distance()==(p1-p2).distance()&&(B-p2).distance()==(p1-p2).distance()) {
-        if(S.count({A.x,A.y})&&S.count({B.x,B.y})==0) {
-          if(B.x==-8&&B.y==3) dump(p1,p2,A);
-          res.emplace(B.x,B.y);
-        }
-        if(S.count({B.x,B.y})&&S.count({A.x,A.y})==0) {
-          if(A.x==-8&&A.y==3) dump(p1,p2,B);
-          res.emplace(A.x,A.y);
-        }
+      assert(isVertical(A-p1,p2-p1)&&isVertical(B-p2,p1-p2));
+      assert((A-p1).distance()==(p1-p2).distance()&&(B-p2).distance()==(p1-p2).distance());
+      if(S.count({A.x,A.y})&&S.count({B.x,B.y})==0) {
+        res.emplace(B.x,B.y);
+      }
+      if(S.count({B.x,B.y})&&S.count({A.x,A.y})==0) {
+        res.emplace(A.x,A.y);
       }
     }
-    
-//    dumpc(res);
-    
     return SZ(res);
   }
 };
