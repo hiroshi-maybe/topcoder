@@ -30,10 +30,8 @@ public:
   bool operator<=(Point that) const { return Point(*this)==that||Point(*this)<that; }
   bool operator>=(Point that) const { return Point(*this)==that||Point(*this)>that; }
   friend std::ostream& operator<<(std::ostream& _os, const Point& _p) { return _os<<"{"<<_p.x<<','<<_p.y<<"}"; }
-  // sqrt(distance()) is definition
-  long long distance() {
-    return x*x + y*y;
-  }
+  long long distance() { return x*x + y*y; }
+  Point rotate90() { return Point{-y, x}; }
 };
 /*
  
