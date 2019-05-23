@@ -15,6 +15,7 @@ using namespace std;
   - https://github.com/k-ori/topcoder/blob/master/MinimizeAbsoluteDifferenceDiv1/MinimizeAbsoluteDifferenceDiv1.cpp#L119
   - https://github.com/k-ori/topcoder/blob/master/BestView/BestView.cpp#L64
   - https://github.com/hiroshi-maybe/leetcode/blob/master/972-equal-rational-numbers/equal-rational-numbers.cpp#L37
+  - https://github.com/hiroshi-maybe/GCJ/blob/master/2019-R2/NewElementsPart1.cpp#L103
  
  */
 
@@ -22,36 +23,46 @@ struct Frac {
 public:
   // numerator / denominator
   int n,d;
-  Frac(int nn, int dd) {
-    assert(dd>0);
+  Frac(): n(0),d(1) {}
+  Frac(long long nn, long long dd) { norm(nn,dd); }
+  Frac(int nn, int dd) { norm(nn,dd); }
+  Frac& norm(long long nn, long long dd) {
+    assert(dd!=0);
+    if(dd<0) nn*=-1,dd*=-1;
     bool neg=nn<0;
     nn=neg?-nn:nn;
     long long g=gcd(nn,dd);
-    this->n=nn/g;
+    nn/=g,dd/=g;
+    assert(nn<numeric_limits<int>::max()&&dd<numeric_limits<int>::max());
+    this->n=nn;
     if(neg) this->n=-1*this->n;
-    this->d=dd/g;
+    this->d=dd;
+    return *this;
   }
   Frac abs() {
     Frac res(n<0?-n:n,d);
     return res;
   }
-  void debug() {
-    printf("%d/%d\n",n,d);
-  }
+  Frac &operator -() { n=-n; return *this; }
+  Frac &operator += (Frac that) { long long nn=(long long)n*that.d+(long long)that.n*d,dd=(long long)d*that.d; return norm(nn,dd); }
+  Frac &operator -= (Frac that) { *this+=-that; return *this; }
+  Frac &operator *=(Frac that) { long long nn=(long long)n*that.n,dd=(long long)d*that.d; return norm(nn,dd); }
+  Frac &operator /= (Frac that) { *this*=Frac(that.d,that.n); return *this; }
+  Frac operator+(Frac that) const { return Frac(*this)+=that; }
+  Frac operator-(Frac that) const { return Frac(*this)-=that; }
+  Frac operator*(Frac that) const { return Frac(*this)*=that; }
+  Frac operator/(Frac that) const { return Frac(*this)/=that; }
+  bool operator < (Frac that) { return (long long)n*that.d<(long long)that.n*d; }
+  bool operator > (Frac that) { return that<Frac(*this); }
+  bool operator == (Frac that) { return n==that.n&&d==that.d; }
+  bool operator <= (Frac that) { return Frac(*this)<that||Frac(*this)==that; }
+  bool operator >= (Frac that) { return Frac(*this)>that||Frac(*this)==that; }
+  friend ostream& operator<<(ostream& os, const Frac& that) { return os<<that.n<<"/"<<that.d; }
 private:
   long long gcd(long long a, long long b) {
     return b==0?a:gcd(b,a%b);
   }
 };
-Frac operator + (Frac a, Frac b) { return Frac((long long)a.n * b.d + (long long)b.n * a.d, (long long)a.d * b.d); }
-Frac operator - (Frac a, Frac b) { return a + Frac(-b.n, b.d); }
-Frac operator * (Frac a, Frac b) { return Frac((long long)a.n * b.n, (long long)a.d * b.d); }
-Frac operator / (Frac a, Frac b) { return a * Frac(b.d, b.n); }
-bool operator < (Frac a, Frac b) { return a.n *(long long) b.d < b.n *(long long) a.d; }
-bool operator > (Frac a, Frac b) { return b < a; }
-bool operator == (Frac a, Frac b) { return a.n == b.n && a.d == b.d; }
-bool operator <= (Frac a, Frac b) { return a<b||a==b; }
-bool operator >= (Frac a, Frac b) { return a>b||a==b; }
 
 int main(int argc, char const *argv[]) {
   Frac p(10,20);
@@ -81,3 +92,4 @@ int main(int argc, char const *argv[]) {
   assert(x2==y2);
   assert(y<x);
 }
+// g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address frac.cpp && ./a.out
