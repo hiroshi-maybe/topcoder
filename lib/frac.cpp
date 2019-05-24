@@ -16,6 +16,7 @@ using namespace std;
   - https://github.com/k-ori/topcoder/blob/master/BestView/BestView.cpp#L64
   - https://github.com/hiroshi-maybe/leetcode/blob/master/972-equal-rational-numbers/equal-rational-numbers.cpp#L37
   - https://github.com/hiroshi-maybe/GCJ/blob/master/2019-R2/NewElementsPart1.cpp#L103
+  - https://github.com/hiroshi-maybe/GCJ/blob/master/2019-R2/NewElementsPart2.cpp#L47
  
  */
 
@@ -24,6 +25,7 @@ public:
   // numerator / denominator
   int n,d;
   Frac(): n(0),d(1) {}
+  Frac(int nn) : n(nn), d(1) {}
   Frac(long long nn, long long dd) { norm(nn,dd); }
   Frac(int nn, int dd) { norm(nn,dd); }
   Frac& norm(long long nn, long long dd) {
@@ -39,10 +41,8 @@ public:
     this->d=dd;
     return *this;
   }
-  Frac abs() {
-    Frac res(n<0?-n:n,d);
-    return res;
-  }
+  Frac abs() { return Frac(n<0?-n:n,d); }
+  Frac inv() { return Frac(d,n); }
   Frac &operator -() { n=-n; return *this; }
   Frac &operator += (Frac that) { long long nn=(long long)n*that.d+(long long)that.n*d,dd=(long long)d*that.d; return norm(nn,dd); }
   Frac &operator -= (Frac that) { *this+=-that; return *this; }
