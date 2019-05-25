@@ -232,6 +232,9 @@ void test_johnson() {
    scc.contract()
    ```
  
+ Used problem(s)
+  - https://github.com/hiroshi-maybe/GCJ/blob/master/2019-R2/Contransmutation.cpp#L80
+ 
  */
 struct SCC {
 public:
