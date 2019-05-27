@@ -130,13 +130,18 @@ void test_segmenttree() {
 
 /*
  
- Simplified RMQ (segment tree), O(lg N) query, O(lg N) update
+ RMQ (segment tree), O(lg N) query, O(lg N) update
+ 
+ - normal: range query, point update
+ - lazy propagation: point query, range update
  
  References:
   - https://www.npca.jp/works/magazine/2015_5/
  
  Used problem:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L174
+  - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/Roadwork.cpp#L72
+   - lazy propagation (range update)
  
  */
 template <class T> struct RMQ {
@@ -177,6 +182,43 @@ private:
     int m=(l+r)/2;
     
     return min(qu(ql,qr,2*i+1,l,m),qu(ql,qr,2*i+2,m,r));
+  }
+  int calcsize(int N) {
+    int n=1; while(n<N) n<<=1;
+    return n;
+  }
+};
+template <class T> struct RMQ_lazy {
+public:
+  T Inf;
+  vector<T> A;
+  int SIZE; // normalized size of original array
+  RMQ_lazy(int N, T Inf) : Inf(Inf) {
+    this->SIZE=calcsize(N);
+    this->A=vector<T>(2*SIZE,Inf);
+  }
+  // O(N) initialization
+  RMQ_lazy(vector<T> &X, T Inf) : Inf(Inf) {
+    this->SIZE=calcsize(X.size());
+    this->A=vector<T>(2*SIZE,Inf);
+    for(int i=0; i<X.size(); ++i) A[i+SIZE-1]=X[i];
+    for(int i=SIZE-2; i>=0; --i) {
+      A[i]=min(A[2*i+1],A[2*i+2]);
+    }
+  }
+  T query(int i) {
+    i+=SIZE-1;
+    T res=A[i];
+    while(i>0) i=(i-1)/2,res=min(res,A[i]);
+    return res;
+  }
+  // range update [ql,qr)
+  void update(int ql, int qr, T v, int i=0, int l=-1, int r=-1) {
+    if(l==-1) l=0,r=SIZE;
+    if(qr<=l||r<=ql) return;
+    if(ql<=l&&r<=qr) { A[i]=min(A[i],v); return; }
+    int m=(l+r)/2;
+    update(ql,qr,v,2*i+1,l,m),update(ql,qr,v,2*i+2,m,r);
   }
   int calcsize(int N) {
     int n=1; while(n<N) n<<=1;
