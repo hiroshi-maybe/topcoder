@@ -59,8 +59,8 @@ vector<int> sieve(int N) {
   assert(N>=1);
   vector<int> fs(N+1, true);
   fs[0]=fs[1]=false;
-  for(int p=2; p*p<=N; ++p) if(fs[p]) {
-    for(int q=p*p; q<=N; q+=p) fs[q]=false;
+  for(long long p=2; p*p<=N; ++p) if(fs[p]) {
+    for(long long q=p*p; q<=N; q+=p) fs[q]=false;
   }
   vector<int> res;
   for(int n=2; n<=N; ++n) if(fs[n]) res.push_back(n);
@@ -267,10 +267,10 @@ int totient_combined(LL N) {
   return res;
 }
 // stand alone
-int totient(int n) {
-  int res=n;
+int totient(LL n) {
+  LL res=n;
   // prime factorization
-  for(int p=2; p*p<=n; ++p) if(n%p==0) {
+  for(LL p=2; p*p<=n; ++p) if(n%p==0) {
     res=res/p*(p-1);
     while(n%p==0) n/=p;
   }
