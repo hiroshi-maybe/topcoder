@@ -39,6 +39,8 @@ template<typename S, typename T> std::ostream& operator<<(std::ostream& _os, con
    - matrix power
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/GuessTheRoot.cpp#L75
    - rank of matrix
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/ProductOrientedRecurrence.cpp#L80
+   - matrix power
  
  */
 template <typename T> struct MX {
