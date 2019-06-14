@@ -277,6 +277,31 @@ int totient(LL n) {
   if(n!=1) res=res/n*(n-1);
   return res;
 }
+/*
+ 
+ Fast enumeration of Euler's totient function by sieve of Eratosthenes, O(N*log log N) time
+ 
+ φ(n) = n * ∏ { (p-1)/p : p|n and p is prime factor of n }
+ 
+ References:
+  - Ant book 4.1 more complex math problems
+
+ Usage:
+  tt = totients(N);
+  phi10 = tt[10];
+ 
+ Used problems:
+  - https://github.com/hiroshi-maybe/topcoder/blob/master/solutions/CatAndMice/CatAndMice.cpp#L74
+ 
+ */
+vector<LL> totients(int N) {
+  vector<LL> res(N+1,0);
+  for(int i=0; i<=N; ++i) res[i]=i;
+  for(int p=2; p<=N; ++p) if(res[p]==p) {
+    for(int q=p; q<=N; q+=p) res[q]=res[q]/p*(p-1);
+  }
+  return res;
+}
 
 /*
  
