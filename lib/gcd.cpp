@@ -7,11 +7,13 @@ using namespace std;
 
 typedef long long LL;
 
-LL gcd(LL a, LL b) {
-  return b == 0 ? a : gcd(b, a % b);
-}
-LL lcm(LL a, LL b) {
-  return (a*b) / gcd(a,b);
+LL gcd(LL a, LL b) { return b==0?a:gcd(b,a%b); }
+LL lcm(LL a, LL b) { return a/gcd(a,b)*b; }
+
+void test_gcd() {
+  assert(gcd(899,493)==29);
+  assert(gcd(15646365345434LL,64364363463464LL)==2);
+  assert(lcm(943349532LL,156464LL)==36900060293712LL);
 }
 
 /*
@@ -51,13 +53,18 @@ tuple<int,int,int> extended_euclid(int a, int b) {
   return make_tuple(d2,y2,x2-(a/b)*y2);
 }
 
-// main
-
-int main(int argc, char const *argv[]) {
-  assert(gcd(899,493)==29);
-  
+void test_extendedeuclid() {
   auto t = extended_euclid(899,493);
   assert(get<0>(t)==29);
   assert(get<1>(t)==-6);
   assert(get<2>(t)==11);
 }
+
+// main
+
+int main(int argc, char const *argv[]) {
+  test_gcd();
+  test_extendedeuclid();
+}
+
+//$ g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address gcd.cpp && ./a.out
