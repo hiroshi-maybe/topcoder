@@ -17,13 +17,14 @@ using namespace std;
   - https://github.com/hiroshi-maybe/leetcode/blob/master/972-equal-rational-numbers/equal-rational-numbers.cpp#L37
   - https://github.com/hiroshi-maybe/GCJ/blob/master/2019-R2/NewElementsPart1.cpp#L103
   - https://github.com/hiroshi-maybe/GCJ/blob/master/2019-R2/NewElementsPart2.cpp#L47
+  - https://github.com/hiroshi-maybe/topcoder/blob/master/solutions/AddPeriodic/AddPeriodic.cpp#L42
  
  */
 
 struct Frac {
 public:
   // numerator / denominator
-  int n,d;
+  long long n,d;
   Frac(): n(0),d(1) {}
   Frac(int nn) : n(nn), d(1) {}
   Frac(long long nn, long long dd) { norm(nn,dd); }
@@ -35,7 +36,6 @@ public:
     nn=neg?-nn:nn;
     long long g=gcd(nn,dd);
     nn/=g,dd/=g;
-    assert(nn<numeric_limits<int>::max()&&dd<numeric_limits<int>::max());
     this->n=nn;
     if(neg) this->n=-1*this->n;
     this->d=dd;
