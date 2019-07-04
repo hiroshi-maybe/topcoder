@@ -74,6 +74,10 @@ using namespace std;
  
  Dinic's max flow algorithm, O(E*V^2)
  
+ Used problems:
+  - https://github.com/hiroshi-maybe/fbhackercup/blob/master/2019-R1/LaddersAndSnakes.cpp#L45
+   - min cut
+ 
  Usage:
   // Don't miss to update MAX_V constant
   
