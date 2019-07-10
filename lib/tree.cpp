@@ -24,8 +24,12 @@ using namespace std;
  
  Used problem(s):
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/SplitTheTree.cpp#L117
-  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L219 (LCA)
-  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Tree.cpp#L165 (LCA)
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L219
+   - LCA
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Tree.cpp#L165
+   - LCA
+  - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/ColorfulTree.cpp#L67
+   - LCA
  
  */
 struct BinaryLifting {
