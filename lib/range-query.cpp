@@ -142,6 +142,8 @@ void test_segmenttree() {
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L174
   - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/Roadwork.cpp#L72
    - lazy propagation (range update)
+  - https://github.com/hiroshi-maybe/leetcode/blob/master/1124-longest-well-performing-interval/longest-well-performing-interval.cpp#L50
+   - range min query
  
  */
 template <class T> struct RMQ {
@@ -149,6 +151,7 @@ public:
   T Inf;
   vector<T> A;
   int SIZE; // normalized size of original array
+  T merge(T a, T b) { return min(a,b); }
   RMQ(int N, T Inf) : Inf(Inf) {
     this->SIZE=calcsize(N);
     this->A=vector<T>(2*SIZE,Inf);
@@ -159,7 +162,7 @@ public:
     this->A=vector<T>(2*SIZE,Inf);
     for(int i=0; i<X.size(); ++i) A[i+SIZE-1]=X[i];
     for(int i=SIZE-2; i>=0; --i) {
-      A[i]=min(A[2*i+1],A[2*i+2]);
+      A[i]=merge(A[2*i+1],A[2*i+2]);
     }
   }
   void update(int i, T v) {
@@ -167,7 +170,7 @@ public:
     A[i]=v;
     while(i>0) {
       i=(i-1)/2;
-      A[i]=min(A[2*i+1],A[2*i+2]);
+      A[i]=merge(A[2*i+1],A[2*i+2]);
     }
   }
   // half-open range [ql,qr)
@@ -181,7 +184,7 @@ private:
     if(ql<=l&&r<=qr) return A[i];
     int m=(l+r)/2;
     
-    return min(qu(ql,qr,2*i+1,l,m),qu(ql,qr,2*i+2,m,r));
+    return merge(qu(ql,qr,2*i+1,l,m),qu(ql,qr,2*i+2,m,r));
   }
   int calcsize(int N) {
     int n=1; while(n<N) n<<=1;
@@ -405,8 +408,6 @@ private:
   vector<vector<int>> cum;
 };
 
-// $ g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address range-query.cpp && ./a.out
-
 int main(int argc, char const *argv[]) {
   test_segmenttree();
   test_rmq();
@@ -427,3 +428,5 @@ int main(int argc, char const *argv[]) {
   assert(cum.query(1,2,1,2)==0);
   assert(cum.query(1,2,0,1)==0);
 }
+
+// $ g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address range-query.cpp && ./a.out
