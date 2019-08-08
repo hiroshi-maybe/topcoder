@@ -281,6 +281,7 @@ void test_rmq() {
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Tree.cpp#L222
    - prefix sum in Eler tour tree
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/LunarNewYearAndFoodOrdering.cpp#L48
+  - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/EnclosedPoints.cpp#L81
  
  */
 template <typename T> struct BIT {
