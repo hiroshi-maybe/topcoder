@@ -8,13 +8,16 @@ using namespace std;
 
 const double PI = acos(-1);
 
+typedef int num;
+typedef long long numLL;
+
 struct Point {
 public:
-  int x, y;
+  num x, y;
   Point(): x(0), y(0) {}
-  Point(int x, int y): x(x), y(y) {}
-  Point(pair<int,int> p): x(p.first), y(p.second) {}
-  Point(pair<int,int> p, pair<int,int> org): Point(p.first-org.first, p.second-org.second) {}
+  Point(num x, num y): x(x), y(y) {}
+  Point(pair<num,num> p): x(p.first), y(p.second) {}
+  Point(pair<num,num> p, pair<num,num> org): Point(p.first-org.first, p.second-org.second) {}
   Point(Point p, Point org): Point(p.x-org.x, p.y-org.y) {}
   
   explicit operator bool() const { return x!=0||y!=0; }
@@ -25,13 +28,17 @@ public:
   Point operator-(Point that) const { return Point(*this)-=that; }
   bool operator==(Point that) const { return x==that.x&&y==that.y; }
   bool operator!=(Point that) const { return !(Point(*this)==that); }
-  bool operator<(Point that) const { return pair<int,int>(x,y)<pair<int,int>(that.x,that.y); }
-  bool operator>(Point that) const { return pair<int,int>(x,y)>pair<int,int>(that.x,that.y); }
+  bool operator<(Point that) const { return pair<num,num>(x,y)<pair<num,num>(that.x,that.y); }
+  bool operator>(Point that) const { return pair<num,num>(x,y)>pair<num,num>(that.x,that.y); }
   bool operator<=(Point that) const { return Point(*this)==that||Point(*this)<that; }
   bool operator>=(Point that) const { return Point(*this)==that||Point(*this)>that; }
   friend std::ostream& operator<<(std::ostream& _os, const Point& _p) { return _os<<"{"<<_p.x<<','<<_p.y<<"}"; }
-  long long distance() { return x*x + y*y; }
+  numLL distance() { return (numLL)x*x + (numLL)y*y; }
   Point rotate90() { return Point{-y, x}; }
+  int orthant() const {
+    if(y>0) return x>0?1:2;
+    else return x>0?4:3;
+  }
 };
 /*
  
@@ -50,8 +57,8 @@ public:
    u is counter-clockwise from v
 
  */
-long long det(Point u, Point v) {
-  return (long long)u.x*v.y - (long long)u.y*v.x;
+numLL det(Point u, Point v) {
+  return (numLL)u.x*v.y - (numLL)u.y*v.x;
 }
 /*
  
@@ -67,11 +74,11 @@ long long det(Point u, Point v) {
   (p1->p2->o is clockwise order)
  
  */
-long long det(Point origin, Point p1, Point p2) {
+numLL det(Point origin, Point p1, Point p2) {
   return det(p1-origin, p2-origin);
 }
-long long dot(Point u, Point v) {
-  return (long long)u.x*v.x + (long long)u.y*v.y;
+numLL dot(Point u, Point v) {
+  return (numLL)u.x*v.x + (numLL)u.y*v.y;
 }
 // CLRS 33.1
 // true: org->p2 is clockwise from org->p1
@@ -102,7 +109,7 @@ bool isVertical(Point u, Point v) {
 }
 // CLRS 33.1 ON-SEGMENT(pi,pj,pk)
 bool onSegment(Point p1, Point p2, Point q) {
-  int xmin=min(p1.x, p2.x),
+  num xmin=min(p1.x, p2.x),
   xmax=max(p1.x, p2.x),
   ymin=min(p1.y, p2.y),
   ymax=max(p1.y, p2.y);
@@ -111,7 +118,7 @@ bool onSegment(Point p1, Point p2, Point q) {
 // CLRS 33.1 SEGMENTS-INTERSECT(p1,p2,p3,p4)
 // p1->p2 intersects p3->p4
 bool intersect(Point p1, Point p2, Point p3, Point p4) {
-  long long d1 = det(p1,p3,p4),
+  numLL d1 = det(p1,p3,p4),
   d2 = det(p2,p3,p4),
   d3 = det(p3,p1,p2),
   d4 = det(p4,p1,p2);
@@ -170,7 +177,7 @@ void test_point() {
  0.5*area() is an area of (o,p1,p2) triangle
  
  */
-long long area(Point p1, Point p2, Point origin) {
+numLL area(Point p1, Point p2, Point origin) {
   return abs(det(origin,p1,p2));
 }
 
@@ -180,7 +187,7 @@ long long area(Point p1, Point p2, Point origin) {
 // smaller scalar comes first for tie
 void sortByPolarAngle(vector<Point>& ps, Point origin) {
   sort(ps.begin(), ps.end(), [&](const Point &a, const Point &b) {
-    int d = det(origin,a,b);
+    numLL d = det(origin,a,b);
     if(d!=0) return d > 0;
     return Point(a,origin).distance() < Point(b,origin).distance();
   });
@@ -265,9 +272,7 @@ bool insideCircle(int x1, int y1, int r1, int X2, int Y2, int R2) {
  radian = degree * 𝛑 / 180
  
  */
-double deg2rad(double deg) {
-  return deg*M_PI/180.0;
-}
+double deg2rad(double deg) { return deg*M_PI/180.0; }
 
 /*
  
