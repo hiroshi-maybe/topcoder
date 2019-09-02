@@ -183,10 +183,19 @@ numLL area(Point p1, Point p2, Point origin) {
 
 // CLRS 33.3 GRAHAM-SCAN(Q)
 
-// sort points by plar angle
-// smaller scalar comes first for tie
+/*
+ 
+ Polar angle sort, O(N*lg N) time
+  - smaller magnitude comes first for tie break
+ 
+ Used problem:
+  - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/Engines.cpp#L113
+ 
+ */
 void sortByPolarAngle(vector<Point>& ps, Point origin) {
   sort(ps.begin(), ps.end(), [&](const Point &a, const Point &b) {
+    int oa=a.orthant(),ob=b.orthant();
+    if(oa!=ob) return oa<ob;
     numLL d = det(origin,a,b);
     if(d!=0) return d > 0;
     return Point(a,origin).distance() < Point(b,origin).distance();
