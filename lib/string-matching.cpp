@@ -211,6 +211,7 @@ void test_kmp() {
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Refactoring.cpp#L97
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/CheckTranscription.cpp#L131
+  - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/WhoSaysAPun.cpp#L45
  
  ```
  Usage:
