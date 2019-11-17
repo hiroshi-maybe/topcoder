@@ -144,6 +144,8 @@ void test_segmenttree() {
    - lazy propagation (range update)
   - https://github.com/hiroshi-maybe/leetcode/blob/master/1124-longest-well-performing-interval/longest-well-performing-interval.cpp#L50
    - range min query
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/YetAnotherMonsterKillingProblem.cpp#L44
+   - range min query
  
  */
 template <class T> struct RMQ {
