@@ -25,6 +25,7 @@ using namespace std;
    - https://en.wikipedia.org/wiki/Segment_tree
    - https://www.topcoder.com/community/data-science/data-science-tutorials/range-minimum-query-and-lowest-common-ancestor/
    - https://cp-algorithms.com/data_structures/segment_tree.html
+   - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/Sugoroku.cpp#L44
  
   Usage:
  
@@ -285,6 +286,7 @@ void test_rmq() {
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/LunarNewYearAndFoodOrdering.cpp#L48
   - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/EnclosedPoints.cpp#L81
   - https://github.com/hiroshi-maybe/GCJ/blob/master/kickstart/2019H/Hindex.cpp#L44
+  - https://github.com/hiroshi-maybe/codeforces/blob/82bef974ead7bd9d1e27a4e58b5b3066a0450335/solutions/OptimalSubsequences.cpp#L44
  
  */
 template <typename T> struct BIT {
@@ -389,6 +391,7 @@ void test_bit() {
  Used problems:
   - https://github.com/k-ori/leetcode/blob/master/304-Range-Sum-Query-2D/RangeSumQuery2D.cpp
   - https://github.com/k-ori/topcoder/blob/master/DropCoins/DropCoins.cpp#L157
+  - https://github.com/hiroshi-maybe/codeforces/blob/924a2f0afa608ef58ea26dd14c2e38eb4e282d50/solutions/ArsonInBerlandForest.cpp#L44
  
  */
 struct TwoDimCumSum {
