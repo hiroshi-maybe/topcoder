@@ -44,6 +44,9 @@ void test_gcd() {
    auto t = extended_euclid(899,493);
    tie(d,x,y) = t; // (d,x,y)=(29,-6,11)
  
+ Used problems:
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/InfiniteFence.cpp#L64
+ 
  */
 tuple<int,int,int> extended_euclid(int a, int b) {
   if (b==0) return make_tuple(a, 1, 0);
