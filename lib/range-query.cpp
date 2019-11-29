@@ -14,8 +14,8 @@ using namespace std;
    - Range sum query
    - Range GCD query
   - Update `int operate(a,b)` method to reuse for diffirent query
-  - Needs 2*X-1 space, where X = min { n : N<=2^n }
-   - X leaves (i=X-1..2*X-2) + X-1 parents (i=0..X-2)
+  - Needs 2*N_-1 space, where N_ = min { 2^n : N<=2^n }
+   - N_ leaves (i=N_-1..2*N_-2) + N_-1 parents (i=0..N_-2)
    - Data is populated in 0-indexed
  
   References:
@@ -29,14 +29,12 @@ using namespace std;
  
   Usage:
  
-   SegmentTree T(X.size());
-   T.build(X);
-   cout << T.query(3,17) << endl;
-   T.update(12,5);
-   cout << T.query(3,17) << endl;
+   SegmentTree<int> T(N,1e9,[](int a, int b) { return min(a,b); });
+   T.build(A);
+   cout<<T.query(3,8)<<endl;
 
   Used problems:
-   - https://github.com/k-ori/leetcode/blob/master/307-Range-Sum-Query/RangeSumQuery.cpp (RSQ)
+   - https://github.com/hiroshi-maybe/leetcode/blob/master/307-Range-Sum-Query/RangeSumQuery.cpp#L186 (RSQ)
    - https://github.com/k-ori/csacademy/blob/master/solutions/R78-StrangeMatrix.cpp#L88
    - https://github.com/k-ori/codeforces/blob/master/solutions/ArrayRestoration.cpp#L164 (RMQ)
    - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L90 (RMQ)
@@ -44,89 +42,47 @@ using namespace std;
    - https://github.com/hiroshi-maybe/GCJ/blob/master/kickstart/2019-RB/DiverseSubarray.cpp#L70 (Max subsegment sum query)
  
  */
-// 🛠 Customize node of segment tree
-struct Node {
-  static const int Id=1e9;
-  int val;
-  Node(int val=Id): val(val) {}
-  static Node IDE; // Identity element in monoid
-};
-// Merge operation should be associative A`op`(B`op`C) == (A`op`B)`op`C
-Node Node::IDE=Node();
-Node merge(const Node &a, const Node &b) {
-  return Node(min(a.val,b.val));
-}
-// 🛠 Customize node of segment tree
-
+template <typename Val>
 struct SegmentTree {
+  int N_; // adjusted N
+  vector<Val> tree;
+  Val id;
+  using Merger = function<Val(Val,Val)>;
+  Merger merge;
 public:
-  int N__;
-  vector<Node> Tree;
-  SegmentTree(int N) {
-    int n=1;
-    // Init by power of 2
-    while(n<N) n<<=1;
-    this->Tree=vector<Node>(2*n,Node::IDE);
-    this->N__=n;
+  SegmentTree(int N, Val id, Merger merge): id(id), merge(merge) {
+    int n=1; while(n<N) n<<=1; // Init by power of 2
+    this->tree=vector<Val>(2*n-1,id), this->N_=n;
   }
-  // Initialize tree with `ns`
-  void build(const vector<Node> &ns) {
-    buildTree(ns,0,0,N__);
-  }
-  // Update k-th (0-indexed) value
-  void update(int i, const Node &x) {
-    updateTree(i,x,0,0,N__);
-  }
-  // query in range [L,R)
-  Node query(int L, int R) {
-    return queryTree(L,R,0,0,N__);
-  }
+  void build(const vector<Val> &ns) {
+    for(int i=0; i<ns.size(); ++i) tree[i+N_-1]=ns[i];
+    for(int i=N_-2; i>=0; --i) mergeAt(i);
+  } // Initialize tree with `ns`
+  void update(int i, const Val &x) { i+=N_-1,tree[i]=x; while(i>0) i=(i-1)/2,tree[i]=mergeAt(i); } // Update k-th (0-indexed) value
+  Val query(int ql, int qr) { return queryTree(ql,qr,0,0,N_); } // query in range [ql,qr)
 private:
-  void buildTree(const vector<Node> &ns, int i, int l, int r) {
-    if (l==r-1) {
-      if(l<ns.size()) Tree[i]=ns[l];
-      return;
-    }
-    int mid=l+(r-l)/2;
-    buildTree(ns,2*i+1,  l,mid); // left child
-    buildTree(ns,2*i+2,mid,  r); // right child
-    Tree[i]=merge(Tree[2*i+1],Tree[2*i+2]);
-  }
-  void updateTree(int p, const Node &x, int i, int l, int r) {
-    if (l==r-1) { Tree[i]=x; return; }
-    int mid=l+(r-l)/2;
-    if(p<mid) updateTree(p,x,2*i+1,  l,mid);
-    else      updateTree(p,x,2*i+2,mid,  r);
-    Tree[i]=merge(Tree[2*i+1],Tree[2*i+2]);
-  }
-  
-  Node queryTree(int L, int R, int i, int l, int r) {
-    // out of range
-    if (r<=L||R<=l) return Node::IDE;
-    // all covered
-    if (L<=l&&r<=R) return Tree[i];
-    // partially covered
-    int mid=l+(r-l)/2;
-    Node a=queryTree(L,R,2*i+1,  l,mid);
-    Node b=queryTree(L,R,2*i+2,mid,  r);
-    Node res=merge(a,b);
-    return res;
+  Val mergeAt(int i) { return tree[i]=merge(tree[2*i+1],tree[2*i+2]); }
+  Val queryTree(const int ql, const int qr, int i, int tl, int tr) {
+    if (tr<=ql||qr<=tl) return id; // out of range
+    if (ql<=tl&&tr<=qr) return tree[i]; // all covered
+    int mid=tl+(tr-tl)/2; // partially covered
+    return merge(queryTree(ql,qr,2*i+1, tl,mid),
+                 queryTree(ql,qr,2*i+2,mid, tr));
   }
 };
+
 void test_segmenttree() {
   vector<int> ns={2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
   int N=ns.size();
   
   // Range minimum query
-  SegmentTree T(N);
-  vector<Node> X;
-  for(int i=0; i<N; ++i) X.push_back(ns[i]);
-  T.build(X);
+  SegmentTree<int> T(N,1e9,[](int a, int b) { return min(a,b); });
+  T.build(ns);
   
-  assert(T.query(2,8).val==1);
-  assert(T.query(3,8).val==2);
+  assert(T.query(2,8)==1);
+  assert(T.query(3,8)==2);
   T.update(5,-1);
-  assert(T.query(2,8).val==-1);
+  assert(T.query(2,8)==-1);
 }
 
 /*
