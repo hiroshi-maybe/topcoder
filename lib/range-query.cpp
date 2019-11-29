@@ -50,9 +50,13 @@ struct SegmentTree {
   using Merger = function<Val(Val,Val)>;
   Merger merge;
 public:
-  SegmentTree(int N, Val id, Merger merge): id(id), merge(merge) {
+  SegmentTree(int N, Val id, Merger merge) { prep(N,id,merge); }
+  SegmentTree(vector<Val> A, Val id, Merger merge) { prep(A.size(),id,merge), this->build(A); }
+  SegmentTree& prep(int N, Val id, Merger merge) {
+    this->id=id,this->merge=merge;
     int n=1; while(n<N) n<<=1; // Init by power of 2
     this->tree=vector<Val>(2*n-1,id), this->N_=n;
+    return *this;
   }
   void build(const vector<Val> &ns) {
     for(int i=0; i<ns.size(); ++i) tree[i+N_-1]=ns[i];
@@ -73,11 +77,9 @@ private:
 
 void test_segmenttree() {
   vector<int> ns={2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
-  int N=ns.size();
   
   // Range minimum query
-  SegmentTree<int> T(N,1e9,[](int a, int b) { return min(a,b); });
-  T.build(ns);
+  SegmentTree<int> T(ns,1e9,[](int a, int b) { return min(a,b); });
   
   assert(T.query(2,8)==1);
   assert(T.query(3,8)==2);
@@ -95,6 +97,10 @@ void test_segmenttree() {
  References:
   - https://www.npca.jp/works/magazine/2015_5/
  
+ Usage:   
+   auto rmq=makeRmQ(A,(int)1e9);
+   assert(rmq.query(2,8)==1);
+ 
  Used problem:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L174
   - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/Roadwork.cpp#L72
@@ -105,51 +111,18 @@ void test_segmenttree() {
    - range min query
  
  */
-template <class T> struct RMQ {
-public:
-  T Inf;
-  vector<T> A;
-  int SIZE; // normalized size of original array
-  T merge(T a, T b) { return min(a,b); }
-  RMQ(int N, T Inf) : Inf(Inf) {
-    this->SIZE=calcsize(N);
-    this->A=vector<T>(2*SIZE,Inf);
-  }
-  // O(N) initialization
-  RMQ(vector<T> &X, T Inf) : Inf(Inf) {
-    this->SIZE=calcsize(X.size());
-    this->A=vector<T>(2*SIZE,Inf);
-    for(int i=0; i<X.size(); ++i) A[i+SIZE-1]=X[i];
-    for(int i=SIZE-2; i>=0; --i) {
-      A[i]=merge(A[2*i+1],A[2*i+2]);
-    }
-  }
-  void update(int i, T v) {
-    i+=SIZE-1;
-    A[i]=v;
-    while(i>0) {
-      i=(i-1)/2;
-      A[i]=merge(A[2*i+1],A[2*i+2]);
-    }
-  }
-  // half-open range [ql,qr)
-  T query(int ql, int qr) {
-    return qu(ql,qr,0,0,SIZE);
-  }
-private:
-  // i: node index (<SIZE if not leaf)
-  T qu(int ql, int qr, int i, int l, int r) {
-    if(qr<=l||r<=ql) return Inf;
-    if(ql<=l&&r<=qr) return A[i];
-    int m=(l+r)/2;
-    
-    return merge(qu(ql,qr,2*i+1,l,m),qu(ql,qr,2*i+2,m,r));
-  }
-  int calcsize(int N) {
-    int n=1; while(n<N) n<<=1;
-    return n;
-  }
-};
+template<typename Val> auto makeRmMQ(vector<pair<Val,Val>> A, pair<Val,Val> id) {
+  using P=pair<Val,Val>;
+  return SegmentTree<P>(A,id,[](P a, P b) {
+    return P(min(a.first,b.first), max(a.second,b.second));
+  });
+}
+template<typename Val> auto makeRmQ(vector<Val> A, Val id) {
+  return SegmentTree<Val>(A,id,[](Val a, Val b) { return min(a,b); });
+}
+template<typename Val> auto makeRMQ(vector<Val> A, Val id) {
+  return SegmentTree<Val>(A,id,[](Val a, Val b) { return max(a,b); });
+}
 template <class T> struct RMQ_lazy {
 public:
   T Inf;
@@ -191,16 +164,15 @@ void test_rmq() {
   vector<int> ns={2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
   
   // Range minimum query
-  RMQ<int> rmq(ns,1e9);
-
+  auto rmq=makeRmQ(ns,(int)1e9);
   assert(rmq.query(2,8)==1);
   assert(rmq.query(3,8)==2);
   rmq.update(5,-1);
   assert(rmq.query(2,8)==-1);
   
-  RMQ<pair<int,int>> rmq2(ns.size(),{1e9,-1});
-  for(int i=0; i<ns.size(); ++i) rmq2.update(i,{ns[i],i});
-  
+  vector<pair<int,int>> ps;
+  for(int i=0; i<ns.size(); ++i) ps.emplace_back(ns[i],i);
+  auto rmq2=makeRmQ(ps,{1e9,-1});
   assert(rmq2.query(2,8)==make_pair(1,2));
   assert(rmq2.query(3,8)==make_pair(2,4));
   rmq2.update(5,{-1,5});
