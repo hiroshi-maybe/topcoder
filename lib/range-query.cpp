@@ -87,6 +87,9 @@ private:
  
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Editor.cpp#L44
+   - lazy RmMQ
+  - https://github.com/hiroshi-maybe/atcoder/blob/a669b3419df50aaf5388da15b3ff5ae0d87abd24/solutions/Roadwork.cpp#L75
+   - lazy RmQ
  
  */
 template <typename Val, typename Delay>
@@ -214,7 +217,7 @@ void test_segmenttree() {
  
  Used problem:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L174
-  - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/Roadwork.cpp#L72
+  - https://github.com/hiroshi-maybe/atcoder/blob/e81dcc4cd4d181d4a38e70ee4cdfb0c3692cfd2f/solutions/Roadwork.cpp#L72
    - lazy propagation (range update)
   - https://github.com/hiroshi-maybe/leetcode/blob/master/1124-longest-well-performing-interval/longest-well-performing-interval.cpp#L50
    - range min query
