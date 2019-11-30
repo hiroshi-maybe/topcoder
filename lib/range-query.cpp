@@ -7,9 +7,9 @@ using namespace std;
 
 /*
  
- Range minimum query by segment tree, O(N) time to build, O(lg N) time to query or update
+ General segment tree, O(N) time to build, O(lg N) time to query or update
  
-  - Data structure to query in range
+  - Range query, point update
   - Segment tree is applicable as long as result to be queried is associative
    - Range sum query
    - Range GCD query
@@ -47,12 +47,12 @@ struct SegmentTree {
   int N_; // adjusted N
   vector<Val> tree;
   Val id;
-  using Merger = function<Val(Val,Val)>;
-  Merger merge;
+  using Merge = function<Val(Val,Val)>;
+  Merge merge;
 public:
-  SegmentTree(int N, Val id, Merger merge) { prep(N,id,merge); }
-  SegmentTree(vector<Val> A, Val id, Merger merge) { prep(A.size(),id,merge), this->build(A); }
-  SegmentTree& prep(int N, Val id, Merger merge) {
+  SegmentTree(int N, Val id, Merge merge) { prep(N,id,merge); }
+  SegmentTree(vector<Val> A, Val id, Merge merge) { prep(A.size(),id,merge), this->build(A); }
+  SegmentTree& prep(int N, Val id, Merge merge) {
     this->id=id,this->merge=merge;
     int n=1; while(n<N) n<<=1; // Init by power of 2
     this->tree=vector<Val>(2*n-1,id), this->N_=n;
@@ -74,17 +74,99 @@ private:
                  queryTree(ql,qr,2*i+2,mid, tr));
   }
 };
+/*
+ General lazy segment tree, O(N) time to build, O(lg N) time to query or update
+ 
+  - Range query, *range* update
+ 
+ Reference:
+  - https://cp-algorithms.com/data_structures/segment_tree.html#toc-tgt-9
+ 
+ */
+template <typename Val, typename Delay>
+struct LazySegmentTree {
+  int N_/* adjusted N*/,head/* head of leaf */;
+  vector<Val> tree, delay;
+  Val id;
+  Delay delayId;
+  using Merge = function<Val(Val,Val)>;
+  using Apply = function<Val(Val,Delay)>;
+  using MergeDelay = function<Delay(Delay,Delay)>;
+  Merge merge;
+  Apply apply;
+  MergeDelay mergeDelay;
+public:
+  LazySegmentTree(int N, Val id, Delay delayId, Merge merge, Apply apply, MergeDelay mergeDelay) { prep(N,id,delayId,merge,apply,mergeDelay); }
+  LazySegmentTree(vector<Val> A, Val id, Delay delayId, Merge merge, Apply apply, MergeDelay mergeDelay) { prep(A.size(),id,delayId,merge,apply,mergeDelay),this->build(A); }
+  LazySegmentTree& prep(int N, Val id, Delay delayId, Merge merge, Apply apply, MergeDelay mergeDelay) {
+    this->id=id,this->delayId=delayId;
+    this->merge=merge,this->apply=apply,this->mergeDelay=mergeDelay;
+    int n=1; while(n<N) n<<=1; // Init by power of 2
+    this->tree=vector<Val>(2*n-1,id),this->delay=vector<Delay>(2*n-1,delayId);
+    this->N_=n,this->head=N_-1;
+    return *this;
+  }
+  void build(const vector<Val> &ns) {
+    for(int i=0; i<ns.size(); ++i) tree[i+N_-1]=ns[i];
+    for(int i=N_-2; i>=0; --i) mergeAt(i);
+  } // Initialize tree with `ns`
+  void update(int ql, int qr, const Delay &delay) { updateTree(ql,qr,delay,0,0,N_); }
+  Val query(int ql, int qr) { return queryTree(ql,qr,0,0,N_); } // query in range [ql,qr)
+private:
+  Val mergeAt(int i) { return tree[i]=merge(tree[2*i+1],tree[2*i+2]); }
+  Val queryTree(const int ql, const int qr, int i, int tl, int tr) {
+    if(tr<=ql||qr<=tl) return id; // out of range
+    applyDelay(i);
+    if(ql<=tl&&tr<=qr) return tree[i]; // all covered
+    int mid=tl+(tr-tl)/2; // partially covered
+    return merge(queryTree(ql,qr,2*i+1, tl,mid),
+                 queryTree(ql,qr,2*i+2,mid, tr));
+  }
+  void updateTree(const int ql, const int qr, Delay delay, int i, int tl, int tr) {
+    if(tr<=ql||qr<=tl) return; // out of range
+    if(ql<=tl&&tr<=qr) mergeDelayAt(i,delay),applyDelay(i); // all covered
+    else if(ql<tr&&tl<qr) { // partially coverd
+      int mid=tl+(tr-tl)/2;
+      applyDelay(i),updateTree(ql,qr,delay,2*i+1,tl,mid),updateTree(ql,qr,delay,2*i+2,mid,tr),mergeAt(i);
+    } else applyDelay(i);
+  }
+  void applyDelay(int i) {
+    if(delay[i]==delayId) return;
+    if(i<head) pushdownAt(i);
+    tree[i]=apply(tree[i],delay[i]),delay[i]=delayId;
+  }
+  void pushdownAt(int i) { mergeDelayAt(2*i+1,delay[i]),mergeDelayAt(2*i+2,delay[i]); }
+  void mergeDelayAt(int i, Delay d) { delay[i]=mergeDelay(delay[i],d); }
+};
 
 void test_segmenttree() {
   vector<int> ns={2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
   
-  // Range minimum query
-  SegmentTree<int> T(ns,1e9,[](int a, int b) { return min(a,b); });
+  {
+    // Range minimum query
+    SegmentTree<int> T(ns,1e9,[](int a, int b) { return min(a,b); });
+    
+    assert(T.query(2,8)==1);
+    assert(T.query(3,8)==2);
+    T.update(5,-1);
+    assert(T.query(2,8)==-1);
+  }
   
-  assert(T.query(2,8)==1);
-  assert(T.query(3,8)==2);
-  T.update(5,-1);
-  assert(T.query(2,8)==-1);
+  {
+    // Range minimum query, range update
+    auto mina=[](int a, int b) { return min(a,b); };
+    LazySegmentTree<int,int> T(ns,1e9,1e9,mina,mina,mina);
+    
+    assert(T.query(2,8)==1);
+    assert(T.query(3,8)==2);
+    T.update(3,6,0);
+    assert(T.query(0,3)==1);
+    assert(T.query(0,4)==0);
+    assert(T.query(5,7)==0);
+    T.update(0,4,-1);
+    assert(T.query(0,3)==-1);
+    assert(T.query(4,10)==0);
+  }
 }
 
 /*
@@ -97,7 +179,7 @@ void test_segmenttree() {
  References:
   - https://www.npca.jp/works/magazine/2015_5/
  
- Usage:   
+ Usage:
    auto rmq=makeRmQ(A,(int)1e9);
    assert(rmq.query(2,8)==1);
  
