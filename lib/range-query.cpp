@@ -1,10 +1,13 @@
-#include <iostream>
-#include <sstream>
-#include <cassert>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
-
+mt19937 rnd(chrono::steady_clock::now().time_since_epoch().count());
+int genRandNum(int lb, int ub) {
+  assert(lb<ub);
+  // Helper to generate random integer in range [lb, ub)
+  int x = rnd() % (int)(ub - lb);
+  return x + lb;
+}
 /*
  
  General segment tree, O(N) time to build, O(lg N) time to query or update
@@ -82,11 +85,15 @@ private:
  Reference:
   - https://cp-algorithms.com/data_structures/segment_tree.html#toc-tgt-9
  
+ Used problems:
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Editor.cpp#L44
+ 
  */
 template <typename Val, typename Delay>
 struct LazySegmentTree {
   int N_/* adjusted N*/,head/* head of leaf */;
-  vector<Val> tree, delay;
+  vector<Val> tree;
+  vector<Delay> delay;
   Val id;
   Delay delayId;
   using Merge = function<Val(Val,Val)>;
@@ -122,12 +129,11 @@ private:
     return merge(queryTree(ql,qr,2*i+1, tl,mid),
                  queryTree(ql,qr,2*i+2,mid, tr));
   }
-  void updateTree(const int ql, const int qr, Delay delay, int i, int tl, int tr) {
-    if(tr<=ql||qr<=tl) return; // out of range
-    if(ql<=tl&&tr<=qr) mergeDelayAt(i,delay),applyDelay(i); // all covered
+  void updateTree(const int ql, const int qr, Delay d, int i, int tl, int tr) {
+    if(ql<=tl&&tr<=qr) mergeDelayAt(i,d),applyDelay(i); // all covered
     else if(ql<tr&&tl<qr) { // partially coverd
       int mid=tl+(tr-tl)/2;
-      applyDelay(i),updateTree(ql,qr,delay,2*i+1,tl,mid),updateTree(ql,qr,delay,2*i+2,mid,tr),mergeAt(i);
+      applyDelay(i),updateTree(ql,qr,d,2*i+1,tl,mid),updateTree(ql,qr,d,2*i+2,mid,tr),mergeAt(i);
     } else applyDelay(i);
   }
   void applyDelay(int i) {
@@ -138,7 +144,6 @@ private:
   void pushdownAt(int i) { mergeDelayAt(2*i+1,delay[i]),mergeDelayAt(2*i+2,delay[i]); }
   void mergeDelayAt(int i, Delay d) { delay[i]=mergeDelay(delay[i],d); }
 };
-
 void test_segmenttree() {
   vector<int> ns={2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
   
@@ -155,7 +160,8 @@ void test_segmenttree() {
   {
     // Range minimum query, range update
     auto mina=[](int a, int b) { return min(a,b); };
-    LazySegmentTree<int,int> T(ns,1e9,1e9,mina,mina,mina);
+    auto seta=[](int _, int d) { return d; };
+    LazySegmentTree<int,int> T(ns,1e9,1e9,mina,seta,seta);
     
     assert(T.query(2,8)==1);
     assert(T.query(3,8)==2);
@@ -166,6 +172,29 @@ void test_segmenttree() {
     T.update(0,4,-1);
     assert(T.query(0,3)==-1);
     assert(T.query(4,10)==0);
+  }
+  
+  {
+    int N=100;
+    vector<int> A(N);
+    iota(A.begin(),A.end(),1);
+    SegmentTree<int> T1(A,1e9,[](int a, int b) { return min(a,b); });
+    auto mina=[](int a, int b) { return min(a,b); };
+    auto seta=[](int _, int d) { return d; };
+    LazySegmentTree<int,int> T2(A,1e9,1e9,mina,seta,seta);
+    int T=100;
+    while(T--) {
+      int l=genRandNum(0,N-1),r=genRandNum(l,N+1),val=genRandNum(0,100);
+      for(int i=l; i<r; ++i) A[i]=val,T1.update(i,val);
+      T2.update(l,r,val);
+      int ql=genRandNum(0,N-1),qr=genRandNum(ql,N+1);
+      int res=1e9;
+      for(int i=ql; i<qr; ++i) res=min(res,A[i]);
+      
+      int act1=T1.query(ql,qr),act2=T2.query(ql,qr);
+      assert(res==act1);
+      assert(res==act2);
+    }
   }
 }
 
