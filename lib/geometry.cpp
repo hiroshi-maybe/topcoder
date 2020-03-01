@@ -11,6 +11,9 @@ const double PI = acos(-1);
 typedef int num;
 typedef long long numLL;
 
+const double EPS=1e-9;
+bool eq(double x, double y) { return abs(x-y)<EPS; }
+
 struct Point {
 public:
   num x, y;
@@ -26,6 +29,7 @@ public:
   Point &operator-=(Point that) { x-=that.x,y-=that.y; return *this; }
   Point operator+(Point that) const { return Point(*this)+=that; }
   Point operator-(Point that) const { return Point(*this)-=that; }
+  Point operator*(double a) const { return Point(x*a, y*a);}
   bool operator==(Point that) const { return x==that.x&&y==that.y; }
   bool operator!=(Point that) const { return !(Point(*this)==that); }
   bool operator<(Point that) const { return pair<num,num>(x,y)<pair<num,num>(that.x,that.y); }
@@ -41,6 +45,28 @@ public:
     else return x>0?4:3;
   }
 };
+
+struct Circle {
+  Point org; numLL rad;
+  Circle(Point org=Point(), numLL rad=0) : org(org), rad(rad) {}
+  vector<Point> cross(const Circle& c) {
+    Point p=c.org-org;
+    double l=sqrt(p.distance());
+    if(eq(l,0)) return {};
+    double maxSide=max({l,(double)rad,(double)c.rad});
+    if(eq(l+rad+c.rad, maxSide*2)) { return {org + p*(rad/l)}; }
+    if(l+rad+c.rad<maxSide*2) return {};
+    double x=-(c.rad*c.rad-l*l-rad*rad)/(2*l);
+    double y=sqrt(rad*rad-x*x);
+    Point mid=org+p*(x/l);
+    p=p.rotate90();
+    return {mid+p*(y/l), mid-p*(y/l)};
+  }
+  bool isInside(const Point& p) {
+    return sqrt((p-org).distance())<rad+EPS;
+  }
+};
+
 /*
  
  cross product u×v
