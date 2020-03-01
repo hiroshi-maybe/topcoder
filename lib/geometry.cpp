@@ -36,6 +36,7 @@ public:
   numLL distance() { return (numLL)x*x + (numLL)y*y; }
   Point rotate90() { return Point{-y, x}; }
   int orthant() const {
+    if(x==0&&y==0) return 1;
     if(y>0) return x>0?1:2;
     else return x>0?4:3;
   }
@@ -418,10 +419,11 @@ int main(int argc, char const *argv[]) {
   vector<Point> ps = findConvexHull({{0,3},{1,1},{2,2},{4,4},{0,0},{1,2},{3,1},{3,3}});
   vector<Point> exp = {{0,0},{3,1},{4,4},{0,3}};
   assert(ps==exp);
-//  assert(ps.size()==exp.size());
-//  for(int i=0; i<ps.size(); ++i) {
+/*  assert(ps.size()==exp.size());
+  for(int i=0; i<ps.size(); ++i) {
+    printf("(%d,%d) vs (%d,%d)\n",ps[i].x,ps[i].y,exp[i].x,exp[i].y);
 //    assert(ps[i].first==exp[i].first&&ps[i].second==exp[i].second);
-//  }
+  }*/
   
   Point origin(0,0);
   
