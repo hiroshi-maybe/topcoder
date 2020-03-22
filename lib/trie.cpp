@@ -22,6 +22,7 @@ using namespace std;
    - binary trie tree (maximize XOR pair query)
   - https://github.com/hiroshi-maybe/leetcode/blob/master/1032-stream-of-characters/stream-of-characters.cpp#L43
    - search by reversed order
+  - https://github.com/hiroshi-maybe/GCJ/blob/master/kickstart/2020A/Bundling.cpp#L48
  
  */
 
