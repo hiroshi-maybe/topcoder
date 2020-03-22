@@ -374,17 +374,20 @@ void test_rollinghash() {
  
  Used problems(s):
   - https://github.com/k-ori/leetcode/blob/master/5-longest-palindromic-substring/longest-palindromic-substring.swift#L40
+ - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/PrefixSuffixPalindrome.cpp#L44
  
  */
 struct Manacher {
 public:
   string S,T;
+  vector<int> P;
   Manacher(string S) : S(S) {
     int N=S.size();
     T="^";
     for(int i=0; i<N; ++i) T+="#"+S.substr(i,1)+(i==N-1?"#":"");
     T+="$";
   }
+  // returns an arary of radius at positions of `T`
   vector<int> solve() {
     int M=T.size();
     vector<int> P(M);
@@ -398,19 +401,28 @@ public:
       P[i]=rad;
       if(i+rad-1>R) C=i,R=i+rad-1;
     }
-    return P;
+    return this->P=P;
+  }
+  // returns the half-open range of the palidrome at center `c` in `P`
+  pair<int,int> range(int c) {
+    if(!P.size()) solve();
+    int s=c-P[c]+2,ss=s/2-1;
+    int l=P[c]-1;
+    printf("%d %d %d %d %d\n",c,P[c],ss,l,ss+l);
+    return {ss,ss+l};
   }
   string longestPalindrome() {
     vector<int> P=solve();
     int c=-1,M=T.size();
     for(int i=1; i<M-1; ++i) if(c==-1||P[i]>P[c]) c=i;
     if(c==-1) return "";
-    int s=c-P[c]+2,ss=s/2-1;
-    int l=P[c]-1;
-    return S.substr(ss,l);
+    auto r=range(c);
+    return S.substr(r.first,r.second-r.first);
   }
 };
 void test_manacher() {
+  // ^#x#a#b#a#a#a#b#a#b#a#$
+  // 11212141238321416141211
   string S="xabaaababa";
   vector<int> exp={1,1,2,1,2,1,4,1,2,3,8,3,2,1,4,1,6,1,4,1,2,1,1};
   Manacher man1(S);
@@ -437,6 +449,16 @@ void test_manacher() {
   vector<int> P4=man4.solve();
   for(int i=0; i<P4.size(); ++i) assert(P4[i]==exp4[i]);
   assert(man4.longestPalindrome()=="");
+  
+  {
+    // ^#a#b#b#c#$
+    // 11212321211
+    Manacher man("abbc");
+    vector<int> exp={1,1,2,1,2,3,2,1,2,1,1};
+    vector<int> P=man.solve();
+    assert(P==exp);
+    assert(man.longestPalindrome()=="bb");
+  }
 }
 
 /*
@@ -531,3 +553,5 @@ int main(int argc, char const *argv[]) {
   test_manacher();
   test_zalgo();
 }
+
+// g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address string-matching.cpp && ./a.out
