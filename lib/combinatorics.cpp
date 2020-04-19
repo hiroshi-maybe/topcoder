@@ -168,6 +168,33 @@ LL choose(LL n, LL k) {
 
 /*
  
+ log2( n chooses k ) (binomial coefficient), O(k) in cache warmup, O(1) per query on average
+  
+ long double x = chooseLog2(n,k)
+ long double res = pow(2,x)
+ 
+ - Works well if n is very large
+ - Restore by pow(2,y)
+ 
+ Used problem:
+  - https://github.com/hiroshi-maybe/GCJ/blob/b5f093a92938948d05ff7f14678c73a892d90113/kickstart/2020B/WanderingRobot.cpp#L45
+ 
+ */
+long double chooseLog2(int n, int k) {
+  assert(n>=k);
+  const int MAX_N = 1e6+1;
+  assert(0<=k&&k<=MAX_N);
+  static vector<long double> fact(MAX_N+1,-1);
+  
+  if(fact[1]<0) {
+    fact[0]=fact[1]=0;
+    for(int i=2;i<=MAX_N;i++) fact[i]=fact[i-1]+log2(i);
+  }
+  return fact[n]-fact[n-k]-fact[k];
+}
+
+/*
+ 
  Create n chooses k (% MOD) table (k=0..n), O(N^2) time (N<=3000)
  
  C(n,k) = C(n-1,k)+C(n-1,k-1)
