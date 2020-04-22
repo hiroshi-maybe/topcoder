@@ -142,8 +142,16 @@ bool onSegment(Point p1, Point p2, Point q) {
   ymax=max(p1.y, p2.y);
   return xmin<=q.x&&q.x<=xmax&&ymin<=q.y&&q.y<=ymax;
 }
-// CLRS 33.1 SEGMENTS-INTERSECT(p1,p2,p3,p4)
-// p1->p2 intersects p3->p4
+/*
+ 
+ Checks if p1->p2 intersects p3->p4, O(1) time
+ 
+ CLRS 33.1 SEGMENTS-INTERSECT(p1,p2,p3,p4)
+ 
+ Used problem:
+  - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/IttoRyodan.cpp#L93
+ 
+ */
 bool intersect(Point p1, Point p2, Point p3, Point p4) {
   numLL d1 = det(p1,p3,p4),
   d2 = det(p2,p3,p4),
