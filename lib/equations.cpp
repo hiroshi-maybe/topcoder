@@ -228,6 +228,9 @@ template<class T> int gf2_rank(vector<T>& V) {
   - CLRS 28.1 Solving systems of linear equations
   - http://kmjp.hatenablog.jp/entry/2014/04/01/0930
  
+ Used problems:
+  - https://github.com/hiroshi-maybe/topcoder/blob/3b1f63c748035eae69519db69cc95d875550cd23/solutions/SpeedingUpBozosort/SpeedingUpBozosort.cpp#L42
+ 
  */
 struct GaussJordanElimination {
   const double eps=1e-8;
