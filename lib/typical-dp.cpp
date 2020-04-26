@@ -142,7 +142,45 @@ namespace SubsetSum {
     }
   }
 }
-       
+
+/*
+ 
+ Longest Common Subsequence, O(N*M) time
+ 
+ Used problems:
+  - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/SquareAndDelete.cpp#L62
+ 
+ */
+int lcs(string &a, string &b) {
+  int N=a.size(),M=b.size();
+  vector<vector<int>> dp(N+1,vector<int>(M+1));
+  for(int i=0; i<N; ++i) for(int j=0; j<M; ++j) {
+    if(a[i]==b[j]) dp[i+1][j+1]=1+dp[i][j];
+    else {
+      dp[i+1][j+1]=max(dp[i+1][j],dp[i][j+1]);
+    }
+  }
+  return dp[N][M];
+}
+
+void test_lcs() {
+  {
+    string a="abac",b="babc";
+    assert(lcs(a,b)==3);
+  }
+  {
+    string a="",b="abc";
+    assert(lcs(a,b)==0);
+  }
+  {
+    string a="abc",b="";
+    assert(lcs(a,b)==0);
+  }
+}
+
 int main(int argc, char const *argv[]) {
   SubsetSum::test();
+  test_lcs();
 }
+
+// g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address typical-dp.cpp && ./a.out
