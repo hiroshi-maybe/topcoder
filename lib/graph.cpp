@@ -65,23 +65,22 @@ vector<int> bellmanford(int V, vector<unordered_map<int, int>> E, int s) {
   cout<<D[dest]<<endl;
  
  */
-const long long Inf=1e17;
+const long long Inf=2e18;
 const int MAX_V=3001;
 long long D[MAX_V];
-vector<pair<int,long long>> G[3001];
+using P=pair<long long, int>;
+vector<P> G[MAX_V];
 void dijkstra(int V, int st) {
   for(int i=0; i<V; ++i) D[i]=Inf;
-  set<pair<long long,int>> Q; Q.emplace(0,st); D[st]=0;
+  priority_queue<P,vector<P>,greater<P>> Q; Q.emplace(0,st); D[st]=0;
   while(Q.size()>0) {
-    auto it=Q.begin();
-    int u; long long d;
-    tie(d,u)=*it; Q.erase(it);
+    long long d; int u;
+    tie(d,u)=Q.top(),Q.pop();
+    if(d!=D[u]) continue;
     for(auto p : G[u]) {
       int v; long long w; tie(v,w)=p;
       if(d+w<D[v]) {
-        auto it2=Q.find({D[v],v});
-        if(it2!=Q.end()) Q.erase(it2);
-        D[v]=d+w; Q.emplace(d+w,v);
+        D[v]=d+w,Q.emplace(d+w,v);
       }
     }
   }
