@@ -2,6 +2,7 @@
 #include <cassert>
 #include <algorithm>
 #include <vector>
+#include <tgmath.h>
 using namespace std;
 
 #define TRACE true
@@ -443,6 +444,46 @@ private:
   }
 } Stir;
 
+/*
+ 
+ Number of ways to put distinguishable N balls into K (NON-)distinguishable boxes (namely the Stiring Number), O(N) time
+ 
+ Distinguishable K box:
+   S(n,k) = ∑ { (-1)^(k-i)*C(k,i)*i^n : i=1..k }
+ 
+ Non-distinguishable K box:
+   S(n,k) / k!
+ 
+ https://mathtrain.jp/zensya
+ https://drken1215.hatenablog.com/entry/2018/02/01/200628
+ 
+ Used problems:
+  - https://github.com/hiroshi-maybe/codeforces/blob/b90b1688f0ad6ea86452b5ab72dca8fdf88dd0fb/solutions/PlacingRooks.cpp#L136
+ 
+ */
+long long stirling(int N, int K, bool d10ableBox = false) {
+  if(N<K) return 0;
+  if(N==0) return 1;
+  LL res=0,rev=1;
+  
+  auto pow=[&](long long x, long long n) -> long long {
+    long long res=1;
+    while(n>0) {
+      if(n&1) res=res*x%MOD;
+      x=x*x%MOD,n>>=1;
+    }
+    return res;
+  };
+  auto inv=[&](long long x) -> long long { return pow(x,MOD-2); };
+  
+  for(int i=1; i<=K; ++i) {
+    rev=(rev*i)%MOD;
+    int sign=(K-i)%2?-1:1;
+    res+=(sign+MOD)%MOD*choose(K,i)%MOD*pow(i,N)%MOD;
+  }
+  return d10ableBox?res:res*inv(rev)%MOD;
+}
+
 void test_stirlingNumber() {
   vector<vector<long long>> exp={
     /*0*/  {1},
@@ -460,6 +501,11 @@ void test_stirlingNumber() {
   
   for(int n=0; n<=10; ++n) for(int k=0; k<=n; ++k) {
     assert(exp[n][k]==Stir.query(n,k));
+  }
+  
+  for(int n=0; n<=10; ++n) for(int k=0; k<=n; ++k) {
+//    printf("S(%d,%d)=%lld vs %lld\n", n,k,exp[n][k],stirling(n,k,false));
+    assert(exp[n][k]==stirling(n,k,false));
   }
 }
 
@@ -590,3 +636,5 @@ int main(int argc, char const *argv[]) {
   test_stirlingNumber();
   test_partitionNumber();
 }
+
+// g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address combinatorics.cpp && ./a.out
