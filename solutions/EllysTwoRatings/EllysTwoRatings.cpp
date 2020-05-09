@@ -63,30 +63,26 @@ class EllysTwoRatings {
     double res=0;
     REP(i,N) {
       FORE(b,1,1000) {
-        vector<double> cum(1002);
+        vector<double> imos(1002);
         FORE(a,1,1000) {
           auto ra=range(a);
           double pa=1.0/(ra.second-ra.first+1);
-          cum[a+1]=cum[a]+dp[a][b]*pa;
+          imos[ra.first]+=dp[a][b]*pa;
+          imos[ra.second+1]-=dp[a][b]*pa;
         }
-        FORE(a,1,1000) {
-          auto ra=range(a);
-          dp[a][b]=(cum[ra.second+1]-cum[ra.first]);
-        }
+        FORE(a,1,1000) dp[a][b]=dp[a-1][b]+imos[a];
       }
       FORE(x,1,1000) res+=dp[x][x],dp[x][x]=0;
       
       FORE(a,1,1000) {
-        vector<double> cum(1002);
+        vector<double> imos(1002);
         FORE(b,1,1000) {
           auto rb=range(b);
           double pb=1.0/(rb.second-rb.first+1);
-          cum[b+1]=cum[b]+dp[a][b]*pb;
+          imos[rb.first]+=dp[a][b]*pb;
+          imos[rb.second+1]-=dp[a][b]*pb;
         }
-        FORE(b,1,1000) {
-          auto rb=range(b);
-          dp[a][b]=(cum[rb.second+1]-cum[rb.first]);
-        }
+        FORE(b,1,1000) dp[a][b]=dp[a][b-1]+imos[b];
       }
       FORE(x,1,1000) res+=dp[x][x],dp[x][x]=0;
     }
