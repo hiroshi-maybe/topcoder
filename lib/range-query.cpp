@@ -436,25 +436,26 @@ void test_bit() {
   - https://github.com/hiroshi-maybe/codeforces/blob/924a2f0afa608ef58ea26dd14c2e38eb4e282d50/solutions/ArsonInBerlandForest.cpp#L44
  
  */
+template <typename Val>
 struct TwoDimCumSum {
 public:
   int R,C;
-  TwoDimCumSum(vector<vector<int>> &X) {
+  TwoDimCumSum(vector<vector<Val>> &X) {
     this->R=X.size();
     if(R==0) return;
     this->C=X[0].size();
-    this->cum=vector<vector<int>>(R+1,vector<int>(C+1,0));
+    this->cum=vector<vector<Val>>(R+1,vector<Val>(C+1,0));
     
     for(int i=0; i<R; ++i) for(int j=0; j<C; ++j) {
       cum[i+1][j+1]=cum[i][j+1]+cum[i+1][j]-cum[i][j]+X[i][j];
     }
   }
   // query of sum in rectangle r in [i1,i2), c in [j1,j2)
-  int query(int i1, int j1, int i2, int j2) {
+  Val query(int i1, int j1, int i2, int j2) {
     return cum[i2][j2]-cum[i1][j2]-cum[i2][j1]+cum[i1][j1];
   }
 private:
-  vector<vector<int>> cum;
+  vector<vector<Val>> cum;
 };
 
 int main(int argc, char const *argv[]) {
@@ -470,7 +471,7 @@ int main(int argc, char const *argv[]) {
     {4, 1, 0, 1, 7},
     {1, 0, 3, 0, 5}
   };
-  TwoDimCumSum cum(mx);
+  TwoDimCumSum<int> cum(mx);
   assert(cum.query(2,1,5,4)==8);
   assert(cum.query(1,1,3,3)==11);
   assert(cum.query(1,2,3,5)==12);
