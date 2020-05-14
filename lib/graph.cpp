@@ -745,6 +745,9 @@ private:
  
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/HelpingHiasat.cpp#L94
+    - max independent set
+  - https://github.com/hiroshi-maybe/atcoder/blob/77955c1d9f6480ffb06fd0659d67c3085eb6f27d/solutions/Habatsu.cpp#L45
+    - max clique
  
  */
 
