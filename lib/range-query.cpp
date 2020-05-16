@@ -329,6 +329,8 @@ void test_rmq() {
   - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/EnclosedPoints.cpp#L81
   - https://github.com/hiroshi-maybe/GCJ/blob/master/kickstart/2019H/Hindex.cpp#L44
   - https://github.com/hiroshi-maybe/codeforces/blob/82bef974ead7bd9d1e27a4e58b5b3066a0450335/solutions/OptimalSubsequences.cpp#L44
+  - https://github.com/hiroshi-maybe/topcoder/blob/470b5d80a15f3d97f4a2405b6ef274d6f320ffaa/solutions/SwapTheString/SwapTheString.cpp#L42
+   - inversion number
  
  */
 template <typename T> struct BIT {
