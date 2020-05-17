@@ -6,11 +6,11 @@
 using namespace std;
 
 /*
- 
+
  Fraction computation library
- 
+
   - N^2 should fit in signed long long (<1e18) in operators
- 
+
  Used problems:
   - https://github.com/k-ori/topcoder/blob/master/MinimizeAbsoluteDifferenceDiv1/MinimizeAbsoluteDifferenceDiv1.cpp#L119
   - https://github.com/k-ori/topcoder/blob/master/BestView/BestView.cpp#L64
@@ -18,7 +18,8 @@ using namespace std;
   - https://github.com/hiroshi-maybe/GCJ/blob/master/2019-R2/NewElementsPart1.cpp#L103
   - https://github.com/hiroshi-maybe/GCJ/blob/master/2019-R2/NewElementsPart2.cpp#L47
   - https://github.com/hiroshi-maybe/topcoder/blob/master/solutions/AddPeriodic/AddPeriodic.cpp#L42
- 
+  - https://github.com/hiroshi-maybe/atcoder/blob/9d43910575eca57491f017877f74bf60af49916f/solutions/Bullet.cpp#L80
+
  */
 
 struct Frac {
@@ -67,11 +68,11 @@ private:
 int main(int argc, char const *argv[]) {
   Frac p(10,20);
   assert(p.n==1&&p.d==2);
-  
+
   Frac x(5,6),y(3,4);
   auto a=x+y;
   assert(a.n==19&&a.d==12);
-  
+
   auto s=x-y;
   assert(s.n==1&&s.d==12);
 
