@@ -1,27 +1,51 @@
-#include <iostream>
-#include <vector>
-#include <unordered_map>
-#include <unordered_set>
-#include <cassert>
-#include <set>
-#include <tuple>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define dumpAR(ar) for(auto &x : (ar)) { cout << x << ','; } cout << endl;
 
+// g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address graph.cpp && ./a.out
+
+mt19937 rnd(chrono::steady_clock::now().time_since_epoch().count());
+int genRandNum(int lb, int ub) {
+  assert(lb<ub);
+  // Helper to generate random integer in range [lb, ub)
+  int x = rnd() % (int)(ub - lb);
+  return x + lb;
+}
+vector<vector<int>> gen_graph(int N, int maxM=(int)1e5, bool directed=false) {
+  vector<vector<int>> G(N);
+  set<pair<int,int>> es;
+  int m=N==1?0:genRandNum(0,min(N*(N-1)/2,maxM));
+  while(m--) {
+    int u=genRandNum(0,N),v=genRandNum(0,N);
+    if(u==v) continue;
+    if(!directed&&u>v) swap(u,v);
+    if(es.count({u,v})) continue;
+    es.emplace(u,v);
+  }
+
+  int M=es.size();
+  printf("%d %d\n",N,M);
+  for(auto e : es) {
+    printf("%d %d\n",e.first+1,e.second+1);
+    G[e.first].push_back(e.second);
+    if(!directed) G[e.second].push_back(e.first);
+  }
+  return G;
+}
+
 /*
- 
+
  Bellman-ford algorithm, O(V*E)
- 
+
  - Solver of single-source shortest path problem
  - negative cycle detection
- 
+
  */
 vector<int> bellmanford(int V, vector<unordered_map<int, int>> E, int s) {
   vector<int> res(V, INT_MAX);
   res[s] = 0;
-  
+
   for(int t=0; t<V-1; ++t) {
     for(int u=0; u<V; ++u) {
       for(auto &kvp : E[u]) {
@@ -32,7 +56,7 @@ vector<int> bellmanford(int V, vector<unordered_map<int, int>> E, int s) {
       }
     }
   }
-  
+
   for(int u=0; u<V; ++u) {
     for(auto &kvp : E[u]) {
       int v = kvp.first;
@@ -45,25 +69,25 @@ vector<int> bellmanford(int V, vector<unordered_map<int, int>> E, int s) {
       }
     }
   }
-  
+
   return res;
 }
 
 /*
- 
+
  Dijkstra's algorithm, O((V+E)*lg V) time
- 
+
  - Solver of single-source shortest path problem
  - More efficient than Bellman-ford algorithm
  - This cannot solve graph with negative weight
- 
+
  Usage:
- 
+
   REP(i,V)G[i].clear();
   REP(i,SZ(E)) G[E[i].node1].emplace_back(E[i].node2,E[i].weight);
   dijkstra(V,0);
   cout<<D[dest]<<endl;
- 
+
  */
 const long long Inf=2e18;
 const int MAX_V=3001;
@@ -99,26 +123,26 @@ void test_dijkstra() {
   for(int i=0; i<5; ++i) G[i].clear();
   for(int u=0; u<5; ++u) for(auto kvp : E2[u]) G[u].emplace_back(kvp.first,kvp.second);
   dijkstra(5, 0);
-  
+
   vector<int> dresExpected = { 0,8,9,5,7 };
   for(int u=0; u<5; ++u) assert(dresExpected[u]==D[u]);
 }
 
 /*
- 
+
  Floyd-warshall algorithm, O(V^3)
- 
+
   - Solver of all pairs shortest paths
   - Find connected component
    - If W[u][v]!=Inf and W[u][v]!=Inf, u and v are both part of connected component
    - If W[u][v]=Inf, vertex u is not connected to v
    - Or W[i][j]=W[i][j]|(W[i][k]&W[k][j]) directly solves connectivity problem
- 
+
  */
 vector<vector<int>> floydWarshall(vector<vector<int>> W) {
   if (W.empty()) return W;
   int V=W.size();
-  
+
   for(int k=0; k<V; ++k) {
     for(int i=0; i<V; ++i) {
       for(int j=0; j<V; ++j) {
@@ -127,31 +151,31 @@ vector<vector<int>> floydWarshall(vector<vector<int>> W) {
       }
     }
   }
-  
+
   return W;
 }
 
 /*
- 
+
  Johnson's algorithm, O(V^3)
- 
+
  - Solver of all pairs shortest paths
- 
+
  */
 // Comment out due to change of Dijksta's algorithm
 vector<vector<int>> johnson(vector<unordered_map<int, int>> E, int V) {
   if (E.empty()) return {{}};
-  
+
   // initialize G'
   int V2 = V+1;
   vector<unordered_map<int, int>> E2(E.begin(), E.end());
   E2.push_back(unordered_map<int, int>());
   for(int i=0; i<V2; ++i) E2[V][i] = 0;
-  
+
   // get h(i) by bellman-ford
   vector<int> H = bellmanford(V2, E2, V);
   if (H.empty()) return {};
-  
+
   for(int u=0; u<V; ++u) {
     auto &es = E2[u];
     for(auto &kvp : es) {
@@ -159,7 +183,7 @@ vector<vector<int>> johnson(vector<unordered_map<int, int>> E, int V) {
       E[u][v] = kvp.second + H[u] - H[v];
     }
   }
-  
+
   // calc distance by Dijkstra
   vector<vector<int>> mx;
   for(int u=0; u<V; ++u) {
@@ -173,13 +197,13 @@ vector<vector<int>> johnson(vector<unordered_map<int, int>> E, int V) {
       if (mx[u][v] != INT_MAX) mx[u][v] += H[v] - H[u];
     }
   }
-  
+
   return mx;
 }
 
 void test_johnson() {
   const int Inf = INT_MAX;
-  
+
   // CLRS Figure 25.2
   vector<vector<int>> W = {
     {   0, Inf, Inf, Inf,  -1, Inf },
@@ -189,7 +213,7 @@ void test_johnson() {
     { Inf,   7, Inf, Inf,   0, Inf },
     { Inf,   5,  10, Inf, Inf,   0 }
   };
-  
+
   int V=(int)W.size();
   vector<unordered_map<int, int>> E0(V);
   for(int u=0; u<V; ++u) {
@@ -201,19 +225,19 @@ void test_johnson() {
   // comment out due to change of Dijkstra's algorithm
   //assertVVec(jhres, fwresExpected);
 }
- 
+
 /**
- 
+
  Build Strongly Connected Components a.k.a. SCCs, Θ(V+E) time
- 
+
  - This is implementation of Kosaraju's algorithm
  - Two dfs with transpose of original graph
- 
+
  References:
   - CLRS 22.5
   - https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm
   - https://en.wikipedia.org/wiki/Strongly_connected_component
- 
+
  There are other algorithms
   - Tarjan's algorithm
    - https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm
@@ -221,19 +245,19 @@ void test_johnson() {
   - Path-based strong component algorithm
    - https://en.wikipedia.org/wiki/Path-based_strong_component_algorithm
    - dfs with two stacks
- 
+
  Usage:
- 
+
    ```
    SCC scc(V);
    scc.edge(u1,v1); scc.edge(u2,v2); ...
    scc.build()
    scc.contract()
    ```
- 
+
  Used problem(s)
   - https://github.com/hiroshi-maybe/GCJ/blob/master/2019-R2/Contransmutation.cpp#L80
- 
+
  */
 struct SCC {
 public:
@@ -246,7 +270,7 @@ public:
     G[u].push_back(v);
     G_T[v].push_back(u);
   }
-  
+
   // build SCCs, Θ(V+E) time
   vector<int> cid; /* vertex -> component ID */
   vector<vector<int>> CC; /* component ID -> vertices */
@@ -257,7 +281,7 @@ public:
     CC.resize(id);
     for(int u=0; u<V; ++u) CC[cid[u]].push_back(u);
   }
-  
+
   // contract SCCs and build component graph, Θ(V+E) time
   vector<vector<int>> G_SCC;
   void contract() {
@@ -281,13 +305,13 @@ private:
 };
 
 /*
- 
+
  # Eulerian cycle (tour), O(E) time
- 
+
  Cycle which visits every "edge" exactly once
- 
+
  ## References:
- 
+
  - https://en.wikipedia.org/wiki/Eulerian_path
  - CLRS problem 22-3
  - CLRS 34. NP-Completeness
@@ -295,64 +319,64 @@ private:
  - https://discuss.leetcode.com/topic/36383/share-my-solution
  - https://www.geeksforgeeks.org/eulerian-path-and-circuit/
  - http://www.geeksforgeeks.org/hierholzers-algorithm-directed-graph/
- 
+
  ## Undirected graph
- 
+
  - An undirected graph has an Eulerian cycle if and only if every vertex has "even" degree, and all of its vertices with nonzero degree belong to a single connected component.
  - An undirected graph has an Eulerian path if and only if exactly zero or two vertices have odd degree, and all of its vertices with nonzero degree belong to a single connected component.
- 
+
  ## Directed graph
- 
+
  - There is Eulerian CYCLE when both below conditions are satisfied
   a. every vertex has equal in degree and out degree
   b. All of its vertices with nonzero degree belong to a single SCC
- 
+
  - There is Eulerian PATH
   a. At most one vertex has (out-degree)−(in-degree)=1
   b. At most one vertex has (in-degree)−(out-degree)=1
   c. Every other vertex has equal in-degree and out-degree
   d. All of its vertices with nonzero degree belong to a single connected component of the underlying undirected graph.
- 
+
  ## Construction of Euler cycles
- 
+
  - Hierholzer's algorithm, O(E) time
- 
+
  # Hamilton cycle, NP-complete
- 
+
  Cycle (path) which visits every "vertex" exactly once.
- 
+
  Reference:
   - https://en.wikipedia.org/wiki/Hamiltonian_path
- 
+
  # Travelling salesman problem, NP-complete
- 
+
  Shortest cycle which visits every "vertex".
- 
+
  Decision version of the TSP (given a length L, the task is to decide whether the graph has any tour shorter than L) belongs to the class of NP-complete problems.
- 
+
  Reference:
   - https://en.wikipedia.org/wiki/Travelling_salesman_problem
- 
+
  */
 
 /**
- 
+
  Find Eulerian path (cycle), O(V+E) time
- 
+
   - Hierholzer's algorithm for directed/undirected graph
   - Pre-check degree of graph so that we can really make Eulerian path (cycle)
- 
+
  Used problems:
   - https://github.com/hiroshi-maybe/topcoder/blob/master/solutions/HalfGraph/HalfGraph.cpp#L93
- 
+
  Usage:
- 
+
  ```
  DirectedEulereanPath ec(V);
  ec.edge(u1,v1); ec.edge(u2,v2); ...
  vector<int> p = ec.solve(0);
  ```
- 
+
  */
 struct DirectedEulereanPath {
 public:
@@ -423,7 +447,7 @@ void test_eulerianpath() {
     vector<int> cycleExpected={0,1,2,0,6,4,2,3,4,5,0};
     assert(cycle==cycleExpected);
   }
-  
+
   {
     UndirectedEulereanPath p(7);
     p.edge(0,1),p.edge(0,2);
@@ -433,15 +457,15 @@ void test_eulerianpath() {
     vector<int> exp={3,2,0,1,2};
     assert(path==exp);
   }
-  
+
 }
 
 /*
- 
+
  Kruskal's algorithm to compute minimum spanning tree, O(E*lg V) time
- 
+
  Greedily take edges until all the vertices are connected.
- 
+
  References:
   - https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
   - Ant book 2-5 graph
@@ -449,13 +473,13 @@ void test_eulerianpath() {
 
  Used problems:
   - https://github.com/k-ori/topcoder/blob/master/KingdomReorganization/KingdomReorganization.cpp#L94
- 
+
  Usage:
   MST mst(10);
   mst.edge(0,1,6);
   mst.edge(1,2,3);
   ..
- 
+
   res = mst.solve();
 
  */
@@ -473,7 +497,7 @@ public:
   }
   int solve() {
     sort(E.begin(),E.end());
-    
+
     int res=0;
     for(int i=0; i<E.size(); ++i) {
       int u,v,w;
@@ -495,28 +519,28 @@ private:
 };
 
 /*
- 
+
  Prim's algorithm to compute minimum spanning tree, O(E*lg V) time
- 
+
  Greedily take edges until all the vertices are connected.
  Note that undirected edge needs to be added in both direction u->v and v->u in Prim's algorithm.
- 
+
  References:
   - https://en.wikipedia.org/wiki/Prim%27s_algorithm
   - Ant book 2-5 graph
   - CLRS Chapter 23 Minimum Spanning Trees
- 
+
  Used problems:
   - https://github.com/k-ori/topcoder/blob/master/KingdomReorganization/KingdomReorganization.cpp#L152
- 
+
  Usage:
   Prim mst(10);
   mst.edge(0,1,6);
   mst.edge(1,2,3);
   ..
- 
+
   res = mst.solve();
- 
+
  */
 struct Prim {
 public:
@@ -553,20 +577,20 @@ private:
 };
 
 /*
- 
+
  Topological sort, O(N) time
- 
+
  Return topological order of directed graph.
  If graph is DAG, returned list should have all the vertices.
- 
+
  Usage:
    auto vs=tsort(G);
    if(SZ(vs)==N) cout<<"DAG"<<endl;
- 
+
  Used problems:
   - https://github.com/hiroshi-maybe/leetcode/blob/master/802-find-eventual-safe-states/find-eventual-safe-states.cpp#L224
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/AndrewAndTaxi.cpp#L98
- 
+
  */
 vector<int> tsort(vector<vector<int>> &G) {
   int N=G.size();
@@ -587,9 +611,9 @@ vector<int> tsort(vector<vector<int>> &G) {
 }
 
 /*
- 
+
  Cycle detection in linear runtime, O(V+E) time
- 
+
  - Topological sort works too
  - Returns list of nodes whose descendent has NO cycle
  - Variant of SCC library. This is even simpler because we don't need to group and contract cycles.
@@ -597,10 +621,10 @@ vector<int> tsort(vector<vector<int>> &G) {
   - white: not visited
   - gray: processing going-on
   - black: processing completed
- 
+
  Used problems:
   - https://github.com/hiroshi-maybe/leetcode/blob/master/802-find-eventual-safe-states/find-eventual-safe-states.cpp#L149
- 
+
  */
 
 struct GraphCycle {
@@ -613,7 +637,7 @@ public:
     assert(u<V&&v<V);
     G[u].push_back(v);
   }
-  
+
   vector<int> findCycleFreeNodes() {
     vector<int> res;
     for(int u=0; u<V; ++u) {
@@ -625,11 +649,11 @@ public:
 private:
   vector<int> done; // -1: not done, 0: descendent has NO cycle, 1: descendent has cycle
   vector<int> viz;
-  
+
   int dfs(int u) {
     if(done[u]!=-1) return done[u];
     viz[u]=true;
-    
+
     int res=false;
     for(int v : G[u]) {
       if(!viz[v]) dfs(v);
@@ -640,115 +664,115 @@ private:
 };
 
 /*
- 
+
  Graph optimization problems
- 
+
  https://qiita.com/drken/items/7f98315b56c95a6181a4
- 
+
           Covering problems               |  Packing problems
           =====================================================================================
  vertex : 1. Minimum vertex cover         |  2. Maximum (vertex) independent set
             => Covers edges with vertices      => Packs vertices without adjacent vertices
  edge   : 3. Minimum edge cover           |  4. Maximum matching (Maximum "edge" independent set)
             => Covers vertices with edges      => Packs edges without adjacent edges
- 
+
  # General graph
- 
+
  ## Vertex optimization problem
- 
+
  1. Minimum vertex cover
- 
+
  ✅-❌ or ✅-✅, any EDGE is covered by selected vertices
- 
+
  - NP-hard
  - V1 = U - V2
- 
+
  https://en.wikipedia.org/wiki/Vertex_cover
- 
+
  Solve maximum independent set in O(1.381^V) time and compute complement set.
- 
+
  2. Maximum (vertex) independent set
- 
+
  ✅-❌ or ❌-❌, packing VERTICEs without being adjacent
 
  - NP-hard
  - V1 = U - V2 (Complement of minimum vertex cover)
  - Independent set is clique in complement graph
  - O(1.381^V) time algorithm exists
- 
+
  https://en.wikipedia.org/wiki/Independent_set_(graph_theory)
  https://www.slideshare.net/wata_orz/ss-12131479/33
 
  ## Edge optimization problem
- 
+
  3. Minimum edge cover
- 
+
  v-✅-v-❌-v-✅-v, v-✅-v-✅-v, Any VERTEX is covered by at least one selected edge
- 
+
  - If maximum matching is M, minimum edge cover is V-M
  - O(N*M*log N) time by Edmonds blossom algorithm + geedy (add missing vertices greedily)
  - Minimum edge cover >= maximum matching (`=` holds when matching is perfect matching)
- 
+
  If M = maximum matching of `G`, then 2*M vertices are already covered.
  We are going to cover V-2*M vertices. Thus total # of edge cover is M + (V-2*M) = V-M
- 
+
  4. Maximum matching (Maximum "edge" independent set)
- 
+
  v-❌-v-✅-v-❌-v, Packing EDGEs without being adjacent
- 
+
  - O(N*M*log N) time by Edmonds blossom algorithm
  - Matching `M` = minimum edge cover if it is "perfect matching"
- 
+
  Perfect matching: Every vertex is incident to exactly one edge of matching (Thus it's equal to min edge cover)
   ex) v-✅-v---v-✅-v
- 
+
  https://www.dropbox.com/sh/7uhazzp6wvx9mi7/AACpEgmn--Grp9nVD3NOD9Hia?dl=0
  https://github.com/spaghetti-source/algorithm/blob/master/graph/gabow_edmonds.cc
- 
+
  # Bipartite graph
- 
+
  4. Maximum matching => 1. Minimum vertex cover, 2. Maximum independent set, 3. Minimum edge cover
- 
+
  Suppose maximum matching is `M`
- 
+
  1. Minimum vertex cover
- 
+
  Minimum vertex cover = `M`
- 
+
  Construction: https://www.slideshare.net/drken1215/ss-86894312
  Proof: https://qiita.com/drken/items/7f98315b56c95a6181a4#%E3%81%93%E3%82%8C%E3%81%A7%E6%B1%82%E3%82%81%E3%82%89%E3%82%8C%E3%82%8B%E7%90%86%E7%94%B1
- 
+
  2. Maximum independent set
- 
+
  Maximum independent set = V-M
- 
+
  Generally independent set is complement of vertex cover
- 
+
  3. Minimum edge cover
- 
+
  Minimum edge cover = V-M
- 
+
  Generally # of minimum edge cover is V-M by greedily adding V-2*M edges (for unselected vertices) to maximum matching
- 
+
  */
 
 /*
- 
+
  solver of maximum independent set (maxclique), O(V*2^(V/2) time
- 
+
  - V<=40 is preferred
  - Meet in the middle & bit dp
  - Maxclique can be solved by complement graph as well
- 
+
  https://img.atcoder.jp/code-thanks-festival-2017-open/editorial.pdf
   - G - Mixture Drug
- 
+
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/HelpingHiasat.cpp#L94
     - max independent set
   - https://github.com/hiroshi-maybe/atcoder/blob/77955c1d9f6480ffb06fd0659d67c3085eb6f27d/solutions/Habatsu.cpp#L45
     - max clique
- 
+
  */
 
 int maxIndependentSet(vector<vector<int>> &G) {
@@ -766,18 +790,18 @@ int maxIndependentSet(vector<vector<int>> &G) {
     for(int mask=0; mask<(1<<(r-l)); ++mask) dp[mask]=dp[mask]?__builtin_popcount(mask):0;
     return dp;
   };
-  
+
   int V=G.size();
   int V1=V/2,V2=V-V1;
   vector<int> fr(1<<V1,(1<<V2)-1);
   vector<int> dp1=independentset(0,V1);
   vector<int> dp2=independentset(V1,V);
-  
+
   for(int u=0; u<V1; ++u) for(auto v : G[u]) if(v>=V1) {
     fr[1<<u]&=((1<<V2)-1)^(1<<(v-V1));
   }
   ztrans(fr,V1);
-  
+
   for(int mask=0; mask<(1<<V2); ++mask) for(int i=0; i<V2; ++i) {
     if((mask&(1<<i))==0) dp2[mask|(1<<i)]=max(dp2[mask|(1<<i)],dp2[mask]);
   }
@@ -871,7 +895,7 @@ int main(int argc, char const *argv[]) {
     { Inf,   5,  10, Inf, Inf,   0 }
   };
   vector<vector<int>> fwres = floydWarshall(W);
-  
+
   vector<vector<int>> fwresExpected = {
     {  0,  6, Inf,  8, -1, Inf},
     { -2,  0, Inf,  2, -3, Inf},
@@ -881,7 +905,7 @@ int main(int argc, char const *argv[]) {
     {  3,  5,  10,  7,  2,   0},
   };
   assertVVec(fwres, fwresExpected);
-  
+
   // bellmanford test
   // CLRS Figure 24.4
   vector<unordered_map<int, int>> E1 = {
@@ -891,12 +915,12 @@ int main(int argc, char const *argv[]) {
     { {2,-3}, {4,9} },
     { {0,2}, {2,7} }
   };
-  
+
   vector<int> bres = bellmanford(E1.size(), E1, 0);
-  
+
   vector<int> bresExpected = { 0,2,4,7,-2 };
   assertVec(bres, bresExpected);
-  
+
   // Strongly connected component test
   // CLRS Figure 22.9
   SCC scc(8);
@@ -912,24 +936,24 @@ int main(int argc, char const *argv[]) {
   };
   for(auto p : E3) scc.edge(toi(p.first), toi(p.second));
   scc.build();
-  
+
   unordered_set<char> c1={'a','b','e'};
   unordered_set<char> c2={'c','d'};
   unordered_set<char> c3={'f','g'};
   unordered_set<char> c4={'h'};
-  
+
   assertComponents(c1,scc);
   assertComponents(c2,scc);
   assertComponents(c3,scc);
   assertComponents(c4,scc);
-  
+
   scc.contract();
-  
+
   int cid1=scc.cid[toi(*(c1.begin()))];
   int cid2=scc.cid[toi(*(c2.begin()))];
   int cid3=scc.cid[toi(*(c3.begin()))];
   int cid4=scc.cid[toi(*(c4.begin()))];
-  
+
   vector<int> cid1Expected = { cid2, cid3 };
   assertVec(scc.G_SCC[cid1], cid1Expected);
   vector<int> cid2Expected = { cid3, cid4 };
@@ -938,9 +962,9 @@ int main(int argc, char const *argv[]) {
   assertVec(scc.G_SCC[cid3], cid3Expected);
   vector<int> cid4Expected = {  };
   assertVec(scc.G_SCC[cid4], cid4Expected);
-  
+
   test_eulerianpath();
-  
+
   // Minimum spanning tree
   // CLRS 23.1 Growing a minimum spanning tree, Figure 23.1
   vector<pair<int,int>/*(v,w)*/> G[9];
@@ -953,7 +977,7 @@ int main(int argc, char const *argv[]) {
   G[6]={{5,2},{7,1},{8,6}};
   G[7]={{0,8},{1,11},{6,1},{8,7}};
   G[8]={{2,2},{6,6},{7,7}};
-  
+
   MST mst1(9);
   Prim mst2(9);
   for(int u=0; u<9; ++u) for(auto p : G[u]) {
@@ -962,16 +986,14 @@ int main(int argc, char const *argv[]) {
   }
   assert(mst1.solve()==37);
   assert(mst2.solve()==37);
-  
+
   // Cycle detection
   vector<vector<int>> G_cycle={{1,2},{2,3},{5},{0},{5},{},{}};
   GraphCycle gc(G_cycle.size());
   for(int u=0; u<G_cycle.size(); ++u) for(int v : G_cycle[u]) gc.edge(u,v);
   vector<int> cycleFreeNodes={2,4,5,6};
   assertVec(gc.findCycleFreeNodes(), cycleFreeNodes);
-  
+
   test_dijkstra();
   test_maxindependentset();
 }
-
-// g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address graph.cpp && ./a.out
