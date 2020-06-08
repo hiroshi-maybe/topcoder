@@ -22,16 +22,18 @@ template<typename S, typename T> std::ostream& operator<<(std::ostream& _os, con
 #define dumpC(beg,end)
 #endif
 
+// g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address matrix.cpp && ./a.out
+
 /*
- 
+
  Matrix class
- 
+
  Features:
   - addition
   - subtraction
   - multiplication
   - power
- 
+
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/LunarNewYearAndARecursiveSequence.cpp#L123
    - matrix power
@@ -41,7 +43,7 @@ template<typename S, typename T> std::ostream& operator<<(std::ostream& _os, con
    - rank of matrix
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/ProductOrientedRecurrence.cpp#L80
    - matrix power
- 
+
  */
 template <typename T> struct MX {
   int N,M;
@@ -150,7 +152,7 @@ void test_mx() {
     MX<int> C=A+B;
     assert(C==MX<int>(datAB));
   }
-  
+
   {
     // subtraction
     vector<vector<int>> datA={{1,2},{3,4}},datB={{5,6},{7,8}},datAB={{-4,-4},{-4,-4}};
@@ -158,7 +160,7 @@ void test_mx() {
     MX<int> C=A-B;
     assert(C==MX<int>(datAB));
   }
-  
+
   {
     // multiplication (mx)
     vector<vector<int>> datA={{1,2},{3,4},{5,6}},datB={{1,2,3},{4,5,6}},datAB={{9,12,15},{19,26,33},{29,40,51}};
@@ -166,7 +168,7 @@ void test_mx() {
     MX<int> C=A*B;
     assert(C==MX<int>(datAB));
   }
-  
+
   {
     // multiplication (mx)
     vector<vector<int>> datA={{1,2},{3,4}},datKA={{2,4},{6,8}};
@@ -174,7 +176,7 @@ void test_mx() {
     A*=2;
     assert(A==MX<int>(datKA));
   }
-  
+
   {
     // pow
     vector<vector<int>> datA={{1,2},{3,4}};
@@ -230,30 +232,30 @@ void test_modmx() {
 }
 
 /*
- 
+
  Compute rank by Gaussian elimination in GF(2), O(N^2*lg N) time
- 
+
  GF(2)
   - CLRS "D-2 Permutations defined by matrix-vector multiplication over GF(2)" Problems for Appendix D
   - https://www.cs.umd.edu/~gasarch/TOPICS/factoring/fastgauss.pdf
   - http://personals.ac.upc.edu/enricm/Pubs/pdp2015_slides.pdf
    - great overview of Gaussian elimination in GF(2) ✅
   - https://en.wikipedia.org/wiki/Finite_field#Field_with_four_elements
- 
+
  # Usage
- 
+
  int rank = gf2_rank<int>(V);
- 
+
  # Note of GF(2)
- 
+
  Gaussian Elimination is defined over an algebraic field
   - Infinite fields: 𝐐, 𝐑
   - Finite fields: Galois field with 2 elements a.k.a. GF(2)
- 
+
  In GF(2)={0,1}, algebraic operations are represented as below:
   - addition ≡ XOR ≡ subtraction (+1=-1)
   - multiplication ≡ AND
- 
+
  Implementation remarks:
   - Gaussian elimination in infinite fields can be specialized for GF(2)
   - Gauss-Jordan Elimination can be easily merged into GE
@@ -261,23 +263,23 @@ void test_modmx() {
   - computer arithmetic over GF(2) is always exact
  Applications
   - factoring large integer numbers, cryptography, pattern matching...
- 
+
  Thus Gaussian elimination works in GF(2).
  We can just compute rank of GF(2) matrix.
  If we have linearly independent vectors X_a and X_b,
  Any X[i] can be represented as below:
- 
+
    X[i] = (C_a & X_a) ^ (C_b & X_b), C_x ∈ {0,1}
    like... V[i] = C_a * V_a + C_b * V_b in infinite field
- 
+
  Note that ^(XOR) and &(AND) are algebraic operation in GF(2).
  So we have same property as seen in linear algebra in infinite field.
- 
+
  GE in GF(2) gives us linearly independent vectors.
  Expected result is number of those vectors (= rank of original matrix)
- 
+
  We can do LU-decomposition in GF(2) by reducing MSB.
- 
+
  Used problems:
   - https://github.com/hiroshi-maybe/topcoder/blob/bc4fd010dc1100360b7462bf38a190426084490c/solutions/MixingColors/MixingColors.cpp#L123
    - bitmask
@@ -285,7 +287,9 @@ void test_modmx() {
    - bitmask
   - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/OddSubrectangles.cpp#L150
    - 2d vector
- 
+  - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/XorBattle.cpp#L47
+   - basis vector and rank in GF(2) for XOR game
+
  */
 template<class T> void gf2_GE(vector<T>& V) {
   // gaussian elimination in GF(2)
@@ -321,9 +325,11 @@ int gf2_rank(MX<int> mx) {
 }
 
 void test_gf2() {
-  vector<int> V = { 534, 251, 76, 468, 909, 410, 264, 387, 102, 982, 199, 111, 659, 386, 151 };
-  assert(gf2_rank<int>(V)==10);
-  
+  {
+    vector<int> V = { 534, 251, 76, 468, 909, 410, 264, 387, 102, 982, 199, 111, 659, 386, 151 };
+    assert(gf2_rank<int>(V)==10);
+  }
+
   {
     vector<vector<int>> A={
       {1,0,1,1},
@@ -337,16 +343,16 @@ void test_gf2() {
 }
 
 /*
- 
+
  Solver of system of linear equations by Gauss–Jordan elimination, Θ(N^3) time
- 
+
   - implementation from Ant book
- 
+
  Basic steps:
  1. Setup matrices A*x=b where A=NxN, b=Nx1
  2. By row reduction, transform A to echelon form (triangular form) which is U matrix in LU-composition
  3. Compute x by back-substitution
- 
+
  References:
   - https://en.wikipedia.org/wiki/Gaussian_elimination
   - https://en.wikipedia.org/wiki/LU_decomposition
@@ -354,11 +360,11 @@ void test_gf2() {
   - Ant book 4.1 more complex math problems
   - CLRS 28.1 Solving systems of linear equations
   - http://kmjp.hatenablog.jp/entry/2014/04/01/0930
- 
+
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/GuessTheRoot.cpp#L209
    - T=ModInt
- 
+
  */
 // for double
 struct GaussJordanElimination {
@@ -370,7 +376,7 @@ struct GaussJordanElimination {
       for(int j=0; j<N; ++j) X[i][j]=A[i][j];
       X[i][N]=b[i];
     }
-    
+
     for(int i=0; i<N; ++i) {
       // invariant: X[p][p]=1 for p=0..i-1
       int pivot=i;
@@ -381,7 +387,7 @@ struct GaussJordanElimination {
       swap(X[i],X[pivot]);
       // solution is undeterministic, or no solution exists
       if (fabs(X[i][i])<eps) return vector<double>();
-      
+
       // X[i][i]=1
       for(int j=i+1; j<=N; ++j) X[i][j]/=X[i][i];
       for(int j=0; j<N; ++j) if (i!=j) {
@@ -389,7 +395,7 @@ struct GaussJordanElimination {
         for(int k=i+1; k<=N; ++k) X[j][k]-=X[j][i]*X[i][k];
       }
     }
-    
+
     vector<double> xs(N);
     for(int i=0; i<N; ++i) xs[i]=X[i][N];
     return xs;
@@ -404,7 +410,7 @@ template <typename T> struct GaussJordanElimination2 {
       for(int j=0; j<N; ++j) X[i][j]=A[i][j];
       X[i][N]=b[i];
     }
-    
+
     for(int i=0; i<N; ++i) {
       // invariant: X[p][p]=1 for p=0..i-1
       int pivot=i;
@@ -450,5 +456,3 @@ int main(int argc, char const *argv[]) {
   test_gf2();
   test_gje();
 }
-
-// g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address matrix.cpp && ./a.out
