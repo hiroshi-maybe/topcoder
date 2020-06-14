@@ -8,7 +8,7 @@ using namespace std;
 typedef long long LL;
 
 /*
- 
+
  links:
  - http://sucrose.hatenablog.com/entry/2014/10/10/235805
   - Prime factorization, Sieve of Eratosthenes
@@ -16,17 +16,17 @@ typedef long long LL;
   - divisors, prime factorization, GCD
  - http://d.hatena.ne.jp/uwitenpen/20111203
   - finding primes
- 
+
  */
 
 /*
- 
+
  check if N is prime by trial division, O(√N) time
- 
+
  Usage:
   isPrime(131) // true
   isPrime(120) // false
- 
+
  */
 bool isPrime(LL N) {
   if(N<2) return false;
@@ -35,25 +35,25 @@ bool isPrime(LL N) {
 }
 
 /*
- 
+
  primes in range [1,N] by sieve of eratosthenes, O(N*ln ln N) time, O(N) space
- 
+
  - this works if approximately N <= 10^7
- 
+
  Sieve of Eratosthenes
   - http://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
- 
+
  Let π(N) be the prime-counting function (number of prime numbers in range [1,N])
   - https://en.wikipedia.org/wiki/Prime-counting_function
   - https://oeis.org/A006880
- 
+
  π(N) is approximated by Prime Number Theorem (PNT) as below:
- 
+
  π(N) ~ N/ln(N)
- 
+
  Usage:
    vector<int> ps = sieve(10); // ps={2,3,5,7}
- 
+
  */
 vector<int> sieve(int N) {
   assert(N>=1);
@@ -68,9 +68,9 @@ vector<int> sieve(int N) {
 }
 
 /*
- 
+
  compute all the divisers of N by trial division, O(√N) time
- 
+
  Trial division:
   - https://en.wikipedia.org/wiki/Trial_division
 
@@ -91,10 +91,10 @@ vector<int> sieve(int N) {
  HCN(10^9) = 1344 (735134400)
  HCN(10^12) = 6720 (963761198400)
  HCN(10^15) = 26880 (8.664213e+014)
- 
+
  Usage:
   vector<int> divs = divisors(12); // divs={1,2,3,4,6,12}
- 
+
  */
 vector<LL> divisors(LL N) {
   assert(N>=1);
@@ -108,14 +108,14 @@ vector<LL> divisors(LL N) {
 }
 
 /*
- 
+
  prime factorization of N by trial division, O(√N) time
- 
+
  Prime factor
   - https://en.wikipedia.org/wiki/Prime_factor
  Trial division
   - https://en.wikipedia.org/wiki/Trial_division
- 
+
  primeFactors()
   - returns list of factors with multiple primes
     - special version of divisor computation
@@ -154,11 +154,11 @@ vector<LL> divisors(LL N) {
   - https://github.com/k-ori/topcoder/blob/master/FractionInDifferentBases/FractionInDifferentBases.cpp
   - https://github.com/k-ori/topcoder/blob/master/MagicDiamonds/MagicDiamonds.cpp#L107
   - https://github.com/k-ori/topcoder/blob/master/DivideAndShift/DivideAndShift.cpp#L147
- 
+
  Key:
   - x^2≡x (mod M) <=> x*(x-1) ≡ 0 (mod M)
   - x and x-1 are relatively prime
- 
+
  */
 vector<LL> primeFactors(LL n) {
   assert(n>=1);
@@ -187,27 +187,28 @@ vector<LL> distinctPrimeFactors(LL n) {
 }
 
 /*
- 
+
  Fast prime factorization by precomputing prime numbers by sieve
- 
+
  precomputation:        O(N*ln ln N) time
  query (factorization):      O(ln N) time
  space:                         O(N) space
- 
+
  References:
   - http://www.osak.jp/diary/diary_201310.html#20131017
   - http://d.hatena.ne.jp/inamori/20091019/p1
   - http://sucrose.hatenablog.com/entry/2014/10/10/235805
- 
+
  Usage:
   PrimeFact pf(2e7);
- 
+
   vector<LL> facts = pf.fact(n);
   facts.erase(unique(facts.begin(),facts.end()), facts.end());
- 
+
  Used problem(s):
   - https://github.com/k-ori/topcoder/blob/master/TheRoundCityDiv1/TheRoundCityDiv1.cpp#L118
- 
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/TwoDivisors.cpp#L45
+
  */
 
 // Using vector instead of native array because program throws segment fault if N>1e6
@@ -235,28 +236,28 @@ private:
 };
 
 /*
- 
+
  Count the positive integers up to a given integer n that are relatively prime to n, O(√N) time
  (compute Euler's totient function φ(n) (phi function))
- 
+
  - φ(n) counts the positive integers up to a given integer n that are relatively prime to n
  - X^(φ(n)) ≡ 1 (mod n) if gcd(X,n)=1 (X and n are relatively prime)
   - Known as Euler's theorem or Fermat–Euler theorem
   - generalization of Fermat's little theorem
- 
+
  φ(n) = n * ∏ { (p-1)/p : p|n and p is prime factor of n }
- 
+
  If n is prime, φ(n) = n-1. Thus X^(φ(n)) ≡ X^(n-1) ≡ 1 (mod n) as shown in Fermat's little theorem
- 
+
  References:
   - CLRS 31.3 Modular arithmetic
   - Ant book 4.1 more complex math problems
   - https://en.wikipedia.org/wiki/Euler%27s_theorem
   - https://en.wikipedia.org/wiki/Euler%27s_totient_function
- 
+
  Usage:
   int phi_n = totient(100);
- 
+
  */
 int totient_combined(LL N) {
   vector<LL> ps=distinctPrimeFactors(N);
@@ -278,21 +279,21 @@ int totient(LL n) {
   return res;
 }
 /*
- 
+
  Fast enumeration of Euler's totient function by sieve of Eratosthenes, O(N*log log N) time
- 
+
  φ(n) = n * ∏ { (p-1)/p : p|n and p is prime factor of n }
- 
+
  References:
   - Ant book 4.1 more complex math problems
 
  Usage:
   tt = totients(N);
   phi10 = tt[10];
- 
+
  Used problems:
   - https://github.com/hiroshi-maybe/topcoder/blob/master/solutions/CatAndMice/CatAndMice.cpp#L74
- 
+
  */
 vector<LL> totients(int N) {
   vector<LL> res(N+1,0);
@@ -304,14 +305,14 @@ vector<LL> totients(int N) {
 }
 
 /*
- 
+
  Find numbers coprime to N in range [1,N], O(N*lg N) time
- 
+
  If you want to find only number of coprimes, `totient(N)` is more efficient (O(√N) time).
- 
+
  Usage:
    vector<int> cops = findCoprimes(10); // cops={1,3,7,9}
- 
+
  */
 int gcd(int a, int b) { return b==0?a:gcd(b,a%b); }
 vector<int> findCoprimes(int N) {
@@ -321,11 +322,11 @@ vector<int> findCoprimes(int N) {
 }
 
 /*
- 
+
  Find √x, or ∛x of integer `x`, O(1)
- 
+
  If such an integer is not found, -1 is returned
- 
+
  */
 #include <tgmath.h>
 LL isqrt(LL x) {
@@ -388,10 +389,10 @@ int main(int argc, char const *argv[]) {
 
   vector<int> primes100 = {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97};
   assert(sieve(100)==primes100);
-  
+
   vector<LL> divs = {1,2,3,4,5,6,8,10,12,15,20,24,30,40,60,120};
   assert(divs==divisors(120));
-  
+
   vector<LL> fs = {2,2,2,3,5};
   vector<LL> ps = {2,3,5};
   assert(fs==primeFactors(120));
@@ -402,10 +403,10 @@ int main(int argc, char const *argv[]) {
   PrimeFact pf(1e6);
   vector<LL> xs=pf.fact(120);
   assert(xs==fs);
-  
+
   vector<int> coprimes100 = {1,3,7,9,11,13,17,19,21,23,27,29,31,33,37,39,41,43,47,49,51,53,57,59,61,63,67,69,71,73,77,79,81,83,87,89,91,93,97,99};
   assert(findCoprimes(100)==coprimes100);
-  
+
   test_irt();
 }
 
