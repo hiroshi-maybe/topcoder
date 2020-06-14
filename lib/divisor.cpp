@@ -211,6 +211,7 @@ vector<Integer> distinctPrimeFactors(Integer n) {
  Used problem(s):
   - https://github.com/k-ori/topcoder/blob/master/TheRoundCityDiv1/TheRoundCityDiv1.cpp#L118
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/TwoDivisors.cpp#L45
+  - https://github.com/hiroshi-maybe/atcoder/blob/bf9f641adf3ccf19a234b6b1415b149728279d66/solutions/NotDivisible.cpp#L44
 
  */
 
