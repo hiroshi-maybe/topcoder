@@ -96,10 +96,11 @@ vector<int> sieve(int N) {
   vector<int> divs = divisors(12); // divs={1,2,3,4,6,12}
 
  */
-vector<LL> divisors(LL N) {
+template<typename Integer>
+vector<Integer> divisors(Integer N) {
   assert(N>=1);
-  vector<LL> res;
-  for(LL p=1; p*p<=N; ++p) if(N%p==0) {
+  vector<Integer> res;
+  for(Integer p=1; p*p<=N; ++p) if(N%p==0) {
     res.push_back(p);
     if(p!=N/p) res.push_back(N/p);
   }
@@ -160,25 +161,27 @@ vector<LL> divisors(LL N) {
   - x and x-1 are relatively prime
 
  */
-vector<LL> primeFactors(LL n) {
+template<typename Integer>
+vector<Integer> primeFactors(Integer n) {
   assert(n>=1);
-  vector<LL> res;
-  for(LL p=2; p*p<=n; ++p) while(n%p==0) {
+  vector<Integer> res;
+  for(Integer p=2; p*p<=n; ++p) while(n%p==0) {
     res.push_back(p);
     n/=p;
   }
   if(n>1) res.push_back(n);
   return res;
 }
-vector<LL> distinctPrimeFactors(LL n) {
+template<typename Integer>
+vector<Integer> distinctPrimeFactors(Integer n) {
   /*
   vector<LL> res=primeFactors(n);
   res.erase(unique(res.begin(),res.end()),res.end());
   return res;
    */
   assert(n>=1);
-  vector<LL> res;
-  for(LL p=2; p*p<=n; ++p) if(n%p==0) {
+  vector<Integer> res;
+  for(Integer p=2; p*p<=n; ++p) if(n%p==0) {
     res.push_back(p);
     while(n%p==0) n/=p;
   }
@@ -223,8 +226,8 @@ public:
       for(long long q=1LL*p*p; q<=N; q+=p) if(divp[q]==0) divp[q]=p;
     }
   }
-  vector<long long> fact(long long n) {
-    vector<long long> res;
+  vector<int> fact(int n) {
+    vector<int> res;
     while(n>1) res.push_back(divp[n]), n/=divp[n];
     sort(res.begin(),res.end());
     return res;
@@ -359,10 +362,10 @@ void test_irt() {
 
 // main and test
 void getMaxFact(int maxn) {
-  vector<LL> xs1,xs2;
+  vector<int> xs1,xs2;
   int x1=0,x2=0,n1=0,n2=0;
   for(int n=1; n<=maxn; ++n) {
-    vector<LL> xs=primeFactors(n);
+    vector<int> xs=primeFactors(n);
     if(xs.size()>x1) {
       n1=n;
       x1=xs.size();
@@ -390,18 +393,18 @@ int main(int argc, char const *argv[]) {
   vector<int> primes100 = {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97};
   assert(sieve(100)==primes100);
 
-  vector<LL> divs = {1,2,3,4,5,6,8,10,12,15,20,24,30,40,60,120};
+  vector<int> divs = {1,2,3,4,5,6,8,10,12,15,20,24,30,40,60,120};
   assert(divs==divisors(120));
 
-  vector<LL> fs = {2,2,2,3,5};
-  vector<LL> ps = {2,3,5};
+  vector<int> fs = {2,2,2,3,5};
+  vector<int> ps = {2,3,5};
   assert(fs==primeFactors(120));
   assert(ps==distinctPrimeFactors(120));
 //  getMaxFact(1e7);
   assert(totient(36)==12);
 
   PrimeFact pf(1e6);
-  vector<LL> xs=pf.fact(120);
+  vector<int> xs=pf.fact(120);
   assert(xs==fs);
 
   vector<int> coprimes100 = {1,3,7,9,11,13,17,19,21,23,27,29,31,33,37,39,41,43,47,49,51,53,57,59,61,63,67,69,71,73,77,79,81,83,87,89,91,93,97,99};
