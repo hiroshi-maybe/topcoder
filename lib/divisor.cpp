@@ -232,6 +232,19 @@ public:
     sort(res.begin(),res.end());
     return res;
   }
+  vector<int> divs(int n) {
+    vector<int> res={1};
+    while(n>1) {
+      int p=divp[n],cnt=1,pp=p;
+      while(n%p==0) n/=p,++cnt;
+      int sz=res.size();
+      for(int k=1; k<cnt; ++k) {
+        for(int j=0; j<sz; ++j) res.push_back(res[j]*pp);
+        pp*=p;
+      }
+    }
+    return res;
+  }
   vector<int> P; // list of prime numbers
 private:
   int N;
@@ -406,6 +419,9 @@ int main(int argc, char const *argv[]) {
   PrimeFact pf(1e6);
   vector<int> xs=pf.fact(120);
   assert(xs==fs);
+  vector<int> divs2=pf.divs(120);
+  sort(divs2.begin(), divs2.end());
+  assert(divs==divs2);
 
   vector<int> coprimes100 = {1,3,7,9,11,13,17,19,21,23,27,29,31,33,37,39,41,43,47,49,51,53,57,59,61,63,67,69,71,73,77,79,81,83,87,89,91,93,97,99};
   assert(findCoprimes(100)==coprimes100);
