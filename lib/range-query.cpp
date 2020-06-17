@@ -9,9 +9,9 @@ int genRandNum(int lb, int ub) {
   return x + lb;
 }
 /*
- 
+
  General segment tree, O(N) time to build, O(lg N) time to query or update
- 
+
   - Range query, point update
   - Segment tree is applicable as long as result to be queried is associative
    - Range sum query
@@ -20,7 +20,7 @@ int genRandNum(int lb, int ub) {
   - Needs 2*N_-1 space, where N_ = min { 2^n : N<=2^n }
    - N_ leaves (i=N_-1..2*N_-2) + N_-1 parents (i=0..N_-2)
    - Data is populated in 0-indexed
- 
+
   References:
    - Ant book 3-3 data structures
    - https://www.slideshare.net/hcpc_hokudai/rmq-47663507
@@ -29,9 +29,9 @@ int genRandNum(int lb, int ub) {
    - https://www.topcoder.com/community/data-science/data-science-tutorials/range-minimum-query-and-lowest-common-ancestor/
    - https://cp-algorithms.com/data_structures/segment_tree.html
    - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/Sugoroku.cpp#L44
- 
+
   Usage:
- 
+
    SegmentTree<int> T(N,1e9,[](int a, int b) { return min(a,b); });
    T.build(A);
    cout<<T.query(3,8)<<endl;
@@ -43,7 +43,7 @@ int genRandNum(int lb, int ub) {
    - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L90 (RMQ)
    - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/VasyaAndMaximumProfit.cpp#L78 (Max subsegment sum query)
    - https://github.com/hiroshi-maybe/GCJ/blob/master/kickstart/2019-RB/DiverseSubarray.cpp#L70 (Max subsegment sum query)
- 
+
  */
 template <typename Val>
 struct SegmentTree {
@@ -79,18 +79,18 @@ private:
 };
 /*
  General lazy segment tree, O(N) time to build, O(lg N) time to query or update
- 
+
   - Range query, *range* update
- 
+
  Reference:
   - https://cp-algorithms.com/data_structures/segment_tree.html#toc-tgt-9
- 
+
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Editor.cpp#L44
    - lazy RmMQ
   - https://github.com/hiroshi-maybe/atcoder/blob/a669b3419df50aaf5388da15b3ff5ae0d87abd24/solutions/Roadwork.cpp#L75
    - lazy RmQ
- 
+
  */
 template <typename Val, typename Delay>
 struct LazySegmentTree {
@@ -149,23 +149,23 @@ private:
 };
 void test_segmenttree() {
   vector<int> ns={2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
-  
+
   {
     // Range minimum query
     SegmentTree<int> T(ns,1e9,[](int a, int b) { return min(a,b); });
-    
+
     assert(T.query(2,8)==1);
     assert(T.query(3,8)==2);
     T.update(5,-1);
     assert(T.query(2,8)==-1);
   }
-  
+
   {
     // Range minimum query, range update
     auto mina=[](int a, int b) { return min(a,b); };
     auto seta=[](int _, int d) { return d; };
     LazySegmentTree<int,int> T(ns,1e9,1e9,mina,seta,seta);
-    
+
     assert(T.query(2,8)==1);
     assert(T.query(3,8)==2);
     T.update(3,6,0);
@@ -176,7 +176,7 @@ void test_segmenttree() {
     assert(T.query(0,3)==-1);
     assert(T.query(4,10)==0);
   }
-  
+
   {
     int N=100;
     vector<int> A(N);
@@ -193,7 +193,7 @@ void test_segmenttree() {
       int ql=genRandNum(0,N-1),qr=genRandNum(ql,N+1);
       int res=1e9;
       for(int i=ql; i<qr; ++i) res=min(res,A[i]);
-      
+
       int act1=T1.query(ql,qr),act2=T2.query(ql,qr);
       assert(res==act1);
       assert(res==act2);
@@ -202,19 +202,19 @@ void test_segmenttree() {
 }
 
 /*
- 
+
  RMQ (segment tree), O(lg N) query, O(lg N) update
- 
+
  - normal: range query, point update
  - lazy propagation: point query, range update
- 
+
  References:
   - https://www.npca.jp/works/magazine/2015_5/
- 
+
  Usage:
    auto rmq=makeRmQ(A,(int)1e9);
    assert(rmq.query(2,8)==1);
- 
+
  Used problem:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L174
   - https://github.com/hiroshi-maybe/atcoder/blob/e81dcc4cd4d181d4a38e70ee4cdfb0c3692cfd2f/solutions/Roadwork.cpp#L72
@@ -223,7 +223,9 @@ void test_segmenttree() {
    - range min query
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/YetAnotherMonsterKillingProblem.cpp#L44
    - range min query
- 
+  - https://github.com/hiroshi-maybe/atcoder/blob/2b8c0e08422d98f6c08a13f32969d75e002eb299/solutions/OperationTakahashiDating.cpp#L76
+   - range min query
+
  */
 template<typename Val> auto makeRmMQ(vector<pair<Val,Val>> A, pair<Val,Val> id) {
   using P=pair<Val,Val>;
@@ -276,14 +278,14 @@ public:
 };
 void test_rmq() {
   vector<int> ns={2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
-  
+
   // Range minimum query
   auto rmq=makeRmQ(ns,(int)1e9);
   assert(rmq.query(2,8)==1);
   assert(rmq.query(3,8)==2);
   rmq.update(5,-1);
   assert(rmq.query(2,8)==-1);
-  
+
   vector<pair<int,int>> ps;
   for(int i=0; i<ns.size(); ++i) ps.emplace_back(ns[i],i);
   auto rmq2=makeRmQ(ps,{1e9,-1});
@@ -294,21 +296,21 @@ void test_rmq() {
 }
 
 /*
- 
+
  Binary Indexed Tree, build: O(N*lg N) time, query: O(lg N) time, N=Upper bound of the range (exclusive)
- 
+
  - Data structure to query sum in a range
  - Typically used to count frequencies of values
  - Queries sum in range [0..N)
  - Root of the tree covers the largest range
  - T[i] has sum in [i-2^r+1,i], r=position of least significant 1 bit
- 
+
  References:
   - Ant book 3-3 data structures
   - https://en.wikipedia.org/wiki/Fenwick_tree
   - https://www.topcoder.com/community/data-science/data-science-tutorials/binary-indexed-trees/
   - https://en.wikipedia.org/wiki/Inversion_(discrete_mathematics)
- 
+
  Usage:
   int N=ns.size();
   BIT f(N);
@@ -331,7 +333,7 @@ void test_rmq() {
   - https://github.com/hiroshi-maybe/codeforces/blob/82bef974ead7bd9d1e27a4e58b5b3066a0450335/solutions/OptimalSubsequences.cpp#L44
   - https://github.com/hiroshi-maybe/topcoder/blob/470b5d80a15f3d97f4a2405b6ef274d6f320ffaa/solutions/SwapTheString/SwapTheString.cpp#L42
    - inversion number
- 
+
  */
 template <typename T> struct BIT {
 public:
@@ -395,7 +397,7 @@ vector<int> inversions(vector<int> ns) {
 
 void test_bit() {
   vector<int> ns={2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
-  
+
   // Range sum query
   {
     int N=ns.size();
@@ -403,7 +405,7 @@ void test_bit() {
     for(int i=0; i<N; ++i) f.add(i,ns[i]);
     assert(f.query(0,3)==4); // ∑{ns[0..2]}
     assert(f.query(0,4)==7); // ∑{ns[0..3]}
-    
+
     assert(f.upperbound(0)==0);
     assert(f.upperbound(2)==1);
     assert(f.upperbound(51)==12);
@@ -413,7 +415,7 @@ void test_bit() {
     assert(f.query(2,3)==1);
     assert(f.query(0,4)==13);
   }
-  
+
   // Inversion
   {
     vector<int> exp={2,0,0,1,0,0,0,0,0,0,0,0};
@@ -422,21 +424,21 @@ void test_bit() {
 }
 
 /*
- 
+
  Two dimension cumulative sum, O(R*C) time to build, O(1) time to query
- 
+
   - Build cumulative sum 2d array from `X`
   - It queries sum in rectangle r in [i1,i2), c in [j1,j2) in O(1) time
- 
+
  Usage:
   TwoDimCumSum cum(X);
   cout << X.query(0,1,2,3) << endl; // Query sum in (0,1)-(1,2) rectangle
- 
+
  Used problems:
   - https://github.com/k-ori/leetcode/blob/master/304-Range-Sum-Query-2D/RangeSumQuery2D.cpp
   - https://github.com/k-ori/topcoder/blob/master/DropCoins/DropCoins.cpp#L157
   - https://github.com/hiroshi-maybe/codeforces/blob/924a2f0afa608ef58ea26dd14c2e38eb4e282d50/solutions/ArsonInBerlandForest.cpp#L44
- 
+
  */
 template <typename Val>
 struct TwoDimCumSum {
@@ -447,7 +449,7 @@ public:
     if(R==0) return;
     this->C=X[0].size();
     this->cum=vector<vector<Val>>(R+1,vector<Val>(C+1,0));
-    
+
     for(int i=0; i<R; ++i) for(int j=0; j<C; ++j) {
       cum[i+1][j+1]=cum[i][j+1]+cum[i+1][j]-cum[i][j]+X[i][j];
     }
@@ -464,7 +466,7 @@ int main(int argc, char const *argv[]) {
   test_segmenttree();
   test_rmq();
   test_bit();
-  
+
   // 2D cumulative sum query
   vector<vector<int>> mx={
     {3, 0, 1, 4, 2},
