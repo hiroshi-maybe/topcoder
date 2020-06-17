@@ -5,23 +5,27 @@
 #include <functional>
 using namespace std;
 
+// g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address tree.cpp && ./a.out
+
 /*
- 
+
  Binary lifting in tree, O(N*lg N) for preprocessing, O(lg N) to query ancestor and LCA
- 
+
  If efficient query about tree path leveraging monotinicity, this works like a charm.
- 
+
  References:
   - https://cp-algorithms.com/graph/lca_binary_lifting.html
   - https://yukicoder.me/wiki/lowest_common_ancestor
   - https://www.slideshare.net/satanic2/ss-72500089
   - https://www.npca.jp/works/magazine/2015_5/
- 
+
  Usage:
- 
- BinaryLifting bf(0,11);
- bf.addEdge(0,1),bf.addEdge(0,2),...
- 
+
+ LCA lca(0,11);
+ lca.addEdge(0,1),lca.addEdge(0,2),...
+ lca.build();
+ int p=lca.query(u,v);
+
  Used problem(s):
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/SplitTheTree.cpp#L117
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L219
@@ -30,9 +34,11 @@ using namespace std;
    - LCA
   - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/ColorfulTree.cpp#L67
    - LCA
- 
+  - https://github.com/hiroshi-maybe/codeforces/blob/22acf70615e0b483ff85bbf397cf430f045c7c8c/solutions/EhabsLastCorollary.cpp#L69
+   - Find cycles of undirected graph with union find
+
  */
-struct BinaryLifting {
+struct LCA {
 public:
   vector<vector<int>> G;
   int V,root;
@@ -40,18 +46,18 @@ public:
   vector<vector<int>> P; // parent P[bits][vertices], bits=floor(lg N)+1
   vector<int> D; // depth for LCA query D[vertices]
   vector<int> L,R; // timestamp of Euler tree
-  BinaryLifting() {}
-  BinaryLifting(int root, int V) : V(V), root(root) {
+  LCA() {}
+  LCA(int root, int V) : V(V), root(root) {
     G=vector<vector<int>>(V);
   }
   void addEdge(int u, int v) {
     G[u].push_back(v);
     G[v].push_back(u);
   }
-  BinaryLifting(int root, vector<vector<int>> &G) : G(G), root(root) {
+  LCA(int root, vector<vector<int>> &G) : G(G), root(root) {
     V=G.size();
   }
-  void buildLiftingTable() {
+  void build() {
     D=vector<int>(V,0),L=vector<int>(V,0),R=vector<int>(V,0);
     H=1;
     while((1<<H)<=V) ++H;
@@ -69,9 +75,9 @@ public:
     for(int i=H-1; i>=0; --i) if(cur>=0&&(d>>i)&1) cur=P[i][cur];
     return cur;
   }
-  // query to find lca(u,v)
-  int lca(int u, int v) {
-    assert(u<V&&v<V);
+  int query(int u, int v) { // query to find lca(u,v)
+    assert(0<=u&&u<V&&0<=v&&v<V);
+    assert(!P.empty()); // call lca.build();
     if(D[u]>D[v]) swap(u,v);
     v=ancestor(v,D[v]-D[u]);
     if(u==v) return u;
@@ -79,6 +85,22 @@ public:
       if(P[i][u]!=P[i][v]) u=P[i][u],v=P[i][v];
     }
     return P[0][u];
+  }
+  int dist(int u, int v) { // distance between u and v
+    assert(0<=u&&u<V&&0<=v&&v<V);
+    int p=query(u,v);
+    return D[u]+D[v]-2*D[p];
+  }
+  vector<int> path(int u, int v) {
+    int p=query(u,v);
+    vector<int> a,b;
+    while(u!=p) a.push_back(u),u=P[0][u];
+    while(v!=p) b.push_back(v),v=P[0][v];
+    vector<int> res=a;
+    res.push_back(p);
+    reverse(b.begin(),b.end());
+    for(auto u : b) res.push_back(u);
+    return res;
   }
 private:
   void dfs(int u, int par, int d) {
@@ -91,7 +113,7 @@ private:
 
 void test_binarylifting() {
   // https://www.slideshare.net/satanic2/ss-72500089
-  BinaryLifting bf(0,11);
+  LCA bf(0,11);
   bf.addEdge(0,1);
   bf.addEdge(1,2);
   bf.addEdge(2,3),bf.addEdge(2,4);
@@ -100,8 +122,8 @@ void test_binarylifting() {
   bf.addEdge(6,7);
   bf.addEdge(7,8),bf.addEdge(7,9);
   bf.addEdge(9,10);
-  
-  bf.buildLiftingTable();
+
+  bf.build();
   vector<vector<int>> exp={
     {-1, 0, 1, 2, 2, 3, 4, 6, 7, 7, 9},
     {-1,-1, 0, 1, 1, 2, 2, 4, 6, 6, 7},
@@ -117,7 +139,7 @@ void test_binarylifting() {
 
   ///////////////////////////
   // Ancestor
-  
+
   // not found
   assert(bf.ancestor(0,1)==-1);
   assert(bf.ancestor(7,6)==-1);
@@ -126,32 +148,32 @@ void test_binarylifting() {
   assert(bf.ancestor(10,7)==0);
   assert(bf.ancestor(5,1)==3);
   assert(bf.ancestor(0,0)==0);
-  
+
   ///////////////////////////
   // LCA
 
-  assert(bf.lca(0,0)==0);
-  assert(bf.lca(0,1)==0);
-  assert(bf.lca(5,7)==2);
-  assert(bf.lca(10,5)==2);
-  assert(bf.lca(10,8)==7);
+  assert(bf.query(0,0)==0);
+  assert(bf.query(0,1)==0);
+  assert(bf.query(5,7)==2);
+  assert(bf.query(10,5)==2);
+  assert(bf.query(10,8)==7);
 }
 
 /*
- 
+
  Find center(s) of a tree, O(N+E) time
- 
+
   - Tree should be connected
   - Edge should be undirected
   - Center of the tree is one or two nodes
- 
+
  References:
   - https://en.wikipedia.org/wiki/Centered_tree
- 
+
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Multihedgehog.cpp#L146
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/MinimalDiameterForest.cpp#L91
- 
+
  */
 vector<int> findCenter(vector<vector<int>> &G) {
   int N=G.size();
@@ -227,39 +249,39 @@ void test_findCenter() {
 }
 
 /*
- 
+
  Compute diameter of a tree, O(N+E) time
- 
+
   - It's possible to solve by two dfs
   - Tree should be connected
   - Edge should be undirected
   - diameter is odd if center is an edge
   - diameter is even if center is a vertex
- 
+
  References:
   - https://cs.stackexchange.com/questions/22855/algorithm-to-find-diameter-of-a-tree-using-bfs-dfs-why-does-it-work
   - https://www.slideshare.net/chokudai/arc022
- 
+
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/MinimalDiameterForest.cpp#L71
   - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/BonsaiGrafting.cpp#L97
- 
+
  */
 int treeDiameter(vector<vector<int>> &G, int u=0) {
   int N=G.size();
   vector<int> D(N,0);
-  
+
   function<void(int,int,int)> dfs=[&](int u, int pre, int d) -> void {
     D[u]=d;
     for(auto v: G[u]) if(v!=pre) dfs(v,u,d+1);
   };
   dfs(u,-1,0);
   int a=max_element(D.begin(),D.end())-D.begin();
-  
+
   D=vector<int>(N,0);
   dfs(a,-1,0);
   int b=max_element(D.begin(),D.end())-D.begin();;
-  
+
   // (a,b) is pair of vertices which form diameter
   //  printf("%d-%d: %d\n",a,b,D[b]);
   return D[b];
@@ -269,11 +291,11 @@ void test_diameter() {
   // 0
   vector<vector<int>> G1={{}};
   assert(treeDiameter(G1)==0);
-  
+
   // 0-1
   vector<vector<int>> G2={{1},{0}};
   assert(treeDiameter(G2)==1);
-  
+
   vector<vector<int>> G_even={
     {1,2},
     {0,3,4,6,8},
@@ -286,7 +308,7 @@ void test_diameter() {
     {1}
   };
   assert(treeDiameter(G_even)==5);
-  
+
   vector<vector<int>> G_odd={
     {1},
     {0,2,3},
@@ -304,9 +326,9 @@ void test_diameter() {
 }
 
 /*
- 
+
  Random tree generator
- 
+
  */
 #include <chrono>
 #include <random>
@@ -346,8 +368,6 @@ int main(int argc, char const *argv[]) {
   test_binarylifting();
   test_findCenter();
   test_diameter();
-  
+
   gen_tree(100000);
 }
-
-// g++ -std=c++14 -Wall -O2 -D_GLIBCXX_DEBUG -fsanitize=address tree.cpp && ./a.out
