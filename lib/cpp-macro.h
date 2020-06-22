@@ -6,15 +6,10 @@ typedef long long LL;
 typedef pair<int,int> II;
 typedef tuple<int,int,int> III;
 typedef vector<int> VI;
-typedef vector<string> VS;
-typedef unordered_map<int,int> MAPII;
-typedef unordered_set<int> SETI;
 template<class T> using VV=vector<vector<T>>;
-
 // minmax
 template<class T> inline T SMIN(T& a, const T b) { return a=(a>b)?b:a; }
 template<class T> inline T SMAX(T& a, const T b) { return a=(a<b)?b:a; }
-
 // repetition
 #define FOR(i,a,b) for(int i=(a);i<(b);++i)
 #define REP(i,n)  for(int i=0;i<(n);++i)
@@ -22,7 +17,6 @@ template<class T> inline T SMAX(T& a, const T b) { return a=(a<b)?b:a; }
 #define REPE(i,n)  for(int i=0;i<=(n);++i)
 #define FORR(x,arr) for(auto& x:arr)
 #define SZ(a) int((a).size())
-
 // collection
 #define ALL(c) (c).begin(),(c).end()
 #define UNIQUE(A) sort((A).begin(),(A).end()),(A).erase(std::unique((A).begin(), (A).end()), (A).end());
