@@ -333,6 +333,7 @@ void test_rmq() {
   - https://github.com/hiroshi-maybe/codeforces/blob/82bef974ead7bd9d1e27a4e58b5b3066a0450335/solutions/OptimalSubsequences.cpp#L44
   - https://github.com/hiroshi-maybe/topcoder/blob/470b5d80a15f3d97f4a2405b6ef274d6f320ffaa/solutions/SwapTheString/SwapTheString.cpp#L42
    - inversion number
+  - https://github.com/hiroshi-maybe/leetcode/blob/master/1505-minimum-possible-integer-after-at-most-k-adjacent-swaps-on-digits/minimum-possible-integer-after-at-most-k-adjacent-swaps-on-digits.cpp#L34
 
  */
 template <typename T> struct BIT {
