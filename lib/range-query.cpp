@@ -334,6 +334,8 @@ void test_rmq() {
   - https://github.com/hiroshi-maybe/topcoder/blob/470b5d80a15f3d97f4a2405b6ef274d6f320ffaa/solutions/SwapTheString/SwapTheString.cpp#L42
    - inversion number
   - https://github.com/hiroshi-maybe/leetcode/blob/master/1505-minimum-possible-integer-after-at-most-k-adjacent-swaps-on-digits/minimum-possible-integer-after-at-most-k-adjacent-swaps-on-digits.cpp#L34
+  - https://github.com/hiroshi-maybe/atcoder/blob/d1ebaf97523ed0e7e3bad3c645e4294c5e2e900a/solutions/Difficulty.cpp#L80
+   - range sum query with ModInt
 
  */
 template <typename T> struct BIT {
