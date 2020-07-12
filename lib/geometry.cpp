@@ -8,12 +8,12 @@ using namespace std;
 
 const double PI = acos(-1);
 
-typedef int num;
-typedef long long numLL;
+typedef long long num;
 
-const double EPS=1e-9;
+const double EPS=1e-6;
 bool eq(double x, double y) { return abs(x-y)<EPS; }
 
+template<typename num>
 struct Point {
 public:
   num x, y;
@@ -22,14 +22,15 @@ public:
   Point(pair<num,num> p): x(p.first), y(p.second) {}
   Point(pair<num,num> p, pair<num,num> org): Point(p.first-org.first, p.second-org.second) {}
   Point(Point p, Point org): Point(p.x-org.x, p.y-org.y) {}
-  
+
   explicit operator bool() const { return x!=0||y!=0; }
   Point operator-() const { return Point(0,0)-*this; }
   Point &operator+=(Point that) { x+=that.x,y+=that.y; return *this; }
   Point &operator-=(Point that) { x-=that.x,y-=that.y; return *this; }
+  Point &operator*=(double a) { x*=a,y*=a; return *this; }
   Point operator+(Point that) const { return Point(*this)+=that; }
   Point operator-(Point that) const { return Point(*this)-=that; }
-  Point operator*(double a) const { return Point(x*a, y*a);}
+  Point operator*(double a) const { return Point(*this)*=a; }
   bool operator==(Point that) const { return x==that.x&&y==that.y; }
   bool operator!=(Point that) const { return !(Point(*this)==that); }
   bool operator<(Point that) const { return pair<num,num>(x,y)<pair<num,num>(that.x,that.y); }
@@ -37,7 +38,7 @@ public:
   bool operator<=(Point that) const { return Point(*this)==that||Point(*this)<that; }
   bool operator>=(Point that) const { return Point(*this)==that||Point(*this)>that; }
   friend std::ostream& operator<<(std::ostream& _os, const Point& _p) { return _os<<"{"<<_p.x<<','<<_p.y<<"}"; }
-  numLL distance() { return (numLL)x*x + (numLL)y*y; }
+  num distance() { return x*x + y*y; }
   Point rotate90() { return Point{-y, x}; }
   int orthant() const {
     if(x==0&&y==0) return 1;
@@ -46,11 +47,12 @@ public:
   }
 };
 
+template<typename num>
 struct Circle {
-  Point org; numLL rad;
-  Circle(Point org=Point(), numLL rad=0) : org(org), rad(rad) {}
-  vector<Point> cross(const Circle& c) {
-    Point p=c.org-org;
+  Point<num> org; num rad;
+  Circle(Point<num> org=Point<num>(), num rad=0) : org(org), rad(rad) {}
+  vector<Point<num>> cross(const Circle<num>& c) {
+    auto p=c.org-org;
     double l=sqrt(p.distance());
     if(eq(l,0)) return {};
     double maxSide=max({l,(double)rad,(double)c.rad});
@@ -58,24 +60,22 @@ struct Circle {
     if(l+rad+c.rad<maxSide*2) return {};
     double x=-(c.rad*c.rad-l*l-rad*rad)/(2*l);
     double y=sqrt(rad*rad-x*x);
-    Point mid=org+p*(x/l);
+    auto mid=org+p*(x/l);
     p=p.rotate90();
     return {mid+p*(y/l), mid-p*(y/l)};
   }
-  bool isInside(const Point& p) {
-    return sqrt((p-org).distance())<rad+EPS;
-  }
+  bool isInside(const Point<num>& p) { return sqrt((p-org).distance())<rad+EPS; }
 };
 
 /*
- 
+
  cross product u×v
- 
+
  u×v = det(u,v)
      = u.x * v.y - u.y * v.x
      = |u|*|v|*sin𝛩
      = area of parallelogram formed by u and v
- 
+
  1) u×v = det(u,v) = 0
    u and v are colinear from origin
  2) u×v = det(u,v) > 0
@@ -84,13 +84,12 @@ struct Circle {
    u is counter-clockwise from v
 
  */
-numLL det(Point u, Point v) {
-  return (numLL)u.x*v.y - (numLL)u.y*v.x;
-}
+template<typename num>
+num det(Point<num> u, Point<num> v) { return u.x*v.y - u.y*v.x; }
 /*
- 
+
  cross product det (o->p1, o->p2)
- 
+
  1) det(o,p1,p2) = 0
   o, p1 and p2 are co-linear (o->p1 is colinear with o->p2)
  2) det(o,p1,p2) > 0
@@ -99,65 +98,57 @@ numLL det(Point u, Point v) {
  3) det(o,p1,p2) < 0
   o->p2 is clockwise from o->p1
   (p1->p2->o is clockwise order)
- 
+
  */
-numLL det(Point origin, Point p1, Point p2) {
-  return det(p1-origin, p2-origin);
-}
-numLL dot(Point u, Point v) {
-  return (numLL)u.x*v.x + (numLL)u.y*v.y;
-}
+template<typename num>
+num det(Point<num> origin, Point<num> p1, Point<num> p2) { return det(p1-origin, p2-origin); }
+template<typename num>
+num dot(Point<num> u, Point<num> v) { return u.x*v.x + u.y*v.y; }
+
 // CLRS 33.1
 // true: org->p2 is clockwise from org->p1
-bool isClockwise(Point origin, Point p1, Point p2) {
-  return det(origin, p1, p2)<0;
-}
-bool isCounterClockwise(Point origin, Point p1, Point p2) {
-  return det(origin, p1, p2)>0;
-}
+template<typename num>
+bool isClockwise(Point<num> origin, Point<num> p1, Point<num> p2) { return det(origin, p1, p2)<0; }
+template<typename num>
+bool isCounterClockwise(Point<num> origin, Point<num> p1, Point<num> p2) { return det(origin, p1, p2)>0; }
 // CLRS 33.1
 // org->p1 and org->p2 form same direction or opposite direction
-bool isColinear(Point origin, Point p1, Point p2) {
-  return det(origin, p1, p2)==0;
-}
+template<typename num>
+bool isColinear(Point<num> origin, Point<num> p1, Point<num> p2) { return det(origin, p1, p2)==0; }
 // CLRS 33.1
 // true: p1->p2 is left turn for origin
-bool isLeftTurn(Point origin, Point p1, Point p2) {
-  return isCounterClockwise(origin,p1,p2);
-}
+template<typename num>
+bool isLeftTurn(Point<num> origin, Point<num> p1, Point<num> p2) { return isCounterClockwise(origin,p1,p2); }
 // CLRS 33.1
 // true: p1->p2 is right turn for origin
-bool isRightTurn(Point origin, Point p1, Point p2) {
-  return isClockwise(origin,p1,p2);
-}
+template<typename num>
+bool isRightTurn(Point<num> origin, Point<num> p1, Point<num> p2) { return isClockwise(origin,p1,p2); }
 // 90 degree
-bool isVertical(Point u, Point v) {
-  return dot(u,v)==0;
-}
+template<typename num>
+bool isVertical(Point<num> u, Point<num> v) { return dot(u,v)==0; }
 // CLRS 33.1 ON-SEGMENT(pi,pj,pk)
-bool onSegment(Point p1, Point p2, Point q) {
-  num xmin=min(p1.x, p2.x),
-  xmax=max(p1.x, p2.x),
-  ymin=min(p1.y, p2.y),
-  ymax=max(p1.y, p2.y);
+template<typename num>
+bool onSegment(Point<num> p1, Point<num> p2, Point<num> q) {
+  num xmin=min(p1.x, p2.x),xmax=max(p1.x, p2.x),ymin=min(p1.y, p2.y),ymax=max(p1.y, p2.y);
   return xmin<=q.x&&q.x<=xmax&&ymin<=q.y&&q.y<=ymax;
 }
 /*
- 
+
  Checks if p1->p2 intersects p3->p4, O(1) time
- 
+
  CLRS 33.1 SEGMENTS-INTERSECT(p1,p2,p3,p4)
- 
+
  Used problem:
   - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/IttoRyodan.cpp#L93
- 
+
  */
-bool intersect(Point p1, Point p2, Point p3, Point p4) {
-  numLL d1 = det(p1,p3,p4),
+template<typename num>
+bool intersect(Point<num> p1, Point<num> p2, Point<num> p3, Point<num> p4) {
+  num d1 = det(p1,p3,p4),
   d2 = det(p2,p3,p4),
   d3 = det(p3,p1,p2),
   d4 = det(p4,p1,p2);
-  
+
   if (((d1>0&&d2<0)||(d1<0&&d2>0)) && ((d3>0&&d4<0)||(d3<0&&d4>0))) return true;
   if (d1==0 && onSegment(p3,p4,p1)) return true;
   if (d2==0 && onSegment(p3,p4,p2)) return true;
@@ -168,33 +159,32 @@ bool intersect(Point p1, Point p2, Point p3, Point p4) {
 
 void test_point() {
   {
-    Point p;
+    Point<int> p;
     assert(p.x==0&&p.y==0);
   }
   {
-    Point p1(0,0),p2(0,1);
+    Point<int> p1(0,0),p2(0,1);
     assert(!p1);
     assert(p2);
   }
   {
-    Point p1(1,2),p2(3,4);
+    Point<int> p1(1,2),p2(3,4);
     p1+=p2;
     assert(p1.x==4&&p1.y==6);
   }
   {
-    Point p1(1,2),p2(3,4);
+    Point<int> p1(1,2),p2(3,4);
     p1-=p2;
     assert(p1.x==-2&&p1.y==-2);
   }
   {
-    Point p1(1,1),p2(1,1),p3(1,2);
+    Point<int> p1(1,1),p2(1,1),p3(1,2);
     assert(p1==p2);
     assert(p1!=p3);
   }
-  
-  Point origin(0,0), p1(1,0), p2(0,1), p3(-1,0), p4(0,-1);
-  
-  assert(isVertical(Point(p1,origin),Point(p2,origin)));
+
+  Point<int> origin(0,0), p1(1,0), p2(0,1), p3(-1,0), p4(0,-1);
+  assert(isVertical(Point<int>(p1,origin),Point<int>(p2,origin)));
   assert(isClockwise(origin, p2, p1));
   assert(isCounterClockwise(origin, p1, p2));
   assert(isColinear(origin, p1, p3));
@@ -204,39 +194,40 @@ void test_point() {
 }
 
 /*
- 
+
  Compute area of parallelogram formed by p1, p2 and origin
- 
+
  A = det(o,p1,p2)
- 
+
  0.5*area() is an area of (o,p1,p2) triangle
- 
+
  */
-numLL area(Point p1, Point p2, Point origin) {
-  return abs(det(origin,p1,p2));
-}
+template<typename num>
+num area(Point<num> p1, Point<num> p2, Point<num> origin) { return abs(det(origin,p1,p2)); }
 
 // CLRS 33.3 GRAHAM-SCAN(Q)
 
 /*
- 
+
  Polar angle sort, O(N*lg N) time
   - smaller magnitude comes first for tie break
- 
+
  Used problem:
   - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/Engines.cpp#L113
- 
+
  */
-void sortByPolarAngle(vector<Point>& ps, Point origin) {
-  sort(ps.begin(), ps.end(), [&](const Point &a, const Point &b) {
+template<typename num>
+void sortByPolarAngle(vector<Point<num>>& ps, Point<num> origin) {
+  sort(ps.begin(), ps.end(), [&](const Point<num> &a, const Point<num> &b) {
     int oa=a.orthant(),ob=b.orthant();
     if(oa!=ob) return oa<ob;
-    numLL d = det(origin,a,b);
+    num d = det(origin,a,b);
     if(d!=0) return d > 0;
-    return Point(a,origin).distance() < Point(b,origin).distance();
+    return Point<num>(a,origin).distance() < Point<num>(b,origin).distance();
   });
 }
-vector<Point> findConvexHull(vector<Point> ps) {
+template<typename num>
+vector<Point<num>> findConvexHull(vector<Point<num>> ps) {
   if (ps.size()<3) return {};
 
   // find p0 (bottom left point)
@@ -245,7 +236,7 @@ vector<Point> findConvexHull(vector<Point> ps) {
     if (ps[i].y <= ps[p0_i].y && ps[i].x <= ps[p0_i].x) p0_i = i;
   }
   swap(ps[0], ps[p0_i]);
-  Point p0=ps[0];
+  auto p0=ps[0];
 
   // sort by polar angle
   sortByPolarAngle(ps, p0);
@@ -260,7 +251,7 @@ vector<Point> findConvexHull(vector<Point> ps) {
   if (N<3) return {};
 
   int si=0;
-  vector<Point> S(N);
+  vector<Point<num>> S(N);
   S[si++] = ps[0];
   S[si++] = ps[1];
   S[si] = ps[2];
@@ -276,7 +267,8 @@ vector<Point> findConvexHull(vector<Point> ps) {
 // check if point is surrounded by given points
 // if p is on segment, return true
 // O(N*lg N) time
-bool surrounded(Point p, vector<Point>& ps) {
+template<typename num>
+bool surrounded(Point<num> p, vector<Point<num>>& ps) {
   sortByPolarAngle(ps, p);
   vector<int> ds;
   int N=ps.size();
@@ -291,18 +283,18 @@ bool surrounded(Point p, vector<Point>& ps) {
 }
 
 /*
- 
+
  Check if circle 1 is inside circle 2
 
  Formula:
- 
+
  sqrt(dx*dx+dy*dy)+r1 <= R2
- 
+
    where dx=delta x of cetner of circles, dy=delta y of center of circles
          r1=radius of circle 1, r2=radius of circle 2
- 
+
  Used problem: https://github.com/k-ori/topcoder/blob/master/CirclesCountry/CirclesCountry.cpp#L76
- 
+
  */
 bool insideCircle(int x1, int y1, int r1, int X2, int Y2, int R2) {
   double d=hypot(abs(x1-X2),abs(y1-Y2));
@@ -310,20 +302,20 @@ bool insideCircle(int x1, int y1, int r1, int X2, int Y2, int R2) {
 }
 
 /*
- 
+
  Transform degree (0-360º) to radian (0-2𝛑)
- 
+
  radian = degree * 𝛑 / 180
- 
+
  */
 double deg2rad(double deg) { return deg*M_PI/180.0; }
 
 /*
- 
+
  Transform polar system (r,Θ) to cartesian system (x,y)
- 
+
  (x,y) = (r * cosΘ, r * sinΘ)
- 
+
  */
 pair<double,double> polar2cartesianSys(double r, double deg) {
   double rad=deg2rad(deg);
@@ -331,13 +323,13 @@ pair<double,double> polar2cartesianSys(double r, double deg) {
 }
 
 /*
- 
+
  Rotate (x,y) by `deg` degree (not radian) in 2D
- 
+
  (x',y') = (x*cosΘ - y*sinΘ, x*sinΘ + y*cosΘ)
- 
+
  https://en.wikipedia.org/wiki/Rotation_matrix
- 
+
  */
 pair<double,double> rotate(pair<double,double> p, double deg) {
   double x=p.first,y=p.second;
@@ -348,9 +340,9 @@ pair<double,double> rotate(pair<double,double> p, double deg) {
 }
 
 /*
- 
+
  Data structure in 3d coordinate
- 
+
  - Rotation in right-hand system
   - https://en.wikipedia.org/wiki/Rotation_formalisms_in_three_dimensions#Rotation_matrix_%E2%86%94_Euler_angles
   - https://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations
@@ -358,7 +350,7 @@ pair<double,double> rotate(pair<double,double> p, double deg) {
   - Thumb: x-axis, Index-finger: y-axis, Middle-finger: z-axis in right hand
    - x->y is counter-clockwise from top of z-axis
   - Rotation is counter-clockwise for positive degree from top of rotation axis
- 
+
  */
 struct Point3D {
 public:
@@ -368,7 +360,7 @@ public:
     this->x=vec[0],this->y=vec[1],this->z=vec[2];
   }
   Point3D(double x, double y, double z): x(x), y(y), z(z) {}
-  
+
   Point3D rotateX(double rad) {
     double s=sin(rad),c=cos(rad);
     double xx=x;
@@ -450,36 +442,41 @@ int main(int argc, char const *argv[]) {
   test_point();
 
   // http://www.geeksforgeeks.org/convex-hull-set-2-graham-scan/
-  vector<Point> ps = findConvexHull({{0,3},{1,1},{2,2},{4,4},{0,0},{1,2},{3,1},{3,3}});
-  vector<Point> exp = {{0,0},{3,1},{4,4},{0,3}};
-  assert(ps==exp);
+  {
+    vector<Point<int>> ps0 = {{0,3},{1,1},{2,2},{4,4},{0,0},{1,2},{3,1},{3,3}};
+    vector<Point<int>> ps = findConvexHull(ps0);
+    vector<Point<int>> exp = {{0,0},{3,1},{4,4},{0,3}};
+    assert(ps==exp);
+  }
 /*  assert(ps.size()==exp.size());
   for(int i=0; i<ps.size(); ++i) {
     printf("(%d,%d) vs (%d,%d)\n",ps[i].x,ps[i].y,exp[i].x,exp[i].y);
 //    assert(ps[i].first==exp[i].first&&ps[i].second==exp[i].second);
   }*/
-  
-  Point origin(0,0);
-  
-  vector<Point> surrounding = {{1,1},{-1,1},{1,-1},{-1,-1}};
+
+  Point<int> origin(0,0);
+
+  vector<Point<int>> surrounding = {{1,1},{-1,1},{1,-1},{-1,-1}};
   assert(surrounded(origin, surrounding));
-  vector<Point> onsegment = {{1,0},{0,1},{-1,0}};
+  vector<Point<int>> onsegment = {{1,0},{0,1},{-1,0}};
   assert(surrounded(origin, onsegment));
-  vector<Point> notsurrounding = {{1,1},{2,1},{1,2},{2,2}};
+  vector<Point<int>> notsurrounding = {{1,1},{2,1},{1,2},{2,2}};
   assert(!surrounded(origin, notsurrounding));
-  
+
   assert(nearlyEqual(deg2rad(60),M_PI/3.0));
   pair<double,double> pp1=polar2cartesianSys(10,60);
   assert(nearlyEqual(pp1.first,10.0/2.0));
   assert(nearlyEqual(pp1.second,10.0*sqrt(3.0)/2.0));
-  
+
   pair<double,double> pp2=rotate(pp1,60);
   assert(nearlyEqual(pp2.first+pp1.first,0.0));
   assert(nearlyEqual(pp2.second,pp1.second));
-  assert(nearlyEqual(area({-2,0},{0,4},{3,0}),20.0));
-  
+  {
+    assert(nearlyEqual(area(Point<double>(-2,0),Point<double>(0,4),Point<double>(3,0)),20.0));
+  }
+
   assert_vector3D();
-  
+
   assert(insideCircle(-4,5,1,1,1,8));
   assert(!insideCircle(-4,5,1,12,1,2));
   assert(insideCircle(0,0,1,0,0,1));
