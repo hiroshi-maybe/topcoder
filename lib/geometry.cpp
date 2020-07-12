@@ -264,6 +264,86 @@ vector<Point<num>> findConvexHull(vector<Point<num>> ps) {
   return S;
 }
 
+/*
+
+  Find geometric median and its total distance for points, O(N*log max X) time
+
+  Used:
+    - https://github.com/hiroshi-maybe/leetcode/blob/master/1515-best-position-for-a-service-centre/best-position-for-a-service-centre.cpp#L80
+
+ */
+pair<double,Point<double>> geometricMedian(vector<Point<double>>& ps, const double Inf=1e4) {
+  int N=ps.size();
+  assert(N>0);
+  Point<double> med;
+  for(auto p : ps) med+=p;
+  med*=1.0/N;
+  auto dsum=[&](Point<double> c) -> double {
+    double res=0;
+    for(auto p : ps) res+=sqrt(Point<double>(p,c).distance());
+    return res;
+  };
+
+  double mind=dsum(med);
+  for(int i=0; i<N; ++i) {
+    double d=dsum(ps[i]);
+    if(d<mind) mind=d,med=ps[i];
+  }
+
+  double ratio=Inf;
+  vector<Point<double>> dirs{{0,-1},{0,1},{-1,0},{1,0}};
+  for(int _=0; _<100/*=log2(Inf/EPS)*/; ++_) {
+    bool ok=0;
+    for(auto d : dirs) {
+      auto a=med+d*ratio;
+      double dd=dsum(a);
+      if(dd<mind) {
+        mind=dd,med=a,ok=true;
+        break;
+      }
+    }
+    if(!ok) ratio/=2;
+  }
+  return {mind, med};
+}
+
+void testGeometricMedian() {
+  {
+    vector<Point<double>> ps={{0,1},{1,0},{1,2},{2,1}};
+    auto res=geometricMedian(ps);
+    eq(res.first, 4.0);
+    eq(res.second.x, 1.0),eq(res.second.y, 1.0);
+  }
+
+  {
+    vector<Point<double>> ps={{1,1},{3,3}};
+    auto res=geometricMedian(ps);
+    eq(res.first, 2.82843);
+    eq(res.second.x, 2.0),eq(res.second.y, 2.0);
+  }
+
+  {
+    vector<Point<double>> ps={{1,1}};
+    auto res=geometricMedian(ps);
+    eq(res.first, 0.0);
+    eq(res.second.x, 1.0),eq(res.second.y, 1.0);
+  }
+
+  {
+    vector<Point<double>> ps={{1,1},{0,0},{2,0}};
+    auto res=geometricMedian(ps);
+    eq(res.first, 2.73205);
+    eq(res.second.x, 1.0),eq(res.second.y, 0.5773502711);
+  }
+
+  {
+    vector<Point<double>> ps={{0,1},{3,2},{4,5},{7,6},{8,9},{11,1},{2,12}};
+    auto res=geometricMedian(ps);
+    eq(res.first, 32.94036);
+    eq(res.second.x, 4.3460852395),eq(res.second.y, 4.9813795505);
+  }
+}
+
 // check if point is surrounded by given points
 // if p is on segment, return true
 // O(N*lg N) time
@@ -440,6 +520,7 @@ void assert_vector3D() {
 
 int main(int argc, char const *argv[]) {
   test_point();
+  testGeometricMedian();
 
   // http://www.geeksforgeeks.org/convex-hull-set-2-graham-scan/
   {
