@@ -336,6 +336,8 @@ void test_rmq() {
   - https://github.com/hiroshi-maybe/leetcode/blob/master/1505-minimum-possible-integer-after-at-most-k-adjacent-swaps-on-digits/minimum-possible-integer-after-at-most-k-adjacent-swaps-on-digits.cpp#L34
   - https://github.com/hiroshi-maybe/atcoder/blob/d1ebaf97523ed0e7e3bad3c645e4294c5e2e900a/solutions/Difficulty.cpp#L80
    - range sum query with ModInt
+  - https://github.com/hiroshi-maybe/atcoder/blob/c8601b666f1a2f62c2456e9077c7cae42ec4885f/solutions/DataStructure.cpp#L44
+   - range sum query and binary search
 
  */
 template <typename T> struct BIT {
