@@ -2,9 +2,9 @@
 using namespace std;
 
 /*
- 
+
  Trie tree, O(∑len(str)) time
- 
+
  Usage:
   TrieNode* trie=new TrieNode();
   REP(i,N) {
@@ -13,7 +13,7 @@ using namespace std;
     trie->insert(i,w);
   }
   int id=trie->search(query);
- 
+
  Used problems:
   - https://github.com/hiroshi-maybe/leetcode/blob/master/208-Implement-Trie/Trie.cpp#L23
    - verifier
@@ -23,7 +23,9 @@ using namespace std;
   - https://github.com/hiroshi-maybe/leetcode/blob/master/1032-stream-of-characters/stream-of-characters.cpp#L43
    - search by reversed order
   - https://github.com/hiroshi-maybe/GCJ/blob/master/kickstart/2020A/Bundling.cpp#L48
- 
+  - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/FirstSecond.cpp#L64
+   - search common suffix by reversing strings
+
  */
 
 class TrieNode {
@@ -100,22 +102,22 @@ void test_trie() {
   assert(trie->prefix("app")==2);
   assert(trie->search("app")==1);
   assert(trie->search("appl")==-1);
-  
+
   assert(!trie->erase(0,s2));
   assert(trie->erase(-1,s2));
-  
+
   assert(trie->search(s2)==-1);
-  
+
   trie->release(), delete trie;
 }
 
 /*
- 
+
  Binary Trie tree specialized to process binary digits
- 
+
  Used problem(s):
   - https://github.com/hiroshi-maybe/topcoder/blob/master/solutions/MojisBag/MojisBag.cpp#L59
- 
+
  */
 /*
 class BinaryTrieNode {
@@ -185,7 +187,7 @@ public:
     BinaryTrieNode *n=find(q);
     return n!=nullptr?n->ids:set<int>();
   }
-  
+
   BinaryTrieNode* find(LL q) {
     BinaryTrieNode *n=root;
     for(int i=MAX_D; i>=0; --i) {
@@ -196,7 +198,7 @@ public:
     }
     return n;
   }
-  
+
   void release() {
     releaseNode(root);
   }
