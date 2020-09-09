@@ -265,6 +265,7 @@ void test_findCenter() {
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/MinimalDiameterForest.cpp#L71
   - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/BonsaiGrafting.cpp#L97
+  - https://github.com/hiroshi-maybe/codeforces/blob/b11a66755c75e3c642bafa8bb95ad3a9bb26cdc9/solutions/TreeTag.cpp#L45
 
  */
 int treeDiameter(vector<vector<int>> &G, int u=0) {
