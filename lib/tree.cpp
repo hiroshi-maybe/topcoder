@@ -328,6 +328,81 @@ void test_diameter() {
 
 /*
 
+ Find centroid(s) in a tree in O(V) time
+
+ Centroid:
+  - If a centroid and its associated edges are removed, sizes of remaining subtrees <= N/2
+  - There are one or two centroids in a tree
+  - If there are two centroids, they are adjacent
+
+ References:
+  - https://qiita.com/drken/items/4b4c3f1824339b090202
+
+ Used problems:
+  - https://github.com/hiroshi-maybe/codeforces/blob/c7a5afadb43c4bb77f049216510444781e76ca04/solutions/LinkCutCentroids.cpp#L62
+
+ */
+
+vector<int> findCentroids(vector<vector<int>> G) {
+  int N=G.size();
+  vector<int> cnt(N);
+  vector<int> res;
+  auto dfs=[&](auto &&self, int u, int p) -> void {
+    cnt[u]=1;
+    bool ok=true;
+    for(auto v: G[u]) if(p!=v) {
+      self(self,v,u);
+      cnt[u]+=cnt[v];
+      ok&=cnt[v]<=N/2;
+    }
+    ok&=N-cnt[u]<=N/2;
+    if(ok) res.push_back(u);
+  };
+  dfs(dfs,0,-1);
+  return res;
+}
+
+
+void test_centroid() {
+  {
+    vector<vector<int>> G={
+      {1,2},
+      {0,3,4},
+      {0},
+      {1},
+      {1}
+    };
+    auto res=findCentroids(G);
+    assert(res==vector<int>{1});
+  }
+
+  {
+    vector<vector<int>> G={
+      {1,2,3},
+      {0,4,5},
+      {0},
+      {0},
+      {1},
+      {1}
+    };
+    auto res=findCentroids(G);
+    assert(res==vector<int>({1,0}));
+  }
+
+  {
+    vector<vector<int>> G={
+      {2},
+      {2},
+      {0,1,3},
+      {2}
+    };
+    auto res=findCentroids(G);
+    assert(res==vector<int>({2}));
+  }
+}
+
+/*
+
  Random tree generator
 
  */
@@ -370,5 +445,5 @@ int main(int argc, char const *argv[]) {
   test_findCenter();
   test_diameter();
 
-  gen_tree(100000);
+  //gen_tree(100000);
 }
