@@ -84,35 +84,35 @@ private:
 
  Reference:
   - https://cp-algorithms.com/data_structures/segment_tree.html#toc-tgt-9
+  - https://atcoder.github.io/ac-library/master/document_ja/lazysegtree.html
 
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Editor.cpp#L44
    - lazy RmMQ
   - https://github.com/hiroshi-maybe/atcoder/blob/a669b3419df50aaf5388da15b3ff5ae0d87abd24/solutions/Roadwork.cpp#L75
    - lazy RmQ
+  - https://github.com/hiroshi-maybe/atcoder/blob/40d27e83c735be93ac9d0537224052383cf2dc7a/solutions/ReplaceDigits.cpp#L45
+   - Range update query for decimal string in AtCoder Library Contest
 
  */
-template <typename Val, typename Delay>
+template <typename Val, // x∈S (Monoid) for f(x)
+  Val (*id)(),  // Identity element for S
+  Val (*merge)(Val, Val), // Merge x and y
+  typename Delay, // Parameters for f_i∈F
+  Delay (*delayId)(), // Identity element for F
+  Val (*apply)(Val, Delay), // f_i(x)
+  /* mergeDelay(g, f), f(g(x)) */
+  Delay (*mergeDelay)(Delay, Delay)> // f_i∘f_j∈F
 struct LazySegmentTree {
   int N_/* adjusted N*/,head/* head of leaf */;
   vector<Val> tree;
   vector<Delay> delay;
-  Val id;
-  Delay delayId;
-  using Merge = function<Val(Val,Val)>;
-  using Apply = function<Val(Val,Delay)>;
-  using MergeDelay = function<Delay(Delay,Delay)>;
-  Merge merge;
-  Apply apply;
-  MergeDelay mergeDelay;
 public:
-  LazySegmentTree(int N, Val id, Delay delayId, Merge merge, Apply apply, MergeDelay mergeDelay) { prep(N,id,delayId,merge,apply,mergeDelay); }
-  LazySegmentTree(vector<Val> A, Val id, Delay delayId, Merge merge, Apply apply, MergeDelay mergeDelay) { prep(A.size(),id,delayId,merge,apply,mergeDelay),this->build(A); }
-  LazySegmentTree& prep(int N, Val id, Delay delayId, Merge merge, Apply apply, MergeDelay mergeDelay) {
-    this->id=id,this->delayId=delayId;
-    this->merge=merge,this->apply=apply,this->mergeDelay=mergeDelay;
+  LazySegmentTree(int N) { prep(N); }
+  LazySegmentTree(vector<Val> A) { prep(A.size()),this->build(A); }
+  LazySegmentTree& prep(int N) {
     int n=1; while(n<N) n<<=1; // Init by power of 2
-    this->tree=vector<Val>(2*n-1,id),this->delay=vector<Delay>(2*n-1,delayId);
+    this->tree=vector<Val>(2*n-1,id()),this->delay=vector<Delay>(2*n-1,delayId());
     this->N_=n,this->head=N_-1;
     return *this;
   }
@@ -125,7 +125,7 @@ public:
 private:
   Val mergeAt(int i) { return tree[i]=merge(tree[2*i+1],tree[2*i+2]); }
   Val queryTree(const int ql, const int qr, int i, int tl, int tr) {
-    if(tr<=ql||qr<=tl) return id; // out of range
+    if(tr<=ql||qr<=tl) return id(); // out of range
     applyDelay(i);
     if(ql<=tl&&tr<=qr) return tree[i]; // all covered
     int mid=tl+(tr-tl)/2; // partially covered
@@ -140,13 +140,18 @@ private:
     } else applyDelay(i);
   }
   void applyDelay(int i) {
-    if(delay[i]==delayId) return;
     if(i<head) pushdownAt(i);
-    tree[i]=apply(tree[i],delay[i]),delay[i]=delayId;
+    tree[i]=apply(tree[i],delay[i]),delay[i]=delayId();
   }
   void pushdownAt(int i) { mergeDelayAt(2*i+1,delay[i]),mergeDelayAt(2*i+2,delay[i]); }
   void mergeDelayAt(int i, Delay d) { delay[i]=mergeDelay(delay[i],d); }
 };
+
+int id() { return (int)1e9; };
+int lazyId() { return (int)1e9; };
+int mina(int a, int b) { return min(a,b); };
+int seta(int a, int b) { return b==lazyId()?a:b; };
+
 void test_segmenttree() {
   vector<int> ns={2, 1, 1, 3, 2, 3, 4, 5, 6, 7, 8, 9};
 
@@ -162,9 +167,7 @@ void test_segmenttree() {
 
   {
     // Range minimum query, range update
-    auto mina=[](int a, int b) { return min(a,b); };
-    auto seta=[](int _, int d) { return d; };
-    LazySegmentTree<int,int> T(ns,1e9,1e9,mina,seta,seta);
+    LazySegmentTree<int,id,mina,int,lazyId, seta, seta> T(ns);
 
     assert(T.query(2,8)==1);
     assert(T.query(3,8)==2);
@@ -182,9 +185,7 @@ void test_segmenttree() {
     vector<int> A(N);
     iota(A.begin(),A.end(),1);
     SegmentTree<int> T1(A,1e9,[](int a, int b) { return min(a,b); });
-    auto mina=[](int a, int b) { return min(a,b); };
-    auto seta=[](int _, int d) { return d; };
-    LazySegmentTree<int,int> T2(A,1e9,1e9,mina,seta,seta);
+    LazySegmentTree<int,id,mina,int,lazyId,seta,seta> T2(A);
     int T=100;
     while(T--) {
       int l=genRandNum(0,N-1),r=genRandNum(l,N+1),val=genRandNum(0,100);
