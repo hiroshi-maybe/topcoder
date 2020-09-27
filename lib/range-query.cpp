@@ -77,6 +77,48 @@ private:
                  queryTree(ql,qr,2*i+2,mid, tr));
   }
 };
+
+/*
+
+ RMQ (segment tree), O(lg N) query, O(lg N) update
+
+ - normal: range query, point update
+ - lazy propagation: point query, range update
+
+ References:
+  - https://www.npca.jp/works/magazine/2015_5/
+
+ Usage:
+   auto rmq=makeRmQ(A,(int)1e9);
+   assert(rmq.query(2,8)==1);
+
+ Used problem:
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L174
+  - https://github.com/hiroshi-maybe/atcoder/blob/e81dcc4cd4d181d4a38e70ee4cdfb0c3692cfd2f/solutions/Roadwork.cpp#L72
+   - lazy propagation (range update)
+  - https://github.com/hiroshi-maybe/leetcode/blob/master/1124-longest-well-performing-interval/longest-well-performing-interval.cpp#L50
+   - range min query
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/YetAnotherMonsterKillingProblem.cpp#L44
+   - range min query
+  - https://github.com/hiroshi-maybe/atcoder/blob/2b8c0e08422d98f6c08a13f32969d75e002eb299/solutions/OperationTakahashiDating.cpp#L76
+   - range min query
+  - https://github.com/hiroshi-maybe/atcoder/blob/ffc44349faf3f9e8e377089cc5ff11d0e7b10139/solutions/FlatSubsequence.cpp#L44
+   - range max query for dp
+
+ */
+template<typename Val> auto makeRmMQ(vector<pair<Val,Val>> A, pair<Val,Val> id) {
+  using P=pair<Val,Val>;
+  return SegmentTree<P>(A,id,[](P a, P b) {
+    return P(min(a.first,b.first), max(a.second,b.second));
+  });
+}
+template<typename Val> auto makeRmQ(vector<Val> A, Val id) {
+  return SegmentTree<Val>(A,id,[](Val a, Val b) { return min(a,b); });
+}
+template<typename Val> auto makeRMQ(vector<Val> A, Val id) {
+  return SegmentTree<Val>(A,id,[](Val a, Val b) { return max(a,b); });
+}
+
 /*
  General lazy segment tree, O(N) time to build, O(lg N) time to query or update
 
@@ -202,44 +244,6 @@ void test_segmenttree() {
   }
 }
 
-/*
-
- RMQ (segment tree), O(lg N) query, O(lg N) update
-
- - normal: range query, point update
- - lazy propagation: point query, range update
-
- References:
-  - https://www.npca.jp/works/magazine/2015_5/
-
- Usage:
-   auto rmq=makeRmQ(A,(int)1e9);
-   assert(rmq.query(2,8)==1);
-
- Used problem:
-  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L174
-  - https://github.com/hiroshi-maybe/atcoder/blob/e81dcc4cd4d181d4a38e70ee4cdfb0c3692cfd2f/solutions/Roadwork.cpp#L72
-   - lazy propagation (range update)
-  - https://github.com/hiroshi-maybe/leetcode/blob/master/1124-longest-well-performing-interval/longest-well-performing-interval.cpp#L50
-   - range min query
-  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/YetAnotherMonsterKillingProblem.cpp#L44
-   - range min query
-  - https://github.com/hiroshi-maybe/atcoder/blob/2b8c0e08422d98f6c08a13f32969d75e002eb299/solutions/OperationTakahashiDating.cpp#L76
-   - range min query
-
- */
-template<typename Val> auto makeRmMQ(vector<pair<Val,Val>> A, pair<Val,Val> id) {
-  using P=pair<Val,Val>;
-  return SegmentTree<P>(A,id,[](P a, P b) {
-    return P(min(a.first,b.first), max(a.second,b.second));
-  });
-}
-template<typename Val> auto makeRmQ(vector<Val> A, Val id) {
-  return SegmentTree<Val>(A,id,[](Val a, Val b) { return min(a,b); });
-}
-template<typename Val> auto makeRMQ(vector<Val> A, Val id) {
-  return SegmentTree<Val>(A,id,[](Val a, Val b) { return max(a,b); });
-}
 template <class T> struct RMQ_lazy {
 public:
   T Inf;
