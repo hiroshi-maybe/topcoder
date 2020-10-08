@@ -78,7 +78,6 @@ vector<int> bellmanford(int V, vector<unordered_map<int, int>> E, int s) {
  Dijkstra's algorithm, O((V+E)*lg V) time
 
  - Solver of single-source shortest path problem
- - More efficient than Bellman-ford algorithm
  - This cannot solve graph with negative weight
 
  Usage:
@@ -88,24 +87,25 @@ vector<int> bellmanford(int V, vector<unordered_map<int, int>> E, int s) {
   dijkstra(V,0);
   cout<<D[dest]<<endl;
 
+ Used problems:
+  - https://github.com/hiroshi-maybe/codeforces/blob/c735e26b3e5d2caa30945dac1c767e58e8ec32b7/solutions/ReturningHome.cpp#L72
+
  */
 const long long Inf=2e18;
-const int MAX_V=3001;
+const int MAX_V=2e5;
 long long D[MAX_V];
-using P=pair<long long, int>;
-vector<P> G[MAX_V];
+using Edge=pair<long long, int>;
+vector<Edge> G[MAX_V];
 void dijkstra(int V, int st) {
   for(int i=0; i<V; ++i) D[i]=Inf;
-  priority_queue<P,vector<P>,greater<P>> Q; Q.emplace(0,st); D[st]=0;
+  priority_queue<Edge,vector<Edge>,greater<Edge>> Q; Q.emplace(0,st); D[st]=0;
   while(Q.size()>0) {
     long long d; int u;
     tie(d,u)=Q.top(),Q.pop();
     if(d!=D[u]) continue;
     for(auto p : G[u]) {
-      int v; long long w; tie(v,w)=p;
-      if(d+w<D[v]) {
-        D[v]=d+w,Q.emplace(d+w,v);
-      }
+      long long w; int v; tie(w,v)=p;
+      if(d+w<D[v]) D[v]=d+w,Q.emplace(d+w,v);
     }
   }
 }
@@ -114,11 +114,11 @@ void test_dijkstra() {
   // Dijkstra's algorithm test
   // CLRS Figure 24.6
   vector<unordered_map<int, int>> E2 = {
-    { {1,10}, {3,5} },
-    { {2,1}, {3,2} },
+    { {10,1}, {5,3} },
+    { {1,2}, {2,3} },
     { {4,4} },
-    { {1,3}, {2,9}, {4,2} },
-    { {0,7}, {2,6} }
+    { {3,1}, {9,2}, {2,4} },
+    { {7,0}, {6,2} }
   };
   for(int i=0; i<5; ++i) G[i].clear();
   for(int u=0; u<5; ++u) for(auto kvp : E2[u]) G[u].emplace_back(kvp.first,kvp.second);
