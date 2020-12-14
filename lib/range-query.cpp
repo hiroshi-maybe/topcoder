@@ -43,6 +43,8 @@ int genRandNum(int lb, int ub) {
    - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/Company.cpp#L90 (RMQ)
    - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/VasyaAndMaximumProfit.cpp#L78 (Max subsegment sum query)
    - https://github.com/hiroshi-maybe/GCJ/blob/master/kickstart/2019-RB/DiverseSubarray.cpp#L70 (Max subsegment sum query)
+   - https://github.com/hiroshi-maybe/atcoder/blob/3855995ce83d1f60060f9ff472b75668cb16913e/solutions/RangeXorQuery.cpp#L44 (XOR range query)
+
 
  */
 template <typename Val>
