@@ -233,6 +233,110 @@ void test_modmx() {
 
 /*
 
+  Matrices for Affine transformation (2d)
+
+  Reference: https://en.wikipedia.org/wiki/Affine_transformation
+
+  Used problem:
+   - https://github.com/hiroshi-maybe/atcoder/blob/841fc553dec4d9881238e3aea3254a8ea72f492d/solutions/RotateAndFlip.cpp#L143
+
+ */
+namespace Affine2d {
+  template<typename T> MX<T> point(T x, T y);
+  template<typename T> T x(MX<T> mx);
+  template<typename T> T y(MX<T> mx);
+  template<typename T> MX<T> identity();
+  template<typename T> MX<T> scale(T sx, T sy);
+  template<typename T> MX<T> rotateCounterClockwise(T rad);
+  template<typename T> MX<T> rotateCounterClockwise90();
+  template<typename T> MX<T> rotateClockwise90();
+  template<typename T> MX<T> translation(T dx, T dy);
+  template<typename T> MX<T> translation(T dx, T dy);
+  template<typename T> MX<T> reflectXaxis();
+  template<typename T> MX<T> reflectYaxis();
+}
+
+template<typename T> MX<T> Affine2d::point(T x, T y) {
+  vector<vector<T>> dat({
+    {x},
+    {y},
+    {1}
+  });
+  return MX<T>(dat);
+}
+template<typename T> T Affine2d::x(MX<T> mx) { return mx[0][0]; }
+template<typename T> T Affine2d::y(MX<T> mx) { return mx[1][0]; }
+template<typename T> MX<T> Affine2d::identity() {
+  vector<vector<T>> dat({
+    {1, 0, 0},
+    {0, 1, 0},
+    {0, 0, 1}
+  });
+  return MX<T>(dat);
+}
+template<typename T> MX<T> Affine2d::scale(T sx, T sy) {
+  vector<vector<T>> dat({
+    {sx, 0, 0},
+    {0, sy, 0},
+    {0,  0, 1}
+  });
+  return MX<T>(dat);
+}
+template<typename T> MX<T> Affine2d::rotateCounterClockwise(T rad) {
+  vector<vector<T>> dat({
+    {cos(rad), -sin(rad), 0},
+    {sin(rad),  cos(rad), 0},
+    {0,               0,  1}
+  });
+  return MX<T>(dat);
+}
+template<typename T> MX<T> Affine2d::rotateCounterClockwise90() {
+  vector<vector<T>> dat({
+    {0, -1, 0},
+    {1,  0, 0},
+    {0,  0, 1}
+  });
+  return MX<T>(dat);
+}
+template<typename T> MX<T> Affine2d::rotateClockwise90() {
+  vector<vector<T>> dat({
+    { 0, 1, 0},
+    {-1, 0, 0},
+    { 0, 0, 1}
+  });
+  return MX<T>(dat);
+}
+template<typename T> MX<T> Affine2d::translation(T dx, T dy) {
+  vector<vector<T>> dat({
+    {1, 0, dx},
+    {0, 1, dy},
+    {0, 0,  1}
+  });
+  return MX<T>(dat);
+}
+template<typename T> MX<T> Affine2d::reflectXaxis() {
+  return Affine2d::scale(T(1),T(-1));
+}
+template<typename T> MX<T> Affine2d::reflectYaxis() {
+  return Affine2d::scale(T(-1),T(1));
+}
+
+void test_affine2d() {
+  auto p=Affine2d::point<int>(1,2);
+  p=Affine2d::identity<int>()*p;
+  assert(Affine2d::x<int>(p)==1&&Affine2d::y<int>(p)==2);
+  p=Affine2d::rotateClockwise90<int>()*p;
+  assert(Affine2d::x<int>(p)==2&&Affine2d::y<int>(p)==-1);
+  p=Affine2d::translation<int>(2*3,0)*Affine2d::reflectYaxis<int>()*p;
+  assert(Affine2d::x<int>(p)==4&&Affine2d::y<int>(p)==-1);
+  p=Affine2d::rotateCounterClockwise90<int>()*p;
+  assert(Affine2d::x<int>(p)==1&&Affine2d::y<int>(p)==4);
+  p=Affine2d::translation<int>(0,2*2)*Affine2d::reflectXaxis<int>()*p;
+  assert(Affine2d::x<int>(p)==1&&Affine2d::y<int>(p)==0);
+}
+
+/*
+
  Compute rank by Gaussian elimination in GF(2), O(N^2*lg N) time
 
  GF(2)
@@ -455,4 +559,5 @@ int main(int argc, char const *argv[]) {
   test_modmx();
   test_gf2();
   test_gje();
+  test_affine2d();
 }
