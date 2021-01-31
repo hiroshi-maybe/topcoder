@@ -345,6 +345,8 @@ void test_rmq() {
    - range sum query with ModInt
   - https://github.com/hiroshi-maybe/atcoder/blob/c8601b666f1a2f62c2456e9077c7cae42ec4885f/solutions/DataStructure.cpp#L44
    - range sum query and binary search
+  - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/ShiftAndInversions.cpp#L44
+   - inversion
 
  */
 template <typename T> struct BIT {
