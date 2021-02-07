@@ -89,6 +89,7 @@ vector<int> bellmanford(int V, vector<unordered_map<int, int>> E, int s) {
 
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/c735e26b3e5d2caa30945dac1c767e58e8ec32b7/solutions/ReturningHome.cpp#L72
+  - https://github.com/hiroshi-maybe/atcoder/blob/9c7efb725c3a6bd80c1b067ddcd70370120d968e/solutions/ComeBackQuickly.cpp#L49
 
  */
 const long long Inf=2e18;
