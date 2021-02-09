@@ -72,7 +72,13 @@ using namespace std;
 
 /*
 
- Dinic's max flow algorithm, O(E*V^2)
+ Dinic's max flow algorithm, O(E*V^2) for general graph
+
+  - O(E*√V) for bipartite matching (Hopcroft–Karp algorithm)
+
+ References:
+  - https://cp-algorithms.com/graph/dinic.html
+  - https://en.wikipedia.org/wiki/Hopcroft%E2%80%93Karp_algorithm
 
  Used problems:
   - https://github.com/hiroshi-maybe/fbhackercup/blob/master/2019-R1/LaddersAndSnakes.cpp#L45
@@ -228,6 +234,8 @@ private:
 
  Solver of bipartite matching problem by Ford-Fulkerson method, O(V*E) time
 
+ !!!! ⚠️ USE Dinic's algorithm for large E and V, which works in O(√V*E) time ⚠️ !!!!
+
   - compute max flow of bipartite graph with capacity 1
   - no need to add edges with source or sink
   - in bipartite graph, maximum matching = vertex cover number (Ant book 3-5 network flow)
@@ -258,6 +266,7 @@ private:
   - https://github.com/k-ori/topcoder/blob/master/PointyWizardHats/PointyWizardHats.cpp
   - https://github.com/k-ori/GCJ/blob/master/2018-R2/CostumeChange.cpp#L126
   - https://github.com/k-ori/atcoder/blob/master/solutions/Koukoku.cpp#L157
+  - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/quora2021-div1/Students.cpp#L45
 
  Usage:
 
