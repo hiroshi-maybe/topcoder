@@ -43,6 +43,8 @@ void test_gcd() {
  Used problems:
   - https://github.com/hiroshi-maybe/codeforces/blob/master/solutions/InfiniteFence.cpp#L64
   - https://github.com/hiroshi-maybe/atcoder/blob/4800c7aa222aee403acd9b0012ee94e203116461/solutions/Oversleeping.cpp#L123
+  - https://github.com/hiroshi-maybe/GCJ/blob/b802416a5fb022f1e7a44faad8935cd67b860e5f/2021-R1B/BrokenClock.cpp#L45
+   - Mod inverse for non-prime number MOD
 
  */
 
@@ -54,7 +56,21 @@ tuple<integer,integer,integer> extended_euclid(integer a, integer b) {
   tie(d2,x2,y2) = extended_euclid(b, a%b);
   return make_tuple(d2,y2,x2-(a/b)*y2);
 }
+/*
 
+ Compute mod inverse of `a` with extended euclid. gcd(a,mod) should be 1.
+
+ Used problems:
+  - https://github.com/hiroshi-maybe/GCJ/blob/b802416a5fb022f1e7a44faad8935cd67b860e5f/2021-R1B/BrokenClock.cpp#L53
+
+ */
+template<typename integer>
+integer inverse(integer a, integer mod) {
+  integer g,x,_; tie(g,x,_)=extended_euclid(a,mod);
+
+  assert(g==1);
+  return x;
+}
 /*
 
   Solver of two equations for Chinese Remainder Theorem, O(lg max(n1,n2)) time
