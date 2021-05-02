@@ -15,7 +15,7 @@ Manual template
 ## Command
 
 ```
-$ sudo ln -s {this dir}/bits {xcode-toolchain-path}/usr/include/c++/v1/
+$ sudo ln -s {this dir}/bits {xcode-toolchain-path}/usr/include/
 ```
 
 ## Examples of `{xcode-toolchain-path}`
