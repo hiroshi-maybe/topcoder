@@ -346,7 +346,9 @@ void test_rmq() {
   - https://github.com/hiroshi-maybe/atcoder/blob/c8601b666f1a2f62c2456e9077c7cae42ec4885f/solutions/DataStructure.cpp#L44
    - range sum query and binary search
   - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/ShiftAndInversions.cpp#L44
-   - inversion
+   - inversions
+  - https://github.com/hiroshi-maybe/atcoder/blob/cbac586668690007f98f6cf194dc9abdd0c75a53/solutions/Swaps2.cpp#L44
+   - inversions
 
  */
 template <typename T> struct BIT {
