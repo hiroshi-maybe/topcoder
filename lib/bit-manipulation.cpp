@@ -80,25 +80,29 @@ void test_ztransform() {
   }
 }
 
-// Returns all the submasks of given mask
-// https://e-maxx-eng.appspot.com/algebra/all-submasks.html
-// https://www.topcoder.com/community/data-science/data-science-tutorials/a-bit-of-fun-fun-with-bits/
-//
-// // O(3^N) time for all the super sets
-// REP(mask,1<<N) for(int s=mask; s>0; s=(s-1)&mask) { ... }
-//
-// Proof of O(3^N) runtime:
-//
-// If k bits set, there are 2^k subset for C(n,k) combination of bits.
-// Thus total computation is...
-// ∑ { C(n,k)*2^k : k=0..n }
-//  = ∑ { C(n,k)*1^(n-k)*2^k : k=0..n }
-//  = (1+2)^n = 3^n (binomial theorem)
-//
-// Binomial theorem:
-//  ∑ { C(n,k)*x^k*y^(n-k) : k=0..n } = (x+y)^n
-//
-//
+/*
+
+ Returns all the submasks of given mask, O(3^N) time
+
+  References:
+   - https://cp-algorithms.com/algebra/all-submasks.html
+   - https://e-maxx-eng.appspot.com/algebra/all-submasks.html
+   - https://www.topcoder.com/community/data-science/data-science-tutorials/a-bit-of-fun-fun-with-bits/
+
+ REP(mask,1<<N) for(int s=mask; s>0; s=(s-1)&mask) { ... }
+
+ Proof of O(3^N) runtime:
+
+  If k bits set, there are 2^k subset for C(n,k) combination of bits.
+  Thus total computation is...
+
+   ∑ { C(n,k)*2^k : k=0..n }
+    = ∑ { C(n,k)*1^(n-k)*2^k : k=0..n }
+    = (1+2)^n = 3^n (binomial theorem)
+
+ Binomial theorem: ∑ { C(n,k)*x^k*y^(n-k) : k=0..n } = (x+y)^n
+
+*/
 vector<int> submasks(int mask) {
   vector<int> S;
   for(int s=mask; s>0; s=(s-1)&mask) {
