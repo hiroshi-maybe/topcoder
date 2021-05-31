@@ -454,6 +454,7 @@ void test_bit() {
   - https://github.com/k-ori/leetcode/blob/master/304-Range-Sum-Query-2D/RangeSumQuery2D.cpp
   - https://github.com/k-ori/topcoder/blob/master/DropCoins/DropCoins.cpp#L157
   - https://github.com/hiroshi-maybe/codeforces/blob/924a2f0afa608ef58ea26dd14c2e38eb4e282d50/solutions/ArsonInBerlandForest.cpp#L44
+  - https://github.com/hiroshi-maybe/atcoder/blob/4f12bdf2063f82b7dd56fc11f219d06778b7be42/solutions/Pond.cpp#L44
 
  */
 template <typename Val>
