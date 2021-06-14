@@ -83,6 +83,8 @@ using namespace std;
  Used problems:
   - https://github.com/hiroshi-maybe/fbhackercup/blob/master/2019-R1/LaddersAndSnakes.cpp#L45
    - min cut
+  - https://github.com/hiroshi-maybe/atcoder/blob/7a4502cfca87ecd0b4b85f3fad3e5de142a9278c/solutions/GridAndTokens.cpp#L44
+   - max flow by representing grid constraints
 
  Usage:
   // Don't miss to update MAX_V constant
