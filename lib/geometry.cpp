@@ -140,6 +140,7 @@ bool onSegment(Point<num> p1, Point<num> p2, Point<num> q) {
 
  Used problem:
   - https://github.com/hiroshi-maybe/atcoder/blob/master/solutions/IttoRyodan.cpp#L93
+  - https://github.com/hiroshi-maybe/atcoder/blob/4531a9892ef1a9fa248025e462790db4627b75ab/solutions/CongruencePoints.cpp#L92
 
  */
 template<typename num>
