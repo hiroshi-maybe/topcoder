@@ -36,6 +36,8 @@ using namespace std;
    - LCA
   - https://github.com/hiroshi-maybe/codeforces/blob/22acf70615e0b483ff85bbf397cf430f045c7c8c/solutions/EhabsLastCorollary.cpp#L69
    - Find cycles of undirected graph with union find
+  - https://github.com/hiroshi-maybe/atcoder/blob/fb1535a2d34b6b6a5451d6aeb307304a84a84834/solutions/Collision.cpp#L44
+   - Overkilled the problem about parity of distance
 
  */
 struct LCA {
